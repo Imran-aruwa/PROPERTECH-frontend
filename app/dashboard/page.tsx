@@ -16,21 +16,21 @@ export default function DashboardPage() {
     loadData();
   }, []);
 
-  const loadData = async () => {
-    try {
-      const [userData, propertiesData] = await Promise.all([
-        authAPI.getCurrentUser(),
-        propertiesAPI.list()
-      ]);
-      setUser(userData);
-      setProperties(propertiesData);
-    } catch (error) {
-      router.push('/login');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+ const loadData = async () => {
+  try {
+    const userData = await authAPI.getCurrentUser();
+    const propertiesData = await propertiesAPI.list();
+    
+    setUser(userData);
+    setProperties(Array.isArray(propertiesData) ? propertiesData : []);
+  } catch (error) {
+    console.error('Error loading data:', error);
+    setProperties([]);
+    router.push('/login');
+  } finally {
+    setLoading(false);
+  }
+};
   const handleLogout = () => {
     authAPI.logout();
     router.push('/login');
