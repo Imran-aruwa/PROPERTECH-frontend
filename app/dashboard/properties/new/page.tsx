@@ -34,8 +34,9 @@ export default function NewPropertyPage() {
         purchase_date: purchaseDate || undefined,
       };
 
-      const newProperty = await propertiesAPI.create(propertyData);
-      setSuccess(true);
+      const newProperty = await createProperty(data) as Property;
+             router.push(`/dashboard/properties/${newProperty.id}`);
+
       
       // Redirect to property detail page after 1 second
       setTimeout(() => {
