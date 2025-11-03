@@ -8,6 +8,15 @@ const getAuthToken = () => {
   return null;
 };
 
+export const createProperty = async (propertyData: any) => {
+  // TEMP placeholder — replace with backend call later
+  return {
+    id: Date.now().toString(),
+    ...propertyData
+  };
+};
+
+
 // Generic fetch wrapper
 async function apiRequest<T>(
   endpoint: string,

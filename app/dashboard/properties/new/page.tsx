@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { propertiesAPI } from '@/lib/api';
 import { Building2, ArrowLeft, AlertCircle, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { createProperty } from '@/lib/api';
+
 
 export default function NewPropertyPage() {
   const router = useRouter();
