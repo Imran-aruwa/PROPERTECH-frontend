@@ -36,7 +36,7 @@ export default function NewPropertyPage() {
         purchase_date: purchaseDate || undefined,
       };
 
-      const newProperty = await createProperty(data) as Property;
+      const newProperty = await createProperty(propertyData) as Property;
              router.push(`/dashboard/properties/${newProperty.id}`);
 
       
