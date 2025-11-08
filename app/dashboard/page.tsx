@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authAPI, propertiesAPI } from '@/lib/api';
+import './dashboard.css';
 
 import { Building2, Home, Users, DollarSign, Plus, LogOut, Menu, X, Wrench, BarChart3, Bell, Search, TrendingUp, TrendingDown } from 'lucide-react';
 import Link from 'next/link';
@@ -82,7 +83,8 @@ export default function DashboardPage() {
       bgColor: 'bg-blue-50',
       iconColor: 'text-blue-600',
       trend: '+12%',
-      trendUp: true
+      trendUp: true,
+      delayClass: 'stat-card-delay-0'
     },
     {
       name: 'Total Units',
@@ -92,7 +94,8 @@ export default function DashboardPage() {
       bgColor: 'bg-green-50',
       iconColor: 'text-green-600',
       trend: '+8%',
-      trendUp: true
+      trendUp: true,
+      delayClass: 'stat-card-delay-100'
     },
     {
       name: 'Occupied Units',
@@ -102,7 +105,8 @@ export default function DashboardPage() {
       bgColor: 'bg-purple-50',
       iconColor: 'text-purple-600',
       trend: `${totalUnits > 0 ? Math.round((occupiedUnits / totalUnits) * 100) : 0}%`,
-      trendUp: occupiedUnits > 0
+      trendUp: occupiedUnits > 0,
+      delayClass: 'stat-card-delay-200'
     },
     {
       name: 'Monthly Revenue',
@@ -112,7 +116,8 @@ export default function DashboardPage() {
       bgColor: 'bg-yellow-50',
       iconColor: 'text-yellow-600',
       trend: '+15%',
-      trendUp: true
+      trendUp: true,
+      delayClass: 'stat-card-delay-300'
     }
   ];
 
@@ -139,6 +144,7 @@ export default function DashboardPage() {
         <div 
           className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden transition-opacity"
           onClick={() => setSidebarOpen(false)}
+          aria-label="Close sidebar"
         />
       )}
 
@@ -150,7 +156,7 @@ export default function DashboardPage() {
           {/* Logo */}
           <div className="flex items-center gap-3 p-6 border-b border-gray-100">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Building2 className="w-6 h-6 text-white" />
+              <Building2 className="w-6 h-6 text-white" aria-hidden="true" />
             </div>
             <div>
               <div className="text-xl font-bold text-gray-900 tracking-tight">PROPERTECH</div>
@@ -174,7 +180,7 @@ export default function DashboardPage() {
                 >
                   <Icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${
                     item.active ? 'text-white' : 'text-gray-500'
-                  }`} />
+                  }`} aria-hidden="true" />
                   <span className="text-sm">{item.name}</span>
                 </Link>
               );
@@ -197,8 +203,9 @@ export default function DashboardPage() {
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 font-medium"
+              aria-label="Logout"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-4 h-4" aria-hidden="true" />
               Logout
             </button>
           </div>
@@ -214,8 +221,9 @@ export default function DashboardPage() {
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition"
+                aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
               >
-                {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {sidebarOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
               </button>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
@@ -223,19 +231,26 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/50 border border-gray-200 rounded-lg hover:bg-white transition text-sm font-medium">
-                <Search className="w-4 h-4 text-gray-500" />
+              <button 
+                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/50 border border-gray-200 rounded-lg hover:bg-white transition text-sm font-medium"
+                aria-label="Search"
+              >
+                <Search className="w-4 h-4 text-gray-500" aria-hidden="true" />
                 <span className="text-gray-600">Search...</span>
               </button>
-              <button className="relative p-2 hover:bg-gray-100 rounded-lg transition">
-                <Bell className="w-5 h-5 text-gray-600" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              <button 
+                className="relative p-2 hover:bg-gray-100 rounded-lg transition"
+                aria-label="Notifications"
+              >
+                <Bell className="w-5 h-5 text-gray-600" aria-hidden="true" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" aria-hidden="true"></span>
               </button>
               <Link
                 href="/dashboard/properties/new"
                 className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2.5 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/30 font-semibold text-sm"
+                aria-label="Add new property"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-5 h-5" aria-hidden="true" />
                 <span className="hidden sm:inline">Add Property</span>
               </Link>
             </div>
@@ -245,14 +260,13 @@ export default function DashboardPage() {
         {/* Stats Grid */}
         <div className="p-4 lg:p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {stats.map((stat, idx) => {
+            {stats.map((stat) => {
               const Icon = stat.icon;
               const TrendIcon = stat.trendUp ? TrendingUp : TrendingDown;
               return (
                 <div 
-                  key={idx} 
-                  className="group relative bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden"
-                  style={{ animationDelay: `${idx * 100}ms` }}
+                  key={stat.name} 
+                  className={`group relative bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden ${stat.delayClass}`}
                 >
                   {/* Gradient Overlay */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
@@ -260,12 +274,12 @@ export default function DashboardPage() {
                   <div className="relative">
                     <div className="flex items-center justify-between mb-4">
                       <div className={`${stat.bgColor} p-3 rounded-xl shadow-sm group-hover:shadow-md transition-shadow`}>
-                        <Icon className={`w-6 h-6 ${stat.iconColor}`} />
+                        <Icon className={`w-6 h-6 ${stat.iconColor}`} aria-hidden="true" />
                       </div>
                       <div className={`flex items-center gap-1 text-xs font-semibold ${
                         stat.trendUp ? 'text-green-600' : 'text-red-600'
                       }`}>
-                        <TrendIcon className="w-3 h-3" />
+                        <TrendIcon className="w-3 h-3" aria-hidden="true" />
                         {stat.trend}
                       </div>
                     </div>
@@ -291,7 +305,7 @@ export default function DashboardPage() {
               {properties.length === 0 ? (
                 <div className="text-center py-16">
                   <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <Building2 className="w-10 h-10 text-blue-600" />
+                    <Building2 className="w-10 h-10 text-blue-600" aria-hidden="true" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">No properties yet</h3>
                   <p className="text-gray-600 mb-8 max-w-md mx-auto">Get started by adding your first property to begin managing your real estate portfolio</p>
@@ -299,70 +313,54 @@ export default function DashboardPage() {
                     href="/dashboard/properties/new"
                     className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg shadow-blue-500/30 font-semibold"
                   >
-                    <Plus className="w-5 h-5" />
+                    <Plus className="w-5 h-5" aria-hidden="true" />
                     Add Your First Property
                   </Link>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {properties.map((property, idx) => (
-                    <Link
-                      key={property.id}
-                      href={`/dashboard/properties/${property.id}`}
-                      className="group relative bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-6 hover:border-blue-300 hover:shadow-2xl transition-all duration-300 overflow-hidden"
-                      style={{ animationDelay: `${idx * 50}ms` }}
-                    >
-                      {/* Hover Gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <Building2 className="w-7 h-7 text-white" />
-                          </div>
-                          <span className="text-xs bg-gradient-to-r from-green-100 to-green-200 text-green-700 px-3 py-1.5 rounded-full font-semibold shadow-sm">
-                            {property.units?.length || 0} units
-                          </span>
-                        </div>
-                        <h3 className="font-bold text-gray-900 mb-2 text-lg group-hover:text-blue-600 transition-colors">
-                          {property.name}
-                        </h3>
-                        <p className="text-sm text-gray-600 line-clamp-2">{property.address}</p>
+                  {properties.map((property, idx) => {
+                    const delayClass = `property-card-delay-${idx * 50}`;
+                    return (
+                      <Link
+                        key={property.id}
+                        href={`/dashboard/properties/${property.id}`}
+                        className={`group relative bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-6 hover:border-blue-300 hover:shadow-2xl transition-all duration-300 overflow-hidden ${delayClass}`}
+                      >
+                        {/* Hover Gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         
-                        {property.property_type && (
-                          <div className="mt-4 pt-4 border-t border-gray-100">
-                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">
-                              {property.property_type}
+                        <div className="relative">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                              <Building2 className="w-7 h-7 text-white" aria-hidden="true" />
+                            </div>
+                            <span className="text-xs bg-gradient-to-r from-green-100 to-green-200 text-green-700 px-3 py-1.5 rounded-full font-semibold shadow-sm">
+                              {property.units?.length || 0} units
                             </span>
                           </div>
-                        )}
-                      </div>
-                    </Link>
-                  ))}
+                          <h3 className="font-bold text-gray-900 mb-2 text-lg group-hover:text-blue-600 transition-colors">
+                            {property.name}
+                          </h3>
+                          <p className="text-sm text-gray-600 line-clamp-2">{property.address}</p>
+                          
+                          {property.property_type && (
+                            <div className="mt-4 pt-4 border-t border-gray-100">
+                              <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                                {property.property_type}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
     </div>
   );
 }
