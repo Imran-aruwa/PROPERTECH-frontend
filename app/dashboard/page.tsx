@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
 import { authAPI, propertiesAPI } from '@/lib/api';
 import './dashboard.css';
 
@@ -16,8 +17,17 @@ interface Property {
 }
 
 interface User {
+  id: string;
   email: string;
   full_name?: string;
+  role?: string;
+}
+
+interface UserData {
+  id?: string;
+  email?: string;
+  full_name?: string;
+  role?: string;
 }
 
 export default function DashboardPage() {
@@ -25,34 +35,71 @@ export default function DashboardPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [signOutLoading, setSignOutLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    loadData();
+    checkAuthAndLoadData();
   }, []);
 
-  const loadData = async () => {
+  const checkAuthAndLoadData = async () => {
     try {
+      // Check session first
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        router.push('/auth/login');
+        return;
+      }
+
+      if (!session?.user) {
+        router.push('/auth/login');
+        return;
+      }
+
+      // Get user data from auth API or Supabase
       const userData = await authAPI.getCurrentUser();
-      const propertiesData = await propertiesAPI.list();
+      const userDataTyped = userData as UserData | null;
       
-      setUser(userData as User);
+      if (userDataTyped) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || userDataTyped.email || '',
+          full_name: userDataTyped.full_name,
+          role: userDataTyped.role || 'user',
+        });
+      } else {
+        // Fallback to auth user data
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          full_name: 'User',
+          role: 'user',
+        });
+      }
+
+      // Load properties
+      const propertiesData = await propertiesAPI.list();
       setProperties(Array.isArray(propertiesData) ? propertiesData : []);
-    } catch (error) {
-      console.error('Error loading data:', error);
-      router.push('/login');
+    } catch (err) {
+      console.error('Error loading data:', err);
+      setError('Failed to load dashboard. Please try refreshing.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleLogout = async () => {
+    setSignOutLoading(true);
     try {
-      authAPI.logout();
-      router.push('/logout');
+      await supabase.auth.signOut();
+      router.push('/auth/login');
     } catch (error) {
       console.error('Logout error:', error);
-      router.push('/login');
+      setError('Failed to logout');
+      setSignOutLoading(false);
     }
   };
 
@@ -65,6 +112,27 @@ export default function DashboardPage() {
         </div>
       </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-2">Error</h1>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button
+            onClick={() => router.push('/auth/login')}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Back to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
   }
 
   const totalUnits = properties.reduce((sum, p) => sum + (p.units?.length || 0), 0);
@@ -202,11 +270,12 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 font-medium"
+              disabled={signOutLoading}
+              className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 font-medium disabled:opacity-50"
               aria-label="Logout"
             >
               <LogOut className="w-4 h-4" aria-hidden="true" />
-              Logout
+              {signOutLoading ? 'Signing out...' : 'Logout'}
             </button>
           </div>
         </div>

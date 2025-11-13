@@ -7,6 +7,12 @@ import Link from 'next/link'
 import { Mail, Lock } from 'lucide-react'
 import Button from '@/components/ui/Button'
 
+interface UserProfile {
+  id: string;
+  email: string;
+  role?: string;
+}
+
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -39,12 +45,12 @@ export default function LoginPage() {
         .from('users')
         .select('role')
         .eq('id', data.user.id)
-        .single()
+        .single() as { data: UserProfile | null; error: any }
 
       if (profileError) {
         console.error('Profile fetch error:', profileError)
-        setError('Failed to load user profile')
-        setLoading(false)
+        // Don't fail on profile error, just redirect to dashboard
+        router.push('/dashboard')
         return
       }
 
@@ -77,7 +83,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="Enter your email"
-                aria-invalid={error ? "true" : "false"}
+                aria-invalid={error ? 'true' : 'false'}
                 className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
@@ -93,7 +99,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Enter your password"
-                aria-invalid={error ? "true" : "false"}
+                aria-invalid={error ? 'true' : 'false'}
                 className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
