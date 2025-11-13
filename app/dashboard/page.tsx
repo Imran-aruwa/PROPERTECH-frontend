@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
-import { authAPI, propertiesAPI } from '@/lib/api';
 import './dashboard.css';
 
 import { Building2, Home, Users, DollarSign, Plus, LogOut, Menu, X, Wrench, BarChart3, Bell, Search, TrendingUp, TrendingDown } from 'lucide-react';
@@ -59,30 +58,30 @@ export default function DashboardPage() {
         return;
       }
 
-      // Get user data from auth API or Supabase
-      const userData = await authAPI.getCurrentUser();
-      const userDataTyped = userData as UserData | null;
-      
-      if (userDataTyped) {
-        setUser({
-          id: session.user.id,
-          email: session.user.email || userDataTyped.email || '',
-          full_name: userDataTyped.full_name,
-          role: userDataTyped.role || 'user',
-        });
-      } else {
-        // Fallback to auth user data
-        setUser({
-          id: session.user.id,
-          email: session.user.email || '',
-          full_name: 'User',
-          role: 'user',
-        });
-      }
+      // Set user from session data directly
+      setUser({
+        id: session.user.id,
+        email: session.user.email || '',
+        full_name: session.user.user_metadata?.full_name || 'User',
+        role: 'user',
+      });
 
-      // Load properties
-      const propertiesData = await propertiesAPI.list();
-      setProperties(Array.isArray(propertiesData) ? propertiesData : []);
+      // Load properties directly from Supabase
+      try {
+        const { data: propertiesData, error: propsError } = await supabase
+          .from('properties')
+          .select('*');
+        
+        if (propsError) {
+          console.warn('Properties fetch error:', propsError);
+          setProperties([]);
+        } else {
+          setProperties(Array.isArray(propertiesData) ? propertiesData : []);
+        }
+      } catch (propsErr) {
+        console.warn('Error fetching properties:', propsErr);
+        setProperties([]);
+      }
     } catch (err) {
       console.error('Error loading data:', err);
       setError('Failed to load dashboard. Please try refreshing.');
