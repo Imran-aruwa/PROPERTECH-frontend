@@ -34,14 +34,35 @@ export default function PropertyDetailPage() {
 
   const loadProperty = async () => {
     try {
-      const { data: propertyData, error: propError } = await supabase
+      // Get current user
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session?.user) {
+        setError('Not authenticated');
+        return;
+      }
+
+      // Check if admin
+      const isAdmin = session.user.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+
+      let query = supabase
         .from('properties')
         .select('*')
-        .eq('id', propertyId)
-        .single();
+        .eq('id', propertyId);
+
+      // If not admin, also check ownership
+      if (!isAdmin) {
+        query = query.eq('user_id', session.user.id);
+      }
+
+      const { data: propertyData, error: propError } = await query.single();
 
       if (propError) {
         throw new Error(propError.message);
+      }
+
+      if (!propertyData) {
+        throw new Error('Property not found or you do not have access');
       }
 
       // Load units for this property

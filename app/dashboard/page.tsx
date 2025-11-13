@@ -66,11 +66,19 @@ export default function DashboardPage() {
         role: 'user',
       });
 
-      // Load properties directly from Supabase
+      // Load properties - admins see all, regular users see only their own
       try {
-        const { data: propertiesData, error: propsError } = await supabase
+        let query = supabase
           .from('properties')
           .select('*');
+        
+        // If not admin, filter by user_id
+        const isAdmin = session.user.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        if (!isAdmin) {
+          query = query.eq('user_id', session.user.id);
+        }
+        
+        const { data: propertiesData, error: propsError } = await query;
         
         if (propsError) {
           console.warn('Properties fetch error:', propsError);
