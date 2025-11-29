@@ -40,26 +40,9 @@ export default function LoginPage() {
         return
       }
 
-      // Check user role
-      const { data: profile, error: profileError } = await supabase
-        .from('users')
-        .select('role')
-        .eq('id', data.user.id)
-        .single() as { data: UserProfile | null; error: any }
-
-      if (profileError) {
-        console.error('Profile fetch error:', profileError)
-        // Don't fail on profile error, just redirect to dashboard
-        router.push('/dashboard')
-        return
-      }
-
-      // Redirect based on role
-      if (profile?.role === 'admin') {
-        router.push('/dashboard/waitlist')
-      } else {
-        router.push('/dashboard')
-      }
+      // Redirect to checkout/plans after successful login
+      router.push('/checkout')
+      
     } catch (err) {
       console.error('Login error:', err)
       setError('An unexpected error occurred')

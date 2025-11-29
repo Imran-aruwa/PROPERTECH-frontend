@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <style>
+      @keyframes float1 { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+      @keyframes float2 { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.7; } }
+      @keyframes float3 { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+      .p1 { animation: float1 4s ease-in-out infinite; }
+      .p2 { animation: float2 5s ease-in-out infinite; }
+      .p3 { animation: float3 6s ease-in-out infinite; }
+    </style>
+  </defs>
+  
+  <!-- Soft particle background texture -->
+  <rect width="1000" height="1000" fill="rgba(30, 40, 80, 0.1)"/>
+  
+  <!-- Large soft particles -->
+  <circle cx="100" cy="150" r="25" fill="rgba(0, 112, 243, 0.15)" class="p1"/>
+  <circle cx="250" cy="300" r="20" fill="rgba(120, 70, 255, 0.12)" class="p2"/>
+  <circle cx="450" cy="200" r="30" fill="rgba(0, 112, 243, 0.1)" class="p3"/>
+  <circle cx="650" cy="400" r="22" fill="rgba(120, 70, 255, 0.14)" class="p1"/>
+  <circle cx="800" cy="150" r="28" fill="rgba(0, 112, 243, 0.13)" class="p2"/>
+  
+  <!-- Medium particles -->
+  <circle cx="150" cy="600" r="15" fill="rgba(0, 112, 243, 0.2)" class="p2"/>
+  <circle cx="380" cy="700" r="18" fill="rgba(120, 70, 255, 0.18)" class="p3"/>
+  <circle cx="700" cy="650" r="12" fill="rgba(0, 112, 243, 0.16)" class="p1"/>
+  <circle cx="900" cy="750" r="16" fill="rgba(120, 70, 255, 0.15)" class="p2"/>
+  
+  <!-- Small delicate particles -->
+  <circle cx="200" cy="450" r="8" fill="rgba(0, 112, 243, 0.25)" class="p3"/>
+  <circle cx="500" cy="550" r="6" fill="rgba(120, 70, 255, 0.2)" class="p1"/>
+  <circle cx="850" cy="500" r="7" fill="rgba(0, 112, 243, 0.22)" class="p2"/>
+  <circle cx="350" cy="850" r="9" fill="rgba(120, 70, 255, 0.24)" class="p3"/>
+  
+  <!-- Tiny accent particles -->
+  <circle cx="400" cy="400" r="3" fill="rgba(0, 112, 243, 0.4)" class="p1"/>
+  <circle cx="600" cy="300" r="2" fill="rgba(120, 70, 255, 0.35)" class="p2"/>
+  <circle cx="250" cy="900" r="4" fill="rgba(0, 112, 243, 0.38)" class="p3"/>
+  <circle cx="950" cy="300" r="3" fill="rgba(120, 70, 255, 0.36)" class="p1"/>
+  <circle cx="50" cy="500" r="2" fill="rgba(0, 112, 243, 0.42)" class="p2"/>
+  
+  <!-- Gradient overlay for soft effect -->
+  <defs>
+    <radialGradient id="softGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:rgba(0,112,243,0.05);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(120,70,255,0);stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#softGrad)" opacity="0.3"/>
+</svg>

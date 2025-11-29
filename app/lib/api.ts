@@ -1,120 +1,133 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050/api/v1';
+/**
+ * API Helper for Backend Communication
+ * Integrated with your existing patterns
+ */
 
-// Helper to get auth token
-const getAuthToken = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('access_token');
+import { supabase } from '@/lib/supabaseClient';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+/**
+ * Get JWT token from Supabase session
+ */
+async function getAuthToken(): Promise<string | null> {
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return session?.access_token || null;
+  } catch (error) {
+    console.error('Error getting auth token:', error);
+    return null;
   }
-  return null;
-};
+}
 
-export const createProperty = async (propertyData: any) => {
-  // TEMP placeholder — replace with backend call later
-  return {
-    id: Date.now().toString(),
-    ...propertyData
-  };
-};
-
-
-// Generic fetch wrapper
-async function apiRequest<T>(
+/**
+ * Make API request with authentication
+ */
+export async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = getAuthToken();
-  
+  const token = await getAuthToken();
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
     headers,
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: 'Request failed' }));
-    throw new Error(error.detail || 'API request failed');
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.detail || error.message || `HTTP ${response.status}`);
   }
 
   return response.json();
 }
 
-// Auth API
-export const authAPI = {
-  async signup(data: { email: string; password: string; full_name?: string }) {
-    return apiRequest('/auth/signup', {
+/**
+ * Payment API functions
+ */
+export const paymentApi = {
+  detectGateway: () =>
+    apiRequest('/api/payments/detect-gateway', { method: 'POST' }),
+
+  initiate: (payload: Record<string, any>) =>
+    apiRequest('/api/payments/initiate', {
       method: 'POST',
-      body: JSON.stringify(data),
-    });
-  },
+      body: JSON.stringify(payload),
+    }),
 
-  async login(email: string, password: string) {
-    const response = await apiRequest<{ access_token: string; token_type: string }>('/auth/login', {
+  verify: (reference: string) =>
+    apiRequest('/api/payments/verify', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
-    });
+      body: JSON.stringify({ reference }),
+    }),
 
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('access_token', response.access_token);
-    }
-    
-    return response;
-  },
+  subscribe: (payload: Record<string, any>) =>
+    apiRequest('/api/payments/subscribe', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
 
-  async getCurrentUser() {
-    return apiRequest('/auth/me');
-  },
-  
-  logout() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('access_token');
-    }
-  },
+  history: (skip = 0, limit = 10) =>
+    apiRequest(`/api/payments/history?skip=${skip}&limit=${limit}`),
+
+  subscriptions: () => apiRequest('/api/payments/subscriptions'),
+
+  cancelSubscription: (subscriptionId: string) =>
+    apiRequest(`/api/payments/cancel-subscription/${subscriptionId}`, {
+      method: 'POST',
+    }),
 };
 
-// Properties API
-export const propertiesAPI = {
-  list() {
-    return apiRequest('/properties');
-  },
-  
-  get(id: string) {
-    return apiRequest(`/properties/${id}`);
-  },
-  
-  create(data: any) {
-    return apiRequest('/properties', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  },
-  
-  update(id: string, data: any) {
-    return apiRequest(`/properties/${id}`, {
+/**
+ * User API functions
+ */
+export const userApi = {
+  getProfile: () => apiRequest('/api/users/profile'),
+
+  updateProfile: (data: Record<string, any>) =>
+    apiRequest('/api/users/profile', {
       method: 'PUT',
       body: JSON.stringify(data),
-    });
-  },
-  
-  delete(id: string) {
-    return apiRequest(`/properties/${id}`, {
-      method: 'DELETE',
-    });
-  },
+    }),
 
-  // Units
-  createUnit(propertyId: string, data: any) {
-    return apiRequest(`/properties/${propertyId}/units`, {
-      method: 'POST',
+  getPreferences: () => apiRequest('/api/users/preferences'),
+
+  updatePreferences: (data: Record<string, any>) =>
+    apiRequest('/api/users/preferences', {
+      method: 'PUT',
       body: JSON.stringify(data),
-    });
-  },
-
-  listUnits(propertyId: string) {
-    return apiRequest(`/properties/${propertyId}/units`);
-  },
+    }),
 };
+
+/**
+ * Waitlist API functions (extends your existing waitlist.ts)
+ */
+export const waitlistApi = {
+  submit: (data: { email: string; name?: string; country?: string }) =>
+    fetch(`${API_BASE}/api/v1/waitlist`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      if (!res.ok) throw new Error('Waitlist submission failed');
+      return res.json();
+    }),
+};
+
+/**
+ * Generic error handler
+ */
+export function handleApiError(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return 'An unexpected error occurred';
+}

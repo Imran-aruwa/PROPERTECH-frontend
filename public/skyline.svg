@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 300" width="1400" height="300" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(15,23,42,0);stop-opacity:0" />
+      <stop offset="50%" style="stop-color:rgba(15,23,42,0.3);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(0,0,0,0.6);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Gradient overlay -->
+  <rect width="1400" height="300" fill="url(#skyGrad)"/>
+  
+  <!-- Tall buildings (left) -->
+  <polygon points="20,200 20,80 60,80 60,200" fill="#0f1729" opacity="0.8"/>
+  <polygon points="70,200 70,120 110,120 110,200" fill="#1a2847" opacity="0.7"/>
+  <polygon points="120,200 120,60 170,60 170,200" fill="#0f1729" opacity="0.85"/>
+  
+  <!-- Mid-height structures -->
+  <polygon points="180,200 180,140 220,140 220,200" fill="#1a2847" opacity="0.75"/>
+  <polygon points="230,200 230,100 280,100 280,200" fill="#0f1729" opacity="0.8"/>
+  <polygon points="290,200 290,160 330,160 330,200" fill="#1a2847" opacity="0.7"/>
+  
+  <!-- Tall towers (center) -->
+  <polygon points="340,200 340,40 390,40 390,200" fill="#0a0f1f" opacity="0.9"/>
+  <polygon points="400,200 400,70 450,70 450,200" fill="#1a2847" opacity="0.8"/>
+  <polygon points="460,200 460,50 510,50 510,200" fill="#0f1729" opacity="0.85"/>
+  
+  <!-- Mid-rise cluster -->
+  <polygon points="520,200 520,130 560,130 560,200" fill="#1a2847" opacity="0.75"/>
+  <polygon points="570,200 570,110 610,110 610,200" fill="#0f1729" opacity="0.8"/>
+  <polygon points="620,200 620,150 660,150 660,200" fill="#1a2847" opacity="0.7"/>
+  
+  <!-- Right side buildings -->
+  <polygon points="670,200 670,90 720,90 720,200" fill="#0f1729" opacity="0.8"/>
+  <polygon points="730,200 730,130 770,130 770,200" fill="#1a2847" opacity="0.75"/>
+  <polygon points="780,200 780,60 830,60 830,200" fill="#0a0f1f" opacity="0.9"/>
+  
+  <!-- Additional mid-height structures -->
+  <polygon points="840,200 840,140 880,140 880,200" fill="#1a2847" opacity="0.7"/>
+  <polygon points="890,200 890,100 940,100 940,200" fill="#0f1729" opacity="0.8"/>
+  <polygon points="950,200 950,160 990,160 990,200" fill="#1a2847" opacity="0.75"/>
+  
+  <!-- Far right tall structures -->
+  <polygon points="1000,200 1000,50 1050,50 1050,200" fill="#0f1729" opacity="0.85"/>
+  <polygon points="1060,200 1060,120 1110,120 1110,200" fill="#1a2847" opacity="0.8"/>
+  <polygon points="1120,200 1120,80 1170,80 1170,200" fill="#0a0f1f" opacity="0.9"/>
+  
+  <!-- Final edge buildings -->
+  <polygon points="1180,200 1180,130 1220,130 1220,200" fill="#1a2847" opacity="0.75"/>
+  <polygon points="1230,200 1230,110 1280,110 1280,200" fill="#0f1729" opacity="0.8"/>
+  <polygon points="1290,200 1290,150 1330,150 1330,200" fill="#1a2847" opacity="0.7"/>
+  <polygon points="1340,200 1340,90 1380,90 1380,200" fill="#0f1729" opacity="0.8"/>
+  
+  <!-- Subtle window lights -->
+  <rect x="30" y="100" width="3" height="3" fill="#6ba3ff" opacity="0.3"/>
+  <rect x="35" y="110" width="3" height="3" fill="#6ba3ff" opacity="0.3"/>
+  <rect x="150" y="90" width="3" height="3" fill="#6ba3ff" opacity="0.2"/>
+  <rect x="155" y="100" width="3" height="3" fill="#6ba3ff" opacity="0.2"/>
+  <rect x="380" y="80" width="3" height="3" fill="#6ba3ff" opacity="0.25"/>
+  <rect x="385" y="95" width="3" height="3" fill="#6ba3ff" opacity="0.25"/>
+  <rect x="800" y="100" width="3" height="3" fill="#6ba3ff" opacity="0.2"/>
+  <rect x="805" y="110" width="3" height="3" fill="#6ba3ff" opacity="0.2"/>
+  <rect x="1050" y="90" width="3" height="3" fill="#6ba3ff" opacity="0.25"/>
+  <rect x="1055" y="100" width="3" height="3" fill="#6ba3ff" opacity="0.25"/>
+  
+  <!-- Dark bottom fade -->
+  <rect y="220" width="1400" height="80" fill="url(#skyGrad)" opacity="0.5"/>
+</svg>

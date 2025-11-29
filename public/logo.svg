@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" width="360" height="360">
+  <defs>
+    <style>
+      @keyframes glow {
+        0%, 100% { filter: drop-shadow(0 0 15px rgba(0, 112, 243, 0.6)); }
+        50% { filter: drop-shadow(0 0 35px rgba(59, 130, 246, 1)); }
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
+      }
+      @keyframes glassglow {
+        0%, 100% { backdrop-filter: blur(15px); }
+        50% { backdrop-filter: blur(20px); }
+      }
+      .glow-animate { animation: glow 3s ease-in-out infinite; }
+      .float-top { animation: float 3s ease-in-out infinite; }
+      .float-right { animation: float 3s ease-in-out infinite 0.3s; }
+      .float-bottom { animation: float 3s ease-in-out infinite 0.6s; }
+      .float-left { animation: float 3s ease-in-out infinite 0.9s; }
+      .pulse-elem { animation: pulse 2.5s ease-in-out infinite; }
+    </style>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glassmorphism">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+      <feFlood flood-color="#ffffff" flood-opacity="0.15" result="color" />
+      <feComposite in="color" in2="SourceGraphic" operator="in" result="coloredBlur" />
+      <feComposite in="coloredBlur" in2="SourceGraphic" operator="in" result="effect" />
+      <feComposite in="effect" in2="SourceGraphic" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" />
+    </filter>
+    <filter id="shadow3d" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  
+  <g class="glow-animate">
+    
+    <!-- Outer background glow -->
+    <circle cx="180" cy="180" r="175" fill="url(#grad3)" opacity="0.05" />
+    
+    <!-- Decorative rings -->
+    <circle cx="180" cy="180" r="165" fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.3"/>
+    <circle cx="180" cy="180" r="135" fill="none" stroke="url(#grad1)" stroke-width="0.8" opacity="0.2"/>
+    
+    <!-- ===== TOP - REAL ESTATE HOUSE ===== -->
+    <g class="float-top" filter="url(#shadow3d)">
+      <!-- Background glow circle -->
+      <circle cx="180" cy="30" r="32" fill="url(#grad1)" opacity="0.15" stroke="url(#grad1)" stroke-width="1.5" stroke-opacity="0.3"/>
+      
+      <!-- 3D House -->
+      <polygon points="180,15 160,32 160,52 200,52 200,32" fill="url(#grad1)" opacity="0.3" stroke="url(#grad1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polygon points="180,12 160,32 200,32" fill="url(#grad2)" opacity="0.85" stroke="url(#grad1)" stroke-width="2"/>
+      <rect x="168" y="36" width="6" height="8" fill="url(#grad1)" opacity="0.85"/>
+      <circle cx="191" cy="39" r="2.5" fill="url(#grad1)" opacity="0.9"/>
+      <circle cx="169" cy="39" r="2.5" fill="url(#grad1)" opacity="0.9"/>
+    </g>
+    
+    <!-- ===== RIGHT - EDUCATION CAP ===== -->
+    <g class="float-right" filter="url(#shadow3d)">
+      <!-- Background glow circle -->
+      <circle cx="310" cy="180" r="32" fill="url(#grad2)" opacity="0.15" stroke="url(#grad2)" stroke-width="1.5" stroke-opacity="0.3"/>
+      
+      <!-- 3D Graduation Cap -->
+      <ellipse cx="310" cy="170" rx="20" ry="5" fill="url(#grad2)" opacity="0.65" stroke="url(#grad1)" stroke-width="1.5"/>
+      <ellipse cx="310" cy="169" rx="20" ry="5" fill="url(#grad1)" opacity="0.85" stroke="url(#grad1)" stroke-width="2"/>
+      <polygon points="310,163 292,170 328,170" fill="url(#grad2)" opacity="0.9" stroke="url(#grad1)" stroke-width="2" stroke-linejoin="round"/>
+      <line x1="310" y1="170" x2="310" y2="190" stroke="url(#grad1)" stroke-width="2.5" opacity="0.85"/>
+      <circle cx="310" cy="192" r="3" fill="url(#grad2)" opacity="0.95"/>
+      <ellipse cx="310" cy="168" rx="4" ry="2" fill="white" opacity="0.5"/>
+    </g>
+    
+    <!-- ===== BOTTOM - FINANCE BANK ===== -->
+    <g class="float-bottom" filter="url(#shadow3d)">
+      <!-- Background glow circle -->
+      <circle cx="180" cy="330" r="32" fill="url(#grad3)" opacity="0.15" stroke="url(#grad3)" stroke-width="1.5" stroke-opacity="0.3"/>
+      
+      <!-- 3D Bank Building -->
+      <rect x="162" y="305" width="36" height="30" fill="url(#grad3)" opacity="0.3" stroke="url(#grad3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" rx="2"/>
+      <polygon points="162,305 180,292 198,305" fill="url(#grad1)" opacity="0.8" stroke="url(#grad3)" stroke-width="2"/>
+      <rect x="172" y="320" width="10" height="12" fill="url(#grad3)" opacity="0.85" rx="1"/>
+      <rect x="167" y="310" width="5" height="5" fill="url(#grad1)" opacity="0.85" rx="0.5"/>
+      <rect x="188" y="310" width="5" height="5" fill="url(#grad1)" opacity="0.85" rx="0.5"/>
+      <ellipse cx="177" cy="305" rx="6" ry="2" fill="white" opacity="0.4"/>
+    </g>
+    
+    <!-- ===== LEFT - HEALTH CROSS ===== -->
+    <g class="float-left" filter="url(#shadow3d)">
+      <!-- Background glow circle -->
+      <circle cx="50" cy="180" r="32" fill="#dc2626" opacity="0.13" stroke="#dc2626" stroke-width="1.5" stroke-opacity="0.25"/>
+      
+      <!-- 3D Medical Cross -->
+      <rect x="46" y="160" width="8" height="40" fill="#dc2626" opacity="0.3" rx="2"/>
+      <rect x="45" y="160" width="8" height="40" fill="#dc2626" opacity="0.8" rx="2" stroke="#dc2626" stroke-width="2.5"/>
+      <rect x="30" y="174" width="40" height="8" fill="#dc2626" opacity="0.3" rx="2"/>
+      <rect x="30" y="173" width="40" height="8" fill="#dc2626" opacity="0.85" rx="2" stroke="#dc2626" stroke-width="2.5"/>
+      <circle cx="50" cy="180" r="24" fill="none" stroke="#dc2626" stroke-width="2" opacity="0.6"/>
+      <ellipse cx="50" cy="160" rx="5" ry="2" fill="white" opacity="0.35"/>
+    </g>
+    
+    <!-- ===== CENTRAL GLASSMORPHISM CARD ===== -->
+    <!-- Outer glow ring -->
+    <circle cx="180" cy="180" r="95" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.4"/>
+    <circle cx="180" cy="180" r="90" fill="none" stroke="url(#grad2)" stroke-width="1" opacity="0.3"/>
+    
+    <!-- Glassmorphism background card -->
+    <g filter="url(#glassmorphism)">
+      <rect x="110" y="110" width="140" height="140" rx="35" fill="url(#grad1)" opacity="0.12" stroke="url(#grad1)" stroke-width="2" stroke-opacity="0.3"/>
+      <rect x="112" y="112" width="136" height="136" rx="33" fill="url(#grad2)" opacity="0.08" stroke="url(#grad2)" stroke-width="1" stroke-opacity="0.2"/>
+    </g>
+    
+    <!-- Inner gradient sphere for 3D depth -->
+    <circle cx="180" cy="175" r="60" fill="url(#grad2)" opacity="0.15"/>
+    <circle cx="180" cy="180" r="55" fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.25"/>
+    
+    <!-- Shine effect on glass -->
+    <ellipse cx="150" cy="140" rx="25" ry="15" fill="white" opacity="0.25" filter="url(#glassmorphism)"/>
+    
+  </g>
+  
+  <!-- ===== PROPERTECH TEXT - CENTERED IN GLASS ===== -->
+  <!-- Text shadow for 3D depth -->
+  <text x="182" y="187" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif" font-size="26" font-weight="950" text-anchor="middle" dominant-baseline="middle" fill="url(#grad3)" opacity="0.15" letter-spacing="1">
+    PROPERTECH
+  </text>
+  
+  <!-- Main text with glow -->
+  <text x="180" y="184" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif" font-size="26" font-weight="950" text-anchor="middle" dominant-baseline="middle" fill="url(#grad1)" opacity="1" letter-spacing="1" class="pulse-elem" filter="url(#shadow3d)">
+    PROPERTECH
+  </text>
+  
+  <!-- Top accent glow -->
+  <g filter="url(#glassmorphism)">
+    <circle cx="180" cy="140" r="8" fill="url(#grad2)" opacity="0.6"/>
+  </g>
+  
+</svg>

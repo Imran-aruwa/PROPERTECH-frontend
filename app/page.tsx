@@ -13,7 +13,7 @@ const featuresData = [
 ]
 
 const testimonials = [
-  { quote: "PROPERTECH reduced my admin time from 15 hours to 3 hours per week. Game changer.", author: "Kibera Landlord", role: "Property Owner, 12 units", avatar: "KL" },
+  { quote: "PROPERTECH Software reduced my admin time from 15 hours to 3 hours per week. Game changer.", author: "Kibera Landlord", role: "Property Owner, 12 units", avatar: "KL" },
   { quote: "The AI maintenance categorization alone is worth the subscription. It just works.", author: "Nairobi PM", role: "Property Manager, 45 units", avatar: "NP" },
   { quote: "Finally, software that doesn't feel like it was built in 2005. Clean, fast, intuitive.", author: "Mombasa Investor", role: "Real Estate Investor", avatar: "MI" },
 ]
@@ -93,7 +93,7 @@ export default function Page() {
       <header className="fixed top-0 left-0 right-0 z-40 header-backdrop bg-slate-900/50 border-b border-blue-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.svg" alt="PROPERTECH" className="w-10 h-10" />
+            <img src="/logo.svg" alt="PROPERTECH Software" className="w-10 h-10" />
             <div className="text-2xl font-bold text-gradient">
               PROPERTECH
             </div>
@@ -119,7 +119,7 @@ export default function Page() {
             </h1>
 
             <p className="text-lg text-blue-100 max-w-3xl mx-auto mb-8 animate-fade-in-up delay-400">
-              Stop chasing rent with spreadsheets and WhatsApp. Propertech centralizes tenants, payments, maintenance and finances in one beautiful dashboard — built for landlords in Kenya & Africa.
+              Stop chasing rent with spreadsheets and WhatsApp. PROPERTECH Software centralizes tenants, payments, maintenance and finances in one beautiful dashboard — built for landlords in Kenya & Africa.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up delay-600">
@@ -279,7 +279,7 @@ export default function Page() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/logo.svg" alt="PROPERTECH" className="w-8 h-8" />
+                <img src="/logo.svg" alt="PROPERTECH Software" className="w-8 h-8" />
                 <span className="text-xl font-bold text-gradient">PROPERTECH</span>
               </div>
               <p className="text-blue-200/70 text-sm">Smarter property management for landlords across Africa.</p>
@@ -310,7 +310,7 @@ export default function Page() {
             </div>
           </div>
           <div className="border-t border-blue-500/20 pt-8 text-center text-blue-200/50 text-sm">
-            <p>&copy; 2025 PROPERTECH. All rights reserved. Built for Africa, by Africans.</p>
+            <p>&copy; 2025 PROPERTECH Software. All rights reserved. Built for Africa, by Africans.</p>
           </div>
         </div>
       </footer>

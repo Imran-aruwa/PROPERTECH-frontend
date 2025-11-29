@@ -25,8 +25,204 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-purple-600;
+/* ✅ Text Gradient */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(to right, #60a5fa, #c084fc);
+}
+
+/* 🌈 Propertech Live Background Gradient */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 112, 243, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(0, 112, 243, 0.6); }
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes drift {
+  0% { transform: translateX(0px); }
+  100% { transform: translateX(200px); }
+}
+
+@keyframes neon-glow {
+  0%, 100% { 
+    text-shadow: 0 0 10px rgba(0, 112, 243, 0.5), 
+                 0 0 20px rgba(120, 70, 255, 0.3);
   }
+  50% { 
+    text-shadow: 0 0 20px rgba(0, 112, 243, 0.8), 
+                 0 0 40px rgba(120, 70, 255, 0.6);
+  }
+}
+
+@keyframes world-map-drift {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 0%; }
+}
+
+/* Animated Background Gradient */
+.animate-bg-gradient {
+  background: linear-gradient(
+    120deg,
+    rgba(120, 70, 255, 0.45),
+    rgba(60, 120, 255, 0.45),
+    rgba(40, 40, 120, 0.45)
+  );
+  background-size: 300% 300%;
+  animation: gradientMove 12s ease-in-out infinite;
+  filter: blur(60px);
+}
+
+/* Floating Animation */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse Glow Effect */
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Slide In Animation */
+.animate-slide-in {
+  animation: slide-in 0.6s ease-out;
+}
+
+/* Fade In Up Animation with Delays */
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.delay-0 { animation-delay: 0s; }
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-800 { animation-delay: 0.8s; }
+
+/* Drift Animation for Particles */
+.animate-drift {
+  animation: drift 20s linear infinite;
+}
+
+/* Neon Glow Text */
+.text-neon-glow {
+  animation: neon-glow 3s ease-in-out infinite;
+  color: #60a5fa;
+}
+
+/* World Map Drift */
+.world-map-layer {
+  animation: world-map-drift 15s linear infinite;
+  background-size: 200% 100%;
+}
+
+/* Smooth Transitions */
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.5s ease-out;
+  }
+  
+  .backdrop-blur-heavy {
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+  }
+}
+
+/* Dark Mode Glow Borders */
+.glow-border {
+  border-color: rgba(0, 112, 243, 0.3);
+  box-shadow: inset 0 0 10px rgba(0, 112, 243, 0.1);
+}
+
+.glow-border-hover {
+  transition: all 0.3s ease-out;
+}
+
+.glow-border-hover:hover {
+  border-color: rgba(0, 112, 243, 0.7);
+  box-shadow: 0 0 20px rgba(0, 112, 243, 0.3), inset 0 0 20px rgba(0, 112, 243, 0.1);
+}
+
+/* Scroll Fade */
+.scroll-fade {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-fade.hidden {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Background Layers */
+.bg-gradient-animated {
+  background: linear-gradient(
+    120deg,
+    rgba(0, 112, 243, 0.2) 0%,
+    rgba(120, 70, 255, 0.15) 50%,
+    rgba(0, 112, 243, 0.1) 100%
+  );
+  animation: gradientMove 12s ease-in-out infinite;
+  background-size: 300% 300%;
+}
+
+/* Skyline Parallax Layer */
+.skyline-parallax {
+  background-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 100%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200'%3E%3Crect fill='%23000' width='1200' height='200'/%3E%3Cpolygon fill='%23111' points='50,100 80,40 110,100'/%3E%3Cpolygon fill='%23222' points='150,100 180,30 210,100'/%3E%3Cpolygon fill='%23111' points='250,100 290,20 330,100'/%3E%3Cpolygon fill='%23222' points='400,100 440,35 480,100'/%3E%3Cpolygon fill='%23111' points='550,100 600,25 650,100'/%3E%3Cpolygon fill='%23222' points='750,100 800,40 850,100'/%3E%3Cpolygon fill='%23111' points='950,100 1000,30 1050,100'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: bottom;
+  background-size: auto 100%;
+}
+
+/* Particle Field Background */
+.particle-field {
+  background-image: radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)), radial-gradient(2px 2px at 60px 70px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 50px 50px, #ddd, rgba(0,0,0,0)), radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 90px 10px, #eee, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: drift 20s linear infinite;
+  opacity: 0.1;
+}
+
+/* Animated Gradient Overlay */
+.gradient-overlay-animated {
+  background: radial-gradient(circle at 20% 50%, rgba(0, 112, 243, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(120, 70, 255, 0.2) 0%, transparent 50%);
+  animation: gradientMove 12s ease-in-out infinite;
+  background-size: 300% 300%;
+  opacity: 0.2;
+}
+
+/* Animated Orbs */
+.orb-blue {
+  animation: float 6s ease-in-out infinite;
+}
+
+.orb-purple {
+  animation: float 8s ease-in-out infinite 1s;
 }
