@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { Sidebar } from './Sidebar';
-import { Header } from './Header';
+import { Header } from './header';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
