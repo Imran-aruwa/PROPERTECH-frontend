@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { useForm, useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
 import { useAuth } from '@/app/lib/auth-context';
@@ -17,6 +16,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const { toasts, error: showError, removeToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateForm = (values: LoginFormData) => {
     const errors: Partial<Record<keyof LoginFormData, string>> = {};
@@ -31,10 +31,8 @@ export default function LoginPage() {
     return errors;
   };
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useForm<LoginFormData>(
-    { email: '', password: '' },
-    validateForm
-  );
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
+    useForm<LoginFormData>({ email: '', password: '' }, validateForm);
 
   const onSubmit = async (data: LoginFormData) => {
     try {
@@ -64,7 +62,9 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Propertech Software</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Propertech Software
+          </h1>
           <p className="text-gray-600">Sign in to your account</p>
         </div>
 
@@ -101,7 +101,7 @@ export default function LoginPage() {
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={values.password}
                   onChange={(e) => handleChange('password', e.target.value)}
                   onBlur={() => handleBlur('password')}
@@ -109,11 +109,23 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   autoComplete="current-password"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-blue-600"
+                >
+                  {showPassword ? 'Hide' : 'Show'}
+                </button>
               </div>
               {touched.password && errors.password && (
                 <p className="mt-1 text-sm text-red-500">{errors.password}</p>
               )}
             </div>
+
+            {/* Submit helpers (optional debug – remove later if you want) */}
+            {/* <pre className="text-xs text-gray-500">
+              password state: {JSON.stringify(values.password)}
+            </pre> */}
 
             {/* Remember Me & Forgot Password */}
             <div className="flex items-center justify-between">
@@ -151,7 +163,9 @@ export default function LoginPage() {
 
           {/* Demo Credentials */}
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <p className="text-sm font-medium text-blue-900 mb-2">Demo Credentials:</p>
+            <p className="text-sm font-medium text-blue-900 mb-2">
+              Demo Credentials:
+            </p>
             <div className="text-xs text-blue-800 space-y-1">
               <p>Owner: owner@example.com / password123</p>
               <p>Tenant: tenant@example.com / password123</p>
@@ -161,8 +175,11 @@ export default function LoginPage() {
 
           {/* Sign Up Link */}
           <p className="mt-6 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link href="/register" className="text-blue-600 hover:text-blue-700 font-medium">
+            Don&apos;t have an account?{' '}
+            <Link
+              href="/register"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
               Sign up
             </Link>
           </p>
@@ -176,6 +193,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-
-
