@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
-import { Building2, Mail, Lock, User, Phone, UserCircle, BadgeCheck } from 'lucide-react';
+import { Building2, Mail, Lock, User, Phone, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
 import { authApi } from '@/lib/api-services';
 
@@ -19,7 +19,7 @@ interface RegisterFormData {
 
 export default function RegisterForm() {
   const router = useRouter();
-  const { isAuthenticated, role, user } = useAuth();
+  const { isAuthenticated, role } = useAuth();
   const searchParams = useSearchParams();
 
   const [submitting, setSubmitting] = useState(false);

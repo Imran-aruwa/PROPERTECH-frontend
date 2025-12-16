@@ -155,9 +155,8 @@ export default function CheckoutPage() {
   const handleFreePlan = async () => {
     try {
       setIsProcessing(true);
-      const token = localStorage.getItem('access_token') || localStorage.getItem('token');
-      
-      const response = await apiClient.post('/api/v1/subscriptions/activate-free', {});
+
+      await apiClient.post('/api/v1/subscriptions/activate-free', {});
       
       setPaymentComplete(true);
       setTimeout(() => {
@@ -193,7 +192,7 @@ export default function CheckoutPage() {
       const priceUSD = billingCycle === 'monthly' ? plan.monthlyPriceUSD : plan.yearlyPriceUSD;
       const priceKES = Math.round(priceUSD * USD_TO_KES);
 
-      const reference = `PT-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const reference = `PT-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
       if (typeof window !== 'undefined' && (window as any).PaystackPop) {
         const handler = (window as any).PaystackPop.setup({
@@ -222,7 +221,7 @@ export default function CheckoutPage() {
           },
           callback: async (response: any) => {
             try {
-              const verifyResponse = await apiClient.post('/api/v1/payments/verify', {
+              await apiClient.post('/api/v1/payments/verify', {
                 reference: response.reference,
                 plan_id: plan.id,
                 billing_cycle: billingCycle,
