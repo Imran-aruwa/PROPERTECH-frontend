@@ -238,3 +238,27 @@ body {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 }
+
+/* Fix for autofill styling that can make text invisible */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: #111827 !important;
+  caret-color: #111827 !important;
+}
+
+/* Ensure password field text is visible */
+input[type="password"],
+input[type="text"] {
+  color: #111827;
+  -webkit-text-fill-color: #111827;
+}
+
+/* Dark mode autofill fix for dark backgrounds */
+.bg-slate-800 input:-webkit-autofill,
+.bg-slate-900 input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #1e293b inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+}

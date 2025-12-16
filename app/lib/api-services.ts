@@ -429,6 +429,14 @@ export const paymentsApi = {
     return apiClient.get('/payments/history');
   },
 
+  async get(id: string | number) {
+    return apiClient.get(`/payments/${id}`);
+  },
+
+  async update(id: string | number, data: any) {
+    return apiClient.put(`/payments/${id}`, data);
+  },
+
   async subscribe(data: { plan_id: string; billing_cycle: string; email: string }) {
     return apiClient.post('/payments/subscribe', data);
   },

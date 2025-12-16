@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { paymentsApi } from '@/lib/api-services';
+import { paymentsApi } from '@/app/lib/api-services';
 import { paystackService } from '@/app/lib/paystack-services';
 import { useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';

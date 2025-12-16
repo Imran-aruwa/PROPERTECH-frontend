@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
 import { Building2, Mail, Lock, User, Phone, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
-import { authApi } from '@/lib/api-services';
+import { authApi } from '@/app/lib/api-services';
 
 interface RegisterFormData {
   email: string;
@@ -278,7 +278,8 @@ export default function RegisterForm() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={inputClasses('password')}
-                  placeholder="••••••••"
+                  placeholder="Enter your password"
+                  style={{ WebkitTextFillColor: '#111827', color: '#111827' }}
                 />
               </div>
               {touched.password && errors.password && (
@@ -297,7 +298,8 @@ export default function RegisterForm() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={inputClasses('confirmPassword')}
-                  placeholder="••••••••"
+                  placeholder="Confirm your password"
+                  style={{ WebkitTextFillColor: '#111827', color: '#111827' }}
                 />
               </div>
               {touched.confirmPassword && errors.confirmPassword && (

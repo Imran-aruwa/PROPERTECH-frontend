@@ -45,8 +45,8 @@ export default function LoginPage() {
     }
   };
 
-  const inputClasses = (fieldName: keyof LoginFormData) =>
-    `w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 ${
+  const inputClasses = (fieldName: keyof LoginFormData, hasButton = false) =>
+    `w-full pl-12 ${hasButton ? 'pr-16' : 'pr-4'} py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-400 ${
       touched[fieldName] && errors[fieldName]
         ? 'border-red-500'
         : 'border-gray-300'
@@ -105,9 +105,10 @@ export default function LoginPage() {
                   value={values.password}
                   onChange={(e) => handleChange('password', e.target.value)}
                   onBlur={() => handleBlur('password')}
-                  className={inputClasses('password')}
-                  placeholder="••••••••"
+                  className={inputClasses('password', true)}
+                  placeholder="Enter your password"
                   autoComplete="current-password"
+                  style={{ WebkitTextFillColor: '#111827', color: '#111827' }}
                 />
                 <button
                   type="button"

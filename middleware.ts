@@ -1,48 +1,18 @@
-// ============================================
-// FILE: middleware.ts (CREATE THIS FILE)
-// ============================================
-import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export default withAuth(
-  function middleware(req) {
-    const token = req.nextauth.token;
-    const path = req.nextUrl.pathname;
+export function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname;
 
-    // Check if user has active subscription for owner/agent routes
-    if (path.startsWith('/owner') || path.startsWith('/agent')) {
-      if (token?.role === 'OWNER' || token?.role === 'AGENT') {
-        // TODO: Check subscription status from database
-        // For now, allow access
-        return NextResponse.next();
-      }
-    }
+  // Get auth token from cookie or check localStorage via custom header
+  // Since we're using custom auth-context with localStorage,
+  // we'll let the client-side auth handle redirects
+  // The middleware will just pass through - client-side useRequireAuth handles protection
 
-    // Allow access to other portals based on role
-    if (path.startsWith('/caretaker') && token?.role !== 'CARETAKER') {
-      return NextResponse.redirect(new URL('/unauthorized', req.url));
-    }
-    
-    if (path.startsWith('/tenant') && token?.role !== 'TENANT') {
-      return NextResponse.redirect(new URL('/unauthorized', req.url));
-    }
-    
-    if (path.startsWith('/staff/security') && token?.role !== 'SECURITY') {
-      return NextResponse.redirect(new URL('/unauthorized', req.url));
-    }
-    
-    if (path.startsWith('/staff/gardener') && token?.role !== 'GARDENER') {
-      return NextResponse.redirect(new URL('/unauthorized', req.url));
-    }
-
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-  }
-);
+  // For static pages, allow them through
+  // Client-side auth context will handle redirects
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [
