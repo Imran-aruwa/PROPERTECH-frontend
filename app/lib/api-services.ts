@@ -289,15 +289,15 @@ interface RegisterData {
 
 export const authApi = {
   async login(data: LoginData) {
-    return apiClient.post('/api/v1/auth/login', data);
+    return apiClient.post('/auth/login', data);
   },
 
   async register(data: RegisterData) {
-    return apiClient.post('/api/v1/auth/register', data);
+    return apiClient.post('/auth/signup', data);
   },
 
   async getCurrentUser() {
-    return apiClient.get('/api/v1/auth/me');
+    return apiClient.get('/auth/me');
   },
 
   async logout() {
@@ -307,13 +307,13 @@ export const authApi = {
 };
 
 export const propertiesApi = {
-  async list() { return apiClient.get('/api/v1/properties'); },
-  async getAll() { return apiClient.get('/api/v1/properties'); },
-  async get(id: string) { return apiClient.get(`/api/v1/properties/${id}`); },
-  async create(data: any) { return apiClient.post('/api/v1/properties', data); },
-  async update(id: string, data: any) { return apiClient.patch(`/api/v1/properties/${id}`, data); },
-  async delete(id: string) { return apiClient.delete(`/api/v1/properties/${id}`); },
-  async remove(id: string) { return apiClient.delete(`/api/v1/properties/${id}`); },
+  async list() { return apiClient.get('/properties'); },
+  async getAll() { return apiClient.get('/properties'); },
+  async get(id: string) { return apiClient.get(`/properties/${id}`); },
+  async create(data: any) { return apiClient.post('/properties', data); },
+  async update(id: string, data: any) { return apiClient.put(`/properties/${id}`, data); },
+  async delete(id: string) { return apiClient.delete(`/properties/${id}`); },
+  async remove(id: string) { return apiClient.delete(`/properties/${id}`); },
 };
 
 /**
@@ -321,14 +321,14 @@ export const propertiesApi = {
  */
 export const unitsApi = {
   async list(propertyId?: string) {
-    if (propertyId) return apiClient.get(`/api/v1/properties/${propertyId}/units`);
-    return apiClient.get('/api/v1/units');
+    if (propertyId) return apiClient.get(`/properties/${propertyId}/units`);
+    return apiClient.get('/properties/units');
   },
-  async getAll() { return apiClient.get('/api/v1/units'); },
-  async create(propertyId: string, data: any) { 
-    return apiClient.post(`/api/v1/properties/${propertyId}/units`, data); 
+  async getAll() { return apiClient.get('/properties/units'); },
+  async create(propertyId: string, data: any) {
+    return apiClient.post(`/properties/${propertyId}/units`, data);
   },
-  async delete(id: string) { return apiClient.delete(`/api/v1/units/${id}`); },
+  async delete(id: string) { return apiClient.delete(`/properties/units/${id}`); },
 };
 
 
@@ -336,10 +336,10 @@ export const unitsApi = {
  * Tenants API
  */
 export const tenantsApi = {
-  async list() { return apiClient.get('/api/v1/tenants'); },
-  async getAll() { return apiClient.get('/api/v1/tenants'); },
-  async create(data: any) { return apiClient.post('/api/v1/tenants', data); },
-  async delete(id: string) { return apiClient.delete(`/api/v1/tenants/${id}`); },
+  async list() { return apiClient.get('/tenants'); },
+  async getAll() { return apiClient.get('/tenants'); },
+  async create(data: any) { return apiClient.post('/tenants', data); },
+  async delete(id: string) { return apiClient.delete(`/tenants/${id}`); },
 };
 
 
@@ -347,11 +347,11 @@ export const tenantsApi = {
  * Maintenance API
  */
 export const maintenanceApi = {
-  async list() { return apiClient.get('/api/v1/maintenance'); },
-  async getAll() { return apiClient.get('/api/v1/maintenance'); },
-  async create(data: any) { return apiClient.post('/api/v1/maintenance', data); },
-  async update(id: string, data: any) { return apiClient.patch(`/api/v1/maintenance/${id}`, data); },
-  async delete(id: string) { return apiClient.delete(`/api/v1/maintenance/${id}`); },
+  async list() { return apiClient.get('/caretaker/maintenance'); },
+  async getAll() { return apiClient.get('/caretaker/maintenance'); },
+  async create(data: any) { return apiClient.post('/caretaker/maintenance', data); },
+  async update(id: string, data: any) { return apiClient.put(`/caretaker/maintenance/${id}/status`, data); },
+  async delete(id: string) { return apiClient.delete(`/caretaker/maintenance/${id}`); },
 };
 
 
@@ -360,27 +360,25 @@ export const maintenanceApi = {
  */
 export const staffApi = {
   async list() {
-    return apiClient.get('/api/v1/staff');
+    return apiClient.get('/staff');
   },
   async getAll() {
-    // alias for list()
-    return apiClient.get('/api/v1/staff');
+    return apiClient.get('/staff');
   },
   async get(id: string) {
-    return apiClient.get(`/api/v1/staff/${id}`);
+    return apiClient.get(`/staff/${id}`);
   },
   async create(data: any) {
-    return apiClient.post('/api/v1/staff', data);
+    return apiClient.post('/staff', data);
   },
   async update(id: string, data: any) {
-    return apiClient.patch(`/api/v1/staff/${id}`, data);
+    return apiClient.put(`/staff/${id}`, data);
   },
   async delete(id: string) {
-    return apiClient.delete(`/api/v1/staff/${id}`);
+    return apiClient.delete(`/staff/${id}`);
   },
   async remove(id: string) {
-    // keep remove as an alias if you already use it
-    return apiClient.delete(`/api/v1/staff/${id}`);
+    return apiClient.delete(`/staff/${id}`);
   },
 };
 
@@ -389,22 +387,22 @@ export const staffApi = {
  */
 export const analyticsApi = {
   async dashboard() {
-    return apiClient.get('/api/v1/analytics/dashboard');
+    return apiClient.get('/owner/dashboard');
   },
   async getAll() {
-    // if you have a general analytics list endpoint, adjust this URL
-    return apiClient.get('/api/v1/analytics/dashboard');
+    return apiClient.get('/owner/dashboard');
   },
-  // New method to match the usage in owner dashboard
   async getDashboardStats(role: string) {
-    return apiClient.get(`/api/v1/analytics/dashboard?role=${role}`);
+    if (role === 'OWNER') return apiClient.get('/owner/dashboard');
+    if (role === 'AGENT') return apiClient.get('/agent/dashboard');
+    if (role === 'CARETAKER') return apiClient.get('/caretaker/dashboard');
+    return apiClient.get('/owner/dashboard');
   },
-  // add more granular helpers only if your backend has matching routes:
   async forOwner(ownerId: string) {
-    return apiClient.get(`/api/v1/analytics/owners/${ownerId}`);
+    return apiClient.get(`/owner/dashboard`);
   },
   async forAgent(agentId: string) {
-    return apiClient.get(`/api/v1/analytics/agents/${agentId}`);
+    return apiClient.get(`/agent/dashboard`);
   },
 };
 
@@ -413,7 +411,7 @@ export const analyticsApi = {
  */
 export const paymentsApi = {
   async initializePayment(amount: number, email: string, reference: string) {
-    return apiClient.post('/api/v1/payments/initialize', {
+    return apiClient.post('/payments/initiate', {
       amount,
       email,
       reference,
@@ -421,22 +419,26 @@ export const paymentsApi = {
   },
 
   async verifyPayment(reference: string, extra?: { plan_id?: string; billing_cycle?: string }) {
-    return apiClient.post('/api/v1/payments/verify', {
+    return apiClient.post('/payments/verify', {
       reference,
       ...(extra || {}),
     });
   },
 
   async getAll() {
-    return apiClient.get('/api/v1/payments');
+    return apiClient.get('/payments/history');
   },
 
-  async update(id: number | string, data: any) {
-    return apiClient.patch(`/api/v1/payments/${id}`, data);
+  async subscribe(data: { plan_id: string; billing_cycle: string; email: string }) {
+    return apiClient.post('/payments/subscribe', data);
   },
 
-  async get(id: number | string) {
-    return apiClient.get(`/api/v1/payments/${id}`);
+  async getSubscriptions() {
+    return apiClient.get('/payments/subscriptions');
+  },
+
+  async cancelSubscription(subscriptionId: string) {
+    return apiClient.post(`/payments/cancel-subscription/${subscriptionId}`, {});
   },
 };
 

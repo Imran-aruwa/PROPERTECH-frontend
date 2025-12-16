@@ -3,8 +3,8 @@
 // ============================================
 import { NextRequest, NextResponse } from 'next/server';
 
-// Backend FastAPI URL (update with your actual Railway URL)
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://your-propertech-backend.railway.app';
+// Backend FastAPI URL
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export async function POST(request: NextRequest) {
   try {

@@ -164,7 +164,7 @@ export default function RegisterForm() {
   };
 
   const inputClasses = (fieldName: keyof RegisterFormData) =>
-    `w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+    `w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 ${
       touched[fieldName] && errors[fieldName]
         ? 'border-red-500'
         : 'border-gray-300'
