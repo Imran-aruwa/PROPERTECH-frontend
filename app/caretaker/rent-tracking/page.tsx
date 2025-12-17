@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { DollarSign, TrendingUp, AlertCircle, Users } from 'lucide-react';
 import { StatCard } from '@/components/ui/StatCard';
 import { DataTable } from '@/components/ui/DataTable';
@@ -29,11 +29,7 @@ export default function CaretakerRentTracking() {
     collectionRate: 94.6,
   });
 
-  useEffect(() => {
-    fetchRentData();
-  }, []);
-
-  const fetchRentData = async () => {
+  const fetchRentData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await apiClient.get('/caretaker/rent-summary');
@@ -80,7 +76,11 @@ export default function CaretakerRentTracking() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchRentData();
+  }, [fetchRentData]);
 
   const formatCurrency = (value: number) => {
     return `KES ${value.toLocaleString()}`;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { DollarSign, TrendingUp, AlertCircle, Users } from 'lucide-react';
 import { StatCard } from '@/components/ui/StatCard';
 import { DataTable } from '@/components/ui/DataTable';
@@ -30,15 +30,11 @@ export default function GlobalRentTracking() {
     collectionRate: 0,
   });
 
-  useEffect(() => {
-    fetchRentData();
-  }, []);
-
-  const fetchRentData = async () => {
+  const fetchRentData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await apiClient.get('/owner/rent-summary');
-      
+
       if (response.data) {
         setProperties(response.data.properties || []);
         setSummary(response.data.summary || {
@@ -86,7 +82,11 @@ export default function GlobalRentTracking() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchRentData();
+  }, [fetchRentData]);
 
   const collectionTrend = [
     { name: 'Sep', rate: 93.2 },

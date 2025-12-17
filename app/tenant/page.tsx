@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { paymentsApi, maintenanceApi, tenantsApi } from '@/lib/api-services';
@@ -19,21 +19,10 @@ export default function TenantDashboard() {
   const [pendingPayments, setPendingPayments] = useState<Payment[]>([]);
   const authLoading = status === 'loading';
 
-  useEffect(() => {
-    if (!authLoading && (!session?.user || (session.user as any)?.role !== 'tenant')) {
-      router.push('/login');
-      return;
-    }
-
-    if (session?.user) {
-      fetchDashboardData();
-    }
-  }, [session?.user, authLoading, router]);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       const [payments, maintenance] = await Promise.all([
         paymentsApi.getAll(),
         maintenanceApi.getAll()
@@ -47,7 +36,18 @@ export default function TenantDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!authLoading && (!session?.user || (session.user as any)?.role !== 'tenant')) {
+      router.push('/login');
+      return;
+    }
+
+    if (session?.user) {
+      fetchDashboardData();
+    }
+  }, [session?.user, authLoading, router, fetchDashboardData]);
 
   if (authLoading || loading) {
     return (

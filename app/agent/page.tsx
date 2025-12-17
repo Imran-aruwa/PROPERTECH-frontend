@@ -3,7 +3,7 @@
 // ============================================
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { Building2, Users, DollarSign, TrendingUp, UserPlus, Eye, Calendar, Target } from 'lucide-react';
 import Link from 'next/link';
@@ -18,16 +18,10 @@ export default function AgentDashboard() {
   const [leads, setLeads] = useState<any[]>([]);
   const [viewings, setViewings] = useState<any[]>([]);
 
-  useEffect(() => {
-    if (session) {
-      fetchDashboardData();
-    }
-  }, [session]);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       // Fetch data from API
       const [propertiesRes, tenantsRes] = await Promise.all([
         fetch('/api/properties'),
@@ -37,17 +31,17 @@ export default function AgentDashboard() {
       const propertiesData = await propertiesRes.json();
       const tenantsData = await tenantsRes.json();
 
-      // ✅ FIXED: Handle API response format properly
+      // Handle API response format properly
       setProperties(Array.isArray(propertiesData) ? propertiesData : (propertiesData.data || []));
       setTenants(Array.isArray(tenantsData) ? tenantsData : (tenantsData.data || []));
-      
+
       // Mock leads and viewings
       setLeads([
         { id: 1, name: 'John Kamau', phone: '0712345678', property: 'Sunset Apartments', status: 'hot' },
         { id: 2, name: 'Mary Wanjiku', phone: '0723456789', property: 'Palm Gardens', status: 'warm' },
         { id: 3, name: 'Peter Ochieng', phone: '0734567890', property: 'Riverside View', status: 'cold' },
       ]);
-      
+
       setViewings([
         { id: 1, client: 'Sarah Muthoni', property: 'Sunset Apartments A101', date: 'Today, 2:00 PM' },
         { id: 2, client: 'David Kipchoge', property: 'Palm Gardens B202', date: 'Tomorrow, 10:00 AM' },
@@ -60,7 +54,13 @@ export default function AgentDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (session) {
+      fetchDashboardData();
+    }
+  }, [session, fetchDashboardData]);
 
   if (loading) {
     return (

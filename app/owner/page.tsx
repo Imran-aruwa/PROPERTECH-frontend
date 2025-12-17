@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { propertiesApi, analyticsApi } from '@/lib/api-services';
@@ -27,18 +27,7 @@ export default function OwnerDashboard() {
   const [error, setError] = useState<string | null>(null);
   const authLoading = status === 'loading';
 
-  useEffect(() => {
-    if (!authLoading && (!session?.user || (session.user as any)?.role !== 'owner')) {
-      router.push('/login');
-      return;
-    }
-
-    if (session?.user) {
-      fetchDashboardData();
-    }
-  }, [session?.user, authLoading, router]);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -77,7 +66,18 @@ export default function OwnerDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!authLoading && (!session?.user || (session.user as any)?.role !== 'owner')) {
+      router.push('/login');
+      return;
+    }
+
+    if (session?.user) {
+      fetchDashboardData();
+    }
+  }, [session?.user, authLoading, router, fetchDashboardData]);
 
   if (authLoading || loading) {
     return (

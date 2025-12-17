@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { TrendingUp, DollarSign, Users, Building2, PieChart as PieChartIcon, Download } from 'lucide-react';
 import { StatCard } from '@/components/ui/StatCard';
 import { ChartWrapper } from '@/components/ui/ChartWrapper';
@@ -15,11 +15,7 @@ export default function FinancialAnalytics() {
     collection: { rate: 95.2, trend: "up"  },
   });
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, []);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     try {
       setLoading(true);
       const response = await apiClient.get('/owner/analytics');
@@ -31,7 +27,11 @@ export default function FinancialAnalytics() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
 
   const revenueData = [
     { name: 'Jan', revenue: 1450000 },
