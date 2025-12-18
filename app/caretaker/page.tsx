@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { maintenanceApi, propertiesApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
@@ -16,10 +16,9 @@ import {
 import Link from 'next/link';
 
 export default function CaretakerDashboard() {
-  const { data: session } = useSession();
-  const { toasts, success, error: showError, removeToast } = useToast();
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('caretaker');
+  const { toasts, error: showError, removeToast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [authLoading, setAuthLoading] = useState(false);
   const [properties, setProperties] = useState<any[]>([]);
   const [maintenanceRequests, setMaintenanceRequests] = useState<any[]>([]);
   const [dailyTasks, setDailyTasks] = useState<any[]>([]);
@@ -68,10 +67,10 @@ export default function CaretakerDashboard() {
   }, [showError]);
 
   useEffect(() => {
-    if (session?.user) {
+    if (!authLoading && isAuthenticated) {
       fetchDashboardData();
     }
-  }, [session?.user, fetchDashboardData]);
+  }, [authLoading, isAuthenticated, fetchDashboardData]);
 
   if (authLoading || loading) {
     return (
@@ -133,7 +132,7 @@ export default function CaretakerDashboard() {
             <h1 className="text-3xl font-bold text-white mb-2">
               Welcome back,{' '}
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                {(session?.user as any)?.full_name || 'Caretaker'}
+                {user?.full_name || 'Caretaker'}
               </span>!
             </h1>
             <p className="text-blue-300">Property Caretaker Dashboard</p>

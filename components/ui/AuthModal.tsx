@@ -1,12 +1,12 @@
 // ============================================
-// FILE: components/ui/AuthModal.tsx (UPDATED WITH CORRECT REDIRECTS)
+// FILE: components/ui/AuthModal.tsx (UPDATED TO USE CUSTOM AUTH)
 // ============================================
 'use client';
 
 import React, { useState } from 'react';
 import { X, AlertTriangle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { useAuth } from '@/lib/auth-context';
 
 type Props = {
   show: boolean;
@@ -16,10 +16,11 @@ type Props = {
 
 export default function AuthModal({ show, mode, onClose }: Props) {
   const router = useRouter();
+  const { login, register } = useAuth();
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'OWNER' | 'AGENT'>('OWNER');
+  const [role, setRole] = useState<'owner' | 'tenant'>('owner');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,40 +30,13 @@ export default function AuthModal({ show, mode, onClose }: Props) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError('Invalid email or password');
-        return;
-      }
-
-      if (result?.ok) {
-        onClose();
-        
-        // Redirect based on user role
-        // Role comes from the database user record
-        // For now, we'll fetch it or assume from signup
-        const roleRedirects = {
-          OWNER: '/owner/dashboard',
-          AGENT: '/agent/dashboard',
-          CARETAKER: '/caretaker/dashboard',
-          TENANT: '/tenant/dashboard',
-          SECURITY: '/staff/security/dashboard',
-          GARDENER: '/staff/gardener/dashboard',
-        };
-        
-        // Default to owner for now (will be determined by session)
-        router.push('/owner/dashboard');
-        router.refresh();
-      }
+      await login(email, password);
+      onClose();
+      // login function handles redirect based on role
     } catch (err: any) {
-      setError(err?.message || 'Login failed');
+      setError(err?.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -72,45 +46,16 @@ export default function AuthModal({ show, mode, onClose }: Props) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     try {
-      // Call your API to create user
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          email, 
-          password, 
-          fullName,
-          role, // OWNER or AGENT only
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Signup failed');
-      }
-
-      // Auto login after signup
-      const signInResult = await signIn('credentials', {
+      await register({
         email,
         password,
-        redirect: false,
+        full_name: fullName,
+        role,
       });
-
-      if (signInResult?.ok) {
-        onClose();
-        
-        // Redirect based on role they signed up as
-        if (role === 'OWNER') {
-          router.push('/checkout'); // Owner goes to subscription page first
-        } else if (role === 'AGENT') {
-          router.push('/checkout'); // Agent goes to subscription page first
-        }
-        
-        router.refresh();
-      }
+      onClose();
+      // register function auto-logs in and handles redirect
     } catch (err: any) {
       setError(err?.message || 'Signup failed');
     } finally {
@@ -192,9 +137,9 @@ export default function AuthModal({ show, mode, onClose }: Props) {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => setRole('OWNER')}
+                  onClick={() => setRole('owner')}
                   className={`p-4 border-2 rounded-lg transition-all ${
-                    role === 'OWNER'
+                    role === 'owner'
                       ? 'border-blue-600 bg-blue-50 text-blue-700'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
@@ -204,25 +149,25 @@ export default function AuthModal({ show, mode, onClose }: Props) {
                     Manage properties & tenants
                   </div>
                 </button>
-                
+
                 <button
                   type="button"
-                  onClick={() => setRole('AGENT')}
+                  onClick={() => setRole('tenant')}
                   className={`p-4 border-2 rounded-lg transition-all ${
-                    role === 'AGENT'
+                    role === 'tenant'
                       ? 'border-blue-600 bg-blue-50 text-blue-700'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <div className="font-semibold">Agent</div>
+                  <div className="font-semibold">Tenant</div>
                   <div className="text-xs mt-1 text-gray-600">
-                    Manage client properties
+                    Pay rent & submit requests
                   </div>
                 </button>
               </div>
-              
+
               <p className="text-xs text-gray-500 mt-3">
-                ℹ️ Only Owners and Agents can subscribe. Other roles (Caretakers, Tenants, Staff) are invited by property owners.
+                Other roles (Caretakers, Staff, Agents) are invited by property owners.
               </p>
             </div>
 
@@ -280,7 +225,7 @@ export default function AuthModal({ show, mode, onClose }: Props) {
             </form>
 
             <p className="text-xs text-gray-500 mt-4 text-center">
-              By signing up, you agree to subscribe to a plan after account creation.
+              By signing up, you agree to our terms of service.
             </p>
           </>
         )}

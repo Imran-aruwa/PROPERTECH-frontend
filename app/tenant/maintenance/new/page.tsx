@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { maintenanceApi, tenantsApi } from '@/lib/api-services';
 import { useForm, useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
@@ -17,7 +17,7 @@ interface MaintenanceFormData {
 }
 
 export default function NewMaintenanceRequestPage() {
-  const { data: session } = useSession();
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('tenant');
   const router = useRouter();
   const { toasts, success, error: showError, removeToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
@@ -29,7 +29,7 @@ export default function NewMaintenanceRequestPage() {
       setLoadingTenant(true);
       const response = await tenantsApi.getAll();
       const tenants = response.data || response;
-      const currentTenant = tenants.find((t: any) => t.user_id === (session?.user as any)?.id);
+      const currentTenant = tenants.find((t: any) => t.user_id === user?.id);
       if (currentTenant) {
         setTenantInfo(currentTenant);
       } else {
@@ -40,11 +40,13 @@ export default function NewMaintenanceRequestPage() {
     } finally {
       setLoadingTenant(false);
     }
-  }, [session?.user, showError]);
+  }, [user, showError]);
 
   useEffect(() => {
-    fetchTenantInfo();
-  }, [fetchTenantInfo]);
+    if (!authLoading && isAuthenticated) {
+      fetchTenantInfo();
+    }
+  }, [authLoading, isAuthenticated, fetchTenantInfo]);
 
   const validateForm = (values: MaintenanceFormData) => {
     const errors: Partial<Record<keyof MaintenanceFormData, string>> = {};

@@ -1,16 +1,16 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { staffApi, maintenanceApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
-import { LoadingSpinner, CardSkeleton } from '@/components/ui/LoadingSpinner';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
 import { CheckSquare, CheckCircle, Calendar, Wrench, Clock, TrendingUp, LogIn } from 'lucide-react';
 import Link from 'next/link';
 
 export default function StaffDashboard() {
-  const { data: session, status } = useSession();
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('staff');
   const { toasts, success, error: showError, removeToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [staffInfo, setStaffInfo] = useState<any>(null);
@@ -18,7 +18,6 @@ export default function StaffDashboard() {
   const [attendance, setAttendance] = useState<any[]>([]);
   const [hasCheckedInToday, setHasCheckedInToday] = useState(false);
   const [checkingIn, setCheckingIn] = useState(false);
-  const authLoading = status === 'loading';
 
   const fetchDashboardData = useCallback(async () => {
     try {
@@ -32,7 +31,7 @@ export default function StaffDashboard() {
       const staffData = Array.isArray(staffDataResponse) ? staffDataResponse : staffDataResponse.data;
       const maintenanceData = Array.isArray(maintenanceDataResponse) ? maintenanceDataResponse : maintenanceDataResponse.data;
 
-      const currentStaff = staffData.find((s: any) => s.user_id === (session?.user as any)?.id);
+      const currentStaff = staffData.find((s: any) => s.user_id === user?.id);
       if (currentStaff) {
         setStaffInfo(currentStaff);
 
@@ -57,13 +56,13 @@ export default function StaffDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [session?.user]);
+  }, [user]);
 
   useEffect(() => {
-    if (session?.user) {
+    if (!authLoading && isAuthenticated) {
       fetchDashboardData();
     }
-  }, [session?.user, fetchDashboardData]);
+  }, [authLoading, isAuthenticated, fetchDashboardData]);
 
   const handleCheckIn = async () => {
     if (!staffInfo) return;
@@ -153,7 +152,7 @@ export default function StaffDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Welcome back, {(session?.user as any)?.full_name || 'Staff Member'}!
+                Welcome back, {user?.full_name || 'Staff Member'}!
               </h1>
               <p className="text-gray-600 mt-1">
                 {staffInfo.position} • {staffInfo.department}

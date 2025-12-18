@@ -1,19 +1,17 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { tenantsApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
-import { LoadingSpinner, TableSkeleton } from '@/components/ui/LoadingSpinner';
+import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
 import { Users, Plus, Eye, Phone, Mail, Calendar, Home, Download } from 'lucide-react';
 import Link from 'next/link';
 import { Tenant } from '@/app/lib/types';
 
 export default function OwnerTenantsPage() {
-  const { data: session } = useSession();
-  const router = useRouter();
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('owner');
   const { toasts, success, error: showError, removeToast } = useToast();
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,10 +30,10 @@ export default function OwnerTenantsPage() {
   }, [showError]);
 
   useEffect(() => {
-    if (session?.user && (session.user as any)?.role === 'owner') {
+    if (!authLoading && isAuthenticated) {
       fetchTenants();
     }
-  }, [session?.user, fetchTenants]);
+  }, [authLoading, isAuthenticated, fetchTenants]);
 
   const filteredTenants = tenants.filter(tenant => {
     const searchLower = searchTerm.toLowerCase();
@@ -59,7 +57,7 @@ export default function OwnerTenantsPage() {
     return new Date(leaseEnd) < new Date();
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="max-w-7xl mx-auto">

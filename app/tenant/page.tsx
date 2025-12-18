@@ -1,23 +1,19 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { paymentsApi, maintenanceApi, tenantsApi } from '@/lib/api-services';
-import { LoadingSpinner, CardSkeleton } from '@/components/ui/LoadingSpinner';
+import { useRequireAuth } from '@/lib/auth-context';
+import { paymentsApi, maintenanceApi } from '@/lib/api-services';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Home, DollarSign, Wrench, Calendar, AlertCircle, Plus, CreditCard, Droplet, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { Payment, MaintenanceRequest } from '@/app/lib/types';
 
 export default function TenantDashboard() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('tenant');
   const [loading, setLoading] = useState(true);
-  const [tenantInfo, setTenantInfo] = useState<any>(null);
   const [recentPayments, setRecentPayments] = useState<Payment[]>([]);
   const [maintenanceRequests, setMaintenanceRequests] = useState<MaintenanceRequest[]>([]);
   const [pendingPayments, setPendingPayments] = useState<Payment[]>([]);
-  const authLoading = status === 'loading';
 
   const fetchDashboardData = useCallback(async () => {
     try {
@@ -39,15 +35,10 @@ export default function TenantDashboard() {
   }, []);
 
   useEffect(() => {
-    if (!authLoading && (!session?.user || (session.user as any)?.role !== 'tenant')) {
-      router.push('/login');
-      return;
-    }
-
-    if (session?.user) {
+    if (!authLoading && isAuthenticated) {
       fetchDashboardData();
     }
-  }, [session?.user, authLoading, router, fetchDashboardData]);
+  }, [authLoading, isAuthenticated, fetchDashboardData]);
 
   if (authLoading || loading) {
     return (
@@ -112,7 +103,7 @@ export default function TenantDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              Welcome back, {(session?.user as any)?.full_name || 'Tenant'}!
+              Welcome back, {user?.full_name || 'Tenant'}!
             </h1>
             <p className="text-gray-600 mt-1">Manage your tenancy and payments</p>
           </div>

@@ -70,12 +70,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     try {
       const response = await authApi.login({ email, password });
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.error || 'Login failed');
       }
 
-      const { access_token, user: userData } = response.data;
+      // Backend returns user data at root level, not nested under 'user'
+      const { access_token, user_id, email: userEmail, full_name, role: userRole } = response.data;
+      
+      // Construct user object from response
+      const userData = {
+        id: user_id,
+        email: userEmail,
+        full_name: full_name,
+        phone: null,
+        role: userRole.toLowerCase(),
+        is_active: true,
+        created_at: new Date().toISOString()
+      };
 
       // Save to localStorage
       localStorage.setItem('auth_token', access_token);
@@ -96,7 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         staff: '/staff',
         admin: '/admin'
       };
-      
+
       router.push(roleRedirects[userData.role] || '/');
     } catch (error: any) {
       console.error('Login failed:', error);
@@ -107,30 +119,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (data: RegisterData) => {
     try {
       const response = await authApi.register(data);
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.error || 'Registration failed');
       }
 
-      const { access_token, user: userData } = response.data;
-
-      // Save to localStorage
-      localStorage.setItem('auth_token', access_token);
-      localStorage.setItem('auth_user', JSON.stringify(userData));
-      localStorage.setItem('user_role', userData.role);
-
-      // Update state
-      setToken(access_token);
-      setUser(userData);
-      setRole(userData.role);
-
-      // Redirect based on role
-      const roleRedirects: Record<string, string> = {
-        owner: '/owner',
-        tenant: '/tenant'
-      };
+      // Backend returns user data at root level
+      const { id, email: userEmail, full_name, role: userRole } = response.data;
       
-      router.push(roleRedirects[userData.role] || '/');
+      // Construct user object
+      const userData = {
+        id: id,
+        email: userEmail,
+        full_name: full_name,
+        phone: data.phone || null,
+        role: userRole.toLowerCase(),
+        is_active: true,
+        created_at: new Date().toISOString()
+      };
+
+      // Auto-login after registration
+      await login(data.email, data.password);
     } catch (error: any) {
       console.error('Registration failed:', error);
       throw new Error(error.message || 'Registration failed. Please try again.');
@@ -155,9 +164,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshUser = async () => {
     try {
       if (!token) return;
-      
+
       const response = await authApi.getCurrentUser();
-      
+
       if (response.success && response.data) {
         const userData = response.data;
         localStorage.setItem('auth_user', JSON.stringify(userData));

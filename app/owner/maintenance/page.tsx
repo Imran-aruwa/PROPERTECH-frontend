@@ -1,17 +1,17 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { maintenanceApi, staffApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
-import { LoadingSpinner, TableSkeleton } from '@/components/ui/LoadingSpinner';
+import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
 import { Modal } from '@/components/ui/Modal';
-import { Wrench, Filter, Eye, UserPlus, CheckCircle } from 'lucide-react';
+import { Wrench, Filter, Eye, UserPlus } from 'lucide-react';
 import { MaintenanceRequest, Staff } from '@/app/lib/types';
 
 export default function OwnerMaintenancePage() {
-  const { data: session } = useSession();
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('owner');
   const { toasts, success, error: showError, removeToast } = useToast();
   const [requests, setRequests] = useState<MaintenanceRequest[]>([]);
   const [staff, setStaff] = useState<Staff[]>([]);
@@ -41,10 +41,10 @@ export default function OwnerMaintenancePage() {
   }, [showError]);
 
   useEffect(() => {
-    if (session?.user) {
+    if (!authLoading && isAuthenticated) {
       fetchData();
     }
-  }, [session?.user, fetchData]);
+  }, [authLoading, isAuthenticated, fetchData]);
 
   const handleAssignStaff = async () => {
     if (!assignModal.requestId || !selectedStaff) return;
@@ -91,7 +91,7 @@ export default function OwnerMaintenancePage() {
     urgent: 'bg-red-100 text-red-800'
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="max-w-7xl mx-auto">

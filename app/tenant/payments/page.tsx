@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { paymentsApi } from '@/app/lib/api-services';
 import { paystackService } from '@/app/lib/paystack-services';
 import { useToast } from '@/app/lib/hooks';
@@ -11,7 +11,7 @@ import { DollarSign, CreditCard, Calendar, Filter, Download, Loader2 } from 'luc
 import { Payment } from '@/app/lib/types';
 
 export default function TenantPaymentsPage() {
-  const { data: session } = useSession();
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('tenant');
   const { toasts, success, error: showError, removeToast } = useToast();
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ export default function TenantPaymentsPage() {
     payment: null
   });
   const [processingPayment, setProcessingPayment] = useState(false);
-  const [email, setEmail] = useState((session?.user as any)?.email || '');
+  const [email, setEmail] = useState('');
 
   const fetchPayments = useCallback(async () => {
     try {
@@ -36,11 +36,11 @@ export default function TenantPaymentsPage() {
   }, [showError]);
 
   useEffect(() => {
-    if (session?.user) {
-      setEmail((session.user as any)?.email || '');
+    if (!authLoading && isAuthenticated && user) {
+      setEmail(user.email || '');
       fetchPayments();
     }
-  }, [session?.user, fetchPayments]);
+  }, [authLoading, isAuthenticated, user, fetchPayments]);
 
   const handlePaystackPayment = async () => {
     if (!paymentModal.payment) return;
@@ -75,8 +75,8 @@ export default function TenantPaymentsPage() {
         metadata: {
           payment_id: paymentModal.payment.id,
           payment_type: paymentModal.payment.payment_type,
-          tenant_id: (session?.user as any)?.id,
-          tenant_name: (session?.user as any)?.full_name
+          tenant_id: user?.id,
+          tenant_name: user?.full_name
         },
         onSuccess: async (response) => {
           try {
@@ -127,7 +127,7 @@ export default function TenantPaymentsPage() {
     other: 'bg-gray-500/20 text-gray-300'
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center animate-fade-in-up">

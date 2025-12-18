@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { propertiesApi } from '@/lib/api-services';
 import { useForm, useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
@@ -21,7 +21,7 @@ interface PropertyFormData {
 }
 
 export default function NewPropertyPage() {
-  const { data: session } = useSession();
+  const { isLoading: authLoading } = useRequireAuth('owner');
   const router = useRouter();
   const { toasts, success, error: showError, removeToast } = useToast();
   const [submitting, setSubmitting] = useState(false);

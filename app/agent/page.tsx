@@ -4,13 +4,12 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { Building2, Users, DollarSign, TrendingUp, UserPlus, Eye, Calendar, Target } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AgentDashboard() {
-  const { data: session } = useSession();
-  const user = session?.user as any;
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('agent');
   
   const [loading, setLoading] = useState(true);
   const [properties, setProperties] = useState<any[]>([]);
@@ -57,12 +56,12 @@ export default function AgentDashboard() {
   }, []);
 
   useEffect(() => {
-    if (session) {
+    if (!authLoading && isAuthenticated) {
       fetchDashboardData();
     }
-  }, [session, fetchDashboardData]);
+  }, [authLoading, isAuthenticated, fetchDashboardData]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center animate-fade-in-up">
@@ -124,7 +123,7 @@ export default function AgentDashboard() {
           <div className="flex items-center justify-between animate-fade-in-up">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                Welcome back, <span className="text-gradient">{user?.name || 'Agent'}</span>!
+                Welcome back, <span className="text-gradient">{user?.full_name || 'Agent'}</span>!
               </h1>
               <p className="text-blue-300">Property Agent Dashboard</p>
             </div>

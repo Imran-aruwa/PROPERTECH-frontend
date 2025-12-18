@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useRequireAuth } from '@/lib/auth-context';
 import { propertiesApi, analyticsApi } from '@/lib/api-services';
 import { LoadingSpinner, CardSkeleton } from '@/components/ui/LoadingSpinner';
 import { Building2, Home, Users, DollarSign, Wrench, TrendingUp, AlertCircle, Plus } from 'lucide-react';
@@ -19,13 +18,11 @@ interface DashboardStats {
 }
 
 export default function OwnerDashboard() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('owner');
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const authLoading = status === 'loading';
 
   const fetchDashboardData = useCallback(async () => {
     try {
@@ -69,15 +66,11 @@ export default function OwnerDashboard() {
   }, []);
 
   useEffect(() => {
-    if (!authLoading && (!session?.user || (session.user as any)?.role !== 'owner')) {
-      router.push('/login');
-      return;
-    }
-
-    if (session?.user) {
+    // useRequireAuth handles redirect if not authenticated or wrong role
+    if (!authLoading && isAuthenticated) {
       fetchDashboardData();
     }
-  }, [session?.user, authLoading, router, fetchDashboardData]);
+  }, [authLoading, isAuthenticated, fetchDashboardData]);
 
   if (authLoading || loading) {
     return (
@@ -158,7 +151,7 @@ export default function OwnerDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Welcome back, {(session?.user as any)?.full_name || 'Owner'}!
+                Welcome back, {user?.full_name || 'Owner'}!
               </h1>
               <p className="text-gray-600 mt-1">Here&apos;s what&apos;s happening with your properties today</p>
             </div>
