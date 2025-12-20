@@ -30,7 +30,7 @@ export default function RegisterForm() {
     confirmPassword: '',
     full_name: '',
     phone: '',
-    role: 'owner',       // default role
+    role: 'owner',
     plan: 'freemium',
   });
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>({});
@@ -48,7 +48,8 @@ export default function RegisterForm() {
         caretaker: '/caretaker',
         admin: '/admin',
       };
-      router.push(roleRedirects[role] || '/');
+      const redirectPath = roleRedirects[role.toLowerCase()] || '/';
+      router.push(redirectPath);
     }
   }, [isAuthenticated, role, router]);
 
@@ -135,24 +136,12 @@ export default function RegisterForm() {
       const response = await authApi.register(registerData);
 
       if (response.success) {
-        setToastMessage({ type: 'success', message: 'Account created successfully! Redirecting...' });
+        setToastMessage({ type: 'success', message: 'Account created successfully! Redirecting to login...' });
 
-        const loginResponse = await authApi.login({
-          email: values.email,
-          password: values.password,
-        });
-
-        if (loginResponse.success) {
-          const roleRedirects: Record<string, string> = {
-            owner: '/owner',
-            agent: '/agent',
-            tenant: '/tenant',
-            staff: '/staff',
-            caretaker: '/caretaker',
-            admin: '/admin',
-          };
-          router.push(roleRedirects[values.role] || '/');
-        }
+        // Redirect to login page after successful signup
+        setTimeout(() => {
+          router.push('/login');
+        }, 1500);
       } else {
         setToastMessage({ type: 'error', message: response.error || 'Registration failed. Please try again.' });
       }
