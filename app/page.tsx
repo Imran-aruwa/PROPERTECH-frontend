@@ -112,7 +112,11 @@ export default function Page() {
         agent: '/agent',
         admin: '/admin',
       }
-      router.push(roleRedirects[role] || '/')
+      const targetPath = roleRedirects[role.toLowerCase()];
+      if (targetPath) {
+        router.push(targetPath);
+      }
+      // If role is unknown, stay on homepage (don't redirect to avoid loop)
     }
   }, [isAuthenticated, role, user, router])
 

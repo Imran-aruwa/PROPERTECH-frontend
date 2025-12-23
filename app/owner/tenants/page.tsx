@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRequireAuth } from '@/lib/auth-context';
 import { tenantsApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
@@ -17,23 +17,25 @@ export default function OwnerTenantsPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const fetchTenants = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await tenantsApi.getAll();
-      setTenants(response.data || []);
-    } catch (err: any) {
-      showError(err.message || 'Failed to load tenants');
-    } finally {
-      setLoading(false);
-    }
-  }, [showError]);
-
   useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      fetchTenants();
-    }
-  }, [authLoading, isAuthenticated, fetchTenants]);
+    if (authLoading || !isAuthenticated) return;
+
+    const fetchTenants = async () => {
+      try {
+        setLoading(true);
+        const response = await tenantsApi.getAll();
+        const tenantsArray = Array.isArray(response.data) ? response.data : [];
+        setTenants(tenantsArray);
+      } catch (err: any) {
+        console.error('Failed to load tenants:', err);
+        setTenants([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTenants();
+  }, [authLoading, isAuthenticated]);
 
   const filteredTenants = tenants.filter(tenant => {
     const searchLower = searchTerm.toLowerCase();

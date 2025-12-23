@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { DollarSign, TrendingUp, AlertCircle, Users } from 'lucide-react';
 import { StatCard } from '@/components/ui/StatCard';
 import { DataTable } from '@/components/ui/DataTable';
@@ -30,63 +30,64 @@ export default function GlobalRentTracking() {
     collectionRate: 0,
   });
 
-  const fetchRentData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await apiClient.get('/owner/rent-summary');
+  useEffect(() => {
+    const fetchRentData = async () => {
+      try {
+        setLoading(true);
+        const response = await apiClient.get('/owner/rent-summary/');
 
-      if (response.data) {
-        setProperties(response.data.properties || []);
-        setSummary(response.data.summary || {
+        if (response.data) {
+          const propsArray = Array.isArray(response.data.properties) ? response.data.properties : [];
+          setProperties(propsArray);
+          setSummary(response.data.summary || {
+            totalExpected: 1450000,
+            totalCollected: 1380250,
+            totalPending: 35700,
+            totalOverdue: 42500,
+            collectionRate: 95.2,
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching rent data:', error);
+        // Mock data for demo
+        setSummary({
           totalExpected: 1450000,
           totalCollected: 1380250,
           totalPending: 35700,
           totalOverdue: 42500,
           collectionRate: 95.2,
         });
-      }
-    } catch (error) {
-      console.error('Error fetching rent data:', error);
-      // Mock data for demo
-      setSummary({
-        totalExpected: 1450000,
-        totalCollected: 1380250,
-        totalPending: 35700,
-        totalOverdue: 42500,
-        collectionRate: 95.2,
-      });
-      setProperties([
-        {
-          id: 1,
-          name: 'Sunrise Apartments',
-          expected_rent: 380000,
-          collected_rent: 360000,
-          collection_rate: 94.7,
-          outstanding: 20000,
-          overdue: 8000,
-          occupancy: 92,
-          caretaker: 'John Kamau',
-        },
-        {
-          id: 2,
-          name: 'Kilimani Heights',
-          expected_rent: 425500,
-          collected_rent: 415000,
-          collection_rate: 97.5,
-          outstanding: 10500,
-          overdue: 5000,
-          occupancy: 95,
-          caretaker: 'Mary Wanjiku',
-        },
+        setProperties([
+          {
+            id: 1,
+            name: 'Sunrise Apartments',
+            expected_rent: 380000,
+            collected_rent: 360000,
+            collection_rate: 94.7,
+            outstanding: 20000,
+            overdue: 8000,
+            occupancy: 92,
+            caretaker: 'John Kamau',
+          },
+          {
+            id: 2,
+            name: 'Kilimani Heights',
+            expected_rent: 425500,
+            collected_rent: 415000,
+            collection_rate: 97.5,
+            outstanding: 10500,
+            overdue: 5000,
+            occupancy: 95,
+            caretaker: 'Mary Wanjiku',
+          },
       ]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
-  useEffect(() => {
     fetchRentData();
-  }, [fetchRentData]);
+  }, []);
 
   const collectionTrend = [
     { name: 'Sep', rate: 93.2 },

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
 import { propertiesApi } from '@/lib/api-services';
@@ -24,41 +24,6 @@ export default function PropertiesPage() {
   });
   const [deleting, setDeleting] = useState(false);
 
-  const fetchProperties = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await propertiesApi.getAll();
-      
-      // Handle unauthorized/authentication errors
-      if (!response.success) {
-        const errorMsg = response.error || '';
-        
-        // Check for authentication errors
-        if (errorMsg.includes('Unauthorized') || errorMsg.includes('401') || errorMsg.includes('token')) {
-          console.error('Authentication error - redirecting to login');
-          showError('Please log in to view properties');
-          router.push('/login');
-          return; // STOP - don't continue or retry
-        }
-        
-        // Other errors - show message but don't retry
-        showError(errorMsg || 'Failed to load properties');
-        setProperties([]); // Set empty array to stop loading state
-        return; // STOP - don't retry
-      }
-      
-      // Success - set the properties
-      setProperties(response.data || []);
-    } catch (err: any) {
-      console.error('Error fetching properties:', err);
-      showError(err.message || 'Failed to load properties');
-      setProperties([]); // Set empty array to stop loading state
-      // Don't throw - just stop here
-    } finally {
-      setLoading(false);
-    }
-  }, [showError, router]);
-
   useEffect(() => {
     // Wait for auth to load first
     if (authLoading) {
@@ -77,11 +42,37 @@ export default function PropertiesPage() {
       return;
     }
 
-    // Only fetch if authenticated and owner
-    if (isAuthenticated && role === 'owner') {
-      fetchProperties();
-    }
-  }, [isAuthenticated, role, authLoading, fetchProperties, router]);
+    // Fetch properties
+    const fetchProperties = async () => {
+      try {
+        setLoading(true);
+        const response = await propertiesApi.getAll();
+
+        if (!response.success) {
+          const errorMsg = response.error || '';
+          if (errorMsg.includes('Unauthorized') || errorMsg.includes('401') || errorMsg.includes('token') || errorMsg.includes('credentials')) {
+            console.error('Authentication error - redirecting to login');
+            setProperties([]);
+            router.push('/login');
+            return;
+          }
+          console.error('Properties error:', errorMsg);
+          setProperties([]);
+          return;
+        }
+
+        const propsArray = Array.isArray(response.data) ? response.data : [];
+        setProperties(propsArray);
+      } catch (err: any) {
+        console.error('Error fetching properties:', err);
+        setProperties([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, [authLoading, isAuthenticated, role, router]);
 
   const handleDelete = async () => {
     if (!deleteModal.propertyId) return;
@@ -144,7 +135,7 @@ export default function PropertiesPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {properties.length === 0 ? (
+        {!Array.isArray(properties) || properties.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
             <Building2 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No properties yet</h3>

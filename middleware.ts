@@ -21,5 +21,6 @@ export const config = {
     '/caretaker/:path*',
     '/tenant/:path*',
     '/staff/:path*',
+    '/admin/:path*',
   ],
 };

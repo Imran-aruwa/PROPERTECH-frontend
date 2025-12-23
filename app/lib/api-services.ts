@@ -25,7 +25,7 @@ export function getAuthToken(): string | null {
     if (typeof window === 'undefined') {
       return null;
     }
-    return localStorage.getItem('token') || localStorage.getItem('access_token');
+    return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('access_token');
   } catch (error) {
     console.error('Error getting auth token:', error);
     return null;
@@ -38,6 +38,7 @@ export function getAuthToken(): string | null {
 export function saveAuthToken(token: string): void {
   try {
     if (typeof window !== 'undefined') {
+      localStorage.setItem('auth_token', token);
       localStorage.setItem('token', token);
       localStorage.setItem('access_token', token);
     }
@@ -52,6 +53,7 @@ export function saveAuthToken(token: string): void {
 export function removeAuthToken(): void {
   try {
     if (typeof window !== 'undefined') {
+      localStorage.removeItem('auth_token');
       localStorage.removeItem('token');
       localStorage.removeItem('access_token');
       localStorage.removeItem('user_id');
@@ -288,15 +290,15 @@ interface RegisterData {
 
 export const authApi = {
   async login(data: LoginData) {
-    return apiClient.post('/auth/login', data);
+    return apiClient.post('/auth/login/', data);
   },
 
   async register(data: RegisterData) {
-    return apiClient.post('/auth/signup', data);
+    return apiClient.post('/auth/signup/', data);
   },
 
   async getCurrentUser() {
-    return apiClient.get('/auth/me');
+    return apiClient.get('/auth/me/');
   },
 
   async logout() {
@@ -305,14 +307,31 @@ export const authApi = {
   },
 };
 
+/**
+ * Properties API
+ */
 export const propertiesApi = {
-  async list() { return apiClient.get('/properties'); },
-  async getAll() { return apiClient.get('/properties'); },
-  async get(id: string) { return apiClient.get(`/properties/${id}`); },
-  async create(data: any) { return apiClient.post('/properties', data); },
-  async update(id: string, data: any) { return apiClient.put(`/properties/${id}`, data); },
-  async delete(id: string) { return apiClient.delete(`/properties/${id}`); },
-  async remove(id: string) { return apiClient.delete(`/properties/${id}`); },
+  async list() { 
+    return apiClient.get('/properties/'); 
+  },
+  async getAll() { 
+    return apiClient.get('/properties/'); 
+  },
+  async get(id: string) { 
+    return apiClient.get(`/properties/${id}/`); 
+  },
+  async create(data: any) { 
+    return apiClient.post('/properties/', data); 
+  },
+  async update(id: string, data: any) { 
+    return apiClient.put(`/properties/${id}/`, data); 
+  },
+  async delete(id: string) { 
+    return apiClient.delete(`/properties/${id}/`); 
+  },
+  async remove(id: string) { 
+    return apiClient.delete(`/properties/${id}/`); 
+  },
 };
 
 /**
@@ -320,64 +339,83 @@ export const propertiesApi = {
  */
 export const unitsApi = {
   async list(propertyId?: string) {
-    if (propertyId) return apiClient.get(`/properties/${propertyId}/units`);
-    return apiClient.get('/properties/units');
+    if (propertyId) return apiClient.get(`/properties/${propertyId}/units/`);
+    return apiClient.get('/properties/units/');
   },
-  async getAll() { return apiClient.get('/properties/units'); },
+  async getAll() { 
+    return apiClient.get('/properties/units/'); 
+  },
   async create(propertyId: string, data: any) {
-    return apiClient.post(`/properties/${propertyId}/units`, data);
+    return apiClient.post(`/properties/${propertyId}/units/`, data);
   },
-  async delete(id: string) { return apiClient.delete(`/properties/units/${id}`); },
+  async delete(id: string) { 
+    return apiClient.delete(`/properties/units/${id}/`); 
+  },
 };
-
 
 /**
  * Tenants API
  */
 export const tenantsApi = {
-  async list() { return apiClient.get('/tenants'); },
-  async getAll() { return apiClient.get('/tenants'); },
-  async create(data: any) { return apiClient.post('/tenants', data); },
-  async delete(id: string) { return apiClient.delete(`/tenants/${id}`); },
+  async list() { 
+    return apiClient.get('/tenants/'); 
+  },
+  async getAll() { 
+    return apiClient.get('/tenants/'); 
+  },
+  async create(data: any) { 
+    return apiClient.post('/tenants/', data); 
+  },
+  async delete(id: string) { 
+    return apiClient.delete(`/tenants/${id}/`); 
+  },
 };
-
 
 /**
  * Maintenance API
  */
 export const maintenanceApi = {
-  async list() { return apiClient.get('/caretaker/maintenance'); },
-  async getAll() { return apiClient.get('/caretaker/maintenance'); },
-  async create(data: any) { return apiClient.post('/caretaker/maintenance', data); },
-  async update(id: string, data: any) { return apiClient.put(`/caretaker/maintenance/${id}/status`, data); },
-  async delete(id: string) { return apiClient.delete(`/caretaker/maintenance/${id}`); },
+  async list() { 
+    return apiClient.get('/caretaker/maintenance/'); 
+  },
+  async getAll() { 
+    return apiClient.get('/caretaker/maintenance/'); 
+  },
+  async create(data: any) { 
+    return apiClient.post('/caretaker/maintenance/', data); 
+  },
+  async update(id: string, data: any) { 
+    return apiClient.put(`/caretaker/maintenance/${id}/status/`, data); 
+  },
+  async delete(id: string) { 
+    return apiClient.delete(`/caretaker/maintenance/${id}/`); 
+  },
 };
-
 
 /**
  * Staff API
  */
 export const staffApi = {
   async list() {
-    return apiClient.get('/staff');
+    return apiClient.get('/staff/');
   },
   async getAll() {
-    return apiClient.get('/staff');
+    return apiClient.get('/staff/');
   },
   async get(id: string) {
-    return apiClient.get(`/staff/${id}`);
+    return apiClient.get(`/staff/${id}/`);
   },
   async create(data: any) {
-    return apiClient.post('/staff', data);
+    return apiClient.post('/staff/', data);
   },
   async update(id: string, data: any) {
-    return apiClient.put(`/staff/${id}`, data);
+    return apiClient.put(`/staff/${id}/`, data);
   },
   async delete(id: string) {
-    return apiClient.delete(`/staff/${id}`);
+    return apiClient.delete(`/staff/${id}/`);
   },
   async remove(id: string) {
-    return apiClient.delete(`/staff/${id}`);
+    return apiClient.delete(`/staff/${id}/`);
   },
 };
 
@@ -386,22 +424,23 @@ export const staffApi = {
  */
 export const analyticsApi = {
   async dashboard() {
-    return apiClient.get('/owner/dashboard');
+    return apiClient.get('/owner/dashboard/');
   },
   async getAll() {
-    return apiClient.get('/owner/dashboard');
+    return apiClient.get('/owner/dashboard/');
   },
   async getDashboardStats(role: string) {
-    if (role === 'OWNER') return apiClient.get('/owner/dashboard');
-    if (role === 'AGENT') return apiClient.get('/agent/dashboard');
-    if (role === 'CARETAKER') return apiClient.get('/caretaker/dashboard');
-    return apiClient.get('/owner/dashboard');
+    const normalizedRole = (role || '').toLowerCase();
+    if (normalizedRole === 'owner') return apiClient.get('/owner/dashboard/');
+    if (normalizedRole === 'agent') return apiClient.get('/agent/dashboard/');
+    if (normalizedRole === 'caretaker') return apiClient.get('/caretaker/dashboard/');
+    return apiClient.get('/owner/dashboard/');
   },
   async forOwner(ownerId: string) {
-    return apiClient.get(`/owner/dashboard`);
+    return apiClient.get(`/owner/dashboard/`);
   },
   async forAgent(agentId: string) {
-    return apiClient.get(`/agent/dashboard`);
+    return apiClient.get(`/agent/dashboard/`);
   },
 };
 
@@ -410,7 +449,7 @@ export const analyticsApi = {
  */
 export const paymentsApi = {
   async initializePayment(amount: number, email: string, reference: string) {
-    return apiClient.post('/payments/initiate', {
+    return apiClient.post('/payments/initiate/', {
       amount,
       email,
       reference,
@@ -418,34 +457,34 @@ export const paymentsApi = {
   },
 
   async verifyPayment(reference: string, extra?: { plan_id?: string; billing_cycle?: string }) {
-    return apiClient.post('/payments/verify', {
+    return apiClient.post('/payments/verify/', {
       reference,
       ...(extra || {}),
     });
   },
 
   async getAll() {
-    return apiClient.get('/payments/history');
+    return apiClient.get('/payments/history/');
   },
 
   async get(id: string | number) {
-    return apiClient.get(`/payments/${id}`);
+    return apiClient.get(`/payments/${id}/`);
   },
 
   async update(id: string | number, data: any) {
-    return apiClient.put(`/payments/${id}`, data);
+    return apiClient.put(`/payments/${id}/`, data);
   },
 
   async subscribe(data: { plan_id: string; billing_cycle: string; email: string }) {
-    return apiClient.post('/payments/subscribe', data);
+    return apiClient.post('/payments/subscribe/', data);
   },
 
   async getSubscriptions() {
-    return apiClient.get('/payments/subscriptions');
+    return apiClient.get('/payments/subscriptions/');
   },
 
   async cancelSubscription(subscriptionId: string) {
-    return apiClient.post(`/payments/cancel-subscription/${subscriptionId}`, {});
+    return apiClient.post(`/payments/cancel-subscription/${subscriptionId}/`, {});
   },
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRequireAuth } from '@/lib/auth-context';
 import { maintenanceApi, staffApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
@@ -23,28 +23,33 @@ export default function OwnerMaintenancePage() {
   });
   const [selectedStaff, setSelectedStaff] = useState<number | null>(null);
   const [assigning, setAssigning] = useState(false);
-
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [requestsData, staffData] = await Promise.all([
-        maintenanceApi.getAll(),
-        staffApi.getAll()
-      ]);
-      setRequests(requestsData.data);
-      setStaff(staffData.data.filter((s: Staff) => s.department === 'maintenance'));
-    } catch (err: any) {
-      showError(err.message || 'Failed to load data');
-    } finally {
-      setLoading(false);
-    }
-  }, [showError]);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      fetchData();
-    }
-  }, [authLoading, isAuthenticated, fetchData]);
+    if (authLoading || !isAuthenticated) return;
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [requestsData, staffData] = await Promise.all([
+          maintenanceApi.getAll(),
+          staffApi.getAll()
+        ]);
+        const requestsArray = Array.isArray(requestsData.data) ? requestsData.data : [];
+        const staffArray = Array.isArray(staffData.data) ? staffData.data : [];
+        setRequests(requestsArray);
+        setStaff(staffArray.filter((s: Staff) => s.department === 'maintenance'));
+      } catch (err: any) {
+        console.error('Failed to load data:', err);
+        setRequests([]);
+        setStaff([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [authLoading, isAuthenticated, refreshKey]);
 
   const handleAssignStaff = async () => {
     if (!assignModal.requestId || !selectedStaff) return;
@@ -55,7 +60,7 @@ export default function OwnerMaintenancePage() {
       success('Staff assigned successfully');
       setAssignModal({ isOpen: false, requestId: null });
       setSelectedStaff(null);
-      fetchData();
+      setRefreshKey(k => k + 1);
     } catch (err: any) {
       showError(err.message || 'Failed to assign staff');
     } finally {
@@ -67,7 +72,7 @@ export default function OwnerMaintenancePage() {
     try {
       await maintenanceApi.update(String(requestId), { status: newStatus });
       success('Status updated successfully');
-      fetchData();
+      setRefreshKey(k => k + 1);
     } catch (err: any) {
       showError(err.message || 'Failed to update status');
     }

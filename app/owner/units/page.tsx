@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
 import { unitsApi, propertiesApi } from '@/lib/api-services';
@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { Unit, Property } from '@/app/lib/types';
 
 export default function OwnerUnitsPage() {
-  const { isAuthenticated, role } = useAuth();
+  const { isAuthenticated, role, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const { toasts, success, error: showError, removeToast } = useToast();
   const [units, setUnits] = useState<Unit[]>([]);
@@ -27,34 +27,66 @@ export default function OwnerUnitsPage() {
   });
   const [deleting, setDeleting] = useState(false);
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [unitsResponse, propertiesResponse] = await Promise.all([
-        unitsApi.getAll(),
-        propertiesApi.getAll()
-      ]);
-      setUnits(unitsResponse.data || []);
-      setProperties(propertiesResponse.data || []);
-    } catch (err: any) {
-      showError(err.message || 'Failed to load units');
-    } finally {
-      setLoading(false);
-    }
-  }, [showError]);
-
   useEffect(() => {
-    if (isAuthenticated && role === 'owner') {
-      fetchData();
-    }
-  }, [isAuthenticated, role, fetchData]);
+    if (authLoading || !isAuthenticated || role !== 'owner') return;
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        const propertiesResponse = await propertiesApi.getAll();
+
+        if (!propertiesResponse.success) {
+          console.error('Failed to load properties:', propertiesResponse.error);
+          setProperties([]);
+          setUnits([]);
+          return;
+        }
+
+        const propertiesData = Array.isArray(propertiesResponse.data)
+          ? propertiesResponse.data
+          : [];
+        setProperties(propertiesData);
+
+        const allUnits: Unit[] = [];
+
+        for (const property of propertiesData) {
+          try {
+            const unitsResponse = await unitsApi.list(property.id.toString());
+            if (unitsResponse.success && Array.isArray(unitsResponse.data)) {
+              allUnits.push(...unitsResponse.data);
+            }
+          } catch (err) {
+            console.error(`Failed to fetch units for property ${property.id}:`, err);
+          }
+        }
+
+        setUnits(allUnits);
+
+      } catch (err: any) {
+        console.error('Error fetching data:', err);
+        setUnits([]);
+        setProperties([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [authLoading, isAuthenticated, role]);
 
   const handleDelete = async () => {
     if (!deleteModal.unitId) return;
 
     try {
       setDeleting(true);
-      await unitsApi.delete(deleteModal.unitId.toString());
+      const response = await unitsApi.delete(deleteModal.unitId.toString());
+      
+      if (!response.success) {
+        showError(response.error || 'Failed to delete unit');
+        return;
+      }
+      
       success('Unit deleted successfully');
       setUnits(units.filter(u => u.id !== deleteModal.unitId));
       setDeleteModal({ isOpen: false, unitId: null });
@@ -208,16 +240,27 @@ export default function OwnerUnitsPage() {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No units found</h3>
             <p className="text-gray-600 mb-6">
               {units.length === 0 
-                ? 'Get started by adding your first unit'
+                ? properties.length === 0
+                  ? 'Please add properties first before creating units'
+                  : 'Get started by adding your first unit'
                 : 'No units match the selected filters'}
             </p>
-            {units.length === 0 && (
+            {units.length === 0 && properties.length > 0 && (
               <Link
                 href="/owner/units/new"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 <Plus className="w-5 h-5" />
                 Add Your First Unit
+              </Link>
+            )}
+            {properties.length === 0 && (
+              <Link
+                href="/owner/properties/new"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                <Plus className="w-5 h-5" />
+                Add Property First
               </Link>
             )}
           </div>

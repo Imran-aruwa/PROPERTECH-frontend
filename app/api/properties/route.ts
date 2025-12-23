@@ -7,10 +7,8 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export async function GET(request: NextRequest) {
   try {
-    // Get the authorization token from the request headers
     const authHeader = request.headers.get('Authorization');
-    
-    // If no auth header, return 401
+
     if (!authHeader) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized - No token provided' },
@@ -18,19 +16,17 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Call your FastAPI backend
-    const response = await fetch(`${BACKEND_URL}/api/properties`, {
+    const response = await fetch(`${BACKEND_URL}/api/properties/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
-      cache: 'no-store', // Disable caching for dynamic data
+      cache: 'no-store',
     });
 
     const data = await response.json();
 
-    // If backend returns error, forward it
     if (!response.ok) {
       return NextResponse.json(
         { success: false, error: data.detail || data.message || 'Failed to fetch properties' },
@@ -38,7 +34,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Return the data from backend
     return NextResponse.json({ success: true, data: data });
   } catch (error: any) {
     console.error('Properties API Error:', error);

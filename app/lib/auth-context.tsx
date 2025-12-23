@@ -75,8 +75,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(response.error || 'Login failed');
       }
 
-      // Backend returns user data at root level, not nested under 'user'
-      const { access_token, user_id, email: userEmail, full_name, role: userRole } = response.data;
+      // The response is wrapped: { success, data: { access_token, user_id, ... } }
+      // Need to access the nested data object
+      const backendData = response.data.data || response.data;
+
+      const { access_token, user_id, email: userEmail, full_name, role: userRole } = backendData;
 
       // Construct user object from response (safe toLowerCase with fallback)
       const userData = {
@@ -109,7 +112,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         admin: '/admin'
       };
 
-      router.push(roleRedirects[userData.role] || '/');
+      const redirectPath = roleRedirects[userData.role] || '/';
+      // Use window.location for full page reload to ensure auth state is properly initialized
+      window.location.href = redirectPath;
     } catch (error: any) {
       console.error('Login failed:', error);
       throw new Error(error.message || 'Login failed. Please check your credentials.');
