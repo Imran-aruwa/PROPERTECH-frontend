@@ -39,48 +39,14 @@ export default function GlobalRentTracking() {
         if (response.data) {
           const propsArray = Array.isArray(response.data.properties) ? response.data.properties : [];
           setProperties(propsArray);
-          setSummary(response.data.summary || {
-            totalExpected: 1450000,
-            totalCollected: 1380250,
-            totalPending: 35700,
-            totalOverdue: 42500,
-            collectionRate: 95.2,
-          });
+          if (response.data.summary) {
+            setSummary(response.data.summary);
+          }
         }
       } catch (error) {
         console.error('Error fetching rent data:', error);
-        // Mock data for demo
-        setSummary({
-          totalExpected: 1450000,
-          totalCollected: 1380250,
-          totalPending: 35700,
-          totalOverdue: 42500,
-          collectionRate: 95.2,
-        });
-        setProperties([
-          {
-            id: 1,
-            name: 'Sunrise Apartments',
-            expected_rent: 380000,
-            collected_rent: 360000,
-            collection_rate: 94.7,
-            outstanding: 20000,
-            overdue: 8000,
-            occupancy: 92,
-            caretaker: 'John Kamau',
-          },
-          {
-            id: 2,
-            name: 'Kilimani Heights',
-            expected_rent: 425500,
-            collected_rent: 415000,
-            collection_rate: 97.5,
-            outstanding: 10500,
-            overdue: 5000,
-            occupancy: 95,
-            caretaker: 'Mary Wanjiku',
-          },
-      ]);
+        // Show empty state on error
+        setProperties([]);
     } finally {
       setLoading(false);
     }

@@ -38,27 +38,8 @@ export default function CaretakerDashboard() {
         ),
       );
 
-      // Mock daily tasks
-      setDailyTasks([
-        {
-          id: 1,
-          task: 'Morning property inspection',
-          property: 'Sunset Apartments',
-          status: 'pending',
-        },
-        {
-          id: 2,
-          task: 'Check water supply',
-          property: 'Palm Gardens',
-          status: 'completed',
-        },
-        {
-          id: 3,
-          task: 'Collect garbage bins',
-          property: 'Sunset Apartments',
-          status: 'pending',
-        },
-      ]);
+      // Daily tasks will come from the backend when that endpoint is available
+      setDailyTasks([]);
     } catch (err: any) {
       showError(err.message || 'Failed to load data');
     } finally {

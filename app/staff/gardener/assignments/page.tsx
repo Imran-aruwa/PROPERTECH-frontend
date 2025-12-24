@@ -11,13 +11,12 @@ type GardenerAssignment = {
   status: 'Pending' | 'In Progress' | 'Completed'
 }
 
-const MOCK_ASSIGNMENTS: GardenerAssignment[] = []
-
 export default function GardenerAssignmentsPage() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<'All' | GardenerAssignment['status']>('All')
+  const [assignments] = useState<GardenerAssignment[]>([])
 
-  const filteredAssignments = MOCK_ASSIGNMENTS.filter((a) => {
+  const filteredAssignments = assignments.filter((a) => {
     const matchesSearch =
       !search ||
       a.property.toLowerCase().includes(search.toLowerCase()) ||

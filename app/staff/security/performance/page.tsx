@@ -13,13 +13,12 @@ type GuardPerformance = {
   attendanceScore: number // 0–100
 }
 
-const MOCK_PERFORMANCE: GuardPerformance[] = []
-
 export default function SecurityPerformancePage() {
   const [search, setSearch] = useState('')
   const [minRating, setMinRating] = useState<number | null>(null)
+  const [performance] = useState<GuardPerformance[]>([])
 
-  const filtered = MOCK_PERFORMANCE.filter((r) => {
+  const filtered = performance.filter((r) => {
     const matchesSearch =
       !search ||
       r.guardName.toLowerCase().includes(search.toLowerCase()) ||

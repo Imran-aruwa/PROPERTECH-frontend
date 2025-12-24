@@ -11,14 +11,13 @@ type GardenerEquipment = {
   assignedTo?: string
 }
 
-const MOCK_EQUIPMENT: GardenerEquipment[] = []
-
 export default function GardenerEquipmentPage() {
   const [search, setSearch] = useState('')
   const [conditionFilter, setConditionFilter] =
     useState<'All' | GardenerEquipment['condition']>('All')
+  const [equipment] = useState<GardenerEquipment[]>([])
 
-  const filtered = MOCK_EQUIPMENT.filter((item) => {
+  const filtered = equipment.filter((item) => {
     const matchesSearch =
       !search ||
       item.name.toLowerCase().includes(search.toLowerCase()) ||

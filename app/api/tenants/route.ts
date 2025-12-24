@@ -1,27 +1,82 @@
-// ============================================
-// FILE: app/api/tenants/route.ts
-// ============================================
 import { NextRequest, NextResponse } from 'next/server';
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Fetch from database
-    const tenants = [
-      {
-        id: '1',
-        name: 'John Doe',
-        unit: '304',
-        phone: '+254712345678',
-        email: 'john@example.com',
-        rentAmount: 25000,
-        status: 'active',
-      },
-    ];
+    const authHeader = request.headers.get('Authorization');
 
-    return NextResponse.json({ success: true, data: tenants });
-  } catch (error) {
+    if (!authHeader) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized - No token provided' },
+        { status: 401 }
+      );
+    }
+
+    const response = await fetch(`${BACKEND_URL}/api/tenants/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authHeader,
+      },
+      cache: 'no-store',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { success: false, error: data.detail || data.message || 'Failed to fetch tenants' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: data });
+  } catch (error: any) {
+    console.error('Tenants API Error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch tenants' },
+      { success: false, error: error.message || 'Failed to fetch tenants' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('Authorization');
+
+    if (!authHeader) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+
+    const response = await fetch(`${BACKEND_URL}/api/tenants/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authHeader,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { success: false, error: data.detail || 'Failed to create tenant' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: data });
+  } catch (error: any) {
+    console.error('Create Tenant Error:', error);
+    return NextResponse.json(
+      { success: false, error: error.message || 'Failed to create tenant' },
       { status: 500 }
     );
   }

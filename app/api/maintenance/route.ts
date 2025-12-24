@@ -1,26 +1,41 @@
-// ============================================
-// FILE: app/api/maintenance/route.ts
-// ============================================
 import { NextRequest, NextResponse } from 'next/server';
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Fetch from database
-    const requests = [
-      {
-        id: '1',
-        unit: '304',
-        issue: 'Leaking faucet',
-        priority: 'medium',
-        status: 'in_progress',
-        createdAt: '2024-12-01',
-      },
-    ];
+    const authHeader = request.headers.get('Authorization');
 
-    return NextResponse.json({ success: true, data: requests });
-  } catch (error) {
+    if (!authHeader) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized - No token provided' },
+        { status: 401 }
+      );
+    }
+
+    const response = await fetch(`${BACKEND_URL}/api/caretaker/maintenance/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authHeader,
+      },
+      cache: 'no-store',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { success: false, error: data.detail || data.message || 'Failed to fetch maintenance requests' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: data });
+  } catch (error: any) {
+    console.error('Maintenance API Error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch maintenance requests' },
+      { success: false, error: error.message || 'Failed to fetch maintenance requests' },
       { status: 500 }
     );
   }
@@ -28,20 +43,40 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    
-    // TODO: Save to database
-    const maintenanceRequest = {
-      id: Date.now().toString(),
-      ...body,
-      status: 'pending',
-      createdAt: new Date().toISOString(),
-    };
+    const authHeader = request.headers.get('Authorization');
 
-    return NextResponse.json({ success: true, data: maintenanceRequest });
-  } catch (error) {
+    if (!authHeader) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+
+    const response = await fetch(`${BACKEND_URL}/api/caretaker/maintenance/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authHeader,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { success: false, error: data.detail || 'Failed to create maintenance request' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: data });
+  } catch (error: any) {
+    console.error('Create Maintenance Request Error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to create maintenance request' },
+      { success: false, error: error.message || 'Failed to create maintenance request' },
       { status: 500 }
     );
   }

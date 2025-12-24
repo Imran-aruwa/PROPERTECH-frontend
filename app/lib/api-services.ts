@@ -342,14 +342,20 @@ export const unitsApi = {
     if (propertyId) return apiClient.get(`/properties/${propertyId}/units/`);
     return apiClient.get('/properties/units/');
   },
-  async getAll() { 
-    return apiClient.get('/properties/units/'); 
+  async getAll() {
+    return apiClient.get('/properties/units/');
+  },
+  async get(id: string) {
+    return apiClient.get(`/properties/units/${id}/`);
   },
   async create(propertyId: string, data: any) {
     return apiClient.post(`/properties/${propertyId}/units/`, data);
   },
-  async delete(id: string) { 
-    return apiClient.delete(`/properties/units/${id}/`); 
+  async update(propertyId: string, unitId: string, data: any) {
+    return apiClient.put(`/properties/${propertyId}/units/${unitId}/`, data);
+  },
+  async delete(id: string) {
+    return apiClient.delete(`/properties/units/${id}/`);
   },
 };
 
@@ -357,17 +363,23 @@ export const unitsApi = {
  * Tenants API
  */
 export const tenantsApi = {
-  async list() { 
-    return apiClient.get('/tenants/'); 
+  async list() {
+    return apiClient.get('/tenants/');
   },
-  async getAll() { 
-    return apiClient.get('/tenants/'); 
+  async getAll() {
+    return apiClient.get('/tenants/');
   },
-  async create(data: any) { 
-    return apiClient.post('/tenants/', data); 
+  async get(id: string) {
+    return apiClient.get(`/tenants/${id}/`);
   },
-  async delete(id: string) { 
-    return apiClient.delete(`/tenants/${id}/`); 
+  async create(data: any) {
+    return apiClient.post('/tenants/', data);
+  },
+  async update(id: string, data: any) {
+    return apiClient.put(`/tenants/${id}/`, data);
+  },
+  async delete(id: string) {
+    return apiClient.delete(`/tenants/${id}/`);
   },
 };
 

@@ -36,7 +36,7 @@ export default function TenantDetailPage() {
         setLoading(true);
         const [tenantResponse, paymentsResponse] = await Promise.all([
           tenantsApi.get(tenantId),
-          paymentsApi.getHistory()
+          paymentsApi.getAll()
         ]);
 
         if (tenantResponse.success && tenantResponse.data) {

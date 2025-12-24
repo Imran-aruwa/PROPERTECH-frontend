@@ -12,13 +12,12 @@ type SecurityAttendance = {
   status: 'Present' | 'Absent' | 'Late'
 }
 
-const MOCK_ATTENDANCE: SecurityAttendance[] = []
-
 export default function SecurityAttendancePage() {
   const [search, setSearch] = useState('')
   const [shiftFilter, setShiftFilter] = useState<'All' | SecurityAttendance['shift']>('All')
+  const [attendance] = useState<SecurityAttendance[]>([])
 
-  const filtered = MOCK_ATTENDANCE.filter((r) => {
+  const filtered = attendance.filter((r) => {
     const matchesSearch =
       !search ||
       r.guardName.toLowerCase().includes(search.toLowerCase()) ||

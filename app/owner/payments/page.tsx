@@ -24,7 +24,7 @@ export default function OwnerPaymentsPage() {
     const fetchPayments = async () => {
       try {
         setLoading(true);
-        const response = await paymentsApi.getHistory();
+        const response = await paymentsApi.getAll();
         const paymentsArray = Array.isArray(response.data) ? response.data : [];
         setPayments(paymentsArray);
       } catch (err: any) {

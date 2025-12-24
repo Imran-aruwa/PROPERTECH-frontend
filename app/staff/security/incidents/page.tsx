@@ -12,14 +12,13 @@ type SecurityIncident = {
   reportedAt: string
 }
 
-const MOCK_INCIDENTS: SecurityIncident[] = []
-
 export default function SecurityIncidentsPage() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] =
     useState<'All' | SecurityIncident['status']>('All')
+  const [incidents] = useState<SecurityIncident[]>([])
 
-  const filtered = MOCK_INCIDENTS.filter((i) => {
+  const filtered = incidents.filter((i) => {
     const matchesSearch =
       !search ||
       i.title.toLowerCase().includes(search.toLowerCase()) ||

@@ -1,26 +1,41 @@
-// ============================================
-// FILE: app/api/payments/route.ts
-// ============================================
 import { NextRequest, NextResponse } from 'next/server';
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Fetch from database
-    const payments = [
-      {
-        id: '1',
-        tenant: 'John Doe',
-        unit: '304',
-        amount: 25000,
-        date: '2024-11-01',
-        status: 'paid',
-      },
-    ];
+    const authHeader = request.headers.get('Authorization');
 
-    return NextResponse.json({ success: true, data: payments });
-  } catch (error) {
+    if (!authHeader) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized - No token provided' },
+        { status: 401 }
+      );
+    }
+
+    const response = await fetch(`${BACKEND_URL}/api/payments/history/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authHeader,
+      },
+      cache: 'no-store',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { success: false, error: data.detail || data.message || 'Failed to fetch payments' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: data });
+  } catch (error: any) {
+    console.error('Payments API Error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch payments' },
+      { success: false, error: error.message || 'Failed to fetch payments' },
       { status: 500 }
     );
   }
@@ -28,19 +43,40 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    
-    // TODO: Save to database
-    const payment = {
-      id: Date.now().toString(),
-      ...body,
-      createdAt: new Date().toISOString(),
-    };
+    const authHeader = request.headers.get('Authorization');
 
-    return NextResponse.json({ success: true, data: payment });
-  } catch (error) {
+    if (!authHeader) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+
+    const response = await fetch(`${BACKEND_URL}/api/payments/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authHeader,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { success: false, error: data.detail || 'Failed to create payment' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: data });
+  } catch (error: any) {
+    console.error('Create Payment Error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to create payment' },
+      { success: false, error: error.message || 'Failed to create payment' },
       { status: 500 }
     );
   }

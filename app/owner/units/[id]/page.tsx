@@ -313,23 +313,21 @@ export default function UnitDetailPage() {
                 <User className="w-5 h-5 text-purple-600" />
                 Current Tenant
               </h2>
-              {unit.status === 'occupied' && unit.tenants && unit.tenants.length > 0 ? (
+              {unit.status === 'occupied' && unit.tenant ? (
                 <div className="space-y-4">
-                  {unit.tenants.map((tenant: any) => (
-                    <div key={tenant.id} className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                        <span className="text-purple-600 font-semibold">
-                          {tenant.user?.full_name?.charAt(0) || 'T'}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{tenant.user?.full_name || 'Unknown'}</p>
-                        <p className="text-sm text-gray-600">{tenant.user?.phone || 'No phone'}</p>
-                      </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                      <span className="text-purple-600 font-semibold">
+                        {(unit.tenant as any).user?.full_name?.charAt(0) || 'T'}
+                      </span>
                     </div>
-                  ))}
+                    <div>
+                      <p className="font-medium text-gray-900">{(unit.tenant as any).user?.full_name || 'Unknown'}</p>
+                      <p className="text-sm text-gray-600">{(unit.tenant as any).user?.phone || 'No phone'}</p>
+                    </div>
+                  </div>
                   <Link
-                    href={`/owner/tenants/${unit.tenants[0]?.id}`}
+                    href={`/owner/tenants/${unit.tenant.id}`}
                     className="block w-full text-center px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
                   >
                     View Tenant Details

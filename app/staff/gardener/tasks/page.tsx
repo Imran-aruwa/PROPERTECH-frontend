@@ -12,13 +12,12 @@ type GardenerTask = {
   dueDate?: string
 }
 
-const MOCK_TASKS: GardenerTask[] = []
-
 export default function GardenerTasksPage() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<'All' | GardenerTask['status']>('All')
+  const [tasks] = useState<GardenerTask[]>([])
 
-  const filteredTasks = MOCK_TASKS.filter((t) => {
+  const filteredTasks = tasks.filter((t) => {
     const matchesSearch =
       !search ||
       t.title.toLowerCase().includes(search.toLowerCase()) ||

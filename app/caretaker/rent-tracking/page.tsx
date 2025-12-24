@@ -22,11 +22,11 @@ export default function CaretakerRentTracking() {
   const [loading, setLoading] = useState(true);
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [summary, setSummary] = useState({
-    expectedRent: 280000,
-    collectedRent: 265000,
-    pending: 15000,
-    overdue: 8000,
-    collectionRate: 94.6,
+    expectedRent: 0,
+    collectedRent: 0,
+    pending: 0,
+    overdue: 0,
+    collectionRate: 0,
   });
 
   const fetchRentData = useCallback(async () => {
@@ -37,39 +37,8 @@ export default function CaretakerRentTracking() {
         setSummary(response.data.summary);
         setTenants(response.data.tenants);
       } else {
-        // Mock data
-        setTenants([
-          {
-            id: 1,
-            name: 'John Doe',
-            unit: 'A101',
-            rent: 8000,
-            status: 'paid',
-            daysOverdue: 0,
-            lastPayment: '2025-11-01',
-            phone: '+254712345678',
-          },
-          {
-            id: 2,
-            name: 'Jane Smith',
-            unit: 'A102',
-            rent: 8000,
-            status: 'pending',
-            daysOverdue: 2,
-            lastPayment: '2025-10-01',
-            phone: '+254723456789',
-          },
-          {
-            id: 3,
-            name: 'Bob Wilson',
-            unit: 'A103',
-            rent: 8000,
-            status: 'overdue',
-            daysOverdue: 7,
-            lastPayment: '2025-09-28',
-            phone: '+254734567890',
-          },
-        ]);
+        // No data available - show empty state
+        setTenants([]);
       }
     } catch (error) {
       console.error('Error fetching rent data:', error);
