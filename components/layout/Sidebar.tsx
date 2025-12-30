@@ -3,9 +3,8 @@
 // ============================================
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Building2,
@@ -49,6 +48,7 @@ const navigationConfig = {
     { name: 'Earnings', href: '/agent/earnings', icon: DollarSign },
     { name: 'Rent Collection', href: '/agent/rent-collection', icon: CreditCard },
     { name: 'Tenants', href: '/agent/tenants', icon: Users },
+    { name: 'Settings', href: '/agent/settings', icon: Settings },
   ],
   caretaker: [
     { name: 'Dashboard', href: '/caretaker/dashboard', icon: LayoutDashboard },
@@ -57,7 +57,7 @@ const navigationConfig = {
     { name: 'Meter Readings', href: '/caretaker/meter-readings', icon: TrendingUp },
     { name: 'Maintenance', href: '/caretaker/maintenance', icon: Wrench },
     { name: 'Tenants', href: '/caretaker/tenants', icon: Users },
-    { name: 'Reports', href: '/caretaker/reports', icon: FileText },
+    { name: 'Settings', href: '/caretaker/settings', icon: Settings },
   ],
   tenant: [
     { name: 'Dashboard', href: '/tenant/dashboard', icon: LayoutDashboard },
@@ -100,8 +100,23 @@ const roleTitles = {
 
 export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const navigation = navigationConfig[role];
   const RoleIcon = roleIcons[role];
+
+  const handleLogout = () => {
+    // Clear all auth data from localStorage
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_user');
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('role');
+
+    // Redirect to login page
+    router.push('/login');
+  };
 
   return (
     <>
@@ -162,7 +177,10 @@ export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
 
           {/* Logout */}
           <div className="border-t p-4">
-            <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50">
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+            >
               <LogOut className="h-5 w-5" />
               Logout
             </button>

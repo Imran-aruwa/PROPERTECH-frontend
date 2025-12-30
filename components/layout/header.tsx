@@ -25,9 +25,12 @@ export function Header({ role, onMenuClick }: HeaderProps) {
           </button>
           
           {/* Logo/Title with role badge */}
-          <div className="flex items-center">
-            <h1 className="text-xl font-bold text-gray-900">PROPERTECH SOFTWARE</h1>
-            <span className="ml-2 text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+          <div className="flex items-center min-w-0">
+            <h1 className="text-base sm:text-xl font-bold text-gray-900 truncate">
+              <span className="hidden sm:inline">PROPERTECH SOFTWARE</span>
+              <span className="sm:hidden">PROPERTECH</span>
+            </h1>
+            <span className="ml-2 text-xs sm:text-sm bg-blue-100 text-blue-800 px-2 py-0.5 sm:py-1 rounded-full font-medium flex-shrink-0">
               {role.toUpperCase()}
             </span>
           </div>

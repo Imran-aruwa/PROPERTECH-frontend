@@ -3,77 +3,54 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import {
-  User, Bell, Lock, CreditCard, Shield, Trash2,
+  User, Bell, Lock, Shield, Trash2,
   Save, Loader2, Eye, EyeOff, Check, AlertTriangle,
-  Building2, Mail, Phone, Globe, Camera
+  Mail, Phone, Camera
 } from 'lucide-react';
 import { settingsApi } from '@/app/lib/api-services';
 
-type TabType = 'profile' | 'notifications' | 'security' | 'billing';
+type TabType = 'profile' | 'notifications' | 'security';
 
 interface ProfileData {
   full_name: string;
   email: string;
   phone: string;
-  company_name: string;
-  address: string;
-  city: string;
-  country: string;
-  avatar_url: string | null;
 }
 
 interface NotificationSettings {
   email_notifications: boolean;
   sms_notifications: boolean;
   push_notifications: boolean;
-  rent_reminders: boolean;
-  payment_confirmations: boolean;
-  maintenance_alerts: boolean;
-  tenant_updates: boolean;
-  weekly_reports: boolean;
-  monthly_statements: boolean;
+  task_reminders: boolean;
+  payment_alerts: boolean;
+  maintenance_updates: boolean;
 }
 
-interface BillingInfo {
-  plan: string;
-  billing_cycle: string;
-  next_billing_date: string;
-  payment_method: string;
-  card_last_four: string;
+interface SettingsPageProps {
+  role: 'owner' | 'agent' | 'caretaker' | 'tenant' | 'security' | 'gardener';
 }
 
-export default function OwnerSettingsPage() {
+export function SettingsPage({ role }: SettingsPageProps) {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  // Profile state
   const [profile, setProfile] = useState<ProfileData>({
     full_name: '',
     email: '',
     phone: '',
-    company_name: '',
-    address: '',
-    city: '',
-    country: 'Kenya',
-    avatar_url: null,
   });
 
-  // Notification state
   const [notifications, setNotifications] = useState<NotificationSettings>({
     email_notifications: true,
     sms_notifications: true,
     push_notifications: true,
-    rent_reminders: true,
-    payment_confirmations: true,
-    maintenance_alerts: true,
-    tenant_updates: true,
-    weekly_reports: false,
-    monthly_statements: true,
+    task_reminders: true,
+    payment_alerts: true,
+    maintenance_updates: true,
   });
 
-  // Security state
   const [passwordForm, setPasswordForm] = useState({
     current_password: '',
     new_password: '',
@@ -85,16 +62,6 @@ export default function OwnerSettingsPage() {
     confirm: false,
   });
 
-  // Billing state
-  const [billing, setBilling] = useState<BillingInfo>({
-    plan: 'Professional',
-    billing_cycle: 'monthly',
-    next_billing_date: '',
-    payment_method: 'card',
-    card_last_four: '',
-  });
-
-  // Delete account state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
@@ -105,32 +72,24 @@ export default function OwnerSettingsPage() {
   const fetchSettings = async () => {
     setIsLoading(true);
     try {
-      // Try to fetch from API, fallback to localStorage user data
       const profileResponse = await settingsApi.getProfile();
       if (profileResponse.success && profileResponse.data) {
         setProfile(prev => ({ ...prev, ...profileResponse.data }));
       } else {
-        // Fallback to localStorage
         const savedUser = localStorage.getItem('auth_user');
         if (savedUser) {
           const userData = JSON.parse(savedUser);
-          setProfile(prev => ({
-            ...prev,
+          setProfile({
             full_name: userData.full_name || '',
             email: userData.email || '',
             phone: userData.phone || '',
-          }));
+          });
         }
       }
 
       const notifResponse = await settingsApi.getNotifications();
       if (notifResponse.success && notifResponse.data) {
         setNotifications(prev => ({ ...prev, ...notifResponse.data }));
-      }
-
-      const billingResponse = await settingsApi.getBillingInfo();
-      if (billingResponse.success && billingResponse.data) {
-        setBilling(prev => ({ ...prev, ...billingResponse.data }));
       }
     } catch (error) {
       console.error('Failed to fetch settings:', error);
@@ -149,7 +108,6 @@ export default function OwnerSettingsPage() {
     try {
       const response = await settingsApi.updateProfile(profile);
       if (response.success) {
-        // Update localStorage
         const savedUser = localStorage.getItem('auth_user');
         if (savedUser) {
           const userData = JSON.parse(savedUser);
@@ -242,12 +200,11 @@ export default function OwnerSettingsPage() {
     { id: 'profile' as TabType, label: 'Profile', icon: User },
     { id: 'notifications' as TabType, label: 'Notifications', icon: Bell },
     { id: 'security' as TabType, label: 'Security', icon: Lock },
-    { id: 'billing' as TabType, label: 'Billing', icon: CreditCard },
   ];
 
   if (isLoading) {
     return (
-      <DashboardLayout role="owner">
+      <DashboardLayout role={role}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
@@ -259,14 +216,13 @@ export default function OwnerSettingsPage() {
   }
 
   return (
-    <DashboardLayout role="owner">
-      <div className="space-y-6 max-w-5xl">
+    <DashboardLayout role={role}>
+      <div className="space-y-6 max-w-4xl">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Settings</h1>
           <p className="text-gray-600 mt-1">Manage your account and preferences</p>
         </div>
 
-        {/* Message Alert */}
         {message && (
           <div className={`p-4 rounded-lg flex items-center gap-3 ${
             message.type === 'success'
@@ -282,7 +238,6 @@ export default function OwnerSettingsPage() {
           </div>
         )}
 
-        {/* Tab Navigation */}
         <div className="flex gap-1 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 border-b">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -303,34 +258,26 @@ export default function OwnerSettingsPage() {
           })}
         </div>
 
-        {/* Profile Tab */}
         {activeTab === 'profile' && (
           <div className="space-y-6">
-            {/* Avatar Section */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
                 <div className="relative">
-                  <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                  <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                     {profile.full_name?.charAt(0)?.toUpperCase() || 'U'}
                   </div>
-                  <button className="absolute bottom-0 right-0 p-2 bg-white rounded-full shadow-md border hover:bg-gray-50">
-                    <Camera className="w-4 h-4 text-gray-600" />
+                  <button className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border hover:bg-gray-50">
+                    <Camera className="w-3 h-3 text-gray-600" />
                   </button>
                 </div>
                 <div className="text-center sm:text-left">
-                  <h3 className="text-xl font-semibold text-gray-900">{profile.full_name || 'Your Name'}</h3>
-                  <p className="text-gray-600">{profile.email}</p>
+                  <h3 className="text-lg font-semibold text-gray-900">{profile.full_name || 'Your Name'}</h3>
+                  <p className="text-gray-600 text-sm">{profile.email}</p>
+                  <p className="text-xs text-gray-500 capitalize mt-1">{role} Account</p>
                 </div>
               </div>
-            </div>
 
-            {/* Personal Information */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-600" />
-                Personal Information
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                   <input
@@ -354,7 +301,7 @@ export default function OwnerSettingsPage() {
                     />
                   </div>
                 </div>
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -367,57 +314,6 @@ export default function OwnerSettingsPage() {
                     />
                   </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
-                  <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      type="text"
-                      value={profile.company_name}
-                      onChange={(e) => setProfile({ ...profile, company_name: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Your company name"
-                    />
-                  </div>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
-                  <input
-                    type="text"
-                    value={profile.address}
-                    onChange={(e) => setProfile({ ...profile, address: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Street address"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-                  <input
-                    type="text"
-                    value={profile.city}
-                    onChange={(e) => setProfile({ ...profile, city: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="City"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                  <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <select
-                      value={profile.country}
-                      onChange={(e) => setProfile({ ...profile, country: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                    >
-                      <option value="Kenya">Kenya</option>
-                      <option value="Uganda">Uganda</option>
-                      <option value="Tanzania">Tanzania</option>
-                      <option value="Rwanda">Rwanda</option>
-                      <option value="Nigeria">Nigeria</option>
-                      <option value="South Africa">South Africa</option>
-                    </select>
-                  </div>
-                </div>
               </div>
               <div className="mt-6 flex justify-end">
                 <button
@@ -425,11 +321,7 @@ export default function OwnerSettingsPage() {
                   disabled={isSaving}
                   className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
                 >
-                  {isSaving ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    <Save className="w-5 h-5" />
-                  )}
+                  {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                   Save Changes
                 </button>
               </div>
@@ -437,7 +329,6 @@ export default function OwnerSettingsPage() {
           </div>
         )}
 
-        {/* Notifications Tab */}
         {activeTab === 'notifications' && (
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
@@ -445,57 +336,28 @@ export default function OwnerSettingsPage() {
               Notification Preferences
             </h2>
 
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-4">Notification Channels</h3>
-                <div className="space-y-4">
-                  {[
-                    { key: 'email_notifications', label: 'Email Notifications', desc: 'Receive updates via email' },
-                    { key: 'sms_notifications', label: 'SMS Notifications', desc: 'Receive SMS alerts for urgent matters' },
-                    { key: 'push_notifications', label: 'Push Notifications', desc: 'Browser push notifications' },
-                  ].map((item) => (
-                    <label key={item.key} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={notifications[item.key as keyof NotificationSettings] as boolean}
-                        onChange={(e) => setNotifications({ ...notifications, [item.key]: e.target.checked })}
-                        className="w-5 h-5 text-blue-600 rounded mt-0.5"
-                      />
-                      <div>
-                        <p className="font-medium text-gray-900">{item.label}</p>
-                        <p className="text-sm text-gray-600">{item.desc}</p>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className="border-t pt-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-4">Notification Types</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    { key: 'rent_reminders', label: 'Rent Payment Reminders', desc: 'Before rent is due' },
-                    { key: 'payment_confirmations', label: 'Payment Confirmations', desc: 'When payments are received' },
-                    { key: 'maintenance_alerts', label: 'Maintenance Alerts', desc: 'New maintenance requests' },
-                    { key: 'tenant_updates', label: 'Tenant Updates', desc: 'Move-ins, move-outs, renewals' },
-                    { key: 'weekly_reports', label: 'Weekly Reports', desc: 'Weekly summary digest' },
-                    { key: 'monthly_statements', label: 'Monthly Statements', desc: 'Monthly financial reports' },
-                  ].map((item) => (
-                    <label key={item.key} className="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={notifications[item.key as keyof NotificationSettings] as boolean}
-                        onChange={(e) => setNotifications({ ...notifications, [item.key]: e.target.checked })}
-                        className="w-4 h-4 text-blue-600 rounded mt-1"
-                      />
-                      <div>
-                        <p className="font-medium text-gray-900 text-sm">{item.label}</p>
-                        <p className="text-xs text-gray-500">{item.desc}</p>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
+            <div className="space-y-4">
+              {[
+                { key: 'email_notifications', label: 'Email Notifications', desc: 'Receive updates via email' },
+                { key: 'sms_notifications', label: 'SMS Notifications', desc: 'Receive SMS alerts' },
+                { key: 'push_notifications', label: 'Push Notifications', desc: 'Browser push notifications' },
+                { key: 'task_reminders', label: 'Task Reminders', desc: 'Reminders for pending tasks' },
+                { key: 'payment_alerts', label: 'Payment Alerts', desc: 'Payment related notifications' },
+                { key: 'maintenance_updates', label: 'Maintenance Updates', desc: 'Maintenance request updates' },
+              ].map((item) => (
+                <label key={item.key} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={notifications[item.key as keyof NotificationSettings]}
+                    onChange={(e) => setNotifications({ ...notifications, [item.key]: e.target.checked })}
+                    className="w-5 h-5 text-blue-600 rounded mt-0.5"
+                  />
+                  <div>
+                    <p className="font-medium text-gray-900">{item.label}</p>
+                    <p className="text-sm text-gray-600">{item.desc}</p>
+                  </div>
+                </label>
+              ))}
             </div>
 
             <div className="mt-6 flex justify-end">
@@ -504,21 +366,15 @@ export default function OwnerSettingsPage() {
                 disabled={isSaving}
                 className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
               >
-                {isSaving ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Save className="w-5 h-5" />
-                )}
+                {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                 Save Preferences
               </button>
             </div>
           </div>
         )}
 
-        {/* Security Tab */}
         {activeTab === 'security' && (
           <div className="space-y-6">
-            {/* Change Password */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                 <Lock className="w-5 h-5 text-blue-600" />
@@ -532,7 +388,7 @@ export default function OwnerSettingsPage() {
                       type={showPasswords.current ? 'text' : 'password'}
                       value={passwordForm.current_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, current_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter current password"
                     />
                     <button
@@ -551,7 +407,7 @@ export default function OwnerSettingsPage() {
                       type={showPasswords.new ? 'text' : 'password'}
                       value={passwordForm.new_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, new_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter new password"
                     />
                     <button
@@ -571,7 +427,7 @@ export default function OwnerSettingsPage() {
                       type={showPasswords.confirm ? 'text' : 'password'}
                       value={passwordForm.confirm_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, confirm_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       placeholder="Confirm new password"
                     />
                     <button
@@ -594,7 +450,6 @@ export default function OwnerSettingsPage() {
               </div>
             </div>
 
-            {/* Two-Factor Authentication */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 <Shield className="w-5 h-5 text-blue-600" />
@@ -606,14 +461,13 @@ export default function OwnerSettingsPage() {
               </button>
             </div>
 
-            {/* Delete Account */}
             <div className="bg-white rounded-lg shadow-sm border border-red-200 p-6">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-red-600">
                 <Trash2 className="w-5 h-5" />
                 Delete Account
               </h2>
               <p className="text-gray-600 mb-4">
-                Permanently delete your account and all associated data. This action cannot be undone.
+                Permanently delete your account and all associated data.
               </p>
               {!showDeleteConfirm ? (
                 <button
@@ -624,21 +478,19 @@ export default function OwnerSettingsPage() {
                 </button>
               ) : (
                 <div className="space-y-4 max-w-md">
-                  <p className="text-sm text-red-600 font-medium">
-                    Type DELETE to confirm account deletion
-                  </p>
+                  <p className="text-sm text-red-600 font-medium">Type DELETE to confirm</p>
                   <input
                     type="text"
                     value={deleteConfirmText}
                     onChange={(e) => setDeleteConfirmText(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                    className="w-full px-4 py-2.5 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500"
                     placeholder="Type DELETE"
                   />
                   <div className="flex gap-3">
                     <button
                       onClick={handleDeleteAccount}
                       disabled={isSaving || deleteConfirmText !== 'DELETE'}
-                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
+                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
                     >
                       {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Confirm Delete'}
                     </button>
@@ -647,74 +499,13 @@ export default function OwnerSettingsPage() {
                         setShowDeleteConfirm(false);
                         setDeleteConfirmText('');
                       }}
-                      className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                     >
                       Cancel
                     </button>
                   </div>
                 </div>
               )}
-            </div>
-          </div>
-        )}
-
-        {/* Billing Tab */}
-        {activeTab === 'billing' && (
-          <div className="space-y-6">
-            {/* Current Plan */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-blue-600" />
-                Current Plan
-              </h2>
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <div>
-                  <h3 className="text-xl font-bold text-blue-900">{billing.plan} Plan</h3>
-                  <p className="text-blue-700">
-                    Billed {billing.billing_cycle} • Next billing: {billing.next_billing_date || 'N/A'}
-                  </p>
-                </div>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                  Upgrade Plan
-                </button>
-              </div>
-            </div>
-
-            {/* Payment Method */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h2 className="text-lg font-semibold mb-6">Payment Method</h2>
-              {billing.card_last_four ? (
-                <div className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center text-white text-xs font-bold">
-                      VISA
-                    </div>
-                    <div>
-                      <p className="font-medium">•••• •••• •••• {billing.card_last_four}</p>
-                      <p className="text-sm text-gray-500">Expires 12/25</p>
-                    </div>
-                  </div>
-                  <button className="text-blue-600 hover:text-blue-700 font-medium">
-                    Update
-                  </button>
-                </div>
-              ) : (
-                <div className="text-center py-8 border rounded-lg border-dashed">
-                  <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 mb-4">No payment method added</p>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    Add Payment Method
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Billing History */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h2 className="text-lg font-semibold mb-6">Billing History</h2>
-              <div className="text-center py-8 text-gray-500">
-                <p>No billing history available</p>
-              </div>
             </div>
           </div>
         )}

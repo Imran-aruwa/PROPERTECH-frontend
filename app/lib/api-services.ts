@@ -500,5 +500,164 @@ export const paymentsApi = {
   },
 };
 
+/**
+ * Settings API
+ */
+export const settingsApi = {
+  async getProfile() {
+    return apiClient.get('/settings/profile/');
+  },
+  async updateProfile(data: any) {
+    return apiClient.put('/settings/profile/', data);
+  },
+  async getNotifications() {
+    return apiClient.get('/settings/notifications/');
+  },
+  async updateNotifications(data: any) {
+    return apiClient.put('/settings/notifications/', data);
+  },
+  async changePassword(data: { current_password: string; new_password: string }) {
+    return apiClient.post('/settings/change-password/', data);
+  },
+  async getBillingInfo() {
+    return apiClient.get('/settings/billing/');
+  },
+  async updateBillingInfo(data: any) {
+    return apiClient.put('/settings/billing/', data);
+  },
+  async deleteAccount() {
+    return apiClient.delete('/settings/account/');
+  },
+};
+
+/**
+ * Agent API
+ */
+export const agentApi = {
+  async getDashboard() {
+    return apiClient.get('/agent/dashboard/');
+  },
+  async getProperties() {
+    return apiClient.get('/agent/properties/');
+  },
+  async getTenants() {
+    return apiClient.get('/agent/tenants/');
+  },
+  async getEarnings() {
+    return apiClient.get('/agent/earnings/');
+  },
+  async getRentTracking() {
+    return apiClient.get('/agent/rent-tracking/');
+  },
+  async getRentCollection() {
+    return apiClient.get('/agent/rent-collection/');
+  },
+  async getRecentActivities() {
+    return apiClient.get('/agent/activities/');
+  },
+};
+
+/**
+ * Caretaker API
+ */
+export const caretakerApi = {
+  async getDashboard() {
+    return apiClient.get('/caretaker/dashboard/');
+  },
+  async getOutstandingPayments() {
+    return apiClient.get('/caretaker/outstanding-payments/');
+  },
+  async getRentTracking() {
+    return apiClient.get('/caretaker/rent-tracking/');
+  },
+  async getMeterReadings() {
+    return apiClient.get('/caretaker/meter-readings/');
+  },
+  async getTenants() {
+    return apiClient.get('/caretaker/tenants/');
+  },
+};
+
+/**
+ * Tenant Dashboard API
+ */
+export const tenantDashboardApi = {
+  async getDashboard() {
+    return apiClient.get('/tenant/dashboard/');
+  },
+  async getPayments() {
+    return apiClient.get('/tenant/payments/');
+  },
+  async getMaintenanceRequests() {
+    return apiClient.get('/tenant/maintenance/');
+  },
+  async createMaintenanceRequest(data: any) {
+    return apiClient.post('/tenant/maintenance/', data);
+  },
+  async getLeaseInfo() {
+    return apiClient.get('/tenant/lease/');
+  },
+  async getDocuments() {
+    return apiClient.get('/tenant/documents/');
+  },
+};
+
+/**
+ * Security Staff API
+ */
+export const securityApi = {
+  async getDashboard() {
+    return apiClient.get('/staff/security/dashboard/');
+  },
+  async getIncidents() {
+    return apiClient.get('/staff/security/incidents/');
+  },
+  async createIncident(data: any) {
+    return apiClient.post('/staff/security/incidents/', data);
+  },
+  async updateIncident(id: string, data: any) {
+    return apiClient.put(`/staff/security/incidents/${id}/`, data);
+  },
+  async getAttendance() {
+    return apiClient.get('/staff/security/attendance/');
+  },
+  async recordAttendance(data: any) {
+    return apiClient.post('/staff/security/attendance/', data);
+  },
+  async getPerformance() {
+    return apiClient.get('/staff/security/performance/');
+  },
+  async getStaffOnDuty() {
+    return apiClient.get('/staff/security/on-duty/');
+  },
+};
+
+/**
+ * Gardener Staff API
+ */
+export const gardenerApi = {
+  async getDashboard() {
+    return apiClient.get('/staff/gardener/dashboard/');
+  },
+  async getTasks() {
+    return apiClient.get('/staff/gardener/tasks/');
+  },
+  async createTask(data: any) {
+    return apiClient.post('/staff/gardener/tasks/', data);
+  },
+  async updateTask(id: string, data: any) {
+    return apiClient.put(`/staff/gardener/tasks/${id}/`, data);
+  },
+  async getEquipment() {
+    return apiClient.get('/staff/gardener/equipment/');
+  },
+  async updateEquipmentStatus(id: string, data: any) {
+    return apiClient.put(`/staff/gardener/equipment/${id}/`, data);
+  },
+  async getAssignments() {
+    return apiClient.get('/staff/gardener/assignments/');
+  },
+};
+
 // Default export for backward compatibility
 export default apiClient;
