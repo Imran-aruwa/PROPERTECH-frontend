@@ -1,26 +1,112 @@
-// ============================================
-// FILE: app/caretaker/reports/page.tsx
-// ============================================
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { FileText, Download, Calendar } from 'lucide-react';
+import { FileText, Download, Calendar, Loader2 } from 'lucide-react';
+import { apiClient } from '@/app/lib/api-services';
+
+interface Report {
+  id: string;
+  name: string;
+  date: string;
+  type: string;
+  size: string;
+  url?: string;
+}
 
 export default function CaretakerReportsPage() {
   const [reportType, setReportType] = useState('monthly');
-  const [month, setMonth] = useState('2024-12');
+  const [month, setMonth] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  });
   const [generating, setGenerating] = useState(false);
+  const [recentReports, setRecentReports] = useState<Report[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await apiClient.get('/caretaker/reports/');
+
+        if (response.success && response.data) {
+          const items = response.data.reports || response.data || [];
+          setRecentReports(Array.isArray(items) ? items.map((r: any) => ({
+            id: r.id?.toString() || '',
+            name: r.name || r.title || '',
+            date: r.date || r.created_at || '',
+            type: r.type || r.report_type || '',
+            size: r.size || r.file_size || '',
+            url: r.url || r.file_url || '',
+          })) : []);
+        } else {
+          setRecentReports([]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch reports:', err);
+        setError('Failed to load reports');
+        setRecentReports([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReports();
+  }, []);
 
   const handleGenerateReport = async () => {
     setGenerating(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      alert(`${reportType} report for ${month} generated successfully!`);
-    } catch (error) {
+      const response = await apiClient.post('/caretaker/reports/generate/', {
+        type: reportType,
+        period: month,
+      });
+
+      if (response.success) {
+        alert('Report generated successfully!');
+        // Refresh reports list
+        const refreshResponse = await apiClient.get('/caretaker/reports/');
+        if (refreshResponse.success && refreshResponse.data) {
+          const items = refreshResponse.data.reports || refreshResponse.data || [];
+          setRecentReports(Array.isArray(items) ? items.map((r: any) => ({
+            id: r.id?.toString() || '',
+            name: r.name || r.title || '',
+            date: r.date || r.created_at || '',
+            type: r.type || r.report_type || '',
+            size: r.size || r.file_size || '',
+            url: r.url || r.file_url || '',
+          })) : []);
+        }
+      } else {
+        alert(response.error || 'Failed to generate report');
+      }
+    } catch (err) {
+      console.error('Failed to generate report:', err);
       alert('Failed to generate report');
     } finally {
       setGenerating(false);
+    }
+  };
+
+  const handleDownload = async (report: Report) => {
+    if (report.url) {
+      window.open(report.url, '_blank');
+    } else {
+      try {
+        const response = await apiClient.get(`/caretaker/reports/${report.id}/download/`);
+        if (response.success && response.data?.url) {
+          window.open(response.data.url, '_blank');
+        } else {
+          alert('Unable to download report');
+        }
+      } catch (err) {
+        console.error('Failed to download report:', err);
+        alert('Failed to download report');
+      }
     }
   };
 
@@ -31,12 +117,6 @@ export default function CaretakerReportsPage() {
     { value: 'utilities', label: 'Utilities', description: 'Water and electricity consumption' },
   ];
 
-  const recentReports = [
-    { name: 'November 2024 Summary', date: '2024-12-01', type: 'Monthly', size: '2.4 MB' },
-    { name: 'Rent Collection - October', date: '2024-11-01', type: 'Rent', size: '1.8 MB' },
-    { name: 'Maintenance Report Q3', date: '2024-10-01', type: 'Maintenance', size: '3.2 MB' },
-  ];
-
   return (
     <DashboardLayout role="caretaker">
       <div className="space-y-6">
@@ -45,10 +125,16 @@ export default function CaretakerReportsPage() {
           <p className="text-gray-600 mt-1">Generate and download property reports</p>
         </div>
 
+        {error && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <p className="text-yellow-800 text-sm">{error}. Showing empty state.</p>
+          </div>
+        )}
+
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold mb-4">Generate New Report</h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -97,7 +183,7 @@ export default function CaretakerReportsPage() {
               >
                 {generating ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <Loader2 className="w-5 h-5 animate-spin" />
                     Generating Report...
                   </>
                 ) : (
@@ -110,36 +196,48 @@ export default function CaretakerReportsPage() {
             </div>
           </div>
 
-                    <div className="bg-white rounded-lg shadow-sm border p-6">
-                      <h2 className="text-lg font-semibold mb-4">Recent Reports</h2>
-                      <div className="space-y-3">
-                        {recentReports.map((report, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <FileText className="w-5 h-5 text-blue-600" />
-                              </div>
-                              <div>
-                                <p className="font-medium text-gray-900">{report.name}</p>
-                                <p className="text-sm text-gray-600">
-                                  {report.type} • {report.date} • {report.size}
-                                </p>
-                              </div>
-                            </div>
-                            <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg">
-                              <Download className="w-5 h-5" />
-                            </button>
-                          </div>
-                        ))}
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h2 className="text-lg font-semibold mb-4">Recent Reports</h2>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+              </div>
+            ) : recentReports.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <FileText className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                <p>No reports generated yet</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {recentReports.map((report) => (
+                  <div
+                    key={report.id}
+                    className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">{report.name}</p>
+                        <p className="text-sm text-gray-600">
+                          {report.type} {report.date && `• ${report.date}`} {report.size && `• ${report.size}`}
+                        </p>
                       </div>
                     </div>
+                    <button
+                      onClick={() => handleDownload(report)}
+                      className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
+                    >
+                      <Download className="w-5 h-5" />
+                    </button>
                   </div>
-                </div>
-              </DashboardLayout>
-            );
-          }
-
-
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </DashboardLayout>
+  );
+}
