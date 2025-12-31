@@ -120,7 +120,7 @@ export default function AgentDashboard() {
               <p className="text-blue-300">Property Agent Dashboard</p>
             </div>
             <Link
-              href="/agent/leads/new"
+              href="/agent/leads"
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all transform hover:scale-105"
             >
               <UserPlus className="w-5 h-5" />
@@ -282,7 +282,7 @@ export default function AgentDashboard() {
                           {((property.total_units || property.totalUnits || 0) - (property.occupied_units || property.occupiedUnits || 0))} units available
                         </span>
                         <Link
-                          href={`/agent/properties/${property.id}`}
+                          href="/agent/properties"
                           className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
                         >
                           <Eye className="w-4 h-4" />
@@ -299,7 +299,7 @@ export default function AgentDashboard() {
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <Link
-            href="/agent/leads/new"
+            href="/agent/leads"
             className="bg-slate-800/50 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 hover:border-blue-400/70 hover:shadow-lg hover:shadow-purple-500/20 transition-all group animate-fade-in-up"
             style={{ animationDelay: '0.7s' }}
           >
@@ -311,7 +311,7 @@ export default function AgentDashboard() {
           </Link>
 
           <Link
-            href="/agent/viewings/schedule"
+            href="/agent/viewings"
             className="bg-slate-800/50 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 hover:border-blue-400/70 hover:shadow-lg hover:shadow-green-500/20 transition-all group animate-fade-in-up"
             style={{ animationDelay: '0.8s' }}
           >

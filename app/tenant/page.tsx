@@ -78,7 +78,7 @@ export default function TenantDashboard() {
       value: 'Active',
       icon: Home,
       color: 'bg-purple-500',
-      link: '/tenant/lease'
+      link: '/tenant/profile'
     },
   ];
 

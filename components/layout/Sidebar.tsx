@@ -61,7 +61,7 @@ const navigationConfig = {
   ],
   tenant: [
     { name: 'Dashboard', href: '/tenant/dashboard', icon: LayoutDashboard },
-    { name: 'Payment History', href: '/tenant/payment-history', icon: CreditCard },
+    { name: 'Payment History', href: '/tenant/payments', icon: CreditCard },
     { name: 'Maintenance', href: '/tenant/maintenance', icon: Wrench },
     { name: 'Documents', href: '/tenant/documents', icon: FileText },
     { name: 'Profile', href: '/tenant/profile', icon: Settings },
