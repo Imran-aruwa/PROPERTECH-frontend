@@ -63,7 +63,7 @@ export default function TenantDetailPage() {
     };
 
     fetchData();
-  }, [authLoading, isAuthenticated, tenantId, router]);
+  }, [authLoading, isAuthenticated, tenantId, router, showError]);
 
   const handleDelete = async () => {
     try {

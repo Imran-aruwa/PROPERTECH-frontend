@@ -59,7 +59,7 @@ export default function PropertyDetailPage() {
     };
 
     fetchData();
-  }, [authLoading, isAuthenticated, propertyId, router]);
+  }, [authLoading, isAuthenticated, propertyId, router, showError]);
 
   const handleDelete = async () => {
     try {

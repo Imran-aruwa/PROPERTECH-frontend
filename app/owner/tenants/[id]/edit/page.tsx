@@ -85,7 +85,7 @@ export default function EditTenantPage() {
     };
 
     fetchTenant();
-  }, [authLoading, isAuthenticated, tenantId, router]);
+  }, [authLoading, isAuthenticated, tenantId, router, showError]);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof TenantFormData, string>> = {};

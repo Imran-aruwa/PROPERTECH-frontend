@@ -79,7 +79,7 @@ export default function EditPropertyPage() {
     };
 
     fetchProperty();
-  }, [authLoading, isAuthenticated, propertyId, router]);
+  }, [authLoading, isAuthenticated, propertyId, router, showError]);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof PropertyFormData, string>> = {};

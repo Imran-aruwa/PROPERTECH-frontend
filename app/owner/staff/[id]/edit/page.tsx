@@ -100,7 +100,7 @@ export default function EditStaffPage() {
     };
 
     fetchData();
-  }, [authLoading, isAuthenticated, staffId, router]);
+  }, [authLoading, isAuthenticated, staffId, router, showError]);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof StaffFormData, string>> = {};

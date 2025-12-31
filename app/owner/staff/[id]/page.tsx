@@ -50,7 +50,7 @@ export default function StaffDetailPage() {
     };
 
     fetchStaff();
-  }, [authLoading, isAuthenticated, staffId, router]);
+  }, [authLoading, isAuthenticated, staffId, router, showError]);
 
   const handleDelete = async () => {
     try {

@@ -99,7 +99,7 @@ export default function EditUnitPage() {
     };
 
     fetchData();
-  }, [authLoading, isAuthenticated, unitId, router]);
+  }, [authLoading, isAuthenticated, unitId, router, showError]);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof UnitFormData, string>> = {};

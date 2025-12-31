@@ -86,7 +86,7 @@ export default function UnitDetailPage() {
     };
 
     fetchData();
-  }, [authLoading, isAuthenticated, unitId, router]);
+  }, [authLoading, isAuthenticated, unitId, router, showError]);
 
   const handleDelete = async () => {
     try {
