@@ -49,14 +49,7 @@ export default function PropertiesPage() {
         const response = await propertiesApi.getAll();
 
         if (!response.success) {
-          const errorMsg = response.error || '';
-          if (errorMsg.includes('Unauthorized') || errorMsg.includes('401') || errorMsg.includes('token') || errorMsg.includes('credentials')) {
-            console.error('Authentication error - redirecting to login');
-            setProperties([]);
-            router.push('/login');
-            return;
-          }
-          console.error('Properties error:', errorMsg);
+          console.error('Properties error:', response.error);
           setProperties([]);
           return;
         }
