@@ -1,73 +1,29 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Bell, Menu, X, Check, AlertCircle, DollarSign, Wrench, Users, Clock } from 'lucide-react';
-
-interface Notification {
-  id: string;
-  type: 'payment' | 'maintenance' | 'tenant' | 'alert' | 'info';
-  title: string;
-  message: string;
-  time: string;
-  read: boolean;
-}
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Bell, Menu, AlertCircle, DollarSign, Wrench, Users, Clock, Loader2 } from 'lucide-react';
+import { notificationsApi, Notification } from '@/lib/api-services';
 
 interface HeaderProps {
   role: 'owner' | 'agent' | 'caretaker' | 'tenant' | 'security' | 'gardener';
   onMenuClick: () => void;
 }
 
-// Mock notifications - replace with API call when backend is ready
-const getMockNotifications = (role: string): Notification[] => {
-  const baseNotifications: Notification[] = [
-    {
-      id: '1',
-      type: 'payment',
-      title: 'Payment Received',
-      message: 'Rent payment of KES 25,000 received from Unit A1',
-      time: '5 min ago',
-      read: false,
-    },
-    {
-      id: '2',
-      type: 'maintenance',
-      title: 'Maintenance Request',
-      message: 'New request: Leaking faucet in Unit B3',
-      time: '1 hour ago',
-      read: false,
-    },
-    {
-      id: '3',
-      type: 'tenant',
-      title: 'Lease Expiring',
-      message: 'Tenant in Unit C2 lease expires in 30 days',
-      time: '2 hours ago',
-      read: true,
-    },
-  ];
+// Format relative time from ISO date string
+const formatRelativeTime = (dateString: string): string => {
+  try {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-  if (role === 'tenant') {
-    return [
-      {
-        id: '1',
-        type: 'payment',
-        title: 'Payment Due',
-        message: 'Your rent payment of KES 25,000 is due in 3 days',
-        time: '1 hour ago',
-        read: false,
-      },
-      {
-        id: '2',
-        type: 'maintenance',
-        title: 'Request Updated',
-        message: 'Your maintenance request has been assigned',
-        time: '3 hours ago',
-        read: false,
-      },
-    ];
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} min ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    return date.toLocaleDateString();
+  } catch {
+    return dateString;
   }
-
-  return baseNotifications;
 };
 
 const getNotificationIcon = (type: string) => {
@@ -88,12 +44,61 @@ const getNotificationIcon = (type: string) => {
 export function Header({ role, onMenuClick }: HeaderProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const hasFetched = useRef(false);
 
+  // Fetch notifications from API
+  const fetchNotifications = useCallback(async () => {
+    if (loading) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await notificationsApi.getAll();
+
+      if (response.success && Array.isArray(response.data)) {
+        setNotifications(response.data);
+      } else if (Array.isArray(response.data)) {
+        // Handle direct array response
+        setNotifications(response.data);
+      } else {
+        // API not available yet - show empty state
+        setNotifications([]);
+      }
+    } catch (err) {
+      console.error('Failed to fetch notifications:', err);
+      setError('Failed to load notifications');
+      setNotifications([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading]);
+
+  // Initial fetch on mount
   useEffect(() => {
-    // Load notifications (mock for now - replace with API call)
-    setNotifications(getMockNotifications(role));
-  }, [role]);
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      fetchNotifications();
+    }
+  }, [fetchNotifications]);
+
+  // Refresh notifications periodically (every 60 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [fetchNotifications]);
+
+  // Refresh when dropdown opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchNotifications();
+    }
+  }, [isOpen, fetchNotifications]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -109,14 +114,37 @@ export function Header({ role, onMenuClick }: HeaderProps) {
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  const markAsRead = (id: string) => {
+  const markAsRead = async (id: string) => {
+    // Optimistic update
     setNotifications(prev =>
       prev.map(n => (n.id === id ? { ...n, read: true } : n))
     );
+
+    // Call API
+    try {
+      await notificationsApi.markAsRead(id);
+    } catch (err) {
+      console.error('Failed to mark notification as read:', err);
+      // Revert on error
+      setNotifications(prev =>
+        prev.map(n => (n.id === id ? { ...n, read: false } : n))
+      );
+    }
   };
 
-  const markAllAsRead = () => {
+  const markAllAsRead = async () => {
+    // Optimistic update
+    const previousNotifications = [...notifications];
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+
+    // Call API
+    try {
+      await notificationsApi.markAllAsRead();
+    } catch (err) {
+      console.error('Failed to mark all notifications as read:', err);
+      // Revert on error
+      setNotifications(previousNotifications);
+    }
   };
 
   return (
@@ -178,10 +206,16 @@ export function Header({ role, onMenuClick }: HeaderProps) {
 
                   {/* Notification List */}
                   <div className="max-h-80 overflow-y-auto">
-                    {notifications.length === 0 ? (
+                    {loading && notifications.length === 0 ? (
+                      <div className="px-4 py-8 text-center text-gray-500">
+                        <Loader2 className="w-6 h-6 mx-auto mb-2 text-gray-400 animate-spin" />
+                        <p className="text-sm">Loading notifications...</p>
+                      </div>
+                    ) : notifications.length === 0 ? (
                       <div className="px-4 py-8 text-center text-gray-500">
                         <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                         <p className="text-sm">No notifications</p>
+                        <p className="text-xs text-gray-400 mt-1">You're all caught up!</p>
                       </div>
                     ) : (
                       notifications.map((notification) => (
@@ -215,7 +249,7 @@ export function Header({ role, onMenuClick }: HeaderProps) {
                               </p>
                               <div className="flex items-center gap-1 mt-1 text-xs text-gray-400">
                                 <Clock className="w-3 h-3" />
-                                {notification.time}
+                                {formatRelativeTime(notification.created_at)}
                               </div>
                             </div>
                           </div>

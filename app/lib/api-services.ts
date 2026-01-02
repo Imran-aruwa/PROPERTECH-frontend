@@ -659,5 +659,35 @@ export const gardenerApi = {
   },
 };
 
+/**
+ * Notifications API
+ */
+export interface Notification {
+  id: string;
+  type: 'payment' | 'maintenance' | 'tenant' | 'alert' | 'info';
+  title: string;
+  message: string;
+  created_at: string;
+  read: boolean;
+}
+
+export const notificationsApi = {
+  async getAll() {
+    return apiClient.get<Notification[]>('/notifications/');
+  },
+  async getUnreadCount() {
+    return apiClient.get<{ count: number }>('/notifications/unread-count/');
+  },
+  async markAsRead(id: string) {
+    return apiClient.patch(`/notifications/${id}/read/`);
+  },
+  async markAllAsRead() {
+    return apiClient.post('/notifications/mark-all-read/');
+  },
+  async delete(id: string) {
+    return apiClient.delete(`/notifications/${id}/`);
+  },
+};
+
 // Default export for backward compatibility
 export default apiClient;
