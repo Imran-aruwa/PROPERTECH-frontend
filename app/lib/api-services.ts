@@ -23,11 +23,14 @@ export interface ApiResponse<T = any> {
 export function getAuthToken(): string | null {
   try {
     if (typeof window === 'undefined') {
+      console.log('[getAuthToken] Running on server, no window');
       return null;
     }
-    return localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('access_token');
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || localStorage.getItem('access_token');
+    console.log('[getAuthToken] Token found:', token ? `${token.substring(0, 20)}...` : 'NULL');
+    return token;
   } catch (error) {
-    console.error('Error getting auth token:', error);
+    console.error('[getAuthToken] Error getting auth token:', error);
     return null;
   }
 }
@@ -74,17 +77,26 @@ export const apiClient = {
   async get<T = any>(endpoint: string): Promise<ApiResponse<T>> {
     try {
       const token = getAuthToken();
+      console.log(`[apiClient.get] ${endpoint} - Token:`, token ? 'Present' : 'MISSING');
+
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      console.log('[apiClient.get] Headers:', Object.keys(headers));
+
       const response = await fetch(`${API_BASE}${endpoint}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
+        headers,
       });
 
       const data = await response.json();
+      console.log(`[apiClient.get] ${endpoint} - Status:`, response.status, 'OK:', response.ok);
 
       if (!response.ok) {
+        console.error(`[apiClient.get] ${endpoint} - Error:`, data);
         return {
           success: false,
           error:
@@ -100,7 +112,7 @@ export const apiClient = {
         data: data,
       };
     } catch (error) {
-      console.error('API GET error:', error);
+      console.error('[apiClient.get] Error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Network error',
@@ -114,18 +126,27 @@ export const apiClient = {
   async post<T = any>(endpoint: string, body?: any): Promise<ApiResponse<T>> {
     try {
       const token = getAuthToken();
+      console.log(`[apiClient.post] ${endpoint} - Token:`, token ? 'Present' : 'MISSING');
+
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      console.log('[apiClient.post] Headers:', Object.keys(headers));
+
       const response = await fetch(`${API_BASE}${endpoint}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
+        headers,
         body: body ? JSON.stringify(body) : undefined,
       });
 
       const data = await response.json();
+      console.log(`[apiClient.post] ${endpoint} - Status:`, response.status, 'OK:', response.ok);
 
       if (!response.ok) {
+        console.error(`[apiClient.post] ${endpoint} - Error:`, data);
         return {
           success: false,
           error:
@@ -141,7 +162,7 @@ export const apiClient = {
         data: data,
       };
     } catch (error) {
-      console.error('API POST error:', error);
+      console.error('[apiClient.post] Error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Network error',
