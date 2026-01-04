@@ -46,18 +46,24 @@ export default function PropertiesPage() {
     const fetchProperties = async () => {
       try {
         setLoading(true);
+        console.log('[PropertiesPage] Fetching properties...');
         const response = await propertiesApi.getAll();
+        console.log('[PropertiesPage] Response:', JSON.stringify(response, null, 2));
 
         if (!response.success) {
-          console.error('Properties error:', response.error);
+          console.error('[PropertiesPage] Properties error:', response.error);
           setProperties([]);
           return;
         }
 
+        console.log('[PropertiesPage] response.data:', response.data);
+        console.log('[PropertiesPage] Is array?:', Array.isArray(response.data));
+
         const propsArray = Array.isArray(response.data) ? response.data : [];
+        console.log('[PropertiesPage] Setting properties:', propsArray.length, 'items');
         setProperties(propsArray);
       } catch (err: any) {
-        console.error('Error fetching properties:', err);
+        console.error('[PropertiesPage] Error fetching properties:', err);
         setProperties([]);
       } finally {
         setLoading(false);

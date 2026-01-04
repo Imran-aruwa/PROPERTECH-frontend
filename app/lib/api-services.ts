@@ -313,18 +313,34 @@ export const authApi = {
 export const propertiesApi = {
   async list() {
     const response = await apiClient.get('/properties/');
+    console.log('[propertiesApi.list] Raw response:', JSON.stringify(response, null, 2));
     // Handle double-wrapped response from Next.js API route
     if (response.success && response.data?.data) {
+      console.log('[propertiesApi.list] Unwrapping data.data');
       return { success: true, data: response.data.data };
     }
+    // If data is already an array, return as-is
+    if (response.success && Array.isArray(response.data)) {
+      console.log('[propertiesApi.list] Data is already array');
+      return response;
+    }
+    console.log('[propertiesApi.list] Returning response as-is');
     return response;
   },
   async getAll() {
     const response = await apiClient.get('/properties/');
+    console.log('[propertiesApi.getAll] Raw response:', JSON.stringify(response, null, 2));
     // Handle double-wrapped response from Next.js API route
     if (response.success && response.data?.data) {
+      console.log('[propertiesApi.getAll] Unwrapping data.data');
       return { success: true, data: response.data.data };
     }
+    // If data is already an array, return as-is
+    if (response.success && Array.isArray(response.data)) {
+      console.log('[propertiesApi.getAll] Data is already array');
+      return response;
+    }
+    console.log('[propertiesApi.getAll] Returning response as-is');
     return response;
   },
   async get(id: string) {

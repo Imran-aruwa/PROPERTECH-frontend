@@ -68,10 +68,19 @@ export default function NewPropertyPage() {
   const onSubmit = async (data: PropertyFormData) => {
     try {
       setSubmitting(true);
-      await propertiesApi.create(data);
+      console.log('[NewProperty] Creating property with data:', data);
+      const response = await propertiesApi.create(data);
+      console.log('[NewProperty] Create response:', JSON.stringify(response, null, 2));
+
+      if (!response.success) {
+        showError(response.error || 'Failed to add property');
+        return;
+      }
+
       success('Property added successfully!');
       setTimeout(() => router.push('/owner/properties'), 1500);
     } catch (err: any) {
+      console.error('[NewProperty] Error:', err);
       showError(err.message || 'Failed to add property');
     } finally {
       setSubmitting(false);
