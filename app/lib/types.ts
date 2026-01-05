@@ -65,6 +65,13 @@ export interface CreatePropertyData {
   country: string;
   description?: string;
   image_url?: string;
+  // Unit generation fields (optional)
+  total_units?: number;
+  unit_prefix?: string;
+  default_bedrooms?: number;
+  default_bathrooms?: number;
+  default_rent?: number;
+  default_square_feet?: number;
 }
 
 // ==================== UNIT ====================

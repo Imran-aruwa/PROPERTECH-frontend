@@ -18,6 +18,13 @@ interface PropertyFormData {
   country: string;
   description: string;
   image_url: string;
+  // Unit generation fields
+  total_units: number;
+  unit_prefix: string;
+  default_bedrooms: number;
+  default_bathrooms: number;
+  default_rent: number | '';
+  default_square_feet: number | '';
 }
 
 export default function NewPropertyPage() {
@@ -60,7 +67,14 @@ export default function NewPropertyPage() {
       postal_code: '',
       country: 'Kenya',
       description: '',
-      image_url: ''
+      image_url: '',
+      // Unit generation defaults
+      total_units: 0,
+      unit_prefix: 'Unit',
+      default_bedrooms: 1,
+      default_bathrooms: 1,
+      default_rent: '',
+      default_square_feet: ''
     },
     validateForm
   );
@@ -68,8 +82,20 @@ export default function NewPropertyPage() {
   const onSubmit = async (data: PropertyFormData) => {
     try {
       setSubmitting(true);
-      console.log('[NewProperty] Creating property with data:', data);
-      const response = await propertiesApi.create(data);
+
+      // Format data for API - convert empty strings to null/undefined
+      const apiData = {
+        ...data,
+        total_units: data.total_units || 0,
+        unit_prefix: data.unit_prefix || 'Unit',
+        default_bedrooms: data.default_bedrooms || 1,
+        default_bathrooms: data.default_bathrooms || 1,
+        default_rent: data.default_rent || null,
+        default_square_feet: data.default_square_feet || null
+      };
+
+      console.log('[NewProperty] Creating property with data:', apiData);
+      const response = await propertiesApi.create(apiData);
       console.log('[NewProperty] Create response:', JSON.stringify(response, null, 2));
 
       if (!response.success) {
@@ -77,7 +103,11 @@ export default function NewPropertyPage() {
         return;
       }
 
-      success('Property added successfully!');
+      const unitsCreated = data.total_units || 0;
+      const message = unitsCreated > 0
+        ? `Property added with ${unitsCreated} units!`
+        : 'Property added successfully!';
+      success(message);
       setTimeout(() => router.push('/owner/properties'), 1500);
     } catch (err: any) {
       console.error('[NewProperty] Error:', err);
@@ -260,6 +290,134 @@ export default function NewPropertyPage() {
             <p className="mt-1 text-sm text-gray-500">
               Provide a URL to an image of your property
             </p>
+          </div>
+
+          {/* Unit Generation Section */}
+          <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Unit Configuration</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Automatically generate units for this property. Leave "Number of Units" at 0 to skip automatic unit creation.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Number of Units */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Number of Units
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={values.total_units}
+                  onChange={(e) => handleChange('total_units', parseInt(e.target.value) || 0)}
+                  onBlur={() => handleBlur('total_units')}
+                  className={inputClasses('total_units')}
+                  placeholder="0"
+                />
+              </div>
+
+              {/* Unit Prefix */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Unit Prefix
+                </label>
+                <select
+                  value={values.unit_prefix}
+                  onChange={(e) => handleChange('unit_prefix', e.target.value)}
+                  onBlur={() => handleBlur('unit_prefix')}
+                  className={inputClasses('unit_prefix')}
+                >
+                  <option value="Unit">Unit</option>
+                  <option value="Apt">Apt</option>
+                  <option value="Suite">Suite</option>
+                  <option value="Room">Room</option>
+                  <option value="House">House</option>
+                  <option value="">No Prefix (Numbers Only)</option>
+                </select>
+              </div>
+
+              {/* Default Bedrooms */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Default Bedrooms
+                </label>
+                <select
+                  value={values.default_bedrooms}
+                  onChange={(e) => handleChange('default_bedrooms', parseInt(e.target.value))}
+                  onBlur={() => handleBlur('default_bedrooms')}
+                  className={inputClasses('default_bedrooms')}
+                >
+                  <option value="0">Studio</option>
+                  <option value="1">1 Bedroom</option>
+                  <option value="2">2 Bedrooms</option>
+                  <option value="3">3 Bedrooms</option>
+                  <option value="4">4 Bedrooms</option>
+                  <option value="5">5+ Bedrooms</option>
+                </select>
+              </div>
+
+              {/* Default Bathrooms */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Default Bathrooms
+                </label>
+                <select
+                  value={values.default_bathrooms}
+                  onChange={(e) => handleChange('default_bathrooms', parseFloat(e.target.value))}
+                  onBlur={() => handleBlur('default_bathrooms')}
+                  className={inputClasses('default_bathrooms')}
+                >
+                  <option value="1">1 Bathroom</option>
+                  <option value="1.5">1.5 Bathrooms</option>
+                  <option value="2">2 Bathrooms</option>
+                  <option value="2.5">2.5 Bathrooms</option>
+                  <option value="3">3 Bathrooms</option>
+                  <option value="3.5">3.5 Bathrooms</option>
+                  <option value="4">4+ Bathrooms</option>
+                </select>
+              </div>
+
+              {/* Default Rent */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Default Monthly Rent (KES)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={values.default_rent}
+                  onChange={(e) => handleChange('default_rent', e.target.value ? parseFloat(e.target.value) : '')}
+                  onBlur={() => handleBlur('default_rent')}
+                  className={inputClasses('default_rent')}
+                  placeholder="e.g., 15000"
+                />
+              </div>
+
+              {/* Default Square Feet */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Default Size (sq ft)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={values.default_square_feet}
+                  onChange={(e) => handleChange('default_square_feet', e.target.value ? parseInt(e.target.value) : '')}
+                  onBlur={() => handleBlur('default_square_feet')}
+                  className={inputClasses('default_square_feet')}
+                  placeholder="e.g., 500"
+                />
+              </div>
+            </div>
+
+            {values.total_units > 0 && (
+              <div className="mt-4 p-3 bg-blue-100 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>{values.total_units}</strong> units will be automatically created with prefix "{values.unit_prefix}"
+                  (e.g., {values.unit_prefix} 1, {values.unit_prefix} 2, ... {values.unit_prefix} {values.total_units})
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Actions */}
