@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { Plus, Loader2, Building2, ShoppingBag } from 'lucide-react';
 import { PropertyCard } from '@/components/properties/PropertyCard';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { agentApi } from '@/app/lib/api-services';
@@ -77,13 +78,25 @@ export default function AgentPropertiesPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">My Properties</h1>
-            <p className="text-gray-600 mt-1">Manage properties under your care</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Properties</h1>
+            <p className="text-gray-600 mt-1">View and manage all properties in the system</p>
           </div>
-          <button className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition w-full sm:w-auto">
-            <Plus className="w-4 h-4" />
-            <span>Browse Marketplace</span>
-          </button>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Link
+              href="/agent/marketplace"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Browse Marketplace</span>
+            </Link>
+            <Link
+              href="/agent/properties/new"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Property</span>
+            </Link>
+          </div>
         </div>
 
         {error && (
@@ -94,10 +107,24 @@ export default function AgentPropertiesPage() {
 
         {properties.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg border">
-            <p className="text-gray-500 mb-4">No properties assigned yet</p>
-            <button className="text-blue-600 hover:text-blue-700 font-medium">
-              Browse available properties
-            </button>
+            <Building2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-500 mb-4">No properties in the system yet</p>
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+              <Link
+                href="/agent/properties/new"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                <Plus className="w-4 h-4" />
+                Add Property
+              </Link>
+              <Link
+                href="/agent/marketplace"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                Browse Marketplace
+              </Link>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">

@@ -672,6 +672,12 @@ export const agentApi = {
   async getProperties() {
     return apiClient.get('/agent/properties/');
   },
+  async createProperty(data: any) {
+    return apiClient.post('/agent/properties/', data);
+  },
+  async getMarketplace() {
+    return apiClient.get('/agent/marketplace/');
+  },
   async getTenants() {
     return apiClient.get('/agent/tenants/');
   },
