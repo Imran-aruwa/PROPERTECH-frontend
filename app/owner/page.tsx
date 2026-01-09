@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useRequireAuth } from '@/lib/auth-context';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth-context';
 import { propertiesApi, analyticsApi } from '@/lib/api-services';
 import { LoadingSpinner, CardSkeleton } from '@/components/ui/LoadingSpinner';
 import { Building2, Home, Users, DollarSign, Wrench, TrendingUp, AlertCircle, Plus } from 'lucide-react';
@@ -18,7 +19,8 @@ interface DashboardStats {
 }
 
 export default function OwnerDashboard() {
-  const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('owner');
+  const { user, isLoading: authLoading, isAuthenticated, token, role } = useAuth();
+  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,11 +73,12 @@ export default function OwnerDashboard() {
   }, []);
 
   useEffect(() => {
-    // useRequireAuth handles redirect if not authenticated or wrong role
-    if (!authLoading && isAuthenticated) {
-      fetchDashboardData();
-    }
-  }, [authLoading, isAuthenticated, fetchDashboardData]);
+    if (authLoading) return;
+    if (!isAuthenticated) { router.push('/login'); return; }
+    if (role && role !== 'owner') { router.push('/unauthorized'); return; }
+    if (!token) return;
+    fetchDashboardData();
+  }, [authLoading, isAuthenticated, role, router, token, fetchDashboardData]);
 
   if (authLoading || loading) {
     return (
