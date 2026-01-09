@@ -55,8 +55,9 @@ export default function OwnerDashboard() {
     if (authLoading) return;
     if (!isAuthenticated) { router.push("/login"); return; }
     if (role && role !== "owner") { router.push("/unauthorized"); return; }
+    if (!token) return; // Wait for token to be ready
     fetchDashboardStats();
-  }, [authLoading, isAuthenticated, role, router, fetchDashboardStats]);
+  }, [authLoading, isAuthenticated, role, router, token, fetchDashboardStats]);
 
   useEffect(() => {
     const handleFocus = () => { if (isAuthenticated && token) fetchDashboardStats(true); };
