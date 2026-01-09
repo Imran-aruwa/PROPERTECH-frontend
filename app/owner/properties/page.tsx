@@ -8,7 +8,7 @@ import { useToast } from '@/app/lib/hooks';
 import { LoadingSpinner, TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
 import { ConfirmModal } from '@/components/ui/Modal';
-import { Building2, Plus, Edit, Trash2, Eye, MapPin, Home } from 'lucide-react';
+import { Building2, Plus, Edit, Trash2, Eye, MapPin, Home, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { Property } from '@/app/lib/types';
 
@@ -122,13 +122,22 @@ export default function PropertiesPage() {
                 <p className="text-gray-600 mt-1">Manage all your properties</p>
               </div>
             </div>
-            <Link
-              href="/owner/properties/new"
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Plus className="w-5 h-5" />
-              Add Property
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/owner/properties/import"
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                <Upload className="w-5 h-5" />
+                Bulk Import
+              </Link>
+              <Link
+                href="/owner/properties/new"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Plus className="w-5 h-5" />
+                Add Property
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000') + '/api';
+const BACKEND_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com') + '/api';
 
 export async function POST(request: NextRequest) {
   try {

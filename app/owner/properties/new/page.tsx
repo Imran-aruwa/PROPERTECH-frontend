@@ -8,9 +8,21 @@ import { useForm, useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
 import { Building2, ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
+import { PropertyType } from '@/app/lib/types';
+
+const PROPERTY_TYPES: { value: PropertyType; label: string }[] = [
+  { value: 'apartment', label: 'Apartment Complex' },
+  { value: 'maisonette', label: 'Maisonette' },
+  { value: 'standalone', label: 'Standalone House' },
+  { value: 'commercial', label: 'Commercial Property' },
+  { value: 'townhouse', label: 'Townhouse' },
+  { value: 'villa', label: 'Villa' },
+  { value: 'bungalow', label: 'Bungalow' },
+];
 
 interface PropertyFormData {
   name: string;
+  property_type: PropertyType;
   address: string;
   city: string;
   state: string;
@@ -69,6 +81,7 @@ export default function NewPropertyPage() {
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useForm<PropertyFormData>(
     {
       name: '',
+      property_type: 'apartment',
       address: '',
       city: '',
       state: '',
@@ -188,6 +201,26 @@ export default function NewPropertyPage() {
             {touched.name && errors.name && (
               <p className="mt-1 text-sm text-red-500">{errors.name}</p>
             )}
+          </div>
+
+          {/* Property Type */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Property Type <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={values.property_type}
+              onChange={(e) => handleChange('property_type', e.target.value as PropertyType)}
+              onBlur={() => handleBlur('property_type')}
+              className={inputClasses('property_type')}
+            >
+              {PROPERTY_TYPES.map((type) => (
+                <option key={type.value} value={type.value}>{type.label}</option>
+              ))}
+            </select>
+            <p className="mt-1 text-sm text-gray-500">
+              Select the type of property for better categorization and reporting
+            </p>
           </div>
 
           {/* Address */}

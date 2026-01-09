@@ -7,43 +7,28 @@ import { propertiesApi, unitsApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { ConfirmModal } from '@/components/ui/Modal';
 import {
-  Building2, ArrowLeft, Edit, Trash2, Home, MapPin, Users,
-  DollarSign, Plus, Bed, Bath, Eye
+  Building2, ArrowLeft, Home, MapPin, Users,
+  DollarSign, Bed, Bath, Eye, Phone, Mail
 } from 'lucide-react';
 import Link from 'next/link';
 import { Property, Unit } from '@/app/lib/types';
 
-export default function PropertyDetailPage() {
+export default function AgentPropertyDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { isLoading: authLoading, isAuthenticated } = useRequireAuth('owner');
-  const { toasts, success, error: showError, removeToast } = useToast();
+  const { isLoading: authLoading, isAuthenticated } = useRequireAuth('agent');
+  const { toasts, error: showError, removeToast } = useToast();
   const [property, setProperty] = useState<Property | null>(null);
   const [units, setUnits] = useState<Unit[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [deleting, setDeleting] = useState(false);
 
   const propertyId = params.id as string;
 
-  // Fetch property data only once when authenticated
   useEffect(() => {
-    // Skip if still loading auth or not authenticated
-    if (authLoading || !isAuthenticated) return;
-
-    // Skip if no property ID
-    if (!propertyId) return;
-
-    let isMounted = true;
-    let hasFetched = false;
+    if (authLoading || !isAuthenticated || !propertyId) return;
 
     const fetchData = async () => {
-      // Prevent duplicate fetches
-      if (hasFetched) return;
-      hasFetched = true;
-
       try {
         setLoading(true);
         const [propertyResponse, unitsResponse] = await Promise.all([
@@ -51,59 +36,27 @@ export default function PropertyDetailPage() {
           unitsApi.list(propertyId)
         ]);
 
-        if (!isMounted) return;
-
         if (propertyResponse.success && propertyResponse.data) {
           setProperty(propertyResponse.data);
         } else {
-          console.error('[PropertyDetail] Property not found');
-          setProperty(null);
+          showError('Property not found');
+          router.push('/agent/properties');
+          return;
         }
 
-        if (unitsResponse.success) {
-          const unitsData = Array.isArray(unitsResponse.data)
-            ? unitsResponse.data
-            : unitsResponse.data?.units || [];
-          setUnits(unitsData);
+        if (unitsResponse.success && Array.isArray(unitsResponse.data)) {
+          setUnits(unitsResponse.data);
         }
       } catch (err: any) {
         console.error('Failed to load property:', err);
-        if (isMounted) {
-          setProperty(null);
-        }
+        showError('Failed to load property details');
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [authLoading, isAuthenticated, propertyId]); // Removed router from deps
-
-  const handleDelete = async () => {
-    try {
-      setDeleting(true);
-      const response = await propertiesApi.delete(propertyId);
-
-      if (!response.success) {
-        showError(response.error || 'Failed to delete property');
-        return;
-      }
-
-      success('Property deleted successfully');
-      router.push('/owner/properties');
-    } catch (err: any) {
-      showError(err.message || 'Failed to delete property');
-    } finally {
-      setDeleting(false);
-      setDeleteModal(false);
-    }
-  };
+  }, [authLoading, isAuthenticated, propertyId, router, showError]);
 
   const formatCurrency = (amount: number | null | undefined) => {
     const safeAmount = amount || 0;
@@ -117,7 +70,6 @@ export default function PropertyDetailPage() {
     maintenance: 'bg-orange-100 text-orange-800'
   };
 
-  // Calculate stats - handle both rent_amount and monthly_rent field names
   const totalUnits = units.length;
   const occupiedUnits = units.filter(u => u.status === 'occupied').length;
   const availableUnits = units.filter(u => u.status === 'available' || u.status === 'vacant').length;
@@ -140,7 +92,7 @@ export default function PropertyDetailPage() {
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Property Not Found</h2>
           <p className="text-gray-600 mb-4">The property you're looking for doesn't exist.</p>
           <Link
-            href="/owner/properties"
+            href="/agent/properties"
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -161,7 +113,7 @@ export default function PropertyDetailPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link
-                href="/owner/properties"
+                href="/agent/properties"
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
@@ -174,22 +126,13 @@ export default function PropertyDetailPage() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/owner/properties/${propertyId}/edit`}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                <Edit className="w-4 h-4" />
-                Edit
-              </Link>
-              <button
-                onClick={() => setDeleteModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete
-              </button>
-            </div>
+            <Link
+              href="/agent/leads"
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <Users className="w-4 h-4" />
+              Manage Leads
+            </Link>
           </div>
         </div>
       </div>
@@ -250,10 +193,6 @@ export default function PropertyDetailPage() {
                   <p className="text-sm text-gray-600">Postal Code</p>
                   <p className="font-medium text-gray-900">{property.postal_code}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Country</p>
-                  <p className="font-medium text-gray-900">{property.country}</p>
-                </div>
               </div>
               {property.description && (
                 <div className="mt-6 pt-6 border-t border-gray-200">
@@ -265,29 +204,13 @@ export default function PropertyDetailPage() {
 
             {/* Units List */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Units ({units.length})</h2>
-                <Link
-                  href="/owner/units/new"
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Unit
-                </Link>
-              </div>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Available Units ({availableUnits})</h2>
 
               {units.length === 0 ? (
                 <div className="text-center py-12">
                   <Home className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No Units Yet</h3>
-                  <p className="text-gray-600 mb-4">Start by adding units to this property</p>
-                  <Link
-                    href="/owner/units/new"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add First Unit
-                  </Link>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No Units Listed</h3>
+                  <p className="text-gray-600">No units are currently listed for this property</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -313,20 +236,21 @@ export default function PropertyDetailPage() {
                         <span className="flex items-center gap-1">
                           <Bath className="w-4 h-4" /> {unit.bathrooms || 0}
                         </span>
-                        {((unit as any).square_feet || (unit as any).size_sqm) && (
-                          <span>{(unit as any).square_feet || (unit as any).size_sqm} {(unit as any).square_feet ? 'sq ft' : 'm²'}</span>
-                        )}
                       </div>
 
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-gray-900">{formatCurrency((unit as any).monthly_rent || (unit as any).rent_amount)}/mo</span>
-                        <Link
-                          href={`/owner/units/${unit.id}`}
-                          className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
-                        >
-                          <Eye className="w-4 h-4" />
-                          View
-                        </Link>
+                        {unit.status === 'available' || unit.status === 'vacant' ? (
+                          <Link
+                            href="/agent/leads"
+                            className="flex items-center gap-1 text-sm text-green-600 hover:text-green-700"
+                          >
+                            <Users className="w-4 h-4" />
+                            Find Tenant
+                          </Link>
+                        ) : (
+                          <span className="text-sm text-gray-500">Occupied</span>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -382,43 +306,31 @@ export default function PropertyDetailPage() {
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
               <div className="space-y-2">
                 <Link
-                  href="/owner/units/new"
+                  href="/agent/viewings"
                   className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  <Plus className="w-4 h-4" />
-                  Add New Unit
+                  <Eye className="w-4 h-4" />
+                  Schedule Viewing
                 </Link>
                 <Link
-                  href="/owner/tenants/new"
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  href="/agent/leads"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                 >
                   <Users className="w-4 h-4" />
-                  Add Tenant
+                  View Leads
                 </Link>
                 <Link
-                  href={`/owner/properties/${propertyId}/edit`}
+                  href="/agent/marketplace"
                   className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                 >
-                  <Edit className="w-4 h-4" />
-                  Edit Property
+                  <Building2 className="w-4 h-4" />
+                  Browse Marketplace
                 </Link>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Delete Confirmation Modal */}
-      <ConfirmModal
-        isOpen={deleteModal}
-        onClose={() => setDeleteModal(false)}
-        onConfirm={handleDelete}
-        title="Delete Property"
-        message={`Are you sure you want to delete "${property.name}"? This will also delete all ${totalUnits} units associated with this property. This action cannot be undone.`}
-        confirmText="Delete"
-        variant="danger"
-        isLoading={deleting}
-      />
     </div>
   );
 }

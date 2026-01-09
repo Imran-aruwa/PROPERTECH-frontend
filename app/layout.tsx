@@ -21,12 +21,12 @@ export const metadata: Metadata = {
     'property management Kenya',
     'real estate software Africa',
   ],
-  metadataBase: new URL('https://propertechsoftware.co.ke'),
+  metadataBase: new URL('https://propertechsoftware.com'),
   openGraph: {
-    title: 'ProperTech Software',
+    title: 'Propertech Software',
     description:
       'Smarter property management, anywhere. Manage properties, tenants, payments, and maintenance with ease.',
-    url: 'https://propertechsoftware.co.ke',
+    url: 'https://propertechsoftware.com',
     siteName: 'Propertech Software',
     images: ['/og-image.png'], // ✅ place this in /public later
     type: 'website',

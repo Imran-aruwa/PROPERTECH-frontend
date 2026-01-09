@@ -55,10 +55,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setToken(savedToken);
           setUser(JSON.parse(savedUser));
           setRole(savedRole);
+
+          // Sync cookies with localStorage for middleware verification
+          document.cookie = `auth_token=${savedToken}; path=/; max-age=86400; SameSite=Lax`;
+          if (savedRole) {
+            document.cookie = `user_role=${savedRole}; path=/; max-age=86400; SameSite=Lax`;
+          }
         }
       } catch (error) {
         console.error('Failed to initialize auth:', error);
         localStorage.clear();
+        // Clear cookies too
+        document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        document.cookie = 'user_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
       } finally {
         setIsLoading(false);
       }
@@ -99,6 +108,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('auth_token', access_token);
       localStorage.setItem('auth_user', JSON.stringify(userData));
       localStorage.setItem('user_role', userData.role);
+
+      // Set cookies for middleware verification (secure, httpOnly not possible from client)
+      document.cookie = `auth_token=${access_token}; path=/; max-age=86400; SameSite=Lax`;
+      document.cookie = `user_role=${userData.role}; path=/; max-age=86400; SameSite=Lax`;
 
       // Update state
       setToken(access_token);
@@ -159,6 +172,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
     localStorage.removeItem('user_role');
+
+    // Clear cookies
+    document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'user_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 
     // Clear state
     setToken(null);

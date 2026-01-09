@@ -140,6 +140,7 @@ export default function AgentPropertiesPage() {
                 collectionRate={property.collectionRate}
                 outstanding={property.outstanding}
                 status={property.status}
+                basePath="/agent/properties"
               />
             ))}
           </div>

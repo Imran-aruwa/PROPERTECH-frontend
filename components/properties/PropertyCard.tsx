@@ -14,6 +14,7 @@ interface PropertyCardProps {
   imageUrl?: string;
   onClick?: () => void;
   className?: string;
+  basePath?: string; // Base path for links (e.g., '/owner/properties', '/agent/properties')
 }
 
 export function PropertyCard({
@@ -29,6 +30,7 @@ export function PropertyCard({
   imageUrl,
   onClick,
   className = '',
+  basePath = '/owner/properties',
 }: PropertyCardProps) {
   // Normalize status to be type-safe (no behavior change)
   const normalizedStatus: 'active' | 'inactive' =
@@ -132,7 +134,7 @@ export function PropertyCard({
 
         {/* View Details Button */}
         <Link
-          href={`/owner/properties/${id}`}
+          href={`${basePath}/${id}`}
           className="block w-full mt-4 text-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium"
         >
           View Details

@@ -26,10 +26,13 @@ export interface RegisterData {
 }
 
 // ==================== PROPERTY ====================
+export type PropertyType = 'apartment' | 'maisonette' | 'standalone' | 'commercial' | 'townhouse' | 'villa' | 'bungalow';
+
 export interface Property {
   id: number;
   owner_id: number;
   name: string;
+  property_type?: PropertyType;
   address: string;
   city: string;
   state: string;
@@ -58,6 +61,7 @@ export interface PropertyStats {
 
 export interface CreatePropertyData {
   name: string;
+  property_type?: PropertyType;
   address: string;
   city: string;
   state: string;
@@ -80,6 +84,18 @@ export interface CreatePropertyData {
   default_sq_bathrooms?: number;
   // Unit description
   default_unit_description?: string;
+}
+
+export interface UpdatePropertyData {
+  name?: string;
+  property_type?: PropertyType;
+  address?: string;
+  city?: string;
+  state?: string;
+  postal_code?: string;
+  country?: string;
+  description?: string;
+  image_url?: string;
 }
 
 // ==================== UNIT ====================

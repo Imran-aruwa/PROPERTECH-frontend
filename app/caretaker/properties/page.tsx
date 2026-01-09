@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Building2, MapPin, Users, Loader2 } from 'lucide-react';
+import { Building2, MapPin, Users, Loader2, Eye } from 'lucide-react';
 import { apiClient } from '@/app/lib/api-services';
 
 interface Property {
@@ -116,6 +117,13 @@ export default function CaretakerPropertiesPage() {
                     <span className="text-gray-500"> occupied</span>
                   </div>
                 </div>
+                <Link
+                  href={`/caretaker/properties/${property.id}`}
+                  className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <Eye className="w-4 h-4" />
+                  View Details
+                </Link>
               </div>
             ))}
           </div>

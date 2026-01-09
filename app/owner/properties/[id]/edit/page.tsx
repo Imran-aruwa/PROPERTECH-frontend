@@ -9,10 +9,21 @@ import { ToastContainer } from '@/components/ui/Toast';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Building2, ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
-import { Property } from '@/app/lib/types';
+import { Property, PropertyType } from '@/app/lib/types';
+
+const PROPERTY_TYPES: { value: PropertyType; label: string }[] = [
+  { value: 'apartment', label: 'Apartment Complex' },
+  { value: 'maisonette', label: 'Maisonette' },
+  { value: 'standalone', label: 'Standalone House' },
+  { value: 'commercial', label: 'Commercial Property' },
+  { value: 'townhouse', label: 'Townhouse' },
+  { value: 'villa', label: 'Villa' },
+  { value: 'bungalow', label: 'Bungalow' },
+];
 
 interface PropertyFormData {
   name: string;
+  property_type: PropertyType;
   address: string;
   city: string;
   state: string;
@@ -34,6 +45,7 @@ export default function EditPropertyPage() {
 
   const [formData, setFormData] = useState<PropertyFormData>({
     name: '',
+    property_type: 'apartment',
     address: '',
     city: '',
     state: '',
@@ -48,15 +60,20 @@ export default function EditPropertyPage() {
   useEffect(() => {
     if (authLoading || !isAuthenticated || !propertyId) return;
 
+    let isMounted = true;
+
     const fetchProperty = async () => {
       try {
         setLoading(true);
         const response = await propertiesApi.get(propertyId);
 
+        if (!isMounted) return;
+
         if (response.success && response.data) {
           const property = response.data as Property;
           setFormData({
             name: property.name || '',
+            property_type: property.property_type || 'apartment',
             address: property.address || '',
             city: property.city || '',
             state: property.state || '',
@@ -65,21 +82,22 @@ export default function EditPropertyPage() {
             description: property.description || '',
             image_url: property.image_url || ''
           });
-        } else {
-          showError('Property not found');
-          router.push('/owner/properties');
         }
       } catch (err) {
         console.error('Failed to load property:', err);
-        showError('Failed to load property');
-        router.push('/owner/properties');
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchProperty();
-  }, [authLoading, isAuthenticated, propertyId, router, showError]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [authLoading, isAuthenticated, propertyId]); // Removed router and showError from deps
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof PropertyFormData, string>> = {};
@@ -185,6 +203,24 @@ export default function EditPropertyPage() {
                   }`}
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
+              </div>
+
+              <div className="md:col-span-2">
+                <label htmlFor="property_type" className="block text-sm font-medium text-gray-700 mb-1">
+                  Property Type *
+                </label>
+                <select
+                  id="property_type"
+                  name="property_type"
+                  value={formData.property_type}
+                  onChange={(e) => setFormData(prev => ({ ...prev, property_type: e.target.value as PropertyType }))}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                >
+                  {PROPERTY_TYPES.map((type) => (
+                    <option key={type.value} value={type.value}>{type.label}</option>
+                  ))}
+                </select>
+                <p className="mt-1 text-sm text-gray-500">Select the type of property for better categorization</p>
               </div>
 
               <div className="md:col-span-2">

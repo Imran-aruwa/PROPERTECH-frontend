@@ -1,408 +1,128 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { useRequireAuth } from '@/lib/auth-context';
-import { unitsApi, propertiesApi, maintenanceApi } from '@/lib/api-services';
-import { useToast } from '@/app/lib/hooks';
-import { ToastContainer } from '@/components/ui/Toast';
+import { useRouter, useParams } from 'next/navigation';
+import { useAuth } from '@/app/lib/auth-context';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { ConfirmModal } from '@/components/ui/Modal';
-import {
-  Home, ArrowLeft, Edit, Trash2, Bed, Bath, Maximize, Building2,
-  DollarSign, User, Calendar, Wrench, CheckCircle, Clock
-} from 'lucide-react';
+import { Building2, User, CreditCard, Wrench, ArrowLeft, Plus, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { Unit, Property, MaintenanceRequest } from '@/app/lib/types';
+
+interface Unit {
+  id: string;
+  unit_number: string;
+  bedrooms: number;
+  bathrooms: number;
+  monthly_rent: number;
+  status: string;
+  property: { id: string; name: string; address: string; };
+  tenant: { id: string; full_name: string; email: string; phone: string; balance_due: number; } | null;
+  payments: Array<{ id: string; amount: number; status: string; payment_type: string; }>;
+  maintenance_requests: Array<{ id: string; title: string; status: string; priority: string; }>;
+}
+
+type TabType = "overview" | "tenant" | "payments" | "maintenance";
 
 export default function UnitDetailPage() {
-  const params = useParams();
+  const { isAuthenticated, role, isLoading: authLoading, token } = useAuth();
   const router = useRouter();
-  const { isLoading: authLoading, isAuthenticated } = useRequireAuth('owner');
-  const { toasts, success, error: showError, removeToast } = useToast();
+  const params = useParams();
+  const unitId = params?.id as string;
   const [unit, setUnit] = useState<Unit | null>(null);
-  const [property, setProperty] = useState<Property | null>(null);
-  const [maintenanceRequests, setMaintenanceRequests] = useState<MaintenanceRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-
-  const unitId = params.id as string;
+  const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<TabType>("overview");
 
   useEffect(() => {
-    if (authLoading || !isAuthenticated || !unitId) return;
-
-    const fetchData = async () => {
+    if (authLoading) return;
+    if (!isAuthenticated) { router.push("/login"); return; }
+    if (role && role !== "owner") { router.push("/unauthorized"); return; }
+    const fetchUnit = async () => {
       try {
         setLoading(true);
-
-        // First get all properties to find unit
-        const propertiesResponse = await propertiesApi.getAll();
-        const propertiesData = Array.isArray(propertiesResponse.data) ? propertiesResponse.data : [];
-
-        // Search for the unit across all properties
-        let foundUnit: Unit | null = null;
-        let foundProperty: Property | null = null;
-
-        for (const prop of propertiesData) {
-          const unitsResponse = await unitsApi.list(prop.id.toString());
-          if (unitsResponse.success && Array.isArray(unitsResponse.data)) {
-            const matchingUnit = unitsResponse.data.find((u: Unit) => u.id === parseInt(unitId));
-            if (matchingUnit) {
-              foundUnit = matchingUnit;
-              foundProperty = prop;
-              break;
-            }
-          }
-        }
-
-        if (!foundUnit) {
-          showError('Unit not found');
-          router.push('/owner/units');
-          return;
-        }
-
-        setUnit(foundUnit);
-        setProperty(foundProperty);
-
-        // Fetch maintenance requests for this unit
-        try {
-          const maintenanceResponse = await maintenanceApi.getAll();
-          if (maintenanceResponse.success && Array.isArray(maintenanceResponse.data)) {
-            const unitMaintenance = maintenanceResponse.data.filter(
-              (m: MaintenanceRequest) => m.unit_id === parseInt(unitId)
-            );
-            setMaintenanceRequests(unitMaintenance);
-          }
-        } catch (err) {
-          console.error('Failed to fetch maintenance requests:', err);
-        }
-      } catch (err: any) {
-        console.error('Failed to load unit:', err);
-        showError('Failed to load unit details');
-      } finally {
-        setLoading(false);
-      }
+        const response = await fetch("/api/units/" + unitId, { headers: { "Authorization": "Bearer " + token } });
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.error || "Failed to fetch unit");
+        setUnit(data.data);
+      } catch (err: any) { setError(err.message); } finally { setLoading(false); }
     };
+    if (unitId) fetchUnit();
+  }, [authLoading, isAuthenticated, role, router, unitId, token]);
 
-    fetchData();
-  }, [authLoading, isAuthenticated, unitId, router, showError]);
+  const tabs = [
+    { id: "overview", label: "Overview", icon: Building2 },
+    { id: "tenant", label: "Tenant", icon: User },
+    { id: "payments", label: "Payments", icon: CreditCard },
+    { id: "maintenance", label: "Maintenance", icon: Wrench },
+  ];
 
-  const handleDelete = async () => {
-    try {
-      setDeleting(true);
-      const response = await unitsApi.delete(unitId);
-
-      if (!response.success) {
-        showError(response.error || 'Failed to delete unit');
-        return;
-      }
-
-      success('Unit deleted successfully');
-      router.push('/owner/units');
-    } catch (err: any) {
-      showError(err.message || 'Failed to delete unit');
-    } finally {
-      setDeleting(false);
-      setDeleteModal(false);
-    }
+  const formatCurrency = (amount: number) => "KES " + amount.toLocaleString();
+  const getStatusBadge = (status: string) => {
+    const colors: Record<string, string> = { vacant: "bg-yellow-100 text-yellow-800", occupied: "bg-green-100 text-green-800", pending: "bg-yellow-100 text-yellow-800", completed: "bg-green-100 text-green-800" };
+    return colors[status] || "bg-gray-100 text-gray-800";
   };
 
-  const formatCurrency = (amount: number) => `KES ${amount.toLocaleString()}`;
-
-  const statusColors: Record<string, string> = {
-    available: 'bg-green-100 text-green-800',
-    occupied: 'bg-blue-100 text-blue-800',
-    maintenance: 'bg-orange-100 text-orange-800'
-  };
-
-  const priorityColors: Record<string, string> = {
-    low: 'bg-gray-100 text-gray-800',
-    medium: 'bg-blue-100 text-blue-800',
-    high: 'bg-orange-100 text-orange-800',
-    urgent: 'bg-red-100 text-red-800'
-  };
-
-  if (authLoading || loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingSpinner size="lg" text="Loading unit details..." />
-      </div>
-    );
-  }
-
-  if (!unit) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Home className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Unit Not Found</h2>
-          <p className="text-gray-600 mb-4">The unit you're looking for doesn't exist.</p>
-          <Link
-            href="/owner/units"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Units
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  if (authLoading || loading) return <DashboardLayout role="owner"><div className="flex items-center justify-center min-h-[60vh]"><LoadingSpinner size="lg" /></div></DashboardLayout>;
+  if (error || !unit) return <DashboardLayout role="owner"><div className="text-center py-12"><p className="text-red-600">{error || "Unit not found"}</p></div></DashboardLayout>;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <ToastContainer toasts={toasts} onClose={removeToast} />
+    <DashboardLayout role="owner">
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <button onClick={() => router.back()} className="p-2 hover:bg-gray-100 rounded-lg"><ArrowLeft className="w-5 h-5" /></button>
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-gray-900">{unit.unit_number}</h1>
+            <p className="text-gray-500">{unit.property.name}</p>
+          </div>
+          <span className={"px-3 py-1 rounded-full text-sm font-medium " + getStatusBadge(unit.status)}>{unit.status}</span>
+        </div>
 
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link
-                href="/owner/units"
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5 text-gray-600" />
-              </Link>
-              <div>
-                <div className="flex items-center gap-3">
-                  <h1 className="text-2xl font-bold text-gray-900">Unit {unit.unit_number}</h1>
-                  <span className={`px-3 py-1 text-sm font-medium rounded-full ${statusColors[unit.status]}`}>
-                    {unit.status}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 mt-1 text-gray-600">
-                  <Building2 className="w-4 h-4" />
-                  <span>{property?.name || 'Unknown Property'}</span>
-                  <span className="mx-2">•</span>
-                  <span>Floor {unit.floor}</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/owner/units/${unitId}/edit`}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                <Edit className="w-4 h-4" />
-                Edit
-              </Link>
-              <button
-                onClick={() => setDeleteModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete
-              </button>
+        <div className="border-b border-gray-200">
+          <nav className="flex gap-8">{tabs.map((tab) => (<button key={tab.id} onClick={() => setActiveTab(tab.id as TabType)} className={"flex items-center gap-2 py-4 border-b-2 font-medium text-sm " + (activeTab === tab.id ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500")}><tab.icon className="w-4 h-4" />{tab.label}</button>))}</nav>
+        </div>
+
+        {activeTab === "overview" && (
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <h3 className="text-lg font-semibold mb-4">Unit Details</h3>
+              <dl className="space-y-3">
+                <div className="flex justify-between"><dt className="text-gray-500">Bedrooms</dt><dd className="font-medium">{unit.bedrooms}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Bathrooms</dt><dd className="font-medium">{unit.bathrooms}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Monthly Rent</dt><dd className="font-medium text-green-600">{formatCurrency(unit.monthly_rent)}</dd></div>
+              </dl>
             </div>
           </div>
-        </div>
-      </div>
+        )}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Info */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Unit Specifications */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Unit Specifications</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <Bed className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">{unit.bedrooms}</p>
-                  <p className="text-sm text-gray-600">Bedrooms</p>
-                </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <Bath className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">{unit.bathrooms}</p>
-                  <p className="text-sm text-gray-600">Bathrooms</p>
-                </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <Maximize className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">{unit.size_sqm}</p>
-                  <p className="text-sm text-gray-600">Sq. Meters</p>
-                </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <DollarSign className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">{(((unit as any).monthly_rent || unit.rent_amount || 0) / 1000).toFixed(0)}K</p>
-                  <p className="text-sm text-gray-600">KES/Month</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Description */}
-            {unit.description && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Description</h2>
-                <p className="text-gray-700 leading-relaxed">{unit.description}</p>
-              </div>
+        {activeTab === "tenant" && (
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            {unit.tenant ? (
+              <dl className="grid gap-4 md:grid-cols-2">
+                <div><dt className="text-gray-500 text-sm">Name</dt><dd className="font-medium">{unit.tenant.full_name}</dd></div>
+                <div><dt className="text-gray-500 text-sm">Email</dt><dd className="font-medium">{unit.tenant.email}</dd></div>
+                <div><dt className="text-gray-500 text-sm">Phone</dt><dd className="font-medium">{unit.tenant.phone}</dd></div>
+                <div><dt className="text-gray-500 text-sm">Balance</dt><dd className="font-medium">{formatCurrency(unit.tenant.balance_due)}</dd></div>
+              </dl>
+            ) : (
+              <div className="text-center py-8"><p className="text-gray-500 mb-4">No tenant assigned</p><Link href="/owner/tenants/new" className="px-4 py-2 bg-blue-600 text-white rounded-lg">Add Tenant</Link></div>
             )}
-
-            {/* Maintenance History */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Wrench className="w-5 h-5 text-orange-600" />
-                Maintenance Requests
-              </h2>
-              {maintenanceRequests.length === 0 ? (
-                <div className="text-center py-8">
-                  <Wrench className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-600">No maintenance requests for this unit</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {maintenanceRequests.map((request) => (
-                    <div
-                      key={request.id}
-                      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-                    >
-                      <div className="flex items-center gap-3">
-                        {request.status === 'completed' ? (
-                          <CheckCircle className="w-5 h-5 text-green-600" />
-                        ) : (
-                          <Clock className="w-5 h-5 text-yellow-600" />
-                        )}
-                        <div>
-                          <p className="font-medium text-gray-900">{request.title}</p>
-                          <p className="text-sm text-gray-600">
-                            {new Date(request.reported_date).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${priorityColors[request.priority]}`}>
-                          {request.priority}
-                        </span>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          request.status === 'completed' ? 'bg-green-100 text-green-800' :
-                          request.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                          'bg-yellow-100 text-yellow-800'
-                        }`}>
-                          {request.status.replace('_', ' ')}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
+        )}
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Pricing */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Pricing</h2>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Monthly Rent</span>
-                  <span className="text-2xl font-bold text-gray-900">{formatCurrency((unit as any).monthly_rent || unit.rent_amount || 0)}</span>
-                </div>
-                <div className="pt-4 border-t border-gray-200">
-                  <p className="text-sm text-gray-600">
-                    {formatCurrency((((unit as any).monthly_rent || unit.rent_amount || 0) / (unit.size_sqm || 1)))}/m² per month
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Current Tenant */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <User className="w-5 h-5 text-purple-600" />
-                Current Tenant
-              </h2>
-              {unit.status === 'occupied' && unit.tenant ? (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                      <span className="text-purple-600 font-semibold">
-                        {(unit.tenant as any).user?.full_name?.charAt(0) || 'T'}
-                      </span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">{(unit.tenant as any).user?.full_name || 'Unknown'}</p>
-                      <p className="text-sm text-gray-600">{(unit.tenant as any).user?.phone || 'No phone'}</p>
-                    </div>
-                  </div>
-                  <Link
-                    href={`/owner/tenants/${unit.tenant.id}`}
-                    className="block w-full text-center px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
-                  >
-                    View Tenant Details
-                  </Link>
-                </div>
-              ) : (
-                <div className="text-center py-4">
-                  <User className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                  <p className="text-gray-600 mb-4">No tenant assigned</p>
-                  <Link
-                    href="/owner/tenants/new"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-                  >
-                    Assign Tenant
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Property Info */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-blue-600" />
-                Property
-              </h2>
-              {property && (
-                <div className="space-y-3">
-                  <p className="font-medium text-gray-900">{property.name}</p>
-                  <p className="text-sm text-gray-600">{property.address}</p>
-                  <p className="text-sm text-gray-600">{property.city}, {property.state}</p>
-                  <Link
-                    href={`/owner/properties/${property.id}`}
-                    className="block w-full text-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors mt-4"
-                  >
-                    View Property
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-              <div className="space-y-2">
-                <Link
-                  href={`/owner/maintenance?unit=${unitId}`}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
-                >
-                  <Wrench className="w-4 h-4" />
-                  Create Maintenance Request
-                </Link>
-                <Link
-                  href={`/owner/units/${unitId}/edit`}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  <Edit className="w-4 h-4" />
-                  Edit Unit Details
-                </Link>
-              </div>
-            </div>
+        {activeTab === "payments" && (
+          <div className="bg-white rounded-lg shadow-sm border">
+            <div className="p-4 border-b"><h3 className="text-lg font-semibold">Payments</h3></div>
+            {unit.payments?.length > 0 ? (<div className="divide-y">{unit.payments.map((p) => (<div key={p.id} className="p-4 flex justify-between"><span>{formatCurrency(p.amount)}</span><span className={"px-2 py-1 rounded text-sm " + getStatusBadge(p.status)}>{p.status}</span></div>))}</div>) : (<div className="p-8 text-center text-gray-500">No payments</div>)}
           </div>
-        </div>
+        )}
+
+        {activeTab === "maintenance" && (
+          <div className="bg-white rounded-lg shadow-sm border">
+            <div className="p-4 border-b"><h3 className="text-lg font-semibold">Maintenance</h3></div>
+            {unit.maintenance_requests?.length > 0 ? (<div className="divide-y">{unit.maintenance_requests.map((m) => (<div key={m.id} className="p-4 flex justify-between"><span>{m.title}</span><span className={"px-2 py-1 rounded text-sm " + getStatusBadge(m.status)}>{m.status}</span></div>))}</div>) : (<div className="p-8 text-center text-gray-500">No requests</div>)}
+          </div>
+        )}
       </div>
-
-      {/* Delete Confirmation Modal */}
-      <ConfirmModal
-        isOpen={deleteModal}
-        onClose={() => setDeleteModal(false)}
-        onConfirm={handleDelete}
-        title="Delete Unit"
-        message="Are you sure you want to delete this unit? This action cannot be undone."
-        confirmText="Delete"
-        variant="danger"
-        isLoading={deleting}
-      />
-    </div>
+    </DashboardLayout>
   );
 }
