@@ -25,15 +25,21 @@ async function proxyRequest(request: NextRequest, method: string) {
       '/api/payments',
       '/api/tenants',
       '/api/maintenance',
-      '/api/reports'
+      '/api/reports',
+      '/api/staff',
+      '/api/units',
+      '/api/caretaker/dashboard',
+      '/api/tenant/dashboard',
+      '/api/notifications',
+      '/api/contact'
     ];
 
-    // Check if path starts with any specific route
-    const isSpecificRoute = specificRoutes.some(route =>
+    // Check if path exactly matches any specific route (with or without trailing slash)
+    const isExactSpecificRoute = specificRoutes.some(route =>
       path === route || path === route + '/'
     );
 
-    if (isSpecificRoute) {
+    if (isExactSpecificRoute) {
       // Let the specific route handler deal with it
       return NextResponse.json({ error: 'Route handler not found' }, { status: 404 });
     }

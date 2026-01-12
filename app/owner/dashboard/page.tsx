@@ -76,7 +76,7 @@ export default function OwnerDashboard() {
     return [
       { title: "Total Properties", label: "Properties", value: stats.total_properties.toString(), change: stats.total_units + " units", icon: Building2, trend: "neutral" as const },
       { title: "Monthly Revenue", label: "Revenue", value: formatCurrency(stats.monthly_revenue), change: stats.pending_payments > 0 ? formatCurrency(stats.pending_payments) + " pending" : "All collected", icon: DollarSign, trend: "up" as const },
-      { title: "Total Tenants", label: "Tenants", value: stats.total_tenants.toString(), change: stats.occupancy_rate.toFixed(0) + "%% occupancy", icon: Users, trend: stats.occupancy_rate >= 80 ? "up" as const : "neutral" as const },
+      { title: "Total Tenants", label: "Tenants", value: stats.total_tenants.toString(), change: stats.occupancy_rate.toFixed(0) + "% occupancy", icon: Users, trend: stats.occupancy_rate >= 80 ? "up" as const : "neutral" as const },
       { title: "Maintenance", label: "Requests", value: stats.maintenance_requests.toString(), change: "Pending requests", icon: Wrench, trend: stats.maintenance_requests > 5 ? "down" as const : "neutral" as const },
     ];
   };
