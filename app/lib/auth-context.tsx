@@ -51,26 +51,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const savedUser = localStorage.getItem('auth_user');
         const savedRole = localStorage.getItem('user_role');
 
+        console.log('[AuthContext] Initializing auth state...');
+        console.log('[AuthContext] Token found:', !!savedToken);
+        console.log('[AuthContext] User found:', !!savedUser);
+
         if (savedToken && savedUser) {
-          setToken(savedToken);
-          setUser(JSON.parse(savedUser));
-          setRole(savedRole);
+          const parsedUser = JSON.parse(savedUser);
 
           // Sync cookies with localStorage for middleware verification
           document.cookie = `auth_token=${savedToken}; path=/; max-age=86400; SameSite=Lax`;
           if (savedRole) {
             document.cookie = `user_role=${savedRole}; path=/; max-age=86400; SameSite=Lax`;
           }
+
+          // Batch state updates together - set all auth state before setting loading to false
+          // Use callback form to ensure state is properly set
+          setToken(savedToken);
+          setUser(parsedUser);
+          setRole(savedRole);
+
+          console.log('[AuthContext] Auth state initialized successfully');
+        } else {
+          console.log('[AuthContext] No saved auth state found');
         }
       } catch (error) {
-        console.error('Failed to initialize auth:', error);
+        console.error('[AuthContext] Failed to initialize auth:', error);
         localStorage.clear();
         // Clear cookies too
         document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         document.cookie = 'user_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      } finally {
-        setIsLoading(false);
       }
+
+      // Always set loading to false after attempting init
+      // Use setTimeout to ensure state updates have been processed
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 0);
     };
 
     initAuth();

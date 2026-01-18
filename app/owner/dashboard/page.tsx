@@ -29,17 +29,35 @@ export default function OwnerDashboard() {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchDashboardStats = useCallback(async (showRefresh = false) => {
-    if (!token) return;
+    // Get token from context or fallback to localStorage
+    const authToken = token || (typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null);
+
+    if (!authToken) {
+      console.log("[Dashboard] No auth token available yet, skipping fetch");
+      return;
+    }
+
     try {
       if (showRefresh) setRefreshing(true);
       else setLoading(true);
+
+      console.log("[Dashboard] Fetching dashboard stats...");
+
       const response = await fetch("/api/owner/dashboard", {
         method: "GET",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`
+        },
         cache: "no-store",
       });
       const data = await response.json();
-      if (!response.ok || !data.success) throw new Error(data.error || "Failed to fetch dashboard data");
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Failed to fetch dashboard data");
+      }
+
+      console.log("[Dashboard] Stats fetched successfully");
       setStats(data.data);
       setError(null);
     } catch (err: any) {
@@ -53,9 +71,22 @@ export default function OwnerDashboard() {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!isAuthenticated) { router.push("/login"); return; }
-    if (role && role !== "owner") { router.push("/unauthorized"); return; }
-    if (!token) return; // Wait for token to be ready
+
+    // Check localStorage directly as fallback for auth check
+    const storedToken = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    const hasAuth = isAuthenticated || storedToken;
+
+    if (!hasAuth) {
+      router.push("/login");
+      return;
+    }
+
+    if (role && role !== "owner") {
+      router.push("/unauthorized");
+      return;
+    }
+
+    // Fetch stats - the function will get token from context or localStorage
     fetchDashboardStats();
   }, [authLoading, isAuthenticated, role, router, token, fetchDashboardStats]);
 

@@ -19,41 +19,60 @@ export interface ApiResponse<T = any> {
 
 /**
  * Get JWT token from localStorage
+ * This function is called synchronously, so it reads directly from localStorage
  */
 export function getAuthToken(): string | null {
   try {
     if (typeof window === 'undefined') {
-      console.log('[getAuthToken] Running on server, no window');
       return null;
     }
+
+    // Try multiple storage keys for compatibility
     const authToken = localStorage.getItem('auth_token');
     const token = localStorage.getItem('token');
     const accessToken = localStorage.getItem('access_token');
 
     const foundToken = authToken || token || accessToken;
 
-    console.log('[getAuthToken] auth_token:', authToken ? `${authToken.substring(0, 30)}...` : 'NULL');
-    console.log('[getAuthToken] token:', token ? `${token.substring(0, 30)}...` : 'NULL');
-    console.log('[getAuthToken] access_token:', accessToken ? `${accessToken.substring(0, 30)}...` : 'NULL');
-    console.log('[getAuthToken] Using token:', foundToken ? `${foundToken.substring(0, 30)}...` : 'NULL');
-
-    // Check if token looks like a JWT
-    if (foundToken) {
-      const parts = foundToken.split('.');
-      if (parts.length !== 3) {
-        console.warn('[getAuthToken] Token does not appear to be a valid JWT (expected 3 parts, got', parts.length, ')');
-      }
-      // Check if token has Bearer prefix (shouldn't have)
-      if (foundToken.startsWith('Bearer ')) {
-        console.warn('[getAuthToken] Token starts with "Bearer " - this may cause issues');
-      }
+    // Only log in development for debugging
+    if (process.env.NODE_ENV === 'development' && !foundToken) {
+      console.log('[getAuthToken] No token found in localStorage');
     }
 
-    return foundToken;
+    // Validate token format if found
+    if (foundToken) {
+      // Remove Bearer prefix if accidentally stored with it
+      const cleanToken = foundToken.startsWith('Bearer ') ? foundToken.substring(7) : foundToken;
+
+      const parts = cleanToken.split('.');
+      if (parts.length !== 3) {
+        console.warn('[getAuthToken] Token does not appear to be a valid JWT');
+      }
+
+      return cleanToken;
+    }
+
+    return null;
   } catch (error) {
     console.error('[getAuthToken] Error getting auth token:', error);
     return null;
   }
+}
+
+/**
+ * Get token with retry - useful when token might be getting set by auth context
+ */
+export async function getAuthTokenWithRetry(maxRetries = 3, delayMs = 100): Promise<string | null> {
+  for (let i = 0; i < maxRetries; i++) {
+    const token = getAuthToken();
+    if (token) return token;
+
+    // Wait before retrying
+    if (i < maxRetries - 1) {
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+  return null;
 }
 
 /**
