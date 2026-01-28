@@ -54,11 +54,75 @@ export default function OwnerDashboard() {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
+        // Dashboard endpoint failed - try to build stats from properties endpoint
+        console.log("[Dashboard] Dashboard endpoint failed, trying properties fallback...");
+
+        const propertiesResponse = await fetch("/api/properties", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${authToken}`
+          },
+          cache: "no-store",
+        });
+        const propertiesData = await propertiesResponse.json();
+
+        if (propertiesResponse.ok && propertiesData.success) {
+          // Unwrap potential nested data structures
+          let rawProps = propertiesData.data;
+          if (rawProps && !Array.isArray(rawProps) && rawProps.data) {
+            rawProps = rawProps.data;
+          }
+          if (rawProps && !Array.isArray(rawProps) && rawProps.results) {
+            rawProps = rawProps.results;
+          }
+          const properties = Array.isArray(rawProps) ? rawProps : [];
+          console.log("[Dashboard] Properties fallback successful, found", properties.length, "properties");
+
+          // Calculate stats from properties data
+          let totalUnits = 0;
+          let totalTenants = 0;
+          let monthlyRevenue = 0;
+
+          properties.forEach((prop: any) => {
+            totalUnits += prop.total_units || prop.units?.length || 0;
+            totalTenants += prop.occupied_units || 0;
+            // Estimate monthly revenue if available
+            if (prop.units && Array.isArray(prop.units)) {
+              prop.units.forEach((unit: any) => {
+                if (unit.status === 'occupied' && unit.monthly_rent) {
+                  monthlyRevenue += unit.monthly_rent;
+                }
+              });
+            }
+          });
+
+          const occupancyRate = totalUnits > 0 ? (totalTenants / totalUnits) * 100 : 0;
+
+          setStats({
+            total_properties: properties.length,
+            total_units: totalUnits,
+            total_tenants: totalTenants,
+            occupancy_rate: occupancyRate,
+            monthly_revenue: monthlyRevenue,
+            pending_payments: 0,
+            maintenance_requests: 0,
+            recent_activities: []
+          });
+          setError(null);
+          return;
+        }
+
         throw new Error(data.error || "Failed to fetch dashboard data");
       }
 
-      console.log("[Dashboard] Stats fetched successfully");
-      setStats(data.data);
+      console.log("[Dashboard] Stats fetched successfully, raw data:", JSON.stringify(data).substring(0, 200));
+      // Unwrap potential nested data: data.data might still be wrapped as { success, data: actualStats }
+      let statsData = data.data;
+      if (statsData && statsData.data && typeof statsData.data === 'object' && !Array.isArray(statsData.data)) {
+        statsData = statsData.data;
+      }
+      setStats(statsData);
       setError(null);
     } catch (err: any) {
       console.error("[Dashboard] Error:", err);

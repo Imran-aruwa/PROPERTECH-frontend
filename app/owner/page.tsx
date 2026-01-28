@@ -38,9 +38,15 @@ export default function OwnerDashboard() {
 
       // Handle properties response - ensure it's always an array
       if (propertiesData.success) {
-        const propsArray = Array.isArray(propertiesData.data)
-          ? propertiesData.data
-          : [];
+        // Unwrap potential nested data structures
+        let rawProps = propertiesData.data;
+        if (rawProps && !Array.isArray(rawProps) && rawProps.data) {
+          rawProps = rawProps.data;
+        }
+        if (rawProps && !Array.isArray(rawProps) && rawProps.results) {
+          rawProps = rawProps.results;
+        }
+        const propsArray = Array.isArray(rawProps) ? rawProps : [];
         setProperties(propsArray);
       } else {
         console.error('Properties error:', propertiesData.error);
@@ -49,7 +55,12 @@ export default function OwnerDashboard() {
 
       // Handle analytics response
       if (analyticsData.success) {
-        setStats(analyticsData.data);
+        // Unwrap potential nested data: analyticsData.data might be { success, data: actualStats }
+        let statsData = analyticsData.data;
+        if (statsData && statsData.data && typeof statsData.data === 'object') {
+          statsData = statsData.data;
+        }
+        setStats(statsData);
       } else {
         console.error('Analytics error:', analyticsData.error);
         // Set default stats if API fails

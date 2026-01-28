@@ -569,20 +569,40 @@ export const tenantsApi = {
  * Maintenance API
  */
 export const maintenanceApi = {
-  async list() { 
-    return apiClient.get('/caretaker/maintenance/'); 
+  async list() {
+    const response = await apiClient.get('/caretaker/maintenance/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
-  async getAll() { 
-    return apiClient.get('/caretaker/maintenance/'); 
+  async getAll() {
+    const response = await apiClient.get('/caretaker/maintenance/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
-  async create(data: any) { 
-    return apiClient.post('/caretaker/maintenance/', data); 
+  async create(data: any) {
+    const response = await apiClient.post('/caretaker/maintenance/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
-  async update(id: string, data: any) { 
-    return apiClient.put(`/caretaker/maintenance/${id}/status/`, data); 
+  async update(id: string, data: any) {
+    const response = await apiClient.put(`/caretaker/maintenance/${id}/status/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
-  async delete(id: string) { 
-    return apiClient.delete(`/caretaker/maintenance/${id}/`); 
+  async delete(id: string) {
+    const response = await apiClient.delete(`/caretaker/maintenance/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
 };
 
@@ -591,25 +611,53 @@ export const maintenanceApi = {
  */
 export const staffApi = {
   async list() {
-    return apiClient.get('/staff/');
+    const response = await apiClient.get('/staff/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getAll() {
-    return apiClient.get('/staff/');
+    const response = await apiClient.get('/staff/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async get(id: string) {
-    return apiClient.get(`/staff/${id}/`);
+    const response = await apiClient.get(`/staff/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async create(data: any) {
-    return apiClient.post('/staff/', data);
+    const response = await apiClient.post('/staff/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async update(id: string, data: any) {
-    return apiClient.put(`/staff/${id}/`, data);
+    const response = await apiClient.put(`/staff/${id}/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async delete(id: string) {
-    return apiClient.delete(`/staff/${id}/`);
+    const response = await apiClient.delete(`/staff/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async remove(id: string) {
-    return apiClient.delete(`/staff/${id}/`);
+    const response = await apiClient.delete(`/staff/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
 };
 
@@ -618,23 +666,47 @@ export const staffApi = {
  */
 export const analyticsApi = {
   async dashboard() {
-    return apiClient.get('/owner/dashboard/');
+    const response = await apiClient.get('/owner/dashboard/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getAll() {
-    return apiClient.get('/owner/dashboard/');
+    const response = await apiClient.get('/owner/dashboard/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getDashboardStats(role: string) {
     const normalizedRole = (role || '').toLowerCase();
-    if (normalizedRole === 'owner') return apiClient.get('/owner/dashboard/');
-    if (normalizedRole === 'agent') return apiClient.get('/agent/dashboard/');
-    if (normalizedRole === 'caretaker') return apiClient.get('/caretaker/dashboard/');
-    return apiClient.get('/owner/dashboard/');
+    let response;
+    if (normalizedRole === 'agent') {
+      response = await apiClient.get('/agent/dashboard/');
+    } else if (normalizedRole === 'caretaker') {
+      response = await apiClient.get('/caretaker/dashboard/');
+    } else {
+      response = await apiClient.get('/owner/dashboard/');
+    }
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async forOwner(ownerId: string) {
-    return apiClient.get(`/owner/dashboard/`);
+    const response = await apiClient.get(`/owner/dashboard/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async forAgent(agentId: string) {
-    return apiClient.get(`/agent/dashboard/`);
+    const response = await apiClient.get(`/agent/dashboard/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
 };
 
@@ -717,31 +789,67 @@ export const settingsApi = {
  */
 export const agentApi = {
   async getDashboard() {
-    return apiClient.get('/agent/dashboard/');
+    const response = await apiClient.get('/agent/dashboard/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getProperties() {
-    return apiClient.get('/agent/properties/');
+    const response = await apiClient.get('/agent/properties/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async createProperty(data: any) {
-    return apiClient.post('/agent/properties/', data);
+    const response = await apiClient.post('/agent/properties/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getMarketplace() {
-    return apiClient.get('/agent/marketplace/');
+    const response = await apiClient.get('/agent/marketplace/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getTenants() {
-    return apiClient.get('/agent/tenants/');
+    const response = await apiClient.get('/agent/tenants/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getEarnings() {
-    return apiClient.get('/agent/earnings/');
+    const response = await apiClient.get('/agent/earnings/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getRentTracking() {
-    return apiClient.get('/agent/rent-tracking/');
+    const response = await apiClient.get('/agent/rent-tracking/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getRentCollection() {
-    return apiClient.get('/agent/rent-collection/');
+    const response = await apiClient.get('/agent/rent-collection/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getRecentActivities() {
-    return apiClient.get('/agent/activities/');
+    const response = await apiClient.get('/agent/activities/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
 };
 
@@ -750,19 +858,39 @@ export const agentApi = {
  */
 export const caretakerApi = {
   async getDashboard() {
-    return apiClient.get('/caretaker/dashboard/');
+    const response = await apiClient.get('/caretaker/dashboard/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getOutstandingPayments() {
-    return apiClient.get('/caretaker/outstanding-payments/');
+    const response = await apiClient.get('/caretaker/outstanding-payments/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getRentTracking() {
-    return apiClient.get('/caretaker/rent-tracking/');
+    const response = await apiClient.get('/caretaker/rent-tracking/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getMeterReadings() {
-    return apiClient.get('/caretaker/meter-readings/');
+    const response = await apiClient.get('/caretaker/meter-readings/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getTenants() {
-    return apiClient.get('/caretaker/tenants/');
+    const response = await apiClient.get('/caretaker/tenants/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
 };
 
@@ -771,22 +899,46 @@ export const caretakerApi = {
  */
 export const tenantDashboardApi = {
   async getDashboard() {
-    return apiClient.get('/tenant/dashboard/');
+    const response = await apiClient.get('/tenant/dashboard/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getPayments() {
-    return apiClient.get('/tenant/payments/');
+    const response = await apiClient.get('/tenant/payments/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getMaintenanceRequests() {
-    return apiClient.get('/tenant/maintenance/');
+    const response = await apiClient.get('/tenant/maintenance/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async createMaintenanceRequest(data: any) {
-    return apiClient.post('/tenant/maintenance/', data);
+    const response = await apiClient.post('/tenant/maintenance/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getLeaseInfo() {
-    return apiClient.get('/tenant/lease/');
+    const response = await apiClient.get('/tenant/lease/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
   async getDocuments() {
-    return apiClient.get('/tenant/documents/');
+    const response = await apiClient.get('/tenant/documents/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
 };
 
