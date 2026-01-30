@@ -86,12 +86,16 @@ export default function NewTenantPage() {
   }, [authLoading, isAuthenticated]);
 
   useEffect(() => {
-    // Include both 'available' and 'vacant' status units
-    const isAvailable = (u: Unit) => u.status === 'available' || u.status === 'vacant';
+    // Include 'available', 'vacant' status units (case-insensitive)
+    const isAvailable = (u: Unit) => {
+      const status = u.status?.toLowerCase();
+      return status === 'available' || status === 'vacant';
+    };
 
     if (selectedProperty) {
+      // Compare as strings - property_id might be UUID or number
       const filtered = units.filter(
-        u => u.property_id === parseInt(selectedProperty) && isAvailable(u)
+        u => String(u.property_id) === String(selectedProperty) && isAvailable(u)
       );
       setAvailableUnits(filtered);
       setFormData(prev => ({ ...prev, unit_id: '' }));
@@ -147,7 +151,7 @@ export default function NewTenantPage() {
     try {
       setSubmitting(true);
 
-      const selectedUnit = units.find(u => u.id === parseInt(formData.unit_id));
+      const selectedUnit = units.find(u => String(u.id) === String(formData.unit_id));
 
       const tenantData = {
         user: {
@@ -157,7 +161,7 @@ export default function NewTenantPage() {
           password: 'TempPass123!', // Temporary password, should be changed
           role: 'tenant'
         },
-        unit_id: parseInt(formData.unit_id),
+        unit_id: formData.unit_id, // Keep as string - backend handles UUID
         lease_start: formData.lease_start,
         lease_end: formData.lease_end,
         rent_amount: parseFloat(formData.rent_amount) || selectedUnit?.rent_amount || 0,
