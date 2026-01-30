@@ -20,7 +20,7 @@ export default function OwnerUnitsPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProperty, setSelectedProperty] = useState<number | null>(null);
-  const [statusFilter, setStatusFilter] = useState<'all' | 'available' | 'occupied' | 'maintenance'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'available' | 'occupied' | 'vacant' | 'rented' | 'bought' | 'mortgaged' | 'maintenance'>('all');
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; unitId: number | null }>({
     isOpen: false,
     unitId: null
@@ -99,13 +99,17 @@ export default function OwnerUnitsPage() {
 
   const filteredUnits = units.filter(unit => {
     const matchesProperty = selectedProperty ? unit.property_id === selectedProperty : true;
-    const matchesStatus = statusFilter === 'all' ? true : unit.status === statusFilter;
+    const matchesStatus = statusFilter === 'all' ? true : unit.status?.toLowerCase() === statusFilter;
     return matchesProperty && matchesStatus;
   });
 
   const statusColors: Record<string, string> = {
     available: 'bg-green-100 text-green-800',
+    vacant: 'bg-yellow-100 text-yellow-800',
     occupied: 'bg-blue-100 text-blue-800',
+    rented: 'bg-green-100 text-green-800',
+    bought: 'bg-indigo-100 text-indigo-800',
+    mortgaged: 'bg-purple-100 text-purple-800',
     maintenance: 'bg-orange-100 text-orange-800'
   };
 
@@ -152,7 +156,7 @@ export default function OwnerUnitsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-gray-600 text-sm font-medium">Total Units</h3>
@@ -162,20 +166,29 @@ export default function OwnerUnitsPage() {
           </div>
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Available</h3>
-              <Home className="w-5 h-5 text-green-600" />
+              <h3 className="text-gray-600 text-sm font-medium">Vacant</h3>
+              <Home className="w-5 h-5 text-yellow-600" />
             </div>
-            <p className="text-3xl font-bold text-green-600">
-              {units.filter(u => u.status === 'available').length}
+            <p className="text-3xl font-bold text-yellow-600">
+              {units.filter(u => u.status?.toLowerCase() === 'vacant').length}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Occupied</h3>
-              <Home className="w-5 h-5 text-blue-600" />
+              <h3 className="text-gray-600 text-sm font-medium">Rented</h3>
+              <Home className="w-5 h-5 text-green-600" />
             </div>
-            <p className="text-3xl font-bold text-blue-600">
-              {units.filter(u => u.status === 'occupied').length}
+            <p className="text-3xl font-bold text-green-600">
+              {units.filter(u => u.status?.toLowerCase() === 'rented').length}
+            </p>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-gray-600 text-sm font-medium">Bought</h3>
+              <Home className="w-5 h-5 text-indigo-600" />
+            </div>
+            <p className="text-3xl font-bold text-indigo-600">
+              {units.filter(u => u.status?.toLowerCase() === 'bought').length}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -212,8 +225,8 @@ export default function OwnerUnitsPage() {
               ))}
             </select>
 
-            <div className="flex gap-2">
-              {(['all', 'available', 'occupied', 'maintenance'] as const).map((status) => (
+            <div className="flex gap-2 flex-wrap">
+              {(['all', 'vacant', 'rented', 'bought', 'mortgaged', 'maintenance'] as const).map((status) => (
                 <button
                   key={status}
                   onClick={() => setStatusFilter(status)}
@@ -225,7 +238,7 @@ export default function OwnerUnitsPage() {
                 >
                   {status.charAt(0).toUpperCase() + status.slice(1)}
                   {status !== 'all' && (
-                    <span className="ml-2">({units.filter(u => u.status === status).length})</span>
+                    <span className="ml-2">({units.filter(u => u.status?.toLowerCase() === status).length})</span>
                   )}
                 </button>
               ))}

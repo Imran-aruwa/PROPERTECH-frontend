@@ -15,10 +15,18 @@ interface Unit {
   bathrooms: number;
   monthly_rent: number;
   status: string;
-  property: { id: string; name: string; address: string; };
-  tenant: { id: string; full_name: string; email: string; phone: string; balance_due: number; } | null;
-  payments: Array<{ id: string; amount: number; status: string; payment_type: string; }>;
-  maintenance_requests: Array<{ id: string; title: string; status: string; priority: string; }>;
+  property_id: string;
+  property?: { id: string; name: string; address: string; };
+  tenant?: { id: string; full_name: string; email: string; phone: string; balance_due: number; } | null;
+  payments?: Array<{ id: string; amount: number; status: string; payment_type: string; }>;
+  maintenance_requests?: Array<{ id: string; title: string; status: string; priority: string; }>;
+  // Additional fields from backend
+  toilets?: number;
+  square_feet?: number;
+  has_master_bedroom?: boolean;
+  has_servant_quarters?: boolean;
+  sq_bathrooms?: number;
+  description?: string;
 }
 
 type TabType = "overview" | "tenant" | "payments" | "maintenance";
@@ -29,6 +37,7 @@ export default function UnitDetailPage() {
   const params = useParams();
   const unitId = params?.id as string;
   const [unit, setUnit] = useState<Unit | null>(null);
+  const [propertyName, setPropertyName] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>("overview");
@@ -43,7 +52,21 @@ export default function UnitDetailPage() {
         const response = await fetch("/api/units/" + unitId, { headers: { "Authorization": "Bearer " + token } });
         const data = await response.json();
         if (!response.ok || !data.success) throw new Error(data.error || "Failed to fetch unit");
-        setUnit(data.data);
+        const unitData = data.data;
+        setUnit(unitData);
+
+        // Fetch property name if we have property_id
+        if (unitData.property_id && !unitData.property?.name) {
+          try {
+            const propResponse = await fetch("/api/properties/" + unitData.property_id, { headers: { "Authorization": "Bearer " + token } });
+            const propData = await propResponse.json();
+            if (propData.success && propData.data) {
+              setPropertyName(propData.data.name || "Unknown Property");
+            }
+          } catch { setPropertyName("Unknown Property"); }
+        } else if (unitData.property?.name) {
+          setPropertyName(unitData.property.name);
+        }
       } catch (err: any) { setError(err.message); } finally { setLoading(false); }
     };
     if (unitId) fetchUnit();
@@ -58,8 +81,17 @@ export default function UnitDetailPage() {
 
   const formatCurrency = (amount: number) => "KES " + amount.toLocaleString();
   const getStatusBadge = (status: string) => {
-    const colors: Record<string, string> = { vacant: "bg-yellow-100 text-yellow-800", occupied: "bg-green-100 text-green-800", pending: "bg-yellow-100 text-yellow-800", completed: "bg-green-100 text-green-800" };
-    return colors[status] || "bg-gray-100 text-gray-800";
+    const colors: Record<string, string> = {
+      vacant: "bg-yellow-100 text-yellow-800",
+      occupied: "bg-green-100 text-green-800",
+      rented: "bg-green-100 text-green-800",
+      bought: "bg-blue-100 text-blue-800",
+      mortgaged: "bg-purple-100 text-purple-800",
+      pending: "bg-yellow-100 text-yellow-800",
+      completed: "bg-green-100 text-green-800",
+      maintenance: "bg-orange-100 text-orange-800"
+    };
+    return colors[status?.toLowerCase()] || "bg-gray-100 text-gray-800";
   };
 
   if (authLoading || loading) return <DashboardLayout role="owner"><div className="flex items-center justify-center min-h-[60vh]"><LoadingSpinner size="lg" /></div></DashboardLayout>;
@@ -72,7 +104,7 @@ export default function UnitDetailPage() {
           <button onClick={() => router.back()} className="p-2 hover:bg-gray-100 rounded-lg"><ArrowLeft className="w-5 h-5" /></button>
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-gray-900">{unit.unit_number}</h1>
-            <p className="text-gray-500">{unit.property.name}</p>
+            <p className="text-gray-500">{propertyName || unit.property?.name || "Property"}</p>
           </div>
           <span className={"px-3 py-1 rounded-full text-sm font-medium " + getStatusBadge(unit.status)}>{unit.status}</span>
         </div>
@@ -88,8 +120,25 @@ export default function UnitDetailPage() {
               <dl className="space-y-3">
                 <div className="flex justify-between"><dt className="text-gray-500">Bedrooms</dt><dd className="font-medium">{unit.bedrooms}</dd></div>
                 <div className="flex justify-between"><dt className="text-gray-500">Bathrooms</dt><dd className="font-medium">{unit.bathrooms}</dd></div>
+                {unit.toilets && <div className="flex justify-between"><dt className="text-gray-500">Toilets</dt><dd className="font-medium">{unit.toilets}</dd></div>}
+                {unit.square_feet && <div className="flex justify-between"><dt className="text-gray-500">Size</dt><dd className="font-medium">{unit.square_feet} sq ft</dd></div>}
                 <div className="flex justify-between"><dt className="text-gray-500">Monthly Rent</dt><dd className="font-medium text-green-600">{formatCurrency(unit.monthly_rent)}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Status</dt><dd className={"px-2 py-1 rounded text-sm font-medium " + getStatusBadge(unit.status)}>{unit.status}</dd></div>
               </dl>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <h3 className="text-lg font-semibold mb-4">Features</h3>
+              <dl className="space-y-3">
+                {unit.has_master_bedroom !== undefined && <div className="flex justify-between"><dt className="text-gray-500">Master Bedroom</dt><dd className="font-medium">{unit.has_master_bedroom ? "Yes" : "No"}</dd></div>}
+                {unit.has_servant_quarters !== undefined && <div className="flex justify-between"><dt className="text-gray-500">Servant Quarters (DSQ)</dt><dd className="font-medium">{unit.has_servant_quarters ? "Yes" : "No"}</dd></div>}
+                {unit.sq_bathrooms !== undefined && unit.sq_bathrooms > 0 && <div className="flex justify-between"><dt className="text-gray-500">SQ Bathrooms</dt><dd className="font-medium">{unit.sq_bathrooms}</dd></div>}
+              </dl>
+              {unit.description && (
+                <div className="mt-4 pt-4 border-t">
+                  <dt className="text-gray-500 text-sm mb-2">Description</dt>
+                  <dd className="text-gray-700">{unit.description}</dd>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -112,14 +161,14 @@ export default function UnitDetailPage() {
         {activeTab === "payments" && (
           <div className="bg-white rounded-lg shadow-sm border">
             <div className="p-4 border-b"><h3 className="text-lg font-semibold">Payments</h3></div>
-            {unit.payments?.length > 0 ? (<div className="divide-y">{unit.payments.map((p) => (<div key={p.id} className="p-4 flex justify-between"><span>{formatCurrency(p.amount)}</span><span className={"px-2 py-1 rounded text-sm " + getStatusBadge(p.status)}>{p.status}</span></div>))}</div>) : (<div className="p-8 text-center text-gray-500">No payments</div>)}
+            {(unit.payments && unit.payments.length > 0) ? (<div className="divide-y">{unit.payments.map((p) => (<div key={p.id} className="p-4 flex justify-between"><span>{formatCurrency(p.amount)}</span><span className={"px-2 py-1 rounded text-sm " + getStatusBadge(p.status)}>{p.status}</span></div>))}</div>) : (<div className="p-8 text-center text-gray-500">No payments</div>)}
           </div>
         )}
 
         {activeTab === "maintenance" && (
           <div className="bg-white rounded-lg shadow-sm border">
             <div className="p-4 border-b"><h3 className="text-lg font-semibold">Maintenance</h3></div>
-            {unit.maintenance_requests?.length > 0 ? (<div className="divide-y">{unit.maintenance_requests.map((m) => (<div key={m.id} className="p-4 flex justify-between"><span>{m.title}</span><span className={"px-2 py-1 rounded text-sm " + getStatusBadge(m.status)}>{m.status}</span></div>))}</div>) : (<div className="p-8 text-center text-gray-500">No requests</div>)}
+            {(unit.maintenance_requests && unit.maintenance_requests.length > 0) ? (<div className="divide-y">{unit.maintenance_requests.map((m) => (<div key={m.id} className="p-4 flex justify-between"><span>{m.title}</span><span className={"px-2 py-1 rounded text-sm " + getStatusBadge(m.status)}>{m.status}</span></div>))}</div>) : (<div className="p-8 text-center text-gray-500">No requests</div>)}
           </div>
         )}
       </div>
