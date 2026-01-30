@@ -17,14 +17,33 @@ export async function GET(
     }
 
     const propertyId = params.id;
-    const response = await fetch(`${BACKEND_URL}/api/properties/${propertyId}/units/`, {
+    // No trailing slash - FastAPI redirects with 307 which drops auth header
+    const backendUrl = `${BACKEND_URL}/api/properties/${propertyId}/units`;
+
+    let response = await fetch(backendUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
       cache: 'no-store',
+      redirect: 'manual',
     });
+
+    // Handle redirect manually to preserve Authorization header
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          cache: 'no-store',
+        });
+      }
+    }
 
     const data = await response.json();
 
@@ -67,15 +86,33 @@ export async function POST(
 
     const propertyId = params.id;
     const body = await request.json();
+    // No trailing slash - FastAPI redirects with 307 which drops auth header
+    const backendUrl = `${BACKEND_URL}/api/properties/${propertyId}/units`;
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/${propertyId}/units/`, {
+    let response = await fetch(backendUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
       body: JSON.stringify(body),
+      redirect: 'manual',
     });
+
+    // Handle redirect manually to preserve Authorization header
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          body: JSON.stringify(body),
+        });
+      }
+    }
 
     const data = await response.json();
 

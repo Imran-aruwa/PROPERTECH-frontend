@@ -13,14 +13,33 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/units/`, {
+    // No trailing slash - FastAPI redirects with 307 which drops auth header
+    const backendUrl = `${BACKEND_URL}/api/properties/units`;
+
+    let response = await fetch(backendUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
       cache: 'no-store',
+      redirect: 'manual',
     });
+
+    // Handle redirect manually to preserve Authorization header
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          cache: 'no-store',
+        });
+      }
+    }
 
     const data = await response.json();
 
