@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Building2, User, CreditCard, Wrench, ArrowLeft, Plus, ChevronRight } from 'lucide-react';
+import { Building2, User, CreditCard, Wrench, ArrowLeft, Plus, ChevronRight, Edit } from 'lucide-react';
 import Link from 'next/link';
 
 interface Unit {
@@ -106,6 +106,10 @@ export default function UnitDetailPage() {
             <h1 className="text-2xl font-bold text-gray-900">{unit.unit_number}</h1>
             <p className="text-gray-500">{propertyName || unit.property?.name || "Property"}</p>
           </div>
+          <Link href={`/owner/units/${unit.id}/edit`} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <Edit className="w-4 h-4" />
+            Edit Unit
+          </Link>
           <span className={"px-3 py-1 rounded-full text-sm font-medium " + getStatusBadge(unit.status)}>{unit.status}</span>
         </div>
 
@@ -118,27 +122,25 @@ export default function UnitDetailPage() {
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h3 className="text-lg font-semibold mb-4">Unit Details</h3>
               <dl className="space-y-3">
-                <div className="flex justify-between"><dt className="text-gray-500">Bedrooms</dt><dd className="font-medium">{unit.bedrooms}</dd></div>
-                <div className="flex justify-between"><dt className="text-gray-500">Bathrooms</dt><dd className="font-medium">{unit.bathrooms}</dd></div>
-                {unit.toilets && <div className="flex justify-between"><dt className="text-gray-500">Toilets</dt><dd className="font-medium">{unit.toilets}</dd></div>}
-                {unit.square_feet && <div className="flex justify-between"><dt className="text-gray-500">Size</dt><dd className="font-medium">{unit.square_feet} sq ft</dd></div>}
-                <div className="flex justify-between"><dt className="text-gray-500">Monthly Rent</dt><dd className="font-medium text-green-600">{formatCurrency(unit.monthly_rent)}</dd></div>
-                <div className="flex justify-between"><dt className="text-gray-500">Status</dt><dd className={"px-2 py-1 rounded text-sm font-medium " + getStatusBadge(unit.status)}>{unit.status}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Bedrooms</dt><dd className="font-medium">{unit.bedrooms ?? 0}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Bathrooms</dt><dd className="font-medium">{unit.bathrooms ?? 0}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Toilets</dt><dd className="font-medium">{unit.toilets ?? 0}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Size</dt><dd className="font-medium">{unit.square_feet ? `${unit.square_feet} sq ft` : "N/A"}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Monthly Rent</dt><dd className="font-medium text-green-600">{formatCurrency(unit.monthly_rent ?? 0)}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Status</dt><dd className={"px-2 py-1 rounded text-sm font-medium " + getStatusBadge(unit.status)}>{unit.status || "N/A"}</dd></div>
               </dl>
             </div>
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h3 className="text-lg font-semibold mb-4">Features</h3>
               <dl className="space-y-3">
-                {unit.has_master_bedroom !== undefined && <div className="flex justify-between"><dt className="text-gray-500">Master Bedroom</dt><dd className="font-medium">{unit.has_master_bedroom ? "Yes" : "No"}</dd></div>}
-                {unit.has_servant_quarters !== undefined && <div className="flex justify-between"><dt className="text-gray-500">Servant Quarters (DSQ)</dt><dd className="font-medium">{unit.has_servant_quarters ? "Yes" : "No"}</dd></div>}
-                {unit.sq_bathrooms !== undefined && unit.sq_bathrooms > 0 && <div className="flex justify-between"><dt className="text-gray-500">SQ Bathrooms</dt><dd className="font-medium">{unit.sq_bathrooms}</dd></div>}
+                <div className="flex justify-between"><dt className="text-gray-500">Master Bedroom</dt><dd className="font-medium">{unit.has_master_bedroom ? "Yes" : "No"}</dd></div>
+                <div className="flex justify-between"><dt className="text-gray-500">Servant Quarters (DSQ)</dt><dd className="font-medium">{unit.has_servant_quarters ? "Yes" : "No"}</dd></div>
+                {(unit.sq_bathrooms !== undefined && unit.sq_bathrooms > 0) && <div className="flex justify-between"><dt className="text-gray-500">SQ Bathrooms</dt><dd className="font-medium">{unit.sq_bathrooms}</dd></div>}
               </dl>
-              {unit.description && (
-                <div className="mt-4 pt-4 border-t">
-                  <dt className="text-gray-500 text-sm mb-2">Description</dt>
-                  <dd className="text-gray-700">{unit.description}</dd>
-                </div>
-              )}
+              <div className="mt-4 pt-4 border-t">
+                <dt className="text-gray-500 text-sm mb-2">Description</dt>
+                <dd className="text-gray-700">{unit.description || "No description available"}</dd>
+              </div>
             </div>
           </div>
         )}

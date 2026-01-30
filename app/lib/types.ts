@@ -99,7 +99,7 @@ export interface UpdatePropertyData {
 }
 
 // ==================== UNIT ====================
-export type UnitStatus = 'available' | 'occupied' | 'maintenance' | 'vacant';
+export type UnitStatus = 'available' | 'occupied' | 'maintenance' | 'vacant' | 'rented' | 'bought' | 'mortgaged';
 
 export interface Unit {
   id: number;

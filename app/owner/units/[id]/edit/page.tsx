@@ -18,7 +18,7 @@ interface UnitFormData {
   bathrooms: string;
   size_sqm: string;
   rent_amount: string;
-  status: 'available' | 'occupied' | 'maintenance' | 'vacant';
+  status: 'available' | 'occupied' | 'maintenance' | 'vacant' | 'rented' | 'bought' | 'mortgaged';
   description: string;
 }
 
@@ -62,7 +62,7 @@ export default function EditUnitPage() {
         for (const prop of propertiesData) {
           const unitsResponse = await unitsApi.list(prop.id.toString());
           if (unitsResponse.success && Array.isArray(unitsResponse.data)) {
-            const matchingUnit = unitsResponse.data.find((u: Unit) => u.id === parseInt(unitId));
+            const matchingUnit = unitsResponse.data.find((u: Unit) => String(u.id) === String(unitId));
             if (matchingUnit) {
               foundUnit = matchingUnit;
               foundProperty = prop;
@@ -79,14 +79,17 @@ export default function EditUnitPage() {
 
         setUnit(foundUnit);
         setProperty(foundProperty);
+        // Handle both field naming conventions from backend
+        const rentValue = (foundUnit as any).monthly_rent ?? foundUnit.rent_amount ?? 0;
+        const sizeValue = (foundUnit as any).square_feet ?? foundUnit.size_sqm ?? 0;
         setFormData({
           unit_number: foundUnit.unit_number || '',
           floor: foundUnit.floor?.toString() || '',
           bedrooms: foundUnit.bedrooms?.toString() || '',
           bathrooms: foundUnit.bathrooms?.toString() || '',
-          size_sqm: foundUnit.size_sqm?.toString() || '',
-          rent_amount: foundUnit.rent_amount?.toString() || '',
-          status: foundUnit.status || 'available',
+          size_sqm: sizeValue.toString(),
+          rent_amount: rentValue.toString(),
+          status: foundUnit.status || 'vacant',
           description: foundUnit.description || ''
         });
       } catch (err) {
@@ -148,7 +151,9 @@ export default function EditUnitPage() {
         bedrooms: parseInt(formData.bedrooms),
         bathrooms: parseInt(formData.bathrooms),
         size_sqm: parseFloat(formData.size_sqm),
+        square_feet: parseFloat(formData.size_sqm),
         rent_amount: parseFloat(formData.rent_amount),
+        monthly_rent: parseFloat(formData.rent_amount),
         status: formData.status,
         description: formData.description
       };
@@ -306,6 +311,9 @@ export default function EditUnitPage() {
                   <option value="vacant">Vacant</option>
                   <option value="available">Available</option>
                   <option value="occupied">Occupied</option>
+                  <option value="rented">Rented</option>
+                  <option value="bought">Bought</option>
+                  <option value="mortgaged">Mortgaged</option>
                   <option value="maintenance">Under Maintenance</option>
                 </select>
               </div>
