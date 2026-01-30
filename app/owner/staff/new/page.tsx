@@ -16,7 +16,7 @@ interface StaffFormData {
   email: string;
   phone: string;
   property_id: string;
-  department: 'security' | 'gardening' | 'maintenance';
+  department: 'security' | 'gardening' | 'maintenance' | 'caretaker';
   position: string;
   salary: string;
   start_date: string;
@@ -39,7 +39,7 @@ export default function NewStaffPage() {
     email: '',
     phone: '',
     property_id: '',
-    department: 'maintenance',
+    department: 'caretaker',
     position: '',
     salary: '',
     start_date: new Date().toISOString().split('T')[0],
@@ -117,15 +117,18 @@ export default function NewStaffPage() {
     try {
       setSubmitting(true);
 
+      // Determine user role based on department
+      const userRole = formData.department === 'caretaker' ? 'caretaker' : 'staff';
+
       const staffData = {
         user: {
           full_name: formData.full_name,
           email: formData.email,
           phone: formData.phone,
           password: 'TempPass123!', // Temporary password
-          role: 'staff'
+          role: userRole
         },
-        property_id: parseInt(formData.property_id),
+        property_id: formData.property_id, // Keep as string - backend handles UUID
         department: formData.department,
         position: formData.position,
         salary: parseFloat(formData.salary),
@@ -149,7 +152,8 @@ export default function NewStaffPage() {
   const departmentPositions: Record<string, string[]> = {
     security: ['Security Guard', 'Security Supervisor', 'Night Guard', 'Gate Keeper'],
     gardening: ['Gardener', 'Landscaper', 'Head Gardener', 'Groundskeeper'],
-    maintenance: ['Plumber', 'Electrician', 'General Maintenance', 'Cleaner', 'Handyman', 'HVAC Technician']
+    maintenance: ['Plumber', 'Electrician', 'General Maintenance', 'Cleaner', 'Handyman', 'HVAC Technician'],
+    caretaker: ['Property Caretaker', 'Building Manager', 'Estate Manager', 'Resident Manager']
   };
 
   if (authLoading || loading) {
@@ -333,6 +337,7 @@ export default function NewStaffPage() {
                   }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 >
+                  <option value="caretaker">Caretaker</option>
                   <option value="maintenance">Maintenance</option>
                   <option value="security">Security</option>
                   <option value="gardening">Gardening</option>
