@@ -120,28 +120,29 @@ export default function NewStaffPage() {
       // Determine user role based on department
       const userRole = formData.department === 'caretaker' ? 'caretaker' : 'staff';
 
-      const staffData = {
-        user: {
-          full_name: formData.full_name,
-          email: formData.email,
-          phone: formData.phone,
-          password: 'TempPass123!', // Temporary password
-          role: userRole
-        },
-        property_id: formData.property_id, // Keep as string - backend handles UUID
-        department: formData.department,
-        position: formData.position,
-        salary: parseFloat(formData.salary),
-        start_date: formData.start_date,
-        id_number: formData.id_number,
-        emergency_contact_name: formData.emergency_contact_name,
-        emergency_contact_phone: formData.emergency_contact_phone,
-        notes: formData.notes
+      // First, create the user account via signup endpoint
+      const signupData = {
+        full_name: formData.full_name,
+        email: formData.email,
+        phone: formData.phone,
+        password: 'TempPass123!', // Temporary password - user should change
+        role: userRole
       };
 
-      await staffApi.create(staffData);
-      success('Staff member added successfully!');
-      setTimeout(() => router.push('/owner/staff'), 1500);
+      const signupResponse = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(signupData)
+      });
+
+      const signupResult = await signupResponse.json();
+
+      if (!signupResponse.ok || !signupResult.success) {
+        throw new Error(signupResult.error || signupResult.detail || 'Failed to create user account');
+      }
+
+      success(`${formData.department === 'caretaker' ? 'Caretaker' : 'Staff member'} added successfully! Login credentials: Email: ${formData.email}, Password: TempPass123!`);
+      setTimeout(() => router.push('/owner/staff'), 2500);
     } catch (err: any) {
       showError(err.message || 'Failed to add staff member');
     } finally {
