@@ -304,21 +304,21 @@ export default function OwnerUnitsPage() {
                       <div className="flex items-center justify-center mb-1">
                         <Bed className="w-4 h-4 text-gray-600" />
                       </div>
-                      <p className="text-2xl font-bold text-gray-900">{unit.bedrooms}</p>
+                      <p className="text-2xl font-bold text-gray-900">{unit.bedrooms ?? 0}</p>
                       <p className="text-xs text-gray-600">Bedrooms</p>
                     </div>
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
                         <Bath className="w-4 h-4 text-gray-600" />
                       </div>
-                      <p className="text-2xl font-bold text-gray-900">{unit.bathrooms}</p>
+                      <p className="text-2xl font-bold text-gray-900">{unit.bathrooms ?? 0}</p>
                       <p className="text-xs text-gray-600">Bathrooms</p>
                     </div>
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
                         <Maximize className="w-4 h-4 text-gray-600" />
                       </div>
-                      <p className="text-2xl font-bold text-gray-900">{unit.size_sqm}</p>
+                      <p className="text-2xl font-bold text-gray-900">{(unit as any).square_feet ?? unit.size_sqm ?? 0}</p>
                       <p className="text-xs text-gray-600">m²</p>
                     </div>
                   </div>
@@ -326,7 +326,7 @@ export default function OwnerUnitsPage() {
                   <div className="border-t border-gray-200 pt-4 mb-4">
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">Floor</span>
-                      <span className="font-medium text-gray-900">Floor {unit.floor}</span>
+                      <span className="font-medium text-gray-900">Floor {unit.floor ?? 0}</span>
                     </div>
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-gray-600">Monthly Rent</span>

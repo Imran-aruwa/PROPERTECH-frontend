@@ -48,9 +48,9 @@ export default function OwnerPaymentsPage() {
     return matchesStatus && matchesSearch;
   });
 
-  const totalAmount = payments.reduce((sum, p) => sum + p.amount, 0);
-  const completedAmount = payments.filter(p => p.payment_status === 'completed').reduce((sum, p) => sum + p.amount, 0);
-  const pendingAmount = payments.filter(p => p.payment_status === 'pending').reduce((sum, p) => sum + p.amount, 0);
+  const totalAmount = payments.reduce((sum, p) => sum + (p.amount ?? 0), 0);
+  const completedAmount = payments.filter(p => p.payment_status === 'completed').reduce((sum, p) => sum + (p.amount ?? 0), 0);
+  const pendingAmount = payments.filter(p => p.payment_status === 'pending').reduce((sum, p) => sum + (p.amount ?? 0), 0);
 
   const statusColors: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-800',
@@ -246,7 +246,7 @@ export default function OwnerPaymentsPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-bold text-gray-900">
-                            {formatCurrency(payment.amount)}
+                            {formatCurrency(payment.amount ?? 0)}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">

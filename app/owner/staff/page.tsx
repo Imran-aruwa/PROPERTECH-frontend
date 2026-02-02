@@ -264,11 +264,11 @@ export default function OwnerStaffPage() {
                     </div>
 
                     <div className="flex items-center justify-between border-t border-gray-200 pt-4 mb-4">
-                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${departmentColors[member.department]}`}>
-                        {member.department}
+                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${departmentColors[member.department] || 'bg-gray-100 text-gray-800'}`}>
+                        {member.department || 'Staff'}
                       </span>
                       <span className="font-bold text-gray-900">
-                        {formatCurrency(member.salary)}/mo
+                        {formatCurrency(member.salary ?? 0)}/mo
                       </span>
                     </div>
 

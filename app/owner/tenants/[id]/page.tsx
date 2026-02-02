@@ -298,13 +298,13 @@ export default function TenantDetailPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-gray-900">{formatCurrency(payment.amount)}</p>
+                        <p className="font-bold text-gray-900">{formatCurrency(payment.amount ?? 0)}</p>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           payment.payment_status === 'completed'
                             ? 'bg-green-100 text-green-800'
                             : 'bg-yellow-100 text-yellow-800'
                         }`}>
-                          {payment.payment_status}
+                          {payment.payment_status || 'pending'}
                         </span>
                       </div>
                     </div>
@@ -327,19 +327,19 @@ export default function TenantDetailPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Bedrooms</span>
-                    <span className="font-medium text-gray-900">{tenant.unit.bedrooms}</span>
+                    <span className="font-medium text-gray-900">{tenant.unit.bedrooms ?? 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Bathrooms</span>
-                    <span className="font-medium text-gray-900">{tenant.unit.bathrooms}</span>
+                    <span className="font-medium text-gray-900">{tenant.unit.bathrooms ?? 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Size</span>
-                    <span className="font-medium text-gray-900">{tenant.unit.size_sqm} m²</span>
+                    <span className="font-medium text-gray-900">{(tenant.unit as any).square_feet ?? tenant.unit.size_sqm ?? 0} m²</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Floor</span>
-                    <span className="font-medium text-gray-900">{tenant.unit.floor}</span>
+                    <span className="font-medium text-gray-900">{(tenant.unit as any).floor ?? 0}</span>
                   </div>
                   <Link
                     href={`/owner/units/${tenant.unit.id}`}
@@ -360,13 +360,13 @@ export default function TenantDetailPage() {
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">Total Paid</span>
                   <span className="font-bold text-green-600">
-                    {formatCurrency(payments.filter(p => p.payment_status === 'completed').reduce((sum, p) => sum + p.amount, 0))}
+                    {formatCurrency(payments.filter(p => p.payment_status === 'completed').reduce((sum, p) => sum + (p.amount ?? 0), 0))}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">Pending</span>
                   <span className="font-bold text-yellow-600">
-                    {formatCurrency(payments.filter(p => p.payment_status === 'pending').reduce((sum, p) => sum + p.amount, 0))}
+                    {formatCurrency(payments.filter(p => p.payment_status === 'pending').reduce((sum, p) => sum + (p.amount ?? 0), 0))}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">

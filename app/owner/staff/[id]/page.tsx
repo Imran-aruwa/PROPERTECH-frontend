@@ -138,9 +138,9 @@ export default function StaffDetailPage() {
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">{staffUser?.full_name || 'Unknown'}</h1>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-gray-600">{staff.position}</span>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${departmentColors[staff.department]}`}>
-                      {staff.department}
+                    <span className="text-gray-600">{staff.position || 'Staff'}</span>
+                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${departmentColors[staff.department] || 'bg-gray-100 text-gray-800'}`}>
+                      {staff.department || 'Staff'}
                     </span>
                   </div>
                 </div>
@@ -254,13 +254,13 @@ export default function StaffDetailPage() {
                 Compensation
               </h2>
               <div className="text-center py-4">
-                <p className="text-3xl font-bold text-gray-900">{formatCurrency(staff.salary)}</p>
+                <p className="text-3xl font-bold text-gray-900">{formatCurrency(staff.salary ?? 0)}</p>
                 <p className="text-sm text-gray-600 mt-1">per month</p>
               </div>
               <div className="pt-4 border-t border-gray-200 mt-4">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">Annual Salary</span>
-                  <span className="font-medium text-gray-900">{formatCurrency(staff.salary * 12)}</span>
+                  <span className="font-medium text-gray-900">{formatCurrency((staff.salary ?? 0) * 12)}</span>
                 </div>
               </div>
             </div>
