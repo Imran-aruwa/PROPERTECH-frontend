@@ -3,17 +3,18 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useRequireAuth } from '@/lib/auth-context';
-import { tenantsApi, paymentsApi } from '@/lib/api-services';
+import { tenantsApi, paymentsApi, maintenanceApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ConfirmModal } from '@/components/ui/Modal';
 import {
   Users, ArrowLeft, Edit, Trash2, Phone, Mail, Home,
-  Calendar, DollarSign, FileText, Clock, CheckCircle, AlertCircle
+  Calendar, DollarSign, FileText, Clock, CheckCircle, AlertCircle, ShieldAlert
 } from 'lucide-react';
 import Link from 'next/link';
-import { Tenant, Payment } from '@/app/lib/types';
+import { Tenant, Payment, MaintenanceRequest } from '@/app/lib/types';
+import { calculateTenantRiskScore, TenantRiskScore, RISK_LEVEL_CONFIG, getRiskBgClass } from '@/app/lib/risk-score';
 
 export default function TenantDetailPage() {
   const params = useParams();
@@ -22,6 +23,7 @@ export default function TenantDetailPage() {
   const { toasts, success, error: showError, removeToast } = useToast();
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [payments, setPayments] = useState<Payment[]>([]);
+  const [riskScore, setRiskScore] = useState<TenantRiskScore | null>(null);
   const [loading, setLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -34,9 +36,10 @@ export default function TenantDetailPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [tenantResponse, paymentsResponse] = await Promise.all([
+        const [tenantResponse, paymentsResponse, maintenanceResponse] = await Promise.all([
           tenantsApi.get(tenantId),
-          paymentsApi.getAll()
+          paymentsApi.getAll(),
+          maintenanceApi.getAll(),
         ]);
 
         if (tenantResponse.success && tenantResponse.data) {
@@ -47,12 +50,28 @@ export default function TenantDetailPage() {
           return;
         }
 
+        const tenantPayments: Payment[] = [];
         if (paymentsResponse.success && Array.isArray(paymentsResponse.data)) {
-          // Filter payments for this tenant
-          const tenantPayments = paymentsResponse.data.filter(
+          const filtered = paymentsResponse.data.filter(
             (p: Payment) => p.tenant_id === parseInt(tenantId)
           );
-          setPayments(tenantPayments);
+          tenantPayments.push(...filtered);
+          setPayments(filtered);
+        }
+
+        const tenantMaintenance: MaintenanceRequest[] = [];
+        if (maintenanceResponse.success && Array.isArray(maintenanceResponse.data)) {
+          tenantMaintenance.push(
+            ...maintenanceResponse.data.filter(
+              (m: MaintenanceRequest) => m.tenant_id === parseInt(tenantId)
+            )
+          );
+        }
+
+        // Calculate risk score
+        if (tenantResponse.data) {
+          const score = calculateTenantRiskScore(tenantResponse.data, tenantPayments, tenantMaintenance);
+          setRiskScore(score);
         }
       } catch (err: any) {
         console.error('Failed to load tenant:', err);
@@ -375,6 +394,50 @@ export default function TenantDetailPage() {
                 </div>
               </div>
             </div>
+
+            {/* Risk Assessment */}
+            {riskScore && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <ShieldAlert className="w-5 h-5 text-blue-600" />
+                  Risk Assessment
+                </h2>
+                <div className="flex flex-col items-center mb-6">
+                  <div
+                    className={`w-24 h-24 rounded-full border-4 flex items-center justify-center ${RISK_LEVEL_CONFIG[riskScore.level].borderClass}`}
+                  >
+                    <span className="text-3xl font-bold text-gray-900">{riskScore.score}</span>
+                  </div>
+                  <span className={`mt-3 px-4 py-1.5 text-sm font-medium rounded-full ${getRiskBgClass(riskScore.level)}`}>
+                    {RISK_LEVEL_CONFIG[riskScore.level].label}
+                  </span>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    { label: 'Payment History', value: riskScore.factors.paymentHistory, weight: '40%' },
+                    { label: 'Late Payments', value: riskScore.factors.latePayments, weight: '30%' },
+                    { label: 'Maintenance', value: riskScore.factors.maintenance, weight: '15%' },
+                    { label: 'Lease Duration', value: riskScore.factors.occupancyDuration, weight: '15%' },
+                  ].map((factor) => (
+                    <div key={factor.label}>
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="text-gray-600">{factor.label}</span>
+                        <span className="text-gray-500 text-xs">{factor.value}/100 ({factor.weight})</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="h-2 rounded-full transition-all"
+                          style={{
+                            width: `${factor.value}%`,
+                            backgroundColor: factor.value <= 35 ? '#22C55E' : factor.value <= 65 ? '#F59E0B' : '#EF4444',
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Quick Actions */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">

@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useRequireAuth } from '@/lib/auth-context';
-import { tenantsApi } from '@/lib/api-services';
+import { tenantsApi, paymentsApi, maintenanceApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
 import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
-import { Users, Plus, Eye, Phone, Mail, Calendar, Home, Download } from 'lucide-react';
+import { Users, Plus, Eye, Phone, Mail, Calendar, Home, Download, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
-import { Tenant } from '@/app/lib/types';
+import { Tenant, Payment, MaintenanceRequest } from '@/app/lib/types';
+import { calculateAllTenantRiskScores, TenantRiskScore, getRiskBgClass, RISK_LEVEL_CONFIG } from '@/app/lib/risk-score';
 
 export default function OwnerTenantsPage() {
   const { user, isLoading: authLoading, isAuthenticated } = useRequireAuth('owner');
@@ -16,6 +17,7 @@ export default function OwnerTenantsPage() {
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [riskScores, setRiskScores] = useState<Map<number, TenantRiskScore>>(new Map());
 
   useEffect(() => {
     if (authLoading || !isAuthenticated) return;
@@ -23,9 +25,24 @@ export default function OwnerTenantsPage() {
     const fetchTenants = async () => {
       try {
         setLoading(true);
-        const response = await tenantsApi.getAll();
-        const tenantsArray = Array.isArray(response.data) ? response.data : [];
+        const [tenantsRes, paymentsRes, maintenanceRes] = await Promise.all([
+          tenantsApi.getAll(),
+          paymentsApi.getAll(),
+          maintenanceApi.getAll(),
+        ]);
+
+        const tenantsArray: Tenant[] = Array.isArray(tenantsRes.data) ? tenantsRes.data : [];
+        const payments: Payment[] = Array.isArray(paymentsRes.data) ? paymentsRes.data : [];
+        const maintenance: MaintenanceRequest[] = Array.isArray(maintenanceRes.data) ? maintenanceRes.data : [];
+
         setTenants(tenantsArray);
+
+        const scores = calculateAllTenantRiskScores(tenantsArray, payments, maintenance);
+        const scoreMap = new Map<number, TenantRiskScore>();
+        for (const s of scores) {
+          scoreMap.set(s.tenantId, s);
+        }
+        setRiskScores(scoreMap);
       } catch (err: any) {
         console.error('Failed to load tenants:', err);
         setTenants([]);
@@ -107,7 +124,7 @@ export default function OwnerTenantsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-gray-600 text-sm font-medium">Total Tenants</h3>
@@ -140,6 +157,15 @@ export default function OwnerTenantsPage() {
             </div>
             <p className="text-3xl font-bold text-red-600">
               {tenants.filter(t => isLeaseExpired(t.lease_end)).length}
+            </p>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-gray-600 text-sm font-medium">High Risk</h3>
+              <ShieldAlert className="w-5 h-5 text-red-600" />
+            </div>
+            <p className="text-3xl font-bold text-red-600">
+              {Array.from(riskScores.values()).filter(r => r.level === 'high').length}
             </p>
           </div>
         </div>
@@ -197,6 +223,9 @@ export default function OwnerTenantsPage() {
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Risk
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
@@ -273,6 +302,15 @@ export default function OwnerTenantsPage() {
                             {leaseStatus === 'expiring' && 'Expiring Soon'}
                             {leaseStatus === 'expired' && 'Expired'}
                           </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {riskScores.has(tenant.id) ? (
+                            <span className={`px-3 py-1 text-xs font-medium rounded-full ${getRiskBgClass(riskScores.get(tenant.id)!.level)}`}>
+                              {RISK_LEVEL_CONFIG[riskScores.get(tenant.id)!.level].label}
+                            </span>
+                          ) : (
+                            <span className="text-xs text-gray-400">--</span>
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right">
                           <Link

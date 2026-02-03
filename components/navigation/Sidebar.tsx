@@ -4,9 +4,9 @@ import { useAuth } from '@/app/lib/auth-context';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
-  Home, Building2, Users, DollarSign, Wrench, UserCircle, 
+  Home, Building2, Users, DollarSign, Wrench, UserCircle,
   BarChart, LogOut, Settings, Bell, ChevronLeft, ChevronRight,
-  ClipboardList, Calendar, Target, Briefcase
+  ClipboardList, Calendar, Target, Briefcase, ShieldAlert
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -18,6 +18,7 @@ const ownerLinks = [
   { href: '/owner/payments', icon: DollarSign, label: 'Payments' },
   { href: '/owner/maintenance', icon: Wrench, label: 'Maintenance' },
   { href: '/owner/staff', icon: UserCircle, label: 'Staff' },
+  { href: '/owner/risk-scores', icon: ShieldAlert, label: 'Risk Scores' },
   { href: '/owner/analytics', icon: BarChart, label: 'Analytics' }
 ];
 

@@ -7,7 +7,11 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from '@/components/ui/StatCard';
 import { ChartWrapper } from '@/components/ui/ChartWrapper';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw } from 'lucide-react';
+import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw, ShieldAlert, Eye } from 'lucide-react';
+import { tenantsApi, paymentsApi, maintenanceApi } from '@/lib/api-services';
+import { Tenant, Payment, MaintenanceRequest } from '@/app/lib/types';
+import { calculateAllTenantRiskScores, TenantRiskScore, RISK_LEVEL_CONFIG, getRiskBgClass } from '@/app/lib/risk-score';
+import Link from 'next/link';
 
 interface DashboardStats {
   total_properties: number;
@@ -27,6 +31,7 @@ export default function OwnerDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [riskTenants, setRiskTenants] = useState<TenantRiskScore[]>([]);
 
   const fetchDashboardStats = useCallback(async (showRefresh = false) => {
     // Get token from context or fallback to localStorage
@@ -160,6 +165,32 @@ export default function OwnerDashboard() {
     return () => window.removeEventListener("focus", handleFocus);
   }, [isAuthenticated, token, fetchDashboardStats]);
 
+  useEffect(() => {
+    if (authLoading || !isAuthenticated) return;
+
+    const fetchRiskData = async () => {
+      try {
+        const [tenantsRes, paymentsRes, maintenanceRes] = await Promise.all([
+          tenantsApi.getAll(),
+          paymentsApi.getAll(),
+          maintenanceApi.getAll(),
+        ]);
+
+        const tenants: Tenant[] = Array.isArray(tenantsRes.data) ? tenantsRes.data : [];
+        const payments: Payment[] = Array.isArray(paymentsRes.data) ? paymentsRes.data : [];
+        const maintenance: MaintenanceRequest[] = Array.isArray(maintenanceRes.data) ? maintenanceRes.data : [];
+
+        const scores = calculateAllTenantRiskScores(tenants, payments, maintenance);
+        const atRisk = scores.filter(s => s.level === 'medium' || s.level === 'high').slice(0, 5);
+        setRiskTenants(atRisk);
+      } catch (err) {
+        console.error('[Dashboard] Failed to load risk data:', err);
+      }
+    };
+
+    fetchRiskData();
+  }, [authLoading, isAuthenticated]);
+
   const formatCurrency = (amount: number): string => {
     if (amount >= 1000000) return "KES " + (amount / 1000000).toFixed(1) + "M";
     if (amount >= 1000) return "KES " + (amount / 1000).toFixed(0) + "K";
@@ -247,6 +278,63 @@ export default function OwnerDashboard() {
             <CreditCard className="w-6 h-6 text-purple-600" /><span className="font-medium text-purple-900">Subscription</span>
           </a>
         </div>
+
+        {/* Tenants Requiring Attention */}
+        {riskTenants.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <ShieldAlert className="w-5 h-5 text-red-500" />
+                Tenants Requiring Attention
+              </h2>
+              <Link
+                href="/owner/risk-scores"
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                View All Scores
+              </Link>
+            </div>
+            <div className="space-y-3">
+              {riskTenants.map((rs) => {
+                const tenantUser = (rs.tenant as any).user;
+                return (
+                  <Link
+                    key={rs.tenantId}
+                    href={`/owner/tenants/${rs.tenantId}`}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                        <span className="text-purple-600 font-semibold text-sm">
+                          {tenantUser?.full_name?.charAt(0) || 'T'}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 text-sm">{tenantUser?.full_name || 'Unknown'}</p>
+                        <p className="text-xs text-gray-500">{rs.tenant.unit?.unit_number || 'N/A'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        <div className="bg-gray-200 rounded-full h-2 w-16">
+                          <div
+                            className="h-2 rounded-full"
+                            style={{ width: `${rs.score}%`, backgroundColor: RISK_LEVEL_CONFIG[rs.level].color }}
+                          />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700 w-6">{rs.score}</span>
+                      </div>
+                      <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getRiskBgClass(rs.level)}`}>
+                        {RISK_LEVEL_CONFIG[rs.level].label}
+                      </span>
+                      <Eye className="w-4 h-4 text-gray-400" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );
