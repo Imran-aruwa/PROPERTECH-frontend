@@ -1,82 +1,229 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { TrendingUp, DollarSign, Users, Building2, PieChart as PieChartIcon, Download } from 'lucide-react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { TrendingUp, DollarSign, Users, Building2, Download, Loader2 } from 'lucide-react';
 import { StatCard } from '@/components/ui/StatCard';
 import { ChartWrapper } from '@/components/ui/ChartWrapper';
-import { apiClient } from '@/lib/api-services';
+import { paymentsApi, propertiesApi, tenantsApi, maintenanceApi, staffApi, unitsApi } from '@/lib/api-services';
+import { Payment, Property, Unit, MaintenanceRequest } from '@/app/lib/types';
 
 export default function FinancialAnalytics() {
   const [loading, setLoading] = useState(true);
-  const [analytics, setAnalytics] = useState({
-    revenue: { current: 1631350, previous: 1602100, growth: 1.8 },
-    profit: { amount: 1362250, margin: 83.5, roi: 406 },
-    expenses: { total: 269100, breakdown: [] },
-    collection: { rate: 95.2, trend: "up"  },
-  });
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
+  const [maintenanceRequests, setMaintenanceRequests] = useState<MaintenanceRequest[]>([]);
+  const [staffSalaries, setStaffSalaries] = useState(0);
 
-  const fetchAnalytics = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get('/owner/analytics');
-      if (response.data) {
-        setAnalytics(response.data);
-      }
+      const [paymentsRes, propertiesRes, unitsRes, maintenanceRes, staffRes] = await Promise.all([
+        paymentsApi.getAll(),
+        propertiesApi.getAll(),
+        unitsApi.getAll(),
+        maintenanceApi.getAll(),
+        staffApi.getAll(),
+      ]);
+
+      const paymentsData = Array.isArray(paymentsRes.data) ? paymentsRes.data
+        : paymentsRes.data?.data ? (Array.isArray(paymentsRes.data.data) ? paymentsRes.data.data : [])
+        : [];
+      setPayments(paymentsData);
+
+      const propsData = Array.isArray(propertiesRes.data) ? propertiesRes.data
+        : propertiesRes.data?.results ? propertiesRes.data.results
+        : [];
+      setProperties(propsData);
+
+      const unitsData = Array.isArray(unitsRes.data) ? unitsRes.data
+        : unitsRes.data?.data ? (Array.isArray(unitsRes.data.data) ? unitsRes.data.data : [])
+        : [];
+      setUnits(unitsData);
+
+      const maintData = Array.isArray(maintenanceRes.data) ? maintenanceRes.data
+        : maintenanceRes.data?.data ? (Array.isArray(maintenanceRes.data.data) ? maintenanceRes.data.data : [])
+        : [];
+      setMaintenanceRequests(maintData);
+
+      const staffData = Array.isArray(staffRes.data) ? staffRes.data
+        : staffRes.data?.data ? (Array.isArray(staffRes.data.data) ? staffRes.data.data : [])
+        : [];
+      const totalSalaries = staffData.reduce((sum: number, s: any) => sum + (s.salary || 0), 0);
+      setStaffSalaries(totalSalaries);
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      console.error('Error fetching analytics data:', error);
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchAnalytics();
-  }, [fetchAnalytics]);
+    fetchData();
+  }, [fetchData]);
 
-  const revenueData = [
-    { name: 'Jan', revenue: 1450000 },
-    { name: 'Feb', revenue: 1480000 },
-    { name: 'Mar', revenue: 1520000 },
-    { name: 'Apr', revenue: 1490000 },
-    { name: 'May', revenue: 1550000 },
-    { name: 'Jun', revenue: 1580000 },
-    { name: 'Jul', revenue: 1600000 },
-    { name: 'Aug', revenue: 1590000 },
-    { name: 'Sep', revenue: 1620000 },
-    { name: 'Oct', revenue: 1602100 },
-    { name: 'Nov', revenue: 1631350 },
-  ];
+  // Compute analytics from real data
+  const analytics = useMemo(() => {
+    const completedPayments = payments.filter(p => p.payment_status === 'completed');
+    const totalRevenue = completedPayments.reduce((sum, p) => sum + (p.amount || 0), 0);
 
-  const revenueSourcesData = [
-    { name: 'Rent', value: 1380250 },
-    { name: 'Water Bills', value: 94300 },
-    { name: 'Electricity', value: 156800 },
-  ];
+    // Current month and previous month revenue
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
 
-  const expensesData = [
-    { name: 'Staff', value: 185000 },
-    { name: 'Commissions', value: 52400 },
-    { name: 'Maintenance', value: 18500 },
-    { name: 'Subscription', value: 5000 },
-    { name: 'Other', value: 8200 },
-  ];
+    const currentMonthPayments = completedPayments.filter(p => {
+      const d = new Date(p.payment_date || p.created_at);
+      return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    });
+    const currentMonthRevenue = currentMonthPayments.reduce((sum, p) => sum + (p.amount || 0), 0);
 
-  const propertyProfitData = [
-    { name: 'Property 1', profit: 365000, margin: 85 },
-    { name: 'Property 2', profit: 395250, margin: 86 },
-    { name: 'Property 3', profit: 312500, margin: 82 },
-    { name: 'Property 4', profit: 258300, margin: 80 },
-    { name: 'Property 5', profit: 175200, margin: 78 },
-  ];
+    const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    const prevMonthPayments = completedPayments.filter(p => {
+      const d = new Date(p.payment_date || p.created_at);
+      return d.getMonth() === prevMonth && d.getFullYear() === prevYear;
+    });
+    const prevMonthRevenue = prevMonthPayments.reduce((sum, p) => sum + (p.amount || 0), 0);
+
+    const growth = prevMonthRevenue > 0
+      ? ((currentMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100
+      : 0;
+
+    // Expenses
+    const maintenanceCost = maintenanceRequests
+      .filter(m => m.status === 'completed')
+      .reduce((sum, m) => sum + (m.cost || 0), 0);
+    const totalExpenses = staffSalaries + maintenanceCost;
+
+    // Profit
+    const profit = totalRevenue - totalExpenses;
+    const profitMargin = totalRevenue > 0 ? (profit / totalRevenue) * 100 : 0;
+
+    // Collection rate
+    const totalPaymentsCount = payments.filter(p => p.payment_type === 'rent').length;
+    const completedRentCount = payments.filter(p => p.payment_type === 'rent' && p.payment_status === 'completed').length;
+    const collectionRate = totalPaymentsCount > 0
+      ? (completedRentCount / totalPaymentsCount) * 100
+      : 0;
+
+    // Occupancy
+    const totalUnits = units.length;
+    const occupiedUnits = units.filter(u =>
+      u.status === 'occupied' || u.status === 'rented'
+    ).length;
+    const occupancyRate = totalUnits > 0 ? (occupiedUnits / totalUnits) * 100 : 0;
+
+    return {
+      totalRevenue,
+      currentMonthRevenue,
+      prevMonthRevenue,
+      growth,
+      profit,
+      profitMargin,
+      totalExpenses,
+      maintenanceCost,
+      collectionRate,
+      occupancyRate,
+    };
+  }, [payments, maintenanceRequests, staffSalaries, units]);
+
+  // Revenue trend: group completed payments by month (last 6 months)
+  const revenueData = useMemo(() => {
+    const completedPayments = payments.filter(p => p.payment_status === 'completed');
+    const months: { name: string; revenue: number }[] = [];
+    const now = new Date();
+
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const month = d.getMonth();
+      const year = d.getFullYear();
+      const monthName = d.toLocaleString('default', { month: 'short' });
+
+      const monthRevenue = completedPayments
+        .filter(p => {
+          const pd = new Date(p.payment_date || p.created_at);
+          return pd.getMonth() === month && pd.getFullYear() === year;
+        })
+        .reduce((sum, p) => sum + (p.amount || 0), 0);
+
+      months.push({ name: monthName, revenue: monthRevenue });
+    }
+
+    return months;
+  }, [payments]);
+
+  // Revenue sources: group by payment_type
+  const revenueSourcesData = useMemo(() => {
+    const completedPayments = payments.filter(p => p.payment_status === 'completed');
+    const byType: Record<string, number> = {};
+
+    for (const p of completedPayments) {
+      const type = p.payment_type || 'other';
+      const label = type === 'rent' ? 'Rent'
+        : type === 'water' ? 'Water Bills'
+        : type === 'electricity' ? 'Electricity'
+        : 'Other';
+      byType[label] = (byType[label] || 0) + (p.amount || 0);
+    }
+
+    return Object.entries(byType).map(([name, value]) => ({ name, value }));
+  }, [payments]);
+
+  // Expense breakdown
+  const expensesData = useMemo(() => {
+    const maintenanceCost = maintenanceRequests
+      .filter(m => m.status === 'completed')
+      .reduce((sum, m) => sum + (m.cost || 0), 0);
+
+    const items: { name: string; value: number }[] = [];
+    if (staffSalaries > 0) items.push({ name: 'Staff Salaries', value: staffSalaries });
+    if (maintenanceCost > 0) items.push({ name: 'Maintenance', value: maintenanceCost });
+
+    if (items.length === 0) {
+      items.push({ name: 'No expenses recorded', value: 0 });
+    }
+
+    return items;
+  }, [maintenanceRequests, staffSalaries]);
+
+  // Revenue by property
+  const propertyProfitData = useMemo(() => {
+    const completedPayments = payments.filter(p => p.payment_status === 'completed');
+
+    // Build a unit → property mapping
+    const unitToProperty: Record<number, string> = {};
+    for (const u of units) {
+      const propName = u.property?.name || properties.find(p => p.id === u.property_id)?.name || `Property ${u.property_id}`;
+      unitToProperty[u.id] = propName;
+    }
+
+    // Group revenue by property
+    const byProperty: Record<string, number> = {};
+    for (const p of completedPayments) {
+      const propName = unitToProperty[p.unit_id] || 'Unknown Property';
+      byProperty[propName] = (byProperty[propName] || 0) + (p.amount || 0);
+    }
+
+    return Object.entries(byProperty)
+      .map(([name, revenue]) => ({ name, profit: revenue }))
+      .sort((a, b) => b.profit - a.profit);
+  }, [payments, units, properties]);
 
   const formatCurrency = (value: number) => {
     return `KES ${value.toLocaleString()}`;
   };
 
-  const handleDownloadReport = () => {
-    // Generate and download PDF report
-    alert('Downloading financial report...');
-  };
+  if (loading) {
+    return (
+      <div className="p-6 flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading analytics...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -86,39 +233,33 @@ export default function FinancialAnalytics() {
           <h1 className="text-3xl font-bold text-gray-900">Financial Analytics</h1>
           <p className="text-gray-600 mt-1">Comprehensive financial insights and reports</p>
         </div>
-        <button
-          onClick={handleDownloadReport}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-        >
-          <Download className="w-4 h-4" />
-          Download Report
-        </button>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Total Revenue"
-          value={formatCurrency(analytics.revenue.current)}
+          value={formatCurrency(analytics.totalRevenue)}
           icon={DollarSign}
-          trend={analytics.revenue.growth > 0 ? "up" : "down"}
+          trend={analytics.growth > 0 ? "up" : analytics.growth < 0 ? "down" : "neutral"}
+          change={analytics.growth !== 0 ? `${analytics.growth.toFixed(1)}% vs last month` : undefined}
         />
         <StatCard
           title="Net Profit"
-          value={formatCurrency(analytics.profit.amount)}
+          value={formatCurrency(analytics.profit)}
           icon={TrendingUp}
-          subtitle={`${analytics.profit.margin}% margin`}
+          subtitle={`${analytics.profitMargin.toFixed(1)}% margin`}
           valueClassName="text-green-600"
         />
         <StatCard
           title="Total Expenses"
-          value={formatCurrency(analytics.expenses.total)}
+          value={formatCurrency(analytics.totalExpenses)}
           icon={Users}
           label="All costs"
         />
         <StatCard
-          title="ROI"
-          value={`${analytics.profit.roi}%`}
+          title="Collection Rate"
+          value={`${analytics.collectionRate.toFixed(1)}%`}
           icon={Building2}
           valueClassName="text-blue-600"
         />
@@ -130,7 +271,7 @@ export default function FinancialAnalytics() {
         data={revenueData}
         dataKey="revenue"
         xAxisKey="name"
-        title="Revenue Trend (Last 11 Months)"
+        title="Revenue Trend (Last 6 Months)"
         height={300}
       />
 
@@ -152,15 +293,17 @@ export default function FinancialAnalytics() {
         />
       </div>
 
-      {/* Profit by Property */}
-      <ChartWrapper
-        type="bar"
-        data={propertyProfitData}
-        dataKey="profit"
-        xAxisKey="name"
-        title="Profit by Property"
-        height={300}
-      />
+      {/* Revenue by Property */}
+      {propertyProfitData.length > 0 && (
+        <ChartWrapper
+          type="bar"
+          data={propertyProfitData}
+          dataKey="profit"
+          xAxisKey="name"
+          title="Revenue by Property"
+          height={300}
+        />
+      )}
 
       {/* Detailed Metrics */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -168,17 +311,17 @@ export default function FinancialAnalytics() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <p className="text-sm text-gray-600 mb-1">Collection Rate</p>
-            <p className="text-2xl font-bold text-green-600">95.2%</p>
-            <p className="text-xs text-gray-500 mt-1">↑ 1.4% from last month</p>
+            <p className="text-2xl font-bold text-green-600">{analytics.collectionRate.toFixed(1)}%</p>
+            <p className="text-xs text-gray-500 mt-1">Completed rent payments</p>
           </div>
           <div>
             <p className="text-sm text-gray-600 mb-1">Profit Margin</p>
-            <p className="text-2xl font-bold text-blue-600">83.5%</p>
-            <p className="text-xs text-gray-500 mt-1">Excellent performance</p>
+            <p className="text-2xl font-bold text-blue-600">{analytics.profitMargin.toFixed(1)}%</p>
+            <p className="text-xs text-gray-500 mt-1">Revenue minus expenses</p>
           </div>
           <div>
             <p className="text-sm text-gray-600 mb-1">Average Occupancy</p>
-            <p className="text-2xl font-bold text-gray-900">91.2%</p>
+            <p className="text-2xl font-bold text-gray-900">{analytics.occupancyRate.toFixed(1)}%</p>
             <p className="text-xs text-gray-500 mt-1">Across all properties</p>
           </div>
         </div>

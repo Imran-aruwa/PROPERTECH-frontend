@@ -1,24 +1,55 @@
 'use client';
 
-import { useState } from 'react';
-import { FileText, Download, Calendar, Filter, TrendingUp } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { FileText, Download, Calendar } from 'lucide-react';
+import { propertiesApi } from '@/lib/api-services';
+
+interface PropertyOption {
+  id: number;
+  name: string;
+}
 
 export default function ReportsPage() {
   const [reportType, setReportType] = useState('monthly');
-  const [dateRange, setDateRange] = useState({ start: '2025-11-01', end: '2025-11-30' });
+  const [dateRange, setDateRange] = useState(() => {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    return {
+      start: start.toISOString().split('T')[0],
+      end: end.toISOString().split('T')[0],
+    };
+  });
   const [selectedProperties, setSelectedProperties] = useState<string[]>(['all']);
+  const [propertyOptions, setPropertyOptions] = useState<PropertyOption[]>([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await propertiesApi.getAll();
+        const data = Array.isArray(response.data) ? response.data
+          : response.data?.results ? response.data.results
+          : [];
+        setPropertyOptions(data.map((p: any) => ({ id: p.id, name: p.name })));
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+      }
+    };
+
+    fetchProperties();
+  }, []);
 
   const reportTypes = [
     { id: 'monthly', name: 'Monthly Financial Report', description: 'Comprehensive monthly overview' },
-    { id: 'quarterly', name: 'Quarterly Summary', description: 'Q4 2025 report' },
-    { id: 'annual', name: 'Annual Tax Report', description: 'Year 2025 summary' },
+    { id: 'quarterly', name: 'Quarterly Summary', description: 'Quarterly financial report' },
+    { id: 'annual', name: 'Annual Tax Report', description: 'Annual summary for tax purposes' },
     { id: 'property', name: 'Property Comparison', description: 'Compare all properties' },
     { id: 'tenant', name: 'Tenant Payment History', description: 'All tenant payments' },
     { id: 'agent', name: 'Agent Performance', description: 'Agent commissions & performance' },
   ];
 
   const generateReport = () => {
-    alert(`Generating ${reportType} report...`);
+    alert(`Generating ${reportType} report for ${dateRange.start} to ${dateRange.end}...`);
   };
 
   return (
@@ -31,7 +62,7 @@ export default function ReportsPage() {
       {/* Report Configuration */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Configure Report</h2>
-        
+
         {/* Date Range */}
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
@@ -61,9 +92,11 @@ export default function ReportsPage() {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Properties</option>
-            <option value="1">Property 1</option>
-            <option value="2">Property 2</option>
-            <option value="3">Property 3</option>
+            {propertyOptions.map((prop) => (
+              <option key={prop.id} value={prop.id.toString()}>
+                {prop.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -99,33 +132,6 @@ export default function ReportsPage() {
           </div>
         ))}
       </div>
-
-      {/* Recent Reports */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Reports</h2>
-        <div className="space-y-3">
-          {[
-            { name: 'November 2025 Financial Report', date: '2025-12-01', size: '2.4 MB' },
-            { name: 'Q3 2025 Summary', date: '2025-10-01', size: '1.8 MB' },
-            { name: 'October 2025 Financial Report', date: '2025-11-01', size: '2.2 MB' },
-          ].map((report, index) => (
-            <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-              <div className="flex items-center gap-3">
-                <FileText className="w-5 h-5 text-blue-600" />
-                <div>
-                  <p className="font-medium text-gray-900">{report.name}</p>
-                  <p className="text-sm text-gray-600">{report.date} • {report.size}</p>
-                </div>
-              </div>
-              <button className="text-blue-600 hover:text-blue-700 font-medium">
-                Download
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
-
-

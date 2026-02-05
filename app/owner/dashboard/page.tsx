@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -32,6 +32,7 @@ export default function OwnerDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [riskTenants, setRiskTenants] = useState<TenantRiskScore[]>([]);
+  const [allPayments, setAllPayments] = useState<Payment[]>([]);
 
   const fetchDashboardStats = useCallback(async (showRefresh = false) => {
     // Get token from context or fallback to localStorage
@@ -180,6 +181,7 @@ export default function OwnerDashboard() {
         const payments: Payment[] = Array.isArray(paymentsRes.data) ? paymentsRes.data : [];
         const maintenance: MaintenanceRequest[] = Array.isArray(maintenanceRes.data) ? maintenanceRes.data : [];
 
+        setAllPayments(payments);
         const scores = calculateAllTenantRiskScores(tenants, payments, maintenance);
         const atRisk = scores.filter(s => s.level === 'medium' || s.level === 'high').slice(0, 5);
         setRiskTenants(atRisk);
@@ -207,11 +209,29 @@ export default function OwnerDashboard() {
     ];
   };
 
-  const getRevenueData = () => {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
-    const baseRevenue = stats?.monthly_revenue || 0;
-    return months.map((month, index) => ({ month, revenue: Math.round(baseRevenue * (0.8 + (index * 0.04))) }));
-  };
+  const revenueData = useMemo(() => {
+    const completedPayments = allPayments.filter(p => p.payment_status === 'completed');
+    const now = new Date();
+    const months: { month: string; revenue: number }[] = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const m = d.getMonth();
+      const y = d.getFullYear();
+      const monthName = d.toLocaleString('default', { month: 'short' });
+
+      const monthRevenue = completedPayments
+        .filter(p => {
+          const pd = new Date(p.payment_date || p.created_at);
+          return pd.getMonth() === m && pd.getFullYear() === y;
+        })
+        .reduce((sum, p) => sum + (p.amount || 0), 0);
+
+      months.push({ month: monthName, revenue: monthRevenue });
+    }
+
+    return months;
+  }, [allPayments]);
 
   if (authLoading || loading) {
     return (
@@ -263,8 +283,8 @@ export default function OwnerDashboard() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <ChartWrapper title="Revenue Trend" data={getRevenueData()} dataKey="revenue" xAxisKey="month" type="line" />
-          <ChartWrapper title="Property Performance" data={getRevenueData()} dataKey="revenue" xAxisKey="month" type="bar" />
+          <ChartWrapper title="Revenue Trend" data={revenueData} dataKey="revenue" xAxisKey="month" type="line" />
+          <ChartWrapper title="Property Performance" data={revenueData} dataKey="revenue" xAxisKey="month" type="bar" />
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">

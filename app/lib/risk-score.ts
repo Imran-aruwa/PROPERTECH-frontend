@@ -104,7 +104,9 @@ function calcMaintenanceScore(requests: MaintenanceRequest[]): number {
 }
 
 function calcOccupancyDurationScore(leaseStart: string): number {
+  if (!leaseStart) return 80; // no data = treat as new tenant (high unknown risk)
   const start = new Date(leaseStart);
+  if (isNaN(start.getTime())) return 80; // invalid date = treat as new tenant
   const now = new Date();
   const monthsOccupied = Math.max(0, (now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 30));
 

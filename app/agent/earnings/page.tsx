@@ -40,12 +40,20 @@ interface Payout {
   status: string;
 }
 
+interface PerformanceBonus {
+  name: string;
+  description: string;
+  amount: number;
+  achieved: boolean;
+}
+
 export default function AgentEarningsPage() {
   const [earnings, setEarnings] = useState<EarningsData | null>(null);
   const [earningsTrend, setEarningsTrend] = useState<EarningsTrend[]>([]);
   const [commissionBreakdown, setCommissionBreakdown] = useState<CommissionBreakdown[]>([]);
   const [propertyCommissions, setPropertyCommissions] = useState<PropertyCommission[]>([]);
   const [payoutHistory, setPayoutHistory] = useState<Payout[]>([]);
+  const [bonuses, setBonuses] = useState<PerformanceBonus[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,6 +84,12 @@ export default function AgentEarningsPage() {
             total: p.total || 0,
           })));
           setPayoutHistory(data.payout_history || data.payoutHistory || []);
+          setBonuses((data.performance_bonuses || data.bonuses || []).map((b: any) => ({
+            name: b.name || '',
+            description: b.description || '',
+            amount: b.amount || 0,
+            achieved: b.achieved ?? b.met ?? false,
+          })));
         } else {
           // Set empty state
           setEarnings({ thisMonth: 0, lastMonth: 0, ytd: 0, nextPayout: '-' });
@@ -235,20 +249,28 @@ export default function AgentEarningsPage() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Bonuses</h3>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                <div className="min-w-0 flex-1 mr-2">
-                  <p className="font-medium text-gray-900">On-time Readings</p>
-                  <p className="text-sm text-gray-600 truncate">All meter readings submitted on time</p>
-                </div>
-                <span className="text-green-600 font-bold whitespace-nowrap">+KES 1,500</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg opacity-50">
-                <div className="min-w-0 flex-1 mr-2">
-                  <p className="font-medium text-gray-900">90% Occupancy</p>
-                  <p className="text-sm text-gray-600">Target not met</p>
-                </div>
-                <span className="text-gray-400 whitespace-nowrap">KES 0</span>
-              </div>
+              {bonuses.length > 0 ? (
+                bonuses.map((bonus, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-center justify-between p-3 rounded-lg ${
+                      bonus.achieved ? 'bg-green-50' : 'bg-gray-50 opacity-50'
+                    }`}
+                  >
+                    <div className="min-w-0 flex-1 mr-2">
+                      <p className="font-medium text-gray-900">{bonus.name}</p>
+                      <p className="text-sm text-gray-600 truncate">
+                        {bonus.description || (bonus.achieved ? 'Target achieved' : 'Target not met')}
+                      </p>
+                    </div>
+                    <span className={`font-bold whitespace-nowrap ${bonus.achieved ? 'text-green-600' : 'text-gray-400'}`}>
+                      {bonus.achieved ? '+' : ''}{formatCurrency(bonus.amount)}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-sm">No performance bonuses available</p>
+              )}
             </div>
           </div>
         </div>

@@ -715,7 +715,7 @@ export const analyticsApi = {
  */
 export const paymentsApi = {
   async initializePayment(amount: number, email: string, reference: string) {
-    return apiClient.post('/payments/initiate/', {
+    return apiClient.post('/payments/initialize/', {
       amount,
       email,
       reference,
@@ -730,7 +730,11 @@ export const paymentsApi = {
   },
 
   async getAll() {
-    return apiClient.get('/payments/history/');
+    const response = await apiClient.get('/payments/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
   },
 
   async get(id: string | number) {
@@ -746,7 +750,7 @@ export const paymentsApi = {
   },
 
   async getSubscriptions() {
-    return apiClient.get('/payments/subscriptions/');
+    return apiClient.get('/payments/subscription/');
   },
 
   async cancelSubscription(subscriptionId: string) {
