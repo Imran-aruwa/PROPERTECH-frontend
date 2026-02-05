@@ -21,6 +21,7 @@ import {
   Clock,
   AlertTriangle,
   Timer,
+  MessageSquare,
   Shield,
   Leaf,
   Briefcase,
@@ -43,6 +44,7 @@ const navigationConfig = {
     { name: 'Reports', href: '/owner/reports', icon: FileText },
     { name: 'Vacancy Alerts', href: '/owner/vacancy-alerts', icon: AlertTriangle },
     { name: 'SLA Tracking', href: '/owner/maintenance-sla', icon: Timer },
+    { name: 'Rent Chasing', href: '/owner/rent-chasing', icon: MessageSquare },
     { name: 'Settings', href: '/owner/settings', icon: Settings },
   ],
   agent: [
@@ -60,6 +62,7 @@ const navigationConfig = {
     { name: 'Meter Readings', href: '/caretaker/meter-readings', icon: TrendingUp },
     { name: 'Maintenance', href: '/caretaker/maintenance', icon: Wrench },
     { name: 'My Performance', href: '/caretaker/performance', icon: Timer },
+    { name: 'Rent Chasing', href: '/caretaker/rent-chasing', icon: MessageSquare },
     { name: 'Tenants', href: '/caretaker/tenants', icon: Users },
     { name: 'Settings', href: '/caretaker/settings', icon: Settings },
   ],

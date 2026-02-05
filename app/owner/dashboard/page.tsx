@@ -7,12 +7,13 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from '@/components/ui/StatCard';
 import { ChartWrapper } from '@/components/ui/ChartWrapper';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw, ShieldAlert, Eye, AlertTriangle, Timer } from 'lucide-react';
+import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw, ShieldAlert, Eye, AlertTriangle, Timer, MessageSquare } from 'lucide-react';
 import { tenantsApi, paymentsApi, maintenanceApi, staffApi } from '@/lib/api-services';
 import { Tenant, Payment, MaintenanceRequest, Staff } from '@/app/lib/types';
 import { calculateAllTenantRiskScores, TenantRiskScore, RISK_LEVEL_CONFIG, getRiskBgClass } from '@/app/lib/risk-score';
 import { predictAllVacancies, VacancyAlert, VACANCY_RISK_CONFIG, getVacancyBgClass } from '@/app/lib/vacancy-prediction';
 import { calculateAllStaffPerformance, StaffPerformance, PERFORMANCE_GRADE_CONFIG, getGradeBgClass, formatHours } from '@/app/lib/maintenance-sla';
+import { generateChasingSummary, RentChasingSummary, ESCALATION_CONFIG, getEscalationBgClass, formatCurrency as formatChasingCurrency } from '@/app/lib/rent-chasing';
 import Link from 'next/link';
 
 interface DashboardStats {
@@ -37,6 +38,7 @@ export default function OwnerDashboard() {
   const [vacancyAlerts, setVacancyAlerts] = useState<VacancyAlert[]>([]);
   const [slaPerformances, setSlaPerformances] = useState<StaffPerformance[]>([]);
   const [allPayments, setAllPayments] = useState<Payment[]>([]);
+  const [chasingSummary, setChasingSummary] = useState<RentChasingSummary | null>(null);
 
   const fetchDashboardStats = useCallback(async (showRefresh = false) => {
     // Get token from context or fallback to localStorage
@@ -197,6 +199,9 @@ export default function OwnerDashboard() {
 
         const perfs = calculateAllStaffPerformance(staffList, maintenance);
         setSlaPerformances(perfs.slice(0, 5));
+
+        const chasing = generateChasingSummary(tenants, payments);
+        setChasingSummary(chasing);
       } catch (err) {
         console.error('[Dashboard] Failed to load risk data:', err);
       }
@@ -470,6 +475,68 @@ export default function OwnerDashboard() {
                     </div>
                     <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getGradeBgClass(perf.grade)}`}>
                       {PERFORMANCE_GRADE_CONFIG[perf.grade].label}
+                    </span>
+                    <Eye className="w-4 h-4 text-gray-400" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Overdue Rent Chasing */}
+        {chasingSummary && chasingSummary.tenants.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-red-500" />
+                Overdue Rent Alerts
+              </h2>
+              <Link
+                href="/owner/rent-chasing"
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                View All ({chasingSummary.totalOverdue})
+              </Link>
+            </div>
+            <div className="flex items-center gap-4 mb-4 text-sm">
+              <span className="text-gray-500">Outstanding:</span>
+              <span className="font-semibold text-red-600">{formatChasingCurrency(chasingSummary.totalAmount)}</span>
+              {(chasingSummary.byEscalation.urgent > 0 || chasingSummary.byEscalation.final > 0) && (
+                <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700">
+                  {chasingSummary.byEscalation.urgent + chasingSummary.byEscalation.final} urgent
+                </span>
+              )}
+            </div>
+            <div className="space-y-3">
+              {chasingSummary.tenants.slice(0, 5).map((t) => (
+                <Link
+                  key={t.tenantId}
+                  href={`/owner/tenants/${t.tenantId}`}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: ESCALATION_CONFIG[t.escalation].color + '20' }}
+                    >
+                      <span className="font-semibold text-sm" style={{ color: ESCALATION_CONFIG[t.escalation].color }}>
+                        {t.tenantName.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">{t.tenantName}</p>
+                      <p className="text-xs text-gray-500">
+                        {t.unitNumber} &middot; {formatChasingCurrency(t.totalOverdue)}
+                        {t.maxDaysOverdue > 0 && (
+                          <span className="text-red-600 ml-1">&middot; {t.maxDaysOverdue}d overdue</span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getEscalationBgClass(t.escalation)}`}>
+                      {ESCALATION_CONFIG[t.escalation].label}
                     </span>
                     <Eye className="w-4 h-4 text-gray-400" />
                   </div>

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { 
   Home, Building2, Users, DollarSign, Wrench, UserCircle,
   BarChart, LogOut, Settings, Bell, ChevronLeft, ChevronRight,
-  ClipboardList, Calendar, Target, Briefcase, ShieldAlert, AlertTriangle, Timer
+  ClipboardList, Calendar, Target, Briefcase, ShieldAlert, AlertTriangle, Timer, MessageSquare
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -21,6 +21,7 @@ const ownerLinks = [
   { href: '/owner/risk-scores', icon: ShieldAlert, label: 'Risk Scores' },
   { href: '/owner/vacancy-alerts', icon: AlertTriangle, label: 'Vacancy Alerts' },
   { href: '/owner/maintenance-sla', icon: Timer, label: 'SLA Tracking' },
+  { href: '/owner/rent-chasing', icon: MessageSquare, label: 'Rent Chasing' },
   { href: '/owner/analytics', icon: BarChart, label: 'Analytics' }
 ];
 
@@ -29,7 +30,8 @@ const caretakerLinks = [
   { href: '/caretaker/properties', icon: Building2, label: 'Properties' },
   { href: '/caretaker/tasks', icon: ClipboardList, label: 'Tasks' },
   { href: '/caretaker/maintenance', icon: Wrench, label: 'Maintenance' },
-  { href: '/caretaker/performance', icon: Timer, label: 'My Performance' }
+  { href: '/caretaker/performance', icon: Timer, label: 'My Performance' },
+  { href: '/caretaker/rent-chasing', icon: MessageSquare, label: 'Rent Chasing' }
 ];
 
 const agentLinks = [
