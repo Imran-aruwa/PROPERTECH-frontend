@@ -40,6 +40,7 @@ const navigationConfig = {
     { name: 'Rent Tracking', href: '/owner/rent-tracking', icon: DollarSign },
     { name: 'Analytics', href: '/owner/analytics', icon: TrendingUp },
     { name: 'Reports', href: '/owner/reports', icon: FileText },
+    { name: 'Vacancy Alerts', href: '/owner/vacancy-alerts', icon: AlertTriangle },
     { name: 'Settings', href: '/owner/settings', icon: Settings },
   ],
   agent: [
@@ -152,7 +153,7 @@ export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+          <nav className="flex-1 space-y-1 overflow-y-auto sidebar-nav px-3 py-4">
             {navigation.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { 
   Home, Building2, Users, DollarSign, Wrench, UserCircle,
   BarChart, LogOut, Settings, Bell, ChevronLeft, ChevronRight,
-  ClipboardList, Calendar, Target, Briefcase, ShieldAlert
+  ClipboardList, Calendar, Target, Briefcase, ShieldAlert, AlertTriangle
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -19,6 +19,7 @@ const ownerLinks = [
   { href: '/owner/maintenance', icon: Wrench, label: 'Maintenance' },
   { href: '/owner/staff', icon: UserCircle, label: 'Staff' },
   { href: '/owner/risk-scores', icon: ShieldAlert, label: 'Risk Scores' },
+  { href: '/owner/vacancy-alerts', icon: AlertTriangle, label: 'Vacancy Alerts' },
   { href: '/owner/analytics', icon: BarChart, label: 'Analytics' }
 ];
 
@@ -143,7 +144,7 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 overflow-y-auto">
+      <nav className="flex-1 px-3 py-4 overflow-y-auto sidebar-nav">
         <div className="space-y-1">
           {links.map((link) => {
             const isActive = pathname === link.href || 

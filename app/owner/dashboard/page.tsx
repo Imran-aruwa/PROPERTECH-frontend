@@ -7,10 +7,11 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from '@/components/ui/StatCard';
 import { ChartWrapper } from '@/components/ui/ChartWrapper';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw, ShieldAlert, Eye } from 'lucide-react';
+import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw, ShieldAlert, Eye, AlertTriangle } from 'lucide-react';
 import { tenantsApi, paymentsApi, maintenanceApi } from '@/lib/api-services';
 import { Tenant, Payment, MaintenanceRequest } from '@/app/lib/types';
 import { calculateAllTenantRiskScores, TenantRiskScore, RISK_LEVEL_CONFIG, getRiskBgClass } from '@/app/lib/risk-score';
+import { predictAllVacancies, VacancyAlert, VACANCY_RISK_CONFIG, getVacancyBgClass } from '@/app/lib/vacancy-prediction';
 import Link from 'next/link';
 
 interface DashboardStats {
@@ -32,6 +33,7 @@ export default function OwnerDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [riskTenants, setRiskTenants] = useState<TenantRiskScore[]>([]);
+  const [vacancyAlerts, setVacancyAlerts] = useState<VacancyAlert[]>([]);
   const [allPayments, setAllPayments] = useState<Payment[]>([]);
 
   const fetchDashboardStats = useCallback(async (showRefresh = false) => {
@@ -185,6 +187,9 @@ export default function OwnerDashboard() {
         const scores = calculateAllTenantRiskScores(tenants, payments, maintenance);
         const atRisk = scores.filter(s => s.level === 'medium' || s.level === 'high').slice(0, 5);
         setRiskTenants(atRisk);
+
+        const predictions = predictAllVacancies(tenants, payments, maintenance);
+        setVacancyAlerts(predictions.slice(0, 5));
       } catch (err) {
         console.error('[Dashboard] Failed to load risk data:', err);
       }
@@ -346,6 +351,63 @@ export default function OwnerDashboard() {
                       </div>
                       <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getRiskBgClass(rs.level)}`}>
                         {RISK_LEVEL_CONFIG[rs.level].label}
+                      </span>
+                      <Eye className="w-4 h-4 text-gray-400" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Predicted Vacancies */}
+        {vacancyAlerts.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-orange-500" />
+                Predicted Vacancies
+              </h2>
+              <Link
+                href="/owner/vacancy-alerts"
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                View All Alerts
+              </Link>
+            </div>
+            <div className="space-y-3">
+              {vacancyAlerts.map((alert) => {
+                const tenantUser = (alert.tenant as any).user;
+                return (
+                  <Link
+                    key={alert.tenantId}
+                    href={`/owner/tenants/${alert.tenantId}`}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                        <span className="text-orange-600 font-semibold text-sm">
+                          {tenantUser?.full_name?.charAt(0) || 'T'}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 text-sm">{tenantUser?.full_name || 'Unknown'}</p>
+                        <p className="text-xs text-gray-500">{alert.unitNumber} &middot; {alert.estimatedDays}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        <div className="bg-gray-200 rounded-full h-2 w-16">
+                          <div
+                            className="h-2 rounded-full"
+                            style={{ width: `${alert.score}%`, backgroundColor: VACANCY_RISK_CONFIG[alert.risk].color }}
+                          />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700 w-6">{alert.score}</span>
+                      </div>
+                      <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getVacancyBgClass(alert.risk)}`}>
+                        {VACANCY_RISK_CONFIG[alert.risk].label}
                       </span>
                       <Eye className="w-4 h-4 text-gray-400" />
                     </div>
