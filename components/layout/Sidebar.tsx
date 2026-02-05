@@ -20,6 +20,7 @@ import {
   CreditCard,
   Clock,
   AlertTriangle,
+  Timer,
   Shield,
   Leaf,
   Briefcase,
@@ -41,6 +42,7 @@ const navigationConfig = {
     { name: 'Analytics', href: '/owner/analytics', icon: TrendingUp },
     { name: 'Reports', href: '/owner/reports', icon: FileText },
     { name: 'Vacancy Alerts', href: '/owner/vacancy-alerts', icon: AlertTriangle },
+    { name: 'SLA Tracking', href: '/owner/maintenance-sla', icon: Timer },
     { name: 'Settings', href: '/owner/settings', icon: Settings },
   ],
   agent: [
@@ -57,6 +59,7 @@ const navigationConfig = {
     { name: 'Outstanding', href: '/caretaker/outstanding-payments', icon: Clock },
     { name: 'Meter Readings', href: '/caretaker/meter-readings', icon: TrendingUp },
     { name: 'Maintenance', href: '/caretaker/maintenance', icon: Wrench },
+    { name: 'My Performance', href: '/caretaker/performance', icon: Timer },
     { name: 'Tenants', href: '/caretaker/tenants', icon: Users },
     { name: 'Settings', href: '/caretaker/settings', icon: Settings },
   ],

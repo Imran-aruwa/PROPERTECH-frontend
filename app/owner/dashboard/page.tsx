@@ -7,11 +7,12 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from '@/components/ui/StatCard';
 import { ChartWrapper } from '@/components/ui/ChartWrapper';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw, ShieldAlert, Eye, AlertTriangle } from 'lucide-react';
-import { tenantsApi, paymentsApi, maintenanceApi } from '@/lib/api-services';
-import { Tenant, Payment, MaintenanceRequest } from '@/app/lib/types';
+import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw, ShieldAlert, Eye, AlertTriangle, Timer } from 'lucide-react';
+import { tenantsApi, paymentsApi, maintenanceApi, staffApi } from '@/lib/api-services';
+import { Tenant, Payment, MaintenanceRequest, Staff } from '@/app/lib/types';
 import { calculateAllTenantRiskScores, TenantRiskScore, RISK_LEVEL_CONFIG, getRiskBgClass } from '@/app/lib/risk-score';
 import { predictAllVacancies, VacancyAlert, VACANCY_RISK_CONFIG, getVacancyBgClass } from '@/app/lib/vacancy-prediction';
+import { calculateAllStaffPerformance, StaffPerformance, PERFORMANCE_GRADE_CONFIG, getGradeBgClass, formatHours } from '@/app/lib/maintenance-sla';
 import Link from 'next/link';
 
 interface DashboardStats {
@@ -34,6 +35,7 @@ export default function OwnerDashboard() {
   const [refreshing, setRefreshing] = useState(false);
   const [riskTenants, setRiskTenants] = useState<TenantRiskScore[]>([]);
   const [vacancyAlerts, setVacancyAlerts] = useState<VacancyAlert[]>([]);
+  const [slaPerformances, setSlaPerformances] = useState<StaffPerformance[]>([]);
   const [allPayments, setAllPayments] = useState<Payment[]>([]);
 
   const fetchDashboardStats = useCallback(async (showRefresh = false) => {
@@ -173,15 +175,17 @@ export default function OwnerDashboard() {
 
     const fetchRiskData = async () => {
       try {
-        const [tenantsRes, paymentsRes, maintenanceRes] = await Promise.all([
+        const [tenantsRes, paymentsRes, maintenanceRes, staffRes] = await Promise.all([
           tenantsApi.getAll(),
           paymentsApi.getAll(),
           maintenanceApi.getAll(),
+          staffApi.getAll(),
         ]);
 
         const tenants: Tenant[] = Array.isArray(tenantsRes.data) ? tenantsRes.data : [];
         const payments: Payment[] = Array.isArray(paymentsRes.data) ? paymentsRes.data : [];
         const maintenance: MaintenanceRequest[] = Array.isArray(maintenanceRes.data) ? maintenanceRes.data : [];
+        const staffList: Staff[] = Array.isArray(staffRes.data) ? staffRes.data : [];
 
         setAllPayments(payments);
         const scores = calculateAllTenantRiskScores(tenants, payments, maintenance);
@@ -190,6 +194,9 @@ export default function OwnerDashboard() {
 
         const predictions = predictAllVacancies(tenants, payments, maintenance);
         setVacancyAlerts(predictions.slice(0, 5));
+
+        const perfs = calculateAllStaffPerformance(staffList, maintenance);
+        setSlaPerformances(perfs.slice(0, 5));
       } catch (err) {
         console.error('[Dashboard] Failed to load risk data:', err);
       }
@@ -414,6 +421,60 @@ export default function OwnerDashboard() {
                   </Link>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {/* Maintenance SLA Performance */}
+        {slaPerformances.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Timer className="w-5 h-5 text-blue-500" />
+                Staff SLA Performance
+              </h2>
+              <Link
+                href="/owner/maintenance-sla"
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                View All
+              </Link>
+            </div>
+            <div className="space-y-3">
+              {slaPerformances.map((perf) => (
+                <Link
+                  key={perf.staffId}
+                  href={`/owner/staff/${perf.staffId}`}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                      <span className="text-blue-600 font-semibold text-sm">
+                        {perf.staffName.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">{perf.staffName}</p>
+                      <p className="text-xs text-gray-500">{perf.completed}/{perf.totalAssigned} completed &middot; {formatHours(perf.avgResolveHours)} avg</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-gray-200 rounded-full h-2 w-16">
+                        <div
+                          className="h-2 rounded-full"
+                          style={{ width: `${perf.score}%`, backgroundColor: PERFORMANCE_GRADE_CONFIG[perf.grade].color }}
+                        />
+                      </div>
+                      <span className="text-sm font-semibold text-gray-700 w-6">{perf.score}</span>
+                    </div>
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getGradeBgClass(perf.grade)}`}>
+                      {PERFORMANCE_GRADE_CONFIG[perf.grade].label}
+                    </span>
+                    <Eye className="w-4 h-4 text-gray-400" />
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         )}

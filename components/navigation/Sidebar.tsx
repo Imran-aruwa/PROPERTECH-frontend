@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { 
   Home, Building2, Users, DollarSign, Wrench, UserCircle,
   BarChart, LogOut, Settings, Bell, ChevronLeft, ChevronRight,
-  ClipboardList, Calendar, Target, Briefcase, ShieldAlert, AlertTriangle
+  ClipboardList, Calendar, Target, Briefcase, ShieldAlert, AlertTriangle, Timer
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -20,6 +20,7 @@ const ownerLinks = [
   { href: '/owner/staff', icon: UserCircle, label: 'Staff' },
   { href: '/owner/risk-scores', icon: ShieldAlert, label: 'Risk Scores' },
   { href: '/owner/vacancy-alerts', icon: AlertTriangle, label: 'Vacancy Alerts' },
+  { href: '/owner/maintenance-sla', icon: Timer, label: 'SLA Tracking' },
   { href: '/owner/analytics', icon: BarChart, label: 'Analytics' }
 ];
 
@@ -27,7 +28,8 @@ const caretakerLinks = [
   { href: '/caretaker', icon: Home, label: 'Dashboard' },
   { href: '/caretaker/properties', icon: Building2, label: 'Properties' },
   { href: '/caretaker/tasks', icon: ClipboardList, label: 'Tasks' },
-  { href: '/caretaker/maintenance', icon: Wrench, label: 'Maintenance' }
+  { href: '/caretaker/maintenance', icon: Wrench, label: 'Maintenance' },
+  { href: '/caretaker/performance', icon: Timer, label: 'My Performance' }
 ];
 
 const agentLinks = [
