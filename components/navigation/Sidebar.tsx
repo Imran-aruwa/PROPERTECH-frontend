@@ -3,10 +3,11 @@
 import { useAuth } from '@/app/lib/auth-context';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
+import {
   Home, Building2, Users, DollarSign, Wrench, UserCircle,
   BarChart, LogOut, Settings, Bell, ChevronLeft, ChevronRight,
-  ClipboardList, Calendar, Target, Briefcase, ShieldAlert, AlertTriangle, Timer, MessageSquare
+  ClipboardList, Calendar, Target, Briefcase, ShieldAlert, AlertTriangle, Timer, MessageSquare,
+  ClipboardCheck
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -14,6 +15,7 @@ const ownerLinks = [
   { href: '/owner', icon: Home, label: 'Dashboard' },
   { href: '/owner/properties', icon: Building2, label: 'Properties' },
   { href: '/owner/units', icon: Home, label: 'Units' },
+  { href: '/owner/inspections', icon: ClipboardCheck, label: 'Inspections' },
   { href: '/owner/tenants', icon: Users, label: 'Tenants' },
   { href: '/owner/payments', icon: DollarSign, label: 'Payments' },
   { href: '/owner/maintenance', icon: Wrench, label: 'Maintenance' },
@@ -30,6 +32,7 @@ const caretakerLinks = [
   { href: '/caretaker/properties', icon: Building2, label: 'Properties' },
   { href: '/caretaker/tasks', icon: ClipboardList, label: 'Tasks' },
   { href: '/caretaker/maintenance', icon: Wrench, label: 'Maintenance' },
+  { href: '/caretaker/inspections', icon: ClipboardCheck, label: 'Inspections' },
   { href: '/caretaker/performance', icon: Timer, label: 'My Performance' },
   { href: '/caretaker/rent-chasing', icon: MessageSquare, label: 'Rent Chasing' }
 ];
@@ -37,6 +40,7 @@ const caretakerLinks = [
 const agentLinks = [
   { href: '/agent', icon: Home, label: 'Dashboard' },
   { href: '/agent/properties', icon: Building2, label: 'Properties' },
+  { href: '/agent/inspections', icon: ClipboardCheck, label: 'Inspections' },
   { href: '/agent/leads', icon: Target, label: 'Leads' },
   { href: '/agent/viewings', icon: Calendar, label: 'Viewings' },
   { href: '/agent/earnings', icon: DollarSign, label: 'Earnings' }

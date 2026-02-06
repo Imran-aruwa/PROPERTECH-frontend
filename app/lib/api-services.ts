@@ -1033,5 +1033,125 @@ export const notificationsApi = {
   },
 };
 
+/**
+ * Inspections API
+ * Offline-first inspection system
+ */
+export interface InspectionCreatePayload {
+  client_uuid: string;
+  inspection: {
+    property_id: number;
+    unit_id: number;
+    inspection_type: string;
+    inspection_date: string;
+    gps_lat?: number;
+    gps_lng?: number;
+    device_id?: string;
+    offline_created_at?: string;
+    notes?: string;
+  };
+  items: Array<{
+    client_uuid: string;
+    name: string;
+    category: string;
+    condition: string;
+    comment?: string;
+  }>;
+  meter_readings: Array<{
+    client_uuid: string;
+    unit_id: number;
+    meter_type: string;
+    previous_reading: number;
+    current_reading: number;
+    reading_date: string;
+  }>;
+}
+
+export interface InspectionMediaPayload {
+  client_uuid: string;
+  file_data: string; // base64
+  file_type: 'photo' | 'video';
+  captured_at: string;
+}
+
+export const inspectionsApi = {
+  /**
+   * List inspections with optional filters
+   */
+  async list(params?: { property_id?: number; status?: string; type?: string; page?: number; size?: number }) {
+    let endpoint = '/inspections/';
+    if (params) {
+      const queryParams = new URLSearchParams();
+      if (params.property_id) queryParams.append('property_id', params.property_id.toString());
+      if (params.status) queryParams.append('status', params.status);
+      if (params.type) queryParams.append('type', params.type);
+      if (params.page) queryParams.append('page', params.page.toString());
+      if (params.size) queryParams.append('size', params.size.toString());
+      const queryString = queryParams.toString();
+      if (queryString) endpoint += `?${queryString}`;
+    }
+    const response = await apiClient.get(endpoint);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Get a single inspection by ID
+   */
+  async get(id: number) {
+    const response = await apiClient.get(`/inspections/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Create a new inspection with items and meter readings
+   */
+  async create(data: InspectionCreatePayload) {
+    const response = await apiClient.post('/inspections/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Upload media (photo/video) to an inspection
+   */
+  async uploadMedia(inspectionId: number, data: InspectionMediaPayload) {
+    const response = await apiClient.post(`/inspections/${inspectionId}/media/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Mark an inspection as reviewed (owner/agent only)
+   */
+  async review(id: number, notes?: string) {
+    const response = await apiClient.patch(`/inspections/${id}/review/`, { notes });
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Lock an inspection (owner only)
+   */
+  async lock(id: number) {
+    const response = await apiClient.patch(`/inspections/${id}/lock/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+};
+
 // Default export for backward compatibility
 export default apiClient;

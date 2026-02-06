@@ -27,6 +27,7 @@ import {
   Briefcase,
   Package,
   CheckSquare,
+  ClipboardCheck,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -39,6 +40,7 @@ const navigationConfig = {
   owner: [
     { name: 'Dashboard', href: '/owner/dashboard', icon: LayoutDashboard },
     { name: 'Properties', href: '/owner/properties', icon: Building2 },
+    { name: 'Inspections', href: '/owner/inspections', icon: ClipboardCheck },
     { name: 'Rent Tracking', href: '/owner/rent-tracking', icon: DollarSign },
     { name: 'Analytics', href: '/owner/analytics', icon: TrendingUp },
     { name: 'Reports', href: '/owner/reports', icon: FileText },
@@ -50,6 +52,7 @@ const navigationConfig = {
   agent: [
     { name: 'Dashboard', href: '/agent/dashboard', icon: LayoutDashboard },
     { name: 'Properties', href: '/agent/properties', icon: Building2 },
+    { name: 'Inspections', href: '/agent/inspections', icon: ClipboardCheck },
     { name: 'Earnings', href: '/agent/earnings', icon: DollarSign },
     { name: 'Rent Collection', href: '/agent/rent-collection', icon: CreditCard },
     { name: 'Tenants', href: '/agent/tenants', icon: Users },
@@ -61,6 +64,7 @@ const navigationConfig = {
     { name: 'Outstanding', href: '/caretaker/outstanding-payments', icon: Clock },
     { name: 'Meter Readings', href: '/caretaker/meter-readings', icon: TrendingUp },
     { name: 'Maintenance', href: '/caretaker/maintenance', icon: Wrench },
+    { name: 'Inspections', href: '/caretaker/inspections', icon: ClipboardCheck },
     { name: 'My Performance', href: '/caretaker/performance', icon: Timer },
     { name: 'Rent Chasing', href: '/caretaker/rent-chasing', icon: MessageSquare },
     { name: 'Tenants', href: '/caretaker/tenants', icon: Users },
