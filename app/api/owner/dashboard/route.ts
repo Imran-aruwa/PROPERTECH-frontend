@@ -2,44 +2,38 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com';
 
-// Helper to ensure proper Bearer token format
-function formatAuthHeader(authHeader: string): string {
-  if (authHeader.startsWith('Bearer ')) {
-    return authHeader;
-  }
-  return `Bearer ${authHeader}`;
+// Get auth token from Authorization header or cookies
+function getAuthToken(request: NextRequest): string | null {
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+  if (authHeader) return authHeader.startsWith('Bearer ') ? authHeader : `Bearer ${authHeader}`;
+
+  const token = request.cookies.get('auth_token')?.value || request.cookies.get('token')?.value;
+  if (token) return `Bearer ${token}`;
+
+  return null;
 }
 
 export async function GET(request: NextRequest) {
   try {
-    // Try both cases for header name
-    const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+    const authHeader = getAuthToken(request);
 
-    console.log('[API/owner/dashboard] Auth header present:', !!authHeader);
-    if (authHeader) {
-      console.log('[API/owner/dashboard] Auth header format:', authHeader.substring(0, 15) + '...');
-    }
+    console.log('[API/owner/dashboard] Auth present:', !!authHeader);
 
     if (!authHeader) {
-      console.log('[API/owner/dashboard] No auth header found');
       return NextResponse.json(
         { success: false, error: 'Unauthorized - No token provided' },
         { status: 401 }
       );
     }
 
-    const formattedAuth = formatAuthHeader(authHeader);
-    // NO trailing slash - FastAPI route is /dashboard without slash
     const backendUrl = `${BACKEND_URL}/api/owner/dashboard`;
-    console.log('[API/owner/dashboard] Backend URL:', backendUrl);
-    console.log('[API/owner/dashboard] Sending auth header:', formattedAuth.substring(0, 20) + '...');
 
     // Use redirect: 'manual' to handle redirects ourselves and preserve auth
     let response = await fetch(backendUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': formattedAuth,
+        'Authorization': authHeader,
       },
       cache: 'no-store',
       redirect: 'manual',
@@ -54,7 +48,7 @@ export async function GET(request: NextRequest) {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': formattedAuth,
+            'Authorization': authHeader,
           },
           cache: 'no-store',
         });

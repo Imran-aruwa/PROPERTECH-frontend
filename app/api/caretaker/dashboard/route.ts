@@ -2,20 +2,22 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com';
 
-// Helper to ensure proper Bearer token format
-function formatAuthHeader(authHeader: string): string {
-  if (authHeader.startsWith('Bearer ')) {
-    return authHeader;
-  }
-  return `Bearer ${authHeader}`;
+// Get auth token from Authorization header or cookies
+function getAuthToken(request: NextRequest): string | null {
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+  if (authHeader) return authHeader.startsWith('Bearer ') ? authHeader : `Bearer ${authHeader}`;
+
+  const token = request.cookies.get('auth_token')?.value || request.cookies.get('token')?.value;
+  if (token) return `Bearer ${token}`;
+
+  return null;
 }
 
 export async function GET(request: NextRequest) {
   try {
-    // Try both cases for header name
-    const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+    const authHeader = getAuthToken(request);
 
-    console.log('[API/caretaker/dashboard] Auth header present:', !!authHeader);
+    console.log('[API/caretaker/dashboard] Auth present:', !!authHeader);
 
     if (!authHeader) {
       return NextResponse.json(
@@ -24,15 +26,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const formattedAuth = formatAuthHeader(authHeader);
-    // Use URL without trailing slash to avoid 307 redirect that drops auth header
     const backendUrl = `${BACKEND_URL}/api/caretaker/dashboard`;
 
     const response = await fetch(backendUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': formattedAuth,
+        'Authorization': authHeader,
       },
       cache: 'no-store',
       redirect: 'follow',

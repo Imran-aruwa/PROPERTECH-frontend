@@ -60,10 +60,15 @@ async function proxyRequest(request: NextRequest, method: string) {
       'Content-Type': 'application/json',
     };
 
-    // Forward authorization header (try both cases)
+    // Forward authorization header (try headers, then cookies)
     const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
     if (authHeader) {
       headers['Authorization'] = formatAuthHeader(authHeader);
+    } else {
+      const cookieToken = request.cookies.get('auth_token')?.value || request.cookies.get('token')?.value;
+      if (cookieToken) {
+        headers['Authorization'] = `Bearer ${cookieToken}`;
+      }
     }
 
     console.log(`[API Proxy] ${method} ${path} - Auth:`, authHeader ? 'Present' : 'MISSING');

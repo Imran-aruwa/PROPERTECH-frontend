@@ -2,11 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com';
 
+// Get auth token from Authorization header or cookies
+function getAuthToken(request: NextRequest): string | null {
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+  if (authHeader) return authHeader.startsWith('Bearer ') ? authHeader : `Bearer ${authHeader}`;
+
+  const token = request.cookies.get('auth_token')?.value || request.cookies.get('token')?.value;
+  if (token) return `Bearer ${token}`;
+
+  return null;
+}
+
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get('Authorization');
+    const authHeader = getAuthToken(request);
     if (!authHeader) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      console.error('[API/units/[id]] No token found in headers or cookies');
+      return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
     }
 
     const unitId = params.id;
@@ -35,9 +47,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get('Authorization');
+    const authHeader = getAuthToken(request);
     if (!authHeader) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
     }
 
     const unitId = params.id;
@@ -95,9 +107,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get('Authorization');
+    const authHeader = getAuthToken(request);
     if (!authHeader) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
     }
 
     const unitId = params.id;

@@ -5,12 +5,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com';
 
-// Helper to ensure proper Bearer token format
-function formatAuthHeader(authHeader: string): string {
-  if (authHeader.startsWith('Bearer ')) {
-    return authHeader;
-  }
-  return `Bearer ${authHeader}`;
+// Get auth token from Authorization header or cookies
+function getAuthToken(request: NextRequest): string | null {
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+  if (authHeader) return authHeader.startsWith('Bearer ') ? authHeader : `Bearer ${authHeader}`;
+
+  const token = request.cookies.get('auth_token')?.value || request.cookies.get('token')?.value;
+  if (token) return `Bearer ${token}`;
+
+  return null;
 }
 
 export async function GET(
@@ -18,10 +21,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Try both cases for header name
-    const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+    const authHeader = getAuthToken(request);
 
-    console.log(`[API/properties/${params.id} GET] Auth header present:`, !!authHeader);
+    console.log(`[API/properties/${params.id} GET] Auth present:`, !!authHeader);
 
     if (!authHeader) {
       return NextResponse.json(
@@ -30,12 +32,10 @@ export async function GET(
       );
     }
 
-    const formattedAuth = formatAuthHeader(authHeader);
-
     const response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': formattedAuth,
+        'Authorization': authHeader,
       },
       cache: 'no-store',
     });
@@ -72,8 +72,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Try both cases for header name
-    const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+    const authHeader = getAuthToken(request);
 
     console.log(`[API/properties/${params.id} PUT] Auth header present:`, !!authHeader);
 
@@ -84,14 +83,13 @@ export async function PUT(
       );
     }
 
-    const formattedAuth = formatAuthHeader(authHeader);
     const body = await request.json();
 
     const response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': formattedAuth,
+        'Authorization': authHeader,
       },
       body: JSON.stringify(body),
     });
@@ -122,8 +120,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Try both cases for header name
-    const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+    const authHeader = getAuthToken(request);
 
     console.log(`[API/properties/${params.id} DELETE] Auth header present:`, !!authHeader);
 
@@ -134,13 +131,11 @@ export async function DELETE(
       );
     }
 
-    const formattedAuth = formatAuthHeader(authHeader);
-
     const response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': formattedAuth,
+        'Authorization': authHeader,
       },
     });
 

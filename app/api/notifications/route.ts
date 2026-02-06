@@ -2,33 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com';
 
-// Helper to ensure proper Bearer token format
-function formatAuthHeader(authHeader: string): string {
-  if (authHeader.startsWith('Bearer ')) {
-    return authHeader;
-  }
-  return `Bearer ${authHeader}`;
+// Get auth token from Authorization header or cookies
+function getAuthToken(request: NextRequest): string | null {
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+  if (authHeader) return authHeader.startsWith('Bearer ') ? authHeader : `Bearer ${authHeader}`;
+
+  const token = request.cookies.get('auth_token')?.value || request.cookies.get('token')?.value;
+  if (token) return `Bearer ${token}`;
+
+  return null;
 }
 
 export async function GET(req: NextRequest) {
   try {
-    // Try both cases for header name
-    const authHeader = req.headers.get('Authorization') || req.headers.get('authorization');
+    const authHeader = getAuthToken(req);
 
-    console.log('[API/notifications] Auth header present:', !!authHeader);
+    console.log('[API/notifications] Auth present:', !!authHeader);
 
     if (!authHeader) {
       // Return empty array if no auth - notifications are optional
       return NextResponse.json({ success: true, data: [] }, { status: 200 });
     }
 
-    const formattedAuth = formatAuthHeader(authHeader);
-
     const response = await fetch(`${BACKEND_URL}/api/notifications/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': formattedAuth,
+        'Authorization': authHeader,
       },
     });
 
@@ -58,8 +58,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // Try both cases for header name
-    const authHeader = req.headers.get('Authorization') || req.headers.get('authorization');
+    const authHeader = getAuthToken(req);
 
     if (!authHeader) {
       return NextResponse.json(
@@ -68,14 +67,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const formattedAuth = formatAuthHeader(authHeader);
     const body = await req.json();
 
     const response = await fetch(`${BACKEND_URL}/api/notifications/mark-all-read/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': formattedAuth,
+        'Authorization': authHeader,
       },
       body: JSON.stringify(body),
     });
