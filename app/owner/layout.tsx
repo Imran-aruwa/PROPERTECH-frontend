@@ -37,8 +37,8 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header with notifications - sticky at top */}
+    <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
+      {/* Header - Fixed at top */}
       <Header role="owner" onMenuClick={() => setSidebarOpen(true)} />
 
       {/* Mobile Sidebar Overlay */}
@@ -49,14 +49,17 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
         />
       )}
 
-      <div className="flex">
-        {/* Sidebar - Desktop always visible, Mobile slide-in */}
+      {/* Main container with sidebar and content */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar - Fixed height, scrollable inside */}
         <div className={`
-          fixed lg:sticky lg:top-16 inset-y-0 left-0 z-50 lg:z-0
+          fixed lg:relative inset-y-0 left-0 z-50 lg:z-0
+          h-[calc(100vh-4rem)] lg:h-auto
           transform transition-transform duration-300 ease-in-out
-          lg:transform-none lg:transition-none lg:h-[calc(100vh-4rem)]
+          lg:transform-none lg:transition-none
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}>
+          {/* Mobile close button */}
           <div className="lg:hidden absolute top-3 right-3 z-10">
             <button
               onClick={() => setSidebarOpen(false)}
@@ -68,8 +71,8 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           <Sidebar />
         </div>
 
-        {/* Main Content */}
-        <main className="flex-1 overflow-x-hidden min-h-[calc(100vh-4rem)]">
+        {/* Main Content - Scrollable */}
+        <main className="flex-1 overflow-y-auto bg-gray-50">
           {children}
         </main>
       </div>
