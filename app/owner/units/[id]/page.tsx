@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
+import { unitsApi, propertiesApi } from '@/lib/api-services';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
 import { useToast } from '@/app/lib/hooks';
@@ -327,7 +328,7 @@ function EditUnitModal({
 }
 
 export default function UnitDetailPage() {
-  const { isAuthenticated, role, isLoading: authLoading, token } = useAuth();
+  const { isAuthenticated, role, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const params = useParams();
   const unitId = params?.id as string;
@@ -343,27 +344,21 @@ export default function UnitDetailPage() {
   const fetchUnit = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/units/" + unitId, {
-        headers: { "Authorization": "Bearer " + token }
-      });
-      const data = await response.json();
+      const response = await unitsApi.get(unitId);
 
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || "Failed to fetch unit");
+      if (!response.success) {
+        throw new Error(response.error || "Failed to fetch unit");
       }
 
-      const unitData = data.data;
+      const unitData = response.data;
       setUnit(unitData);
 
       // Fetch property name if we have property_id
       if (unitData.property_id && !unitData.property?.name) {
         try {
-          const propResponse = await fetch("/api/properties/" + unitData.property_id, {
-            headers: { "Authorization": "Bearer " + token }
-          });
-          const propData = await propResponse.json();
-          if (propData.success && propData.data) {
-            setPropertyName(propData.data.name || "Unknown Property");
+          const propResponse = await propertiesApi.get(unitData.property_id);
+          if (propResponse.success && propResponse.data) {
+            setPropertyName(propResponse.data.name || "Unknown Property");
           }
         } catch {
           setPropertyName("Unknown Property");
@@ -376,7 +371,7 @@ export default function UnitDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [unitId, token]);
+  }, [unitId]);
 
   useEffect(() => {
     if (authLoading) return;
@@ -387,18 +382,9 @@ export default function UnitDetailPage() {
 
   const handleSaveUnit = async (data: Partial<Unit>) => {
     try {
-      const response = await fetch(`/api/units/${unitId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      });
+      const result = await unitsApi.update(unit?.property_id || '', unitId, data);
 
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
+      if (!result.success) {
         throw new Error(result.error || 'Failed to update unit');
       }
 

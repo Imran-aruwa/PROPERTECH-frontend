@@ -32,31 +32,36 @@ export default function AgentDashboard() {
         setIsLoading(true);
         setError(null);
 
-        const response = await agentApi.getDashboard();
+        // Fetch both dashboard stats and properties in parallel
+        const [dashboardResponse, propertiesResponse] = await Promise.all([
+          agentApi.getDashboard().catch(() => ({ success: false, data: null })),
+          agentApi.getProperties().catch(() => ({ success: false, data: null })),
+        ]);
 
-        if (response.success && response.data) {
-          const data = response.data;
-          setStats({
-            propertiesManaged: data.properties_managed || data.propertiesManaged || 0,
-            totalEarnings: data.total_earnings || data.totalEarnings || 0,
-            activeTenants: data.active_tenants || data.activeTenants || 0,
-            collectionRate: data.collection_rate || data.collectionRate || 0,
-          });
-          setActivities(data.recent_activities || data.recentActivities || []);
-        } else {
-          // Use empty state when API fails
-          setStats({
-            propertiesManaged: 0,
-            totalEarnings: 0,
-            activeTenants: 0,
-            collectionRate: 0,
-          });
-          setActivities([]);
+        // Extract dashboard data if available
+        const dashData = dashboardResponse.success ? dashboardResponse.data : null;
+
+        // Extract properties data to compute stats as fallback
+        let propertiesList: any[] = [];
+        if (propertiesResponse.success && propertiesResponse.data) {
+          const raw = propertiesResponse.data;
+          propertiesList = Array.isArray(raw) ? raw : (raw.properties || raw.results || []);
         }
+
+        // Compute stats from properties if dashboard endpoint didn't provide them
+        const totalUnits = propertiesList.reduce((sum: number, p: any) => sum + (p.total_units || p.totalUnits || 0), 0);
+        const occupiedUnits = propertiesList.reduce((sum: number, p: any) => sum + (p.occupied_units || p.occupiedUnits || 0), 0);
+
+        setStats({
+          propertiesManaged: dashData?.properties_managed || dashData?.propertiesManaged || propertiesList.length || 0,
+          totalEarnings: dashData?.total_earnings || dashData?.totalEarnings || 0,
+          activeTenants: dashData?.active_tenants || dashData?.activeTenants || occupiedUnits || 0,
+          collectionRate: dashData?.collection_rate || dashData?.collectionRate || 0,
+        });
+        setActivities(dashData?.recent_activities || dashData?.recentActivities || []);
       } catch (err) {
         console.error('Failed to fetch dashboard data:', err);
         setError('Failed to load dashboard data');
-        // Set empty state
         setStats({
           propertiesManaged: 0,
           totalEarnings: 0,
@@ -84,7 +89,7 @@ export default function AgentDashboard() {
   const statsCards = stats ? [
     {
       title: 'Properties Managed',
-      label: 'Total units',
+      label: 'Total properties',
       value: stats.propertiesManaged.toString(),
       icon: Building2,
       trend: "up" as const,
