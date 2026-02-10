@@ -29,14 +29,29 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/`, {
+    let response = await fetch(`${BACKEND_URL}/api/properties/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
       cache: 'no-store',
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          cache: 'no-store',
+        });
+      }
+    }
 
     console.log('[API/properties GET] Backend status:', response.status);
     const data = await response.json();
@@ -80,14 +95,30 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/`, {
+    const bodyStr = JSON.stringify(body);
+    let response = await fetch(`${BACKEND_URL}/api/properties/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
-      body: JSON.stringify(body),
+      body: bodyStr,
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          body: bodyStr,
+        });
+      }
+    }
 
     console.log('[API/properties POST] Backend response status:', response.status);
 

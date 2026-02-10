@@ -27,13 +27,27 @@ export async function PATCH(
       );
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/notifications/${params.id}/read/`, {
+    let response = await fetch(`${BACKEND_URL}/api/notifications/${params.id}/read/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+        });
+      }
+    }
 
     if (!response.ok) {
       const data = await response.json();

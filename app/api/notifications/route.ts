@@ -24,13 +24,27 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ success: true, data: [] }, { status: 200 });
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/notifications/`, {
+    let response = await fetch(`${BACKEND_URL}/api/notifications/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+        });
+      }
+    }
 
     console.log('[API/notifications] Backend status:', response.status);
 
@@ -69,14 +83,30 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    const response = await fetch(`${BACKEND_URL}/api/notifications/mark-all-read/`, {
+    const bodyStr = JSON.stringify(body);
+    let response = await fetch(`${BACKEND_URL}/api/notifications/mark-all-read/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
-      body: JSON.stringify(body),
+      body: bodyStr,
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          body: bodyStr,
+        });
+      }
+    }
 
     const data = await response.json();
 

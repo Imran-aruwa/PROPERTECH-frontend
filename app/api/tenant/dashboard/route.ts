@@ -28,15 +28,29 @@ export async function GET(request: NextRequest) {
 
     const backendUrl = `${BACKEND_URL}/api/tenant/dashboard`;
 
-    const response = await fetch(backendUrl, {
+    let response = await fetch(backendUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
       cache: 'no-store',
-      redirect: 'follow',
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          cache: 'no-store',
+        });
+      }
+    }
 
     console.log('[API/tenant/dashboard] Backend status:', response.status);
     const data = await response.json();

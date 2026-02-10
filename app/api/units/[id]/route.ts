@@ -23,11 +23,23 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     const unitId = params.id;
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/units/${unitId}/`, {
+    let response = await fetch(`${BACKEND_URL}/api/properties/units/${unitId}/`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', 'Authorization': authHeader },
       cache: 'no-store',
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json', 'Authorization': authHeader },
+          cache: 'no-store',
+        });
+      }
+    }
 
     const data = await response.json();
 
@@ -80,14 +92,30 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       updateData.size_sqm = body.square_feet;
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/units/${unitId}/`, {
+    const bodyStr = JSON.stringify(updateData);
+    let response = await fetch(`${BACKEND_URL}/api/properties/units/${unitId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
-      body: JSON.stringify(updateData),
+      body: bodyStr,
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          body: bodyStr,
+        });
+      }
+    }
 
     const data = await response.json();
 
@@ -114,13 +142,27 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 
     const unitId = params.id;
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/units/${unitId}/`, {
+    let response = await fetch(`${BACKEND_URL}/api/properties/units/${unitId}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+        });
+      }
+    }
 
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));

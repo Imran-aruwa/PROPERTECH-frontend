@@ -32,13 +32,28 @@ export async function GET(
       );
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
+    let response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
       cache: 'no-store',
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          cache: 'no-store',
+        });
+      }
+    }
 
     console.log(`[API/properties/${params.id} GET] Backend status:`, response.status);
     const data = await response.json();
@@ -85,14 +100,30 @@ export async function PUT(
 
     const body = await request.json();
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
+    const bodyStr = JSON.stringify(body);
+    let response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
-      body: JSON.stringify(body),
+      body: bodyStr,
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+          body: bodyStr,
+        });
+      }
+    }
 
     console.log(`[API/properties/${params.id} PUT] Backend status:`, response.status);
     const data = await response.json();
@@ -131,13 +162,27 @@ export async function DELETE(
       );
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
+    let response = await fetch(`${BACKEND_URL}/api/properties/${params.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
+      redirect: 'manual',
     });
+
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        response = await fetch(redirectUrl, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+          },
+        });
+      }
+    }
 
     console.log(`[API/properties/${params.id} DELETE] Backend status:`, response.status);
     const data = await response.json();

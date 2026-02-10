@@ -91,8 +91,22 @@ async function proxyRequest(request: NextRequest, method: string) {
       }
     }
 
-    // Make request to backend
-    const response = await fetch(backendUrl, fetchOptions);
+    // Make request to backend with redirect: 'manual' to preserve Authorization header.
+    // FastAPI returns 307 redirects for trailing slash mismatches, and fetch() drops
+    // the Authorization header when following redirects, causing 403 errors.
+    fetchOptions.redirect = 'manual';
+    let response = await fetch(backendUrl, fetchOptions);
+
+    // Handle 307/308 redirects manually to preserve the Authorization header
+    if (response.status === 307 || response.status === 308) {
+      const redirectUrl = response.headers.get('location');
+      if (redirectUrl) {
+        console.log(`[API Proxy] ${method} ${path} - Following redirect to:`, redirectUrl);
+        const redirectOptions: RequestInit = { ...fetchOptions };
+        delete redirectOptions.redirect;
+        response = await fetch(redirectUrl, redirectOptions);
+      }
+    }
 
     console.log(`[API Proxy] ${method} ${path} - Backend status:`, response.status);
 
