@@ -38,8 +38,10 @@ export async function GET(
     });
 
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         response = await fetch(redirectUrl, {
           method: 'GET',
           headers: {
@@ -98,8 +100,10 @@ export async function PUT(
     });
 
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         response = await fetch(redirectUrl, {
           method: 'PUT',
           headers: {
@@ -154,8 +158,10 @@ export async function DELETE(
     });
 
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         response = await fetch(redirectUrl, {
           method: 'DELETE',
           headers: {

@@ -35,8 +35,10 @@ export async function GET(request: NextRequest) {
     });
 
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         response = await fetch(redirectUrl, {
           method: 'GET',
           headers: {
@@ -92,8 +94,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         response = await fetch(redirectUrl, {
           method: 'POST',
           headers: {

@@ -99,12 +99,14 @@ async function proxyRequest(request: NextRequest, method: string) {
 
     // Handle 307/308 redirects manually to preserve the Authorization header
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs.
+        // Following http→https redirect strips Authorization header (cross-origin per Fetch spec).
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         console.log(`[API Proxy] ${method} ${path} - Following redirect to:`, redirectUrl);
-        const redirectOptions: RequestInit = { ...fetchOptions };
-        delete redirectOptions.redirect;
-        response = await fetch(redirectUrl, redirectOptions);
+        // Keep redirect: 'manual' to prevent any further auto-redirects that could strip headers
+        response = await fetch(redirectUrl, fetchOptions);
       }
     }
 

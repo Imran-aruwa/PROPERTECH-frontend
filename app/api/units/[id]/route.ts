@@ -31,8 +31,10 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     });
 
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         response = await fetch(redirectUrl, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json', 'Authorization': authHeader },
@@ -104,8 +106,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     });
 
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         response = await fetch(redirectUrl, {
           method: 'PUT',
           headers: {
@@ -152,8 +156,10 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     });
 
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
       if (redirectUrl) {
+        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
         response = await fetch(redirectUrl, {
           method: 'DELETE',
           headers: {

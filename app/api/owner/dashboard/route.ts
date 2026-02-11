@@ -41,7 +41,9 @@ export async function GET(request: NextRequest) {
 
     // Handle redirect manually to preserve Authorization header
     if (response.status === 307 || response.status === 308) {
-      const redirectUrl = response.headers.get('location');
+      let redirectUrl = response.headers.get('location');
+      // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs
+      if (redirectUrl) redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
       console.log('[API/owner/dashboard] Redirected to:', redirectUrl);
       if (redirectUrl) {
         response = await fetch(redirectUrl, {
