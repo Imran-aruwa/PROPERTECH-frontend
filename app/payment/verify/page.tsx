@@ -1,14 +1,13 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useAuth } from '@/app/lib/auth-context';
+import { apiClient } from '@/lib/api-services';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 function PaymentVerifyContent() {
   const searchParams = useSearchParams();
-  const { token } = useAuth();
   const [status, setStatus] = useState('loading');
   const [message, setMessage] = useState('');
 
@@ -17,18 +16,13 @@ function PaymentVerifyContent() {
     if (!reference) { setStatus('error'); setMessage('No payment reference found'); return; }
     const verify = async () => {
       try {
-        const r = await fetch('/api/payments/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-          body: JSON.stringify({ reference }),
-        });
-        const d = await r.json();
+        const d = await apiClient.post('/payments/verify/', { reference });
         if (d.success) { setStatus('success'); setMessage('Payment successful! Subscription activated.'); }
         else { setStatus('error'); setMessage(d.error || 'Verification failed'); }
       } catch { setStatus('error'); setMessage('Verification failed'); }
     };
-    if (token) verify();
-  }, [searchParams, token]);
+    verify();
+  }, [searchParams]);
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50'>

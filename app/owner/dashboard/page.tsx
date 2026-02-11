@@ -8,7 +8,7 @@ import { StatCard } from '@/components/ui/StatCard';
 import { ChartWrapper } from '@/components/ui/ChartWrapper';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Building2, DollarSign, Users, Wrench, CreditCard, RefreshCw, ShieldAlert, Eye, AlertTriangle, Timer, MessageSquare } from 'lucide-react';
-import { tenantsApi, paymentsApi, maintenanceApi, staffApi } from '@/lib/api-services';
+import { tenantsApi, paymentsApi, maintenanceApi, staffApi, analyticsApi, propertiesApi } from '@/lib/api-services';
 import { Tenant, Payment, MaintenanceRequest, Staff } from '@/app/lib/types';
 import { calculateAllTenantRiskScores, TenantRiskScore, RISK_LEVEL_CONFIG, getRiskBgClass } from '@/app/lib/risk-score';
 import { predictAllVacancies, VacancyAlert, VACANCY_RISK_CONFIG, getVacancyBgClass } from '@/app/lib/vacancy-prediction';
@@ -28,7 +28,7 @@ interface DashboardStats {
 }
 
 export default function OwnerDashboard() {
-  const { isAuthenticated, role, isLoading: authLoading, token } = useAuth();
+  const { isAuthenticated, role, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,45 +41,21 @@ export default function OwnerDashboard() {
   const [chasingSummary, setChasingSummary] = useState<RentChasingSummary | null>(null);
 
   const fetchDashboardStats = useCallback(async (showRefresh = false) => {
-    // Get token from context or fallback to localStorage
-    const authToken = token || (typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null);
-
-    if (!authToken) {
-      console.log("[Dashboard] No auth token available yet, skipping fetch");
-      return;
-    }
-
     try {
       if (showRefresh) setRefreshing(true);
       else setLoading(true);
 
       console.log("[Dashboard] Fetching dashboard stats...");
 
-      const response = await fetch("/api/owner/dashboard", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${authToken}`
-        },
-        cache: "no-store",
-      });
-      const data = await response.json();
+      const data = await analyticsApi.dashboard();
 
-      if (!response.ok || !data.success) {
+      if (!data.success) {
         // Dashboard endpoint failed - try to build stats from properties endpoint
         console.log("[Dashboard] Dashboard endpoint failed, trying properties fallback...");
 
-        const propertiesResponse = await fetch("/api/properties", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${authToken}`
-          },
-          cache: "no-store",
-        });
-        const propertiesData = await propertiesResponse.json();
+        const propertiesData = await propertiesApi.getAll();
 
-        if (propertiesResponse.ok && propertiesData.success) {
+        if (propertiesData.success) {
           // Unwrap potential nested data structures
           let rawProps = propertiesData.data;
           if (rawProps && !Array.isArray(rawProps) && rawProps.data) {
@@ -99,7 +75,6 @@ export default function OwnerDashboard() {
           properties.forEach((prop: any) => {
             totalUnits += prop.total_units || prop.units?.length || 0;
             totalTenants += prop.occupied_units || 0;
-            // Estimate monthly revenue if available
             if (prop.units && Array.isArray(prop.units)) {
               prop.units.forEach((unit: any) => {
                 if (unit.status === 'occupied' && unit.monthly_rent) {
@@ -128,8 +103,8 @@ export default function OwnerDashboard() {
         throw new Error(data.error || "Failed to fetch dashboard data");
       }
 
-      console.log("[Dashboard] Stats fetched successfully, raw data:", JSON.stringify(data).substring(0, 200));
-      // Unwrap potential nested data: data.data might still be wrapped as { success, data: actualStats }
+      console.log("[Dashboard] Stats fetched successfully");
+      // Unwrap potential nested data
       let statsData = data.data;
       if (statsData && statsData.data && typeof statsData.data === 'object' && !Array.isArray(statsData.data)) {
         statsData = statsData.data;
@@ -143,16 +118,12 @@ export default function OwnerDashboard() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     if (authLoading) return;
 
-    // Check localStorage directly as fallback for auth check
-    const storedToken = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-    const hasAuth = isAuthenticated || storedToken;
-
-    if (!hasAuth) {
+    if (!isAuthenticated) {
       router.push("/login");
       return;
     }
@@ -162,15 +133,14 @@ export default function OwnerDashboard() {
       return;
     }
 
-    // Fetch stats - the function will get token from context or localStorage
     fetchDashboardStats();
-  }, [authLoading, isAuthenticated, role, router, token, fetchDashboardStats]);
+  }, [authLoading, isAuthenticated, role, router, fetchDashboardStats]);
 
   useEffect(() => {
-    const handleFocus = () => { if (isAuthenticated && token) fetchDashboardStats(true); };
+    const handleFocus = () => { if (isAuthenticated) fetchDashboardStats(true); };
     window.addEventListener("focus", handleFocus);
     return () => window.removeEventListener("focus", handleFocus);
-  }, [isAuthenticated, token, fetchDashboardStats]);
+  }, [isAuthenticated, fetchDashboardStats]);
 
   useEffect(() => {
     if (authLoading || !isAuthenticated) return;

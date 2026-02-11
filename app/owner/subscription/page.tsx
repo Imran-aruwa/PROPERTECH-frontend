@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
+import { paymentsApi, apiClient } from '@/lib/api-services';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Check, Crown } from 'lucide-react';
@@ -14,7 +15,7 @@ const plans = [
 ];
 
 export default function SubscriptionPage() {
-  const { isAuthenticated, role, isLoading: authLoading, token } = useAuth();
+  const { isAuthenticated, role, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const [subscription, setSubscription] = useState<{ plan: string; status: string } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,11 +26,10 @@ export default function SubscriptionPage() {
     if (authLoading) return;
     if (!isAuthenticated) { router.push('/login'); return; }
     if (role && role !== 'owner') { router.push('/unauthorized'); return; }
-    fetch('/api/payments/subscription', { headers: { Authorization: 'Bearer ' + token } })
-      .then(r => r.json())
+    paymentsApi.getSubscriptions()
       .then(d => { if (d.success) setSubscription(d.data); })
       .finally(() => setLoading(false));
-  }, [authLoading, isAuthenticated, role, router, token]);
+  }, [authLoading, isAuthenticated, role, router]);
 
   const handleUpgrade = async (planId: string) => {
     if (planId === 'free') return;
@@ -38,13 +38,9 @@ export default function SubscriptionPage() {
     if (!plan) return;
     const amount = billingCycle === 'monthly' ? plan.price : plan.yearlyPrice;
     try {
-      const r = await fetch('/api/payments/initialize', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-        body: JSON.stringify({ plan_id: planId, billing_cycle: billingCycle, amount, currency: 'KES' }),
-      });
-      const d = await r.json();
-      if (d.success && d.data?.authorization_url) window.location.href = d.data.authorization_url;
+      const d = await apiClient.post('/payments/initialize/', { plan_id: planId, billing_cycle: billingCycle, amount, currency: 'KES' });
+      const paymentData = d.data?.data || d.data;
+      if (d.success && paymentData?.authorization_url) window.location.href = paymentData.authorization_url;
       else alert(d.error || 'Failed');
     } catch { alert('Payment failed'); }
     setUpgrading(null);

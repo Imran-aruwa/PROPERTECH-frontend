@@ -5,6 +5,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRequireAuth } from '@/lib/auth-context';
+import { propertiesApi, tenantsApi } from '@/lib/api-services';
 import { Building2, Users, DollarSign, TrendingUp, UserPlus, Eye, Calendar, Target } from 'lucide-react';
 import Link from 'next/link';
 
@@ -21,18 +22,17 @@ export default function AgentDashboard() {
     try {
       setLoading(true);
 
-      // Fetch data from API
+      // Fetch data from API using apiClient (reads token from localStorage)
       const [propertiesRes, tenantsRes] = await Promise.all([
-        fetch('/api/properties'),
-        fetch('/api/tenants')
+        propertiesApi.getAll(),
+        tenantsApi.getAll()
       ]);
 
-      const propertiesData = await propertiesRes.json();
-      const tenantsData = await tenantsRes.json();
-
       // Handle API response format properly
-      setProperties(Array.isArray(propertiesData) ? propertiesData : (propertiesData.data || []));
-      setTenants(Array.isArray(tenantsData) ? tenantsData : (tenantsData.data || []));
+      const rawProps = propertiesRes.success ? propertiesRes.data : [];
+      setProperties(Array.isArray(rawProps) ? rawProps : (rawProps?.data || rawProps?.results || []));
+      const rawTenants = tenantsRes.success ? tenantsRes.data : [];
+      setTenants(Array.isArray(rawTenants) ? rawTenants : (rawTenants?.data || rawTenants?.results || []));
 
       // Leads and viewings will come from backend when those endpoints are available
       setLeads([]);
