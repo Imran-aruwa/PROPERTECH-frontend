@@ -243,17 +243,42 @@ body {
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+input:-webkit-autofill:active,
+select:-webkit-autofill,
+textarea:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
   -webkit-text-fill-color: #111827 !important;
   caret-color: #111827 !important;
 }
 
-/* Ensure password field text is visible */
+/* Ensure ALL form field text is visible */
 input[type="password"],
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"],
+input[type="url"],
+input[type="search"],
+select,
+textarea {
   color: #111827;
   -webkit-text-fill-color: #111827;
+}
+
+/* Ensure select option text is visible */
+select option {
+  color: #111827;
+  background-color: #ffffff;
+}
+
+/* Ensure placeholder text is visible but muted */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+  -webkit-text-fill-color: #9ca3af;
 }
 
 /* Dark mode autofill fix for dark backgrounds */

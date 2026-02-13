@@ -152,7 +152,7 @@ export default function NewPropertyPage() {
   };
 
   const inputClasses = (fieldName: keyof PropertyFormData) =>
-    `w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+    `w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
       touched[fieldName] && errors[fieldName]
         ? 'border-red-500'
         : 'border-gray-300'
@@ -524,7 +524,7 @@ export default function NewPropertyPage() {
                     <select
                       value={values.default_sq_bathrooms}
                       onChange={(e) => handleChange('default_sq_bathrooms', parseInt(e.target.value))}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
                     >
                       <option value="0">No Bathroom</option>
                       <option value="1">1 Bathroom</option>
@@ -543,7 +543,7 @@ export default function NewPropertyPage() {
                   value={values.default_unit_description}
                   onChange={(e) => handleChange('default_unit_description', e.target.value)}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
                   placeholder="e.g., Master en-suite, 2 guest toilets, external SQ with washroom"
                 />
                 <p className="mt-1 text-xs text-gray-500">

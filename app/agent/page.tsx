@@ -1,6 +1,3 @@
-// ============================================
-// FILE: app/agent/page.tsx (COMPLETE - FIXED)
-// ============================================
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';

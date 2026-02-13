@@ -204,7 +204,7 @@ export default function NewUnitPage() {
                 name="property_id"
                 value={formData.property_id}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   errors.property_id ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
@@ -236,7 +236,7 @@ export default function NewUnitPage() {
                   name="unit_number"
                   value={formData.unit_number}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.unit_number ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="e.g., A101, Unit 5"
@@ -255,7 +255,7 @@ export default function NewUnitPage() {
                   value={formData.floor}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.floor ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -275,7 +275,7 @@ export default function NewUnitPage() {
                   value={formData.bedrooms}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.bedrooms ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -295,7 +295,7 @@ export default function NewUnitPage() {
                   value={formData.bathrooms}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.bathrooms ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -316,7 +316,7 @@ export default function NewUnitPage() {
                   onChange={handleChange}
                   min="1"
                   step="0.1"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.size_sqm ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="e.g., 75"
@@ -333,7 +333,7 @@ export default function NewUnitPage() {
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="available">Available</option>
                   <option value="occupied">Occupied</option>
@@ -363,7 +363,7 @@ export default function NewUnitPage() {
                   onChange={handleChange}
                   min="0"
                   step="100"
-                  className={`w-full pl-14 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full pl-14 pr-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.rent_amount ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="25000"
@@ -387,7 +387,7 @@ export default function NewUnitPage() {
                   name="amenities"
                   value={formData.amenities}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="e.g., WiFi, Parking, Balcony, AC"
                 />
               </div>
@@ -402,7 +402,7 @@ export default function NewUnitPage() {
                   value={formData.description}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Describe the unit features, view, special characteristics..."
                 />
               </div>

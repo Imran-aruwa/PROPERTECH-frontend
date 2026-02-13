@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useRequireAuth } from '@/lib/auth-context';
-import { unitsApi, propertiesApi } from '@/lib/api-services';
+import { unitsApi, propertiesApi, tenantsApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Home, ArrowLeft, Save, Bed, Bath, Maximize, DollarSign } from 'lucide-react';
+import { Home, ArrowLeft, Save, Bed, Bath, Maximize, DollarSign, Users, UserPlus, UserMinus, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
-import { Unit, Property } from '@/app/lib/types';
+import { Unit, Property, Tenant } from '@/app/lib/types';
 
 interface UnitFormData {
   unit_number: string;
@@ -31,6 +31,9 @@ export default function EditUnitPage() {
   const [loading, setLoading] = useState(true);
   const [unit, setUnit] = useState<Unit | null>(null);
   const [property, setProperty] = useState<Property | null>(null);
+  const [currentTenant, setCurrentTenant] = useState<any>(null);
+  const [removingTenant, setRemovingTenant] = useState(false);
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
 
   const unitId = params.id as string;
 
@@ -79,7 +82,6 @@ export default function EditUnitPage() {
 
         setUnit(foundUnit);
         setProperty(foundProperty);
-        // Handle both field naming conventions from backend
         const rentValue = (foundUnit as any).monthly_rent ?? foundUnit.rent_amount ?? 0;
         const sizeValue = (foundUnit as any).square_feet ?? foundUnit.size_sqm ?? 0;
         setFormData({
@@ -92,6 +94,24 @@ export default function EditUnitPage() {
           status: foundUnit.status || 'vacant',
           description: foundUnit.description || ''
         });
+
+        // Fetch tenant info if unit is occupied
+        const isOccupied = foundUnit.status?.toLowerCase() === 'occupied' || foundUnit.status?.toLowerCase() === 'rented';
+        if (isOccupied) {
+          try {
+            const tenantsResponse = await tenantsApi.list();
+            const tenantsData = Array.isArray(tenantsResponse.data) ? tenantsResponse.data : [];
+            const unitTenant = tenantsData.find((t: any) => {
+              const tUnitId = t.unit_id ?? t.unit?.id;
+              return String(tUnitId) === String(unitId);
+            });
+            if (unitTenant) {
+              setCurrentTenant(unitTenant);
+            }
+          } catch (err) {
+            console.error('Failed to fetch tenant info:', err);
+          }
+        }
       } catch (err) {
         console.error('Failed to load unit:', err);
         showError('Failed to load unit');
@@ -168,6 +188,33 @@ export default function EditUnitPage() {
     }
   };
 
+  const handleRemoveTenant = async () => {
+    if (!currentTenant || !property) return;
+
+    try {
+      setRemovingTenant(true);
+      const tenantId = currentTenant.id ?? currentTenant.user_id;
+
+      // Delete tenant assignment
+      await tenantsApi.delete(String(tenantId));
+
+      // Update unit status to vacant
+      await unitsApi.update(property.id.toString(), unitId, {
+        ...unit,
+        status: 'vacant'
+      });
+
+      setCurrentTenant(null);
+      setFormData(prev => ({ ...prev, status: 'vacant' }));
+      setShowRemoveConfirm(false);
+      success('Tenant removed and unit set to vacant.');
+    } catch (err: any) {
+      showError(err.message || 'Failed to remove tenant');
+    } finally {
+      setRemovingTenant(false);
+    }
+  };
+
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -175,6 +222,12 @@ export default function EditUnitPage() {
       </div>
     );
   }
+
+  const isOccupied = formData.status === 'occupied' || formData.status === 'rented';
+  const tenantName = currentTenant?.user?.full_name ?? currentTenant?.full_name ?? 'Unknown Tenant';
+  const tenantEmail = currentTenant?.user?.email ?? currentTenant?.email ?? '';
+  const tenantPhone = currentTenant?.user?.phone ?? currentTenant?.phone ?? '';
+  const tenantId = currentTenant?.id ?? currentTenant?.user_id;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -203,6 +256,94 @@ export default function EditUnitPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Tenant Management Section */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Users className="w-5 h-5 text-purple-600" />
+              Tenant Management
+            </h2>
+
+            {isOccupied && currentTenant ? (
+              <div>
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm text-purple-600 font-medium mb-1">Current Tenant</p>
+                      <p className="text-lg font-semibold text-gray-900">{tenantName}</p>
+                      {tenantEmail && <p className="text-sm text-gray-600">{tenantEmail}</p>}
+                      {tenantPhone && <p className="text-sm text-gray-600">{tenantPhone}</p>}
+                      {currentTenant.lease_start && (
+                        <p className="text-sm text-gray-500 mt-2">
+                          Lease: {new Date(currentTenant.lease_start).toLocaleDateString()} - {currentTenant.lease_end ? new Date(currentTenant.lease_end).toLocaleDateString() : 'Ongoing'}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      {tenantId && (
+                        <Link
+                          href={`/owner/tenants/${tenantId}`}
+                          className="flex items-center gap-1 px-3 py-1.5 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          View Profile
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {!showRemoveConfirm ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowRemoveConfirm(true)}
+                    className="flex items-center gap-2 px-4 py-2 text-sm bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+                  >
+                    <UserMinus className="w-4 h-4" />
+                    Remove Tenant from Unit
+                  </button>
+                ) : (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <p className="text-sm text-red-800 font-medium mb-3">
+                      Are you sure you want to remove {tenantName} from this unit? The unit status will be set to vacant.
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={handleRemoveTenant}
+                        disabled={removingTenant}
+                        className="flex items-center gap-2 px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                      >
+                        {removingTenant ? <LoadingSpinner size="sm" /> : <UserMinus className="w-4 h-4" />}
+                        {removingTenant ? 'Removing...' : 'Yes, Remove Tenant'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowRemoveConfirm(false)}
+                        className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Users className="w-6 h-6 text-gray-400" />
+                </div>
+                <p className="text-gray-500 mb-4">This unit is currently vacant. No tenant assigned.</p>
+                <Link
+                  href={`/owner/tenants/new?unit_id=${unitId}`}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  Assign Tenant
+                </Link>
+              </div>
+            )}
+          </div>
+
           {/* Unit Details */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Unit Details</h2>
@@ -217,7 +358,7 @@ export default function EditUnitPage() {
                   name="unit_number"
                   value={formData.unit_number}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.unit_number ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -235,7 +376,7 @@ export default function EditUnitPage() {
                   value={formData.floor}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.floor ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -253,7 +394,7 @@ export default function EditUnitPage() {
                   value={formData.bedrooms}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.bedrooms ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -271,7 +412,7 @@ export default function EditUnitPage() {
                   value={formData.bathrooms}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.bathrooms ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -290,7 +431,7 @@ export default function EditUnitPage() {
                   onChange={handleChange}
                   min="1"
                   step="0.1"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.size_sqm ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -306,15 +447,15 @@ export default function EditUnitPage() {
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="vacant">Vacant</option>
-                  <option value="available">Available</option>
-                  <option value="occupied">Occupied</option>
-                  <option value="rented">Rented</option>
-                  <option value="bought">Bought</option>
-                  <option value="mortgaged">Mortgaged</option>
-                  <option value="maintenance">Under Maintenance</option>
+                  <option value="vacant" className="text-gray-900">Vacant</option>
+                  <option value="available" className="text-gray-900">Available</option>
+                  <option value="occupied" className="text-gray-900">Occupied</option>
+                  <option value="rented" className="text-gray-900">Rented</option>
+                  <option value="bought" className="text-gray-900">Bought</option>
+                  <option value="mortgaged" className="text-gray-900">Mortgaged</option>
+                  <option value="maintenance" className="text-gray-900">Under Maintenance</option>
                 </select>
               </div>
             </div>
@@ -340,7 +481,7 @@ export default function EditUnitPage() {
                   onChange={handleChange}
                   min="0"
                   step="100"
-                  className={`w-full pl-14 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full pl-14 pr-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.rent_amount ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -358,7 +499,7 @@ export default function EditUnitPage() {
               value={formData.description}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 

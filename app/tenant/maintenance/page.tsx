@@ -215,7 +215,7 @@ export default function TenantMaintenancePage() {
                   type="text"
                   value={formData.issue}
                   onChange={(e) => setFormData({ ...formData, issue: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                   placeholder="Brief description of the issue"
                   required
                 />
@@ -225,7 +225,7 @@ export default function TenantMaintenancePage() {
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                   rows={4}
                   placeholder="Provide detailed information about the issue"
                   required
@@ -236,11 +236,11 @@ export default function TenantMaintenancePage() {
                 <select
                   value={formData.priority}
                   onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
                 >
-                  <option value="low">Low - Can wait</option>
-                  <option value="medium">Medium - Needs attention soon</option>
-                  <option value="high">High - Urgent issue</option>
+                  <option value="low" className="text-gray-900">Low - Can wait</option>
+                  <option value="medium" className="text-gray-900">Medium - Needs attention soon</option>
+                  <option value="high" className="text-gray-900">High - Urgent issue</option>
                 </select>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">

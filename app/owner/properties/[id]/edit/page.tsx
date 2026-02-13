@@ -201,7 +201,7 @@ export default function EditPropertyPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.name ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -217,7 +217,7 @@ export default function EditPropertyPage() {
                   name="property_type"
                   value={formData.property_type}
                   onChange={(e) => setFormData(prev => ({ ...prev, property_type: e.target.value as PropertyType }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
                 >
                   {PROPERTY_TYPES.map((type) => (
                     <option key={type.value} value={type.value}>{type.label}</option>
@@ -236,7 +236,7 @@ export default function EditPropertyPage() {
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.address ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -253,7 +253,7 @@ export default function EditPropertyPage() {
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.city ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -270,7 +270,7 @@ export default function EditPropertyPage() {
                   name="state"
                   value={formData.state}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.state ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -287,7 +287,7 @@ export default function EditPropertyPage() {
                   name="postal_code"
                   value={formData.postal_code}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.postal_code ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -304,7 +304,7 @@ export default function EditPropertyPage() {
                   name="country"
                   value={formData.country}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.country ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -321,7 +321,7 @@ export default function EditPropertyPage() {
                   value={formData.description}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
                 />
               </div>
 
@@ -335,7 +335,7 @@ export default function EditPropertyPage() {
                   name="image_url"
                   value={formData.image_url}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
                 />
               </div>
             </div>

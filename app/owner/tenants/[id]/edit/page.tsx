@@ -203,7 +203,7 @@ export default function EditTenantPage() {
                   name="full_name"
                   value={formData.full_name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.full_name ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -222,7 +222,7 @@ export default function EditTenantPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                       errors.phone ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -256,7 +256,7 @@ export default function EditTenantPage() {
                   name="lease_start"
                   value={formData.lease_start}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.lease_start ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -273,7 +273,7 @@ export default function EditTenantPage() {
                   name="lease_end"
                   value={formData.lease_end}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.lease_end ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -292,7 +292,7 @@ export default function EditTenantPage() {
                     name="rent_amount"
                     value={formData.rent_amount}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -307,7 +307,7 @@ export default function EditTenantPage() {
                   name="deposit_amount"
                   value={formData.deposit_amount}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -327,7 +327,7 @@ export default function EditTenantPage() {
                   name="emergency_contact_name"
                   value={formData.emergency_contact_name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
 
@@ -341,7 +341,7 @@ export default function EditTenantPage() {
                   name="emergency_contact_phone"
                   value={formData.emergency_contact_phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -356,7 +356,7 @@ export default function EditTenantPage() {
               value={formData.notes}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
 

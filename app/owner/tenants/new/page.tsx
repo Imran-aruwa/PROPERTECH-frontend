@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useRequireAuth } from '@/lib/auth-context';
 import { tenantsApi, unitsApi, propertiesApi } from '@/lib/api-services';
 import { useToast } from '@/app/lib/hooks';
@@ -15,6 +15,7 @@ interface TenantFormData {
   full_name: string;
   email: string;
   phone: string;
+  id_number: string;
   unit_id: string;
   lease_start: string;
   lease_end: string;
@@ -28,6 +29,8 @@ interface TenantFormData {
 export default function NewTenantPage() {
   const { isLoading: authLoading, isAuthenticated } = useRequireAuth('owner');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const preselectedUnitId = searchParams.get('unit_id');
   const { toasts, success, error: showError, removeToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -40,6 +43,7 @@ export default function NewTenantPage() {
     full_name: '',
     email: '',
     phone: '',
+    id_number: '',
     unit_id: '',
     lease_start: new Date().toISOString().split('T')[0],
     lease_end: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
@@ -75,6 +79,20 @@ export default function NewTenantPage() {
           }
         }
         setUnits(allUnits);
+
+        // Pre-select unit from URL query parameter
+        if (preselectedUnitId) {
+          const preUnit = allUnits.find(u => String(u.id) === String(preselectedUnitId));
+          if (preUnit) {
+            setSelectedProperty(String(preUnit.property_id));
+            setFormData(prev => ({ ...prev, unit_id: String(preUnit.id) }));
+            // Pre-fill rent amount from unit
+            const rent = (preUnit as any).monthly_rent ?? preUnit.rent_amount;
+            if (rent) {
+              setFormData(prev => ({ ...prev, unit_id: String(preUnit.id), rent_amount: String(rent) }));
+            }
+          }
+        }
       } catch (err) {
         console.error('Failed to load data:', err);
       } finally {
@@ -83,7 +101,7 @@ export default function NewTenantPage() {
     };
 
     fetchData();
-  }, [authLoading, isAuthenticated]);
+  }, [authLoading, isAuthenticated, preselectedUnitId]);
 
   useEffect(() => {
     // Include 'available', 'vacant' status units (case-insensitive)
@@ -158,10 +176,11 @@ export default function NewTenantPage() {
           full_name: formData.full_name,
           email: formData.email,
           phone: formData.phone,
-          password: 'TempPass123!', // Temporary password, should be changed
+          id_number: formData.id_number,
+          password: 'TempPass123!',
           role: 'tenant'
         },
-        unit_id: formData.unit_id, // Keep as string - backend handles UUID
+        unit_id: formData.unit_id,
         lease_start: formData.lease_start,
         lease_end: formData.lease_end,
         rent_amount: parseFloat(formData.rent_amount) || selectedUnit?.rent_amount || 0,
@@ -172,6 +191,20 @@ export default function NewTenantPage() {
       };
 
       await tenantsApi.create(tenantData);
+
+      // Update unit status to occupied after successful tenant assignment
+      if (selectedUnit) {
+        const propertyId = String(selectedUnit.property_id);
+        try {
+          await unitsApi.update(propertyId, String(selectedUnit.id), {
+            ...selectedUnit,
+            status: 'occupied'
+          });
+        } catch (unitErr) {
+          console.error('Failed to update unit status:', unitErr);
+        }
+      }
+
       success('Tenant added successfully! They will receive login credentials via email.');
       setTimeout(() => router.push('/owner/tenants'), 1500);
     } catch (err: any) {
@@ -233,7 +266,7 @@ export default function NewTenantPage() {
                   name="full_name"
                   value={formData.full_name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.full_name ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="John Doe"
@@ -253,7 +286,7 @@ export default function NewTenantPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="john@example.com"
@@ -274,13 +307,28 @@ export default function NewTenantPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                       errors.phone ? 'border-red-500' : 'border-gray-300'
                     }`}
                     placeholder="+254 700 000 000"
                   />
                 </div>
                 {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="id_number" className="block text-sm font-medium text-gray-700 mb-1">
+                  ID / Passport Number
+                </label>
+                <input
+                  type="text"
+                  id="id_number"
+                  name="id_number"
+                  value={formData.id_number}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="National ID or Passport number"
+                />
               </div>
             </div>
           </div>
@@ -300,11 +348,11 @@ export default function NewTenantPage() {
                   id="property"
                   value={selectedProperty}
                   onChange={(e) => setSelectedProperty(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 >
-                  <option value="">All Properties</option>
+                  <option value="" className="text-gray-900">All Properties</option>
                   {properties.map(property => (
-                    <option key={property.id} value={property.id}>
+                    <option key={property.id} value={property.id} className="text-gray-900">
                       {property.name}
                     </option>
                   ))}
@@ -320,13 +368,13 @@ export default function NewTenantPage() {
                   name="unit_id"
                   value={formData.unit_id}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.unit_id ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
-                  <option value="">Select a unit</option>
+                  <option value="" className="text-gray-900">Select a unit</option>
                   {availableUnits.map(unit => (
-                    <option key={unit.id} value={unit.id}>
+                    <option key={unit.id} value={unit.id} className="text-gray-900">
                       {unit.unit_number || 'Unit'} - {unit.bedrooms ?? 0} BR - KES {((unit as any).monthly_rent ?? unit.rent_amount ?? 0).toLocaleString()}/mo
                     </option>
                   ))}
@@ -356,7 +404,7 @@ export default function NewTenantPage() {
                   name="lease_start"
                   value={formData.lease_start}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.lease_start ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -373,7 +421,7 @@ export default function NewTenantPage() {
                   name="lease_end"
                   value={formData.lease_end}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.lease_end ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -390,7 +438,7 @@ export default function NewTenantPage() {
                   name="rent_amount"
                   value={formData.rent_amount}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.rent_amount ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="25000"
@@ -408,7 +456,7 @@ export default function NewTenantPage() {
                   name="deposit_amount"
                   value={formData.deposit_amount}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="50000"
                 />
               </div>
@@ -429,7 +477,7 @@ export default function NewTenantPage() {
                   name="emergency_contact_name"
                   value={formData.emergency_contact_name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Jane Doe"
                 />
               </div>
@@ -444,7 +492,7 @@ export default function NewTenantPage() {
                   name="emergency_contact_phone"
                   value={formData.emergency_contact_phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="+254 700 000 000"
                 />
               </div>
@@ -460,7 +508,7 @@ export default function NewTenantPage() {
               value={formData.notes}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               placeholder="Any additional notes about this tenant..."
             />
           </div>

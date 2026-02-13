@@ -229,7 +229,7 @@ export default function EditStaffPage() {
                   name="full_name"
                   value={formData.full_name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.full_name ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -246,7 +246,7 @@ export default function EditStaffPage() {
                   name="id_number"
                   value={formData.id_number}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
                 />
               </div>
 
@@ -262,7 +262,7 @@ export default function EditStaffPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
                       errors.phone ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -295,11 +295,11 @@ export default function EditStaffPage() {
                   name="property_id"
                   value={formData.property_id}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.property_id ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
-                  <option value="">Select a property</option>
+                  <option value="" className="text-gray-900">Select a property</option>
                   {properties.map(property => (
                     <option key={property.id} value={property.id}>
                       {property.name}
@@ -321,11 +321,11 @@ export default function EditStaffPage() {
                     handleChange(e);
                     setFormData(prev => ({ ...prev, position: '' }));
                   }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
                 >
-                  <option value="maintenance">Maintenance</option>
-                  <option value="security">Security</option>
-                  <option value="gardening">Gardening</option>
+                  <option value="maintenance" className="text-gray-900">Maintenance</option>
+                  <option value="security" className="text-gray-900">Security</option>
+                  <option value="gardening" className="text-gray-900">Gardening</option>
                 </select>
               </div>
 
@@ -338,11 +338,11 @@ export default function EditStaffPage() {
                   name="position"
                   value={formData.position}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.position ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
-                  <option value="">Select a position</option>
+                  <option value="" className="text-gray-900">Select a position</option>
                   {departmentPositions[formData.department].map(position => (
                     <option key={position} value={position}>
                       {position}
@@ -365,7 +365,7 @@ export default function EditStaffPage() {
                   name="start_date"
                   value={formData.start_date}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.start_date ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -394,7 +394,7 @@ export default function EditStaffPage() {
                   onChange={handleChange}
                   min="0"
                   step="100"
-                  className={`w-full pl-14 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                  className={`w-full pl-14 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
                     errors.salary ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -417,7 +417,7 @@ export default function EditStaffPage() {
                   name="emergency_contact_name"
                   value={formData.emergency_contact_name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
                 />
               </div>
 
@@ -431,7 +431,7 @@ export default function EditStaffPage() {
                   name="emergency_contact_phone"
                   value={formData.emergency_contact_phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
                 />
               </div>
             </div>
@@ -446,7 +446,7 @@ export default function EditStaffPage() {
               value={formData.notes}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
             />
           </div>
 
