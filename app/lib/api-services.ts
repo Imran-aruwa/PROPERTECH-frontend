@@ -607,6 +607,40 @@ export const maintenanceApi = {
 };
 
 /**
+ * Owner Maintenance API (uses owner-scoped endpoints)
+ */
+export const ownerMaintenanceApi = {
+  async list() {
+    const response = await apiClient.get('/maintenance/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async get(id: string) {
+    const response = await apiClient.get(`/maintenance/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async create(data: any) {
+    const response = await apiClient.post('/maintenance/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async update(id: string, data: any) {
+    const response = await apiClient.put(`/maintenance/${id}/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+};
+
+/**
  * Staff API
  */
 export const staffApi = {
@@ -741,6 +775,14 @@ export const paymentsApi = {
     return apiClient.get(`/payments/${id}/`);
   },
 
+  async create(data: any) {
+    const response = await apiClient.post('/payments/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
   async update(id: string | number, data: any) {
     return apiClient.put(`/payments/${id}/`, data);
   },
@@ -850,6 +892,69 @@ export const agentApi = {
   },
   async getRecentActivities() {
     const response = await apiClient.get('/agent/activities/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async getLeads() {
+    const response = await apiClient.get('/agent/leads/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async getLead(id: string) {
+    const response = await apiClient.get(`/agent/leads/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async createLead(data: any) {
+    const response = await apiClient.post('/agent/leads/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async updateLead(id: string, data: any) {
+    const response = await apiClient.put(`/agent/leads/${id}/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async getViewings() {
+    const response = await apiClient.get('/agent/viewings/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async getViewing(id: string) {
+    const response = await apiClient.get(`/agent/viewings/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async createViewing(data: any) {
+    const response = await apiClient.post('/agent/viewings/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async updateViewing(id: string, data: any) {
+    const response = await apiClient.put(`/agent/viewings/${id}/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+  async getEarningsStats() {
+    const response = await apiClient.get('/agent/earnings/stats/');
     if (response.success && response.data?.data) {
       return { success: true, data: response.data.data };
     }

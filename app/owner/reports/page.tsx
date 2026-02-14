@@ -89,7 +89,7 @@ export default function ReportsPage() {
             multiple
             value={selectedProperties}
             onChange={(e) => setSelectedProperties(Array.from(e.target.selectedOptions, option => option.value))}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Properties</option>
             {propertyOptions.map((prop) => (

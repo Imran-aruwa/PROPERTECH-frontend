@@ -147,7 +147,7 @@ function EditUnitModal({
                     type="text"
                     value={formData.unit_number}
                     onChange={(e) => setFormData({ ...formData, unit_number: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
                 </div>
@@ -159,7 +159,7 @@ function EditUnitModal({
                     type="number"
                     value={formData.floor}
                     onChange={(e) => setFormData({ ...formData, floor: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g., 1"
                   />
                 </div>
@@ -176,7 +176,7 @@ function EditUnitModal({
                       min="0"
                       value={formData.bedrooms}
                       onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
@@ -187,7 +187,7 @@ function EditUnitModal({
                       min="0"
                       value={formData.bathrooms}
                       onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
@@ -198,7 +198,7 @@ function EditUnitModal({
                       min="0"
                       value={formData.toilets}
                       onChange={(e) => setFormData({ ...formData, toilets: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
@@ -209,7 +209,7 @@ function EditUnitModal({
                       min="0"
                       value={formData.square_feet}
                       onChange={(e) => setFormData({ ...formData, square_feet: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
@@ -229,7 +229,7 @@ function EditUnitModal({
                       min="0"
                       value={formData.monthly_rent}
                       onChange={(e) => setFormData({ ...formData, monthly_rent: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
@@ -241,7 +241,7 @@ function EditUnitModal({
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="vacant">Vacant</option>
                     <option value="occupied">Occupied</option>
@@ -287,7 +287,7 @@ function EditUnitModal({
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                   placeholder="Enter unit description..."
                 />
               </div>
@@ -487,13 +487,24 @@ export default function UnitDetailPage() {
             </div>
             <p className="text-gray-500 mt-1">{propertyName || unit.property?.name || "Property"}</p>
           </div>
-          <button
-            onClick={() => setEditModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Edit className="w-4 h-4" />
-            Edit Unit
-          </button>
+          <div className="flex items-center gap-3">
+            {(unit.status?.toLowerCase() === 'vacant' || unit.status?.toLowerCase() === 'available') && !unit.tenant && (
+              <Link
+                href={`/owner/tenants/new?unit_id=${unit.id}&property_id=${unit.property_id}`}
+                className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                <User className="w-4 h-4" />
+                Assign Tenant
+              </Link>
+            )}
+            <button
+              onClick={() => setEditModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Edit className="w-4 h-4" />
+              Edit Unit
+            </button>
+          </div>
         </div>
 
         {/* Quick Stats */}
@@ -688,7 +699,7 @@ export default function UnitDetailPage() {
                   <h3 className="text-lg font-medium text-gray-900 mb-2">No tenant assigned</h3>
                   <p className="text-gray-500 mb-6">This unit is currently vacant</p>
                   <Link
-                    href="/owner/tenants/new"
+                    href={`/owner/tenants/new?unit_id=${unit.id}&property_id=${unit.property_id}`}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
                     Add Tenant

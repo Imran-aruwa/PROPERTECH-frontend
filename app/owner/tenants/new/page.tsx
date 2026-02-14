@@ -31,6 +31,7 @@ export default function NewTenantPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preselectedUnitId = searchParams.get('unit_id');
+  const preselectedPropertyId = searchParams.get('property_id');
   const { toasts, success, error: showError, removeToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -80,17 +81,22 @@ export default function NewTenantPage() {
         }
         setUnits(allUnits);
 
+        // Pre-select property from URL query parameter
+        if (preselectedPropertyId) {
+          setSelectedProperty(String(preselectedPropertyId));
+        }
+
         // Pre-select unit from URL query parameter
         if (preselectedUnitId) {
           const preUnit = allUnits.find(u => String(u.id) === String(preselectedUnitId));
           if (preUnit) {
             setSelectedProperty(String(preUnit.property_id));
-            setFormData(prev => ({ ...prev, unit_id: String(preUnit.id) }));
-            // Pre-fill rent amount from unit
             const rent = (preUnit as any).monthly_rent ?? preUnit.rent_amount;
-            if (rent) {
-              setFormData(prev => ({ ...prev, unit_id: String(preUnit.id), rent_amount: String(rent) }));
-            }
+            setFormData(prev => ({
+              ...prev,
+              unit_id: String(preUnit.id),
+              rent_amount: rent ? String(rent) : prev.rent_amount,
+            }));
           }
         }
       } catch (err) {
@@ -101,7 +107,7 @@ export default function NewTenantPage() {
     };
 
     fetchData();
-  }, [authLoading, isAuthenticated, preselectedUnitId]);
+  }, [authLoading, isAuthenticated, preselectedUnitId, preselectedPropertyId]);
 
   useEffect(() => {
     // Include 'available', 'vacant' status units (case-insensitive)
@@ -348,7 +354,8 @@ export default function NewTenantPage() {
                   id="property"
                   value={selectedProperty}
                   onChange={(e) => setSelectedProperty(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  disabled={!!preselectedPropertyId || !!preselectedUnitId}
+                  className={`w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${(preselectedPropertyId || preselectedUnitId) ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
                   <option value="" className="text-gray-900">All Properties</option>
                   {properties.map(property => (
@@ -368,9 +375,10 @@ export default function NewTenantPage() {
                   name="unit_id"
                   value={formData.unit_id}
                   onChange={handleChange}
+                  disabled={!!preselectedUnitId}
                   className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.unit_id ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  } ${preselectedUnitId ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
                   <option value="" className="text-gray-900">Select a unit</option>
                   {availableUnits.map(unit => (

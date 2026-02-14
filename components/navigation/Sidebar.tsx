@@ -20,21 +20,13 @@ const ownerLinks = [
   { href: '/owner/payments', icon: DollarSign, label: 'Payments' },
   { href: '/owner/maintenance', icon: Wrench, label: 'Maintenance' },
   { href: '/owner/staff', icon: UserCircle, label: 'Staff' },
-  { href: '/owner/risk-scores', icon: ShieldAlert, label: 'Risk Scores' },
-  { href: '/owner/vacancy-alerts', icon: AlertTriangle, label: 'Vacancy Alerts' },
-  { href: '/owner/maintenance-sla', icon: Timer, label: 'SLA Tracking' },
-  { href: '/owner/rent-chasing', icon: MessageSquare, label: 'Rent Chasing' },
-  { href: '/owner/analytics', icon: BarChart, label: 'Analytics' }
 ];
 
 const caretakerLinks = [
   { href: '/caretaker', icon: Home, label: 'Dashboard' },
   { href: '/caretaker/properties', icon: Building2, label: 'Properties' },
-  { href: '/caretaker/tasks', icon: ClipboardList, label: 'Tasks' },
   { href: '/caretaker/maintenance', icon: Wrench, label: 'Maintenance' },
   { href: '/caretaker/inspections', icon: ClipboardCheck, label: 'Inspections' },
-  { href: '/caretaker/performance', icon: Timer, label: 'My Performance' },
-  { href: '/caretaker/rent-chasing', icon: MessageSquare, label: 'Rent Chasing' }
 ];
 
 const agentLinks = [
@@ -50,7 +42,7 @@ const tenantLinks = [
   { href: '/tenant', icon: Home, label: 'Dashboard' },
   { href: '/tenant/payments', icon: DollarSign, label: 'Payments' },
   { href: '/tenant/maintenance', icon: Wrench, label: 'Maintenance' },
-  { href: '/tenant/profile', icon: UserCircle, label: 'My Profile' }
+  { href: '/tenant/profile', icon: UserCircle, label: 'Profile' },
 ];
 
 const staffLinks = [
@@ -207,30 +199,16 @@ export function Sidebar() {
 
       {/* Bottom Actions - Fixed */}
       <div className="flex-shrink-0 p-3 border-t border-gray-200 space-y-1 bg-white">
-        {['owner', 'agent', 'caretaker'].includes(user?.role || '') && (
-          <Link
-            href={`/${user?.role}/settings`}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors ${
-              collapsed ? 'justify-center' : ''
-            }`}
-            title={collapsed ? 'Settings' : undefined}
-          >
-            <Settings className="w-5 h-5 text-gray-500 flex-shrink-0" />
-            {!collapsed && <span className="text-sm">Settings</span>}
-          </Link>
-        )}
-        {user?.role === 'tenant' && (
-          <Link
-            href="/tenant/profile"
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors ${
-              collapsed ? 'justify-center' : ''
-            }`}
-            title={collapsed ? 'Profile' : undefined}
-          >
-            <Settings className="w-5 h-5 text-gray-500 flex-shrink-0" />
-            {!collapsed && <span className="text-sm">Profile</span>}
-          </Link>
-        )}
+        <Link
+          href={`/${user?.role}/settings`}
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors ${
+            collapsed ? 'justify-center' : ''
+          }`}
+          title={collapsed ? 'Settings' : undefined}
+        >
+          <Settings className="w-5 h-5 text-gray-500 flex-shrink-0" />
+          {!collapsed && <span className="text-sm">Settings</span>}
+        </Link>
 
         <button
           onClick={logout}

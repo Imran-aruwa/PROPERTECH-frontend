@@ -1,160 +1,33 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com';
+import { NextRequest } from 'next/server';
+import { proxyToBackend } from '@/app/lib/proxy';
 
 /**
- * Catch-all API route that proxies requests to the backend
- * This handles ALL /api/* routes that don't have specific handlers
+ * Catch-all API route that proxies requests to the backend.
+ * Handles ALL /api/* routes that don't have specific handlers.
+ * Next.js automatically prioritizes specific route files over catch-all.
  */
 
-// Helper to ensure proper Bearer token format
-function formatAuthHeader(authHeader: string): string {
-  if (authHeader.startsWith('Bearer ')) {
-    return authHeader;
-  }
-  return `Bearer ${authHeader}`;
-}
-
-async function proxyRequest(request: NextRequest, method: string) {
-  try {
-    const url = new URL(request.url);
-    const path = url.pathname;
-
-    // Skip if this is a specific route that already exists
-    // Those routes should handle themselves
-    const specificRoutes = [
-      '/api/auth/login',
-      '/api/auth/signup',
-      '/api/auth/me',
-      '/api/auth/forgot-password',
-      '/api/waitlist',
-      '/api/properties',
-      '/api/owner/dashboard',
-      '/api/payments',
-      '/api/tenants',
-      '/api/maintenance',
-      '/api/reports',
-      '/api/staff',
-      '/api/units',
-      '/api/caretaker/dashboard',
-      '/api/tenant/dashboard',
-      '/api/notifications',
-      '/api/contact'
-    ];
-
-    // Check if path exactly matches any specific route (with or without trailing slash)
-    const isExactSpecificRoute = specificRoutes.some(route =>
-      path === route || path === route + '/'
-    );
-
-    if (isExactSpecificRoute) {
-      // Let the specific route handler deal with it
-      return NextResponse.json({ error: 'Route handler not found' }, { status: 404 });
-    }
-
-    // Build the backend URL
-    const backendUrl = `${BACKEND_URL}${path}${url.search}`;
-
-    // Get headers
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-
-    // Forward authorization header (try headers, then cookies)
-    const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
-    if (authHeader) {
-      headers['Authorization'] = formatAuthHeader(authHeader);
-    } else {
-      const cookieToken = request.cookies.get('auth_token')?.value || request.cookies.get('token')?.value;
-      if (cookieToken) {
-        headers['Authorization'] = `Bearer ${cookieToken}`;
-      }
-    }
-
-    console.log(`[API Proxy] ${method} ${path} - Auth:`, authHeader ? 'Present' : 'MISSING');
-
-    // Build fetch options
-    const fetchOptions: RequestInit = {
-      method,
-      headers,
-    };
-
-    // Add body for POST, PUT, PATCH
-    if (['POST', 'PUT', 'PATCH'].includes(method)) {
-      try {
-        const body = await request.text();
-        if (body) {
-          fetchOptions.body = body;
-        }
-      } catch {
-        // No body - that's okay
-      }
-    }
-
-    // Make request to backend with redirect: 'manual' to preserve Authorization header.
-    // FastAPI returns 307 redirects for trailing slash mismatches, and fetch() drops
-    // the Authorization header when following redirects, causing 403 errors.
-    fetchOptions.redirect = 'manual';
-    let response = await fetch(backendUrl, fetchOptions);
-
-    // Handle 307/308 redirects manually to preserve the Authorization header
-    if (response.status === 307 || response.status === 308) {
-      let redirectUrl = response.headers.get('location');
-      if (redirectUrl) {
-        // Fix: FastAPI behind Railway TLS proxy returns http:// redirect URLs.
-        // Following http→https redirect strips Authorization header (cross-origin per Fetch spec).
-        redirectUrl = redirectUrl.replace(/^http:\/\//i, 'https://');
-        console.log(`[API Proxy] ${method} ${path} - Following redirect to:`, redirectUrl);
-        // Keep redirect: 'manual' to prevent any further auto-redirects that could strip headers
-        response = await fetch(redirectUrl, fetchOptions);
-      }
-    }
-
-    console.log(`[API Proxy] ${method} ${path} - Backend status:`, response.status);
-
-    // Get response data
-    let data;
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('application/json')) {
-      data = await response.json();
-    } else {
-      data = await response.text();
-    }
-
-    // Return response
-    return NextResponse.json(
-      typeof data === 'object' ? data : { data },
-      { status: response.status }
-    );
-
-  } catch (error) {
-    console.error(`[API Proxy] Error:`, error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : 'Internal server error'
-      },
-      { status: 500 }
-    );
-  }
+function getBackendPath(request: NextRequest): string {
+  const url = new URL(request.url);
+  return url.pathname; // e.g., /api/agent/leads/
 }
 
 export async function GET(request: NextRequest) {
-  return proxyRequest(request, 'GET');
+  return proxyToBackend(request, getBackendPath(request));
 }
 
 export async function POST(request: NextRequest) {
-  return proxyRequest(request, 'POST');
+  return proxyToBackend(request, getBackendPath(request));
 }
 
 export async function PUT(request: NextRequest) {
-  return proxyRequest(request, 'PUT');
+  return proxyToBackend(request, getBackendPath(request));
 }
 
 export async function PATCH(request: NextRequest) {
-  return proxyRequest(request, 'PATCH');
+  return proxyToBackend(request, getBackendPath(request));
 }
 
 export async function DELETE(request: NextRequest) {
-  return proxyRequest(request, 'DELETE');
+  return proxyToBackend(request, getBackendPath(request));
 }

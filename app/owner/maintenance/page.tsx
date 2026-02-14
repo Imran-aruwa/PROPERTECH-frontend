@@ -278,7 +278,7 @@ export default function OwnerMaintenancePage() {
             <select
               value={selectedStaff || ''}
               onChange={(e) => setSelectedStaff(Number(e.target.value))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-red-500"
             >
               <option value="">Choose a staff member</option>
               {staff.map((s) => (

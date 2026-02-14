@@ -144,7 +144,7 @@ export default function MeterReadingsPage() {
                 min={unit.previousReading}
                 value={readings[unit.id] || ''}
                 onChange={(e) => handleReadingChange(unit.id, e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter reading"
               />
             </div>
