@@ -196,14 +196,17 @@ export default function NewTenantPage() {
         notes: formData.notes
       };
 
-      await tenantsApi.create(tenantData);
+      const result = await tenantsApi.create(tenantData);
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to create tenant');
+      }
 
       // Update unit status to occupied after successful tenant assignment
       if (selectedUnit) {
         const propertyId = String(selectedUnit.property_id);
         try {
           await unitsApi.update(propertyId, String(selectedUnit.id), {
-            ...selectedUnit,
             status: 'occupied'
           });
         } catch (unitErr) {

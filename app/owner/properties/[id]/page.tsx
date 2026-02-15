@@ -119,7 +119,7 @@ export default function PropertyDetailPage() {
 
   // Calculate stats - handle both rent_amount and monthly_rent field names
   const totalUnits = units.length;
-  const occupiedUnits = units.filter(u => u.status === 'occupied').length;
+  const occupiedUnits = units.filter(u => u.status === 'occupied' || u.status === 'rented').length;
   const availableUnits = units.filter(u => u.status === 'available' || u.status === 'vacant').length;
   const totalRent = units.reduce((sum, u) => sum + ((u as any).monthly_rent || (u as any).rent_amount || 0), 0);
   const occupancyRate = totalUnits > 0 ? Math.round((occupiedUnits / totalUnits) * 100) : 0;

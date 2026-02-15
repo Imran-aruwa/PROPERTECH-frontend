@@ -9,6 +9,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   return proxyToBackend(request, `/api/properties/${params.id}/`);
 }
 
+export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+  return proxyToBackend(request, `/api/properties/${params.id}/`);
+}
+
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   return proxyToBackend(request, `/api/properties/${params.id}/`);
 }

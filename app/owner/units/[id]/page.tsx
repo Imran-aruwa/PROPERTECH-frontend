@@ -23,6 +23,7 @@ interface Unit {
   monthly_rent: number | null;
   rent_amount: number | null;
   status: string;
+  occupancy_type: string | null;
   property_id: string;
   square_feet: number | null;
   size_sqm: number | null;
@@ -60,6 +61,7 @@ function EditUnitModal({
     square_feet: unit.square_feet || unit.size_sqm || '',
     monthly_rent: unit.monthly_rent || unit.rent_amount || '',
     status: unit.status || 'vacant',
+    occupancy_type: unit.occupancy_type || 'available',
     floor: unit.floor ?? '',
     description: unit.description || '',
     has_master_bedroom: unit.has_master_bedroom ?? false,
@@ -77,6 +79,7 @@ function EditUnitModal({
         square_feet: unit.square_feet || unit.size_sqm || '',
         monthly_rent: unit.monthly_rent || unit.rent_amount || '',
         status: unit.status || 'vacant',
+        occupancy_type: unit.occupancy_type || 'available',
         floor: unit.floor ?? '',
         description: unit.description || '',
         has_master_bedroom: unit.has_master_bedroom ?? false,
@@ -97,6 +100,7 @@ function EditUnitModal({
         square_feet: formData.square_feet === '' ? null : Number(formData.square_feet),
         monthly_rent: formData.monthly_rent === '' ? null : Number(formData.monthly_rent),
         status: formData.status,
+        occupancy_type: formData.occupancy_type,
         floor: formData.floor === '' ? null : Number(formData.floor),
         description: formData.description || null,
         has_master_bedroom: formData.has_master_bedroom,
@@ -251,6 +255,24 @@ function EditUnitModal({
                     <option value="mortgaged">Mortgaged</option>
                   </select>
                 </div>
+              </div>
+
+              {/* Occupancy Type */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Occupancy Type
+                </label>
+                <select
+                  value={formData.occupancy_type}
+                  onChange={(e) => setFormData({ ...formData, occupancy_type: e.target.value })}
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="available">Available</option>
+                  <option value="rented">Rented</option>
+                  <option value="mortgaged">Mortgaged</option>
+                  <option value="bought">Bought</option>
+                  <option value="owner_occupied">Owner Occupied</option>
+                </select>
               </div>
 
               {/* Features */}
@@ -604,12 +626,18 @@ export default function UnitDetailPage() {
                     <dt className="text-gray-500">Monthly Rent</dt>
                     <dd className="font-medium text-green-600">{formatCurrency(rentAmount)}</dd>
                   </div>
-                  <div className="flex justify-between py-2">
+                  <div className="flex justify-between py-2 border-b border-gray-200">
                     <dt className="text-gray-500">Status</dt>
                     <dd>
                       <span className={`px-2 py-1 rounded text-sm font-medium ${getStatusBadge(unit.status)}`}>
                         {unit.status || "N/A"}
                       </span>
+                    </dd>
+                  </div>
+                  <div className="flex justify-between py-2">
+                    <dt className="text-gray-500">Occupancy Type</dt>
+                    <dd className="font-medium text-gray-900 capitalize">
+                      {(unit.occupancy_type || 'available').replace('_', ' ')}
                     </dd>
                   </div>
                 </dl>
