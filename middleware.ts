@@ -25,6 +25,7 @@ const PUBLIC_ROUTES = [
   '/privacy',
   '/terms',
   '/cookies',
+  '/sign',
   '/',
 ];
 

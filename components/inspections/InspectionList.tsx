@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Plus,
-  Search,
+  Search as SearchIcon,
   Filter,
   ClipboardCheck,
   LogIn,
@@ -16,6 +16,10 @@ import {
   Calendar,
   Building2,
   Home,
+  Shield,
+  TrendingUp,
+  Flame,
+  AlertTriangle,
 } from 'lucide-react';
 import { inspectionsApi } from '@/app/lib/api-services';
 import { getAllDrafts } from '@/app/lib/inspection-db';
@@ -57,6 +61,11 @@ const TYPE_ICONS: Record<InspectionType, React.FC<{ className?: string }>> = {
   move_in: LogIn,
   move_out: LogOut,
   meter: Gauge,
+  pre_purchase: SearchIcon,
+  insurance: Shield,
+  valuation: TrendingUp,
+  fire_safety: Flame,
+  emergency_damage: AlertTriangle,
 };
 
 const STATUS_FILTERS: { value: InspectionStatus | 'all'; label: string }[] = [
@@ -234,7 +243,7 @@ export function InspectionList({ role, userId }: InspectionListProps) {
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search by property, unit, or type..."

@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { FileText, Download, Loader2 } from 'lucide-react';
+import { FileText, Download, Loader2, FileSignature } from 'lucide-react';
 import { apiClient } from '@/app/lib/api-services';
+import { LeaseStatusBadge } from '@/components/leases/LeaseStatusBadge';
+import { LeaseStatus } from '@/app/lib/types';
 
 interface Document {
   id: string;
@@ -18,6 +20,7 @@ export default function TenantDocumentsPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeLease, setActiveLease] = useState<any>(null);
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -39,6 +42,18 @@ export default function TenantDocumentsPage() {
           })) : []);
         } else {
           setDocuments([]);
+        }
+
+        // Fetch active lease
+        try {
+          const leaseRes = await apiClient.get('/tenant/leases/');
+          if (leaseRes.success && leaseRes.data) {
+            const leases = Array.isArray(leaseRes.data) ? leaseRes.data : leaseRes.data?.data ? (Array.isArray(leaseRes.data.data) ? leaseRes.data.data : []) : [];
+            const active = leases.find((l: any) => l.status === 'active' || l.status === 'signed');
+            if (active) setActiveLease(active);
+          }
+        } catch {
+          // Lease fetch optional
         }
       } catch (err) {
         console.error('Failed to fetch documents:', err);
@@ -94,6 +109,37 @@ export default function TenantDocumentsPage() {
         {error && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <p className="text-yellow-800 text-sm">{error}. Showing empty state.</p>
+          </div>
+        )}
+
+        {activeLease && (
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <FileSignature className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-gray-900">Lease Agreement</h3>
+                    <LeaseStatusBadge status={activeLease.status as LeaseStatus} />
+                  </div>
+                  <p className="text-sm text-gray-600 mt-0.5">
+                    {activeLease.start_date} — {activeLease.end_date} &middot; KES {activeLease.rent_amount?.toLocaleString()}/month
+                  </p>
+                </div>
+              </div>
+              {activeLease.pdf_url && (
+                <a
+                  href={activeLease.pdf_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                >
+                  <Download className="w-5 h-5" />
+                </a>
+              )}
+            </div>
           </div>
         )}
 

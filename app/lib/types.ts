@@ -392,3 +392,86 @@ export interface MaintenanceFilters {
   property_id?: number;
   assigned_to?: number;
 }
+
+// ==================== LEASE ====================
+export type LeaseStatus = 'draft' | 'sent' | 'signed' | 'active' | 'expired';
+export type LeasePaymentCycle = 'monthly' | 'quarterly' | 'annually';
+export type LeaseClauseType = 'rent' | 'termination' | 'maintenance' | 'pets' | 'utilities' | 'custom';
+
+export interface LeaseClause {
+  id: string;
+  type: LeaseClauseType;
+  text: string;
+  editable: boolean;
+  risk_weight?: number;
+}
+
+export interface SignatureAuditTrail {
+  ip_address?: string;
+  device_fingerprint?: string;
+  gps_location?: string;
+  signed_at: string;
+  channel: string;
+}
+
+export interface LeaseSignature {
+  id: number;
+  lease_id: number;
+  signer_role: string;
+  signed_at: string;
+  channel: string;
+  otp_verified: boolean;
+  audit_trail?: SignatureAuditTrail;
+}
+
+export interface Lease {
+  id: number;
+  property_id: number;
+  unit_id: number;
+  tenant_id: number;
+  start_date: string;
+  end_date: string;
+  rent_amount: number;
+  deposit_amount: number;
+  payment_cycle: LeasePaymentCycle;
+  escalation_rate?: number;
+  clauses: LeaseClause[];
+  status: LeaseStatus;
+  created_by?: number;
+  created_at: string;
+  updated_at: string;
+  pdf_url?: string;
+  signatures?: LeaseSignature[];
+  property?: Property;
+  unit?: Unit;
+  tenant?: Tenant;
+}
+
+export interface CreateLeaseData {
+  property_id: number;
+  unit_id: number;
+  tenant_id: number;
+  start_date: string;
+  end_date: string;
+  rent_amount: number;
+  deposit_amount: number;
+  payment_cycle: LeasePaymentCycle;
+  escalation_rate?: number;
+  clauses: LeaseClause[];
+}
+
+export interface SendLeaseData {
+  channels: ('email' | 'sms')[];
+}
+
+export interface SignLeaseData {
+  signature_type: 'typed' | 'drawn';
+  signature_data: string;
+  signer_name: string;
+}
+
+export interface LeaseFilters {
+  status?: LeaseStatus;
+  property_id?: number;
+  tenant_id?: number;
+}

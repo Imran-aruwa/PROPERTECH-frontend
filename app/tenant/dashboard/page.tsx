@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from '@/components/ui/StatCard';
-import { CreditCard, Home, Wrench, FileText, Loader2 } from 'lucide-react';
-import { tenantDashboardApi } from '@/app/lib/api-services';
+import { CreditCard, Home, Wrench, FileText, Loader2, FileSignature } from 'lucide-react';
+import { tenantDashboardApi, apiClient } from '@/app/lib/api-services';
 import Link from 'next/link';
 
 interface DashboardStats {
@@ -36,6 +36,7 @@ export default function TenantDashboard() {
   const [maintenanceRequests, setMaintenanceRequests] = useState<MaintenanceRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeLease, setActiveLease] = useState<any>(null);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -57,6 +58,18 @@ export default function TenantDashboard() {
           });
           setRecentPayments(data.recent_payments || data.recentPayments || []);
           setMaintenanceRequests(data.maintenance_requests || data.maintenanceRequests || []);
+
+          // Try to fetch active lease
+          try {
+            const leaseRes = await apiClient.get('/tenant/leases/');
+            if (leaseRes.success && leaseRes.data) {
+              const leases = Array.isArray(leaseRes.data) ? leaseRes.data : leaseRes.data?.data ? (Array.isArray(leaseRes.data.data) ? leaseRes.data.data : []) : [];
+              const active = leases.find((l: any) => l.status === 'active' || l.status === 'signed');
+              if (active) setActiveLease(active);
+            }
+          } catch {
+            // Lease fetch is optional
+          }
         } else {
           setStats({
             nextPaymentDue: '-',
@@ -133,6 +146,41 @@ export default function TenantDashboard() {
             <StatCard key={index} title={stat.title} label={stat.label} value={stat.value} change={stat.change} icon={stat.icon} trend={stat.trend} />
           ))}
         </div>
+
+        {activeLease && (
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                <FileSignature className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <h2 className="font-semibold text-gray-900">Active Lease</h2>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                  activeLease.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
+                }`}>
+                  {activeLease.status}
+                </span>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4 text-sm mb-3">
+              <div>
+                <p className="text-gray-500">Start</p>
+                <p className="font-medium text-gray-900">{activeLease.start_date}</p>
+              </div>
+              <div>
+                <p className="text-gray-500">End</p>
+                <p className="font-medium text-gray-900">{activeLease.end_date}</p>
+              </div>
+              <div>
+                <p className="text-gray-500">Rent</p>
+                <p className="font-medium text-gray-900">KES {activeLease.rent_amount?.toLocaleString()}</p>
+              </div>
+            </div>
+            <Link href="/tenant/documents" className="text-blue-600 text-sm hover:underline">
+              View lease documents &rarr;
+            </Link>
+          </div>
+        )}
 
         {stats && stats.rentAmount > 0 && (
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-lg p-6 text-white">

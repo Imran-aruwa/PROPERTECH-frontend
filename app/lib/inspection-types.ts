@@ -1,27 +1,35 @@
 /**
  * Inspection Types and Constants
- * TypeScript type definitions for the offline-first inspection system
+ * Universal Inspection Engine - Internal + External, scoring, templates, signatures
  */
 
 // ============================================
 // TYPE DEFINITIONS
 // ============================================
 
-export type InspectionType = 'routine' | 'move_in' | 'move_out' | 'meter';
+export type InspectionType =
+  | 'routine'
+  | 'move_in'
+  | 'move_out'
+  | 'meter'
+  | 'pre_purchase'
+  | 'insurance'
+  | 'valuation'
+  | 'fire_safety'
+  | 'emergency_damage';
+
 export type InspectionStatus = 'draft' | 'submitted' | 'reviewed' | 'locked';
-export type ItemCategory = 'plumbing' | 'electrical' | 'structure' | 'cleanliness';
+export type ItemCategory = 'plumbing' | 'electrical' | 'structure' | 'cleanliness' | 'safety' | 'exterior' | 'appliances' | 'fixtures';
 export type ItemCondition = 'good' | 'fair' | 'poor';
 export type SyncStatus = 'pending' | 'synced' | 'failed';
 export type MeterType = 'water' | 'electricity';
 export type UserRole = 'owner' | 'agent' | 'caretaker';
+export type SeverityLevel = 'low' | 'medium' | 'high' | 'critical';
 
 // ============================================
 // INTERFACES
 // ============================================
 
-/**
- * Main inspection record
- */
 export interface Inspection {
   id?: number;
   client_uuid: string;
@@ -37,13 +45,19 @@ export interface Inspection {
   device_id?: string;
   offline_created_at?: string;
   notes?: string;
+  // Universal engine fields
+  is_external?: boolean;
+  template_id?: string;
+  overall_score?: number;
+  pass_fail?: 'pass' | 'fail' | null;
+  inspector_name?: string;
+  inspector_credentials?: string;
+  inspector_company?: string;
+  report_url?: string;
   created_at?: string;
   updated_at?: string;
 }
 
-/**
- * Inspection checklist item
- */
 export interface InspectionItem {
   id?: number;
   client_uuid: string;
@@ -53,27 +67,27 @@ export interface InspectionItem {
   category: ItemCategory;
   condition: ItemCondition;
   comment?: string;
+  // Scoring & severity
+  score?: number; // 1-5
+  severity?: SeverityLevel;
+  pass_fail?: 'pass' | 'fail' | null;
+  requires_followup?: boolean;
+  photo_required?: boolean;
   created_at?: string;
 }
 
-/**
- * Media attached to inspection (photo/video)
- */
 export interface InspectionMedia {
   id?: number;
   client_uuid: string;
   inspection_client_uuid: string;
   inspection_id?: number;
-  file_data?: string; // base64 for IDB storage
-  file_url?: string; // server URL after upload
+  file_data?: string;
+  file_url?: string;
   file_type: 'photo' | 'video';
   captured_at: string;
   created_at?: string;
 }
 
-/**
- * Meter reading record
- */
 export interface InspectionMeterReading {
   id?: number;
   client_uuid: string;
@@ -87,9 +101,36 @@ export interface InspectionMeterReading {
   created_at?: string;
 }
 
-/**
- * IndexedDB draft record - wraps inspection with sync metadata
- */
+export interface InspectionSignature {
+  id?: number;
+  inspection_id?: number;
+  signer_name: string;
+  signer_role: 'inspector' | 'owner' | 'tenant';
+  signature_type: 'typed' | 'drawn';
+  signature_data: string;
+  signed_at?: string;
+  ip_address?: string;
+  device_fingerprint?: string;
+  gps_lat?: number;
+  gps_lng?: number;
+}
+
+export interface InspectionTemplate {
+  id: string;
+  owner_id: string;
+  name: string;
+  description?: string;
+  inspection_type: InspectionType;
+  is_external: boolean;
+  categories?: string[];
+  default_items?: Array<{ name: string; category: string; required_photo?: boolean }>;
+  scoring_enabled: boolean;
+  pass_threshold?: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface InspectionDraft {
   client_uuid: string;
   inspection: Inspection;
@@ -103,9 +144,6 @@ export interface InspectionDraft {
   created_at: string;
 }
 
-/**
- * API list response shape
- */
 export interface InspectionListItem {
   id: number;
   client_uuid: string;
@@ -119,12 +157,13 @@ export interface InspectionListItem {
   inspection_type: InspectionType;
   status: InspectionStatus;
   inspection_date: string;
+  is_external?: boolean;
+  overall_score?: number;
+  pass_fail?: string;
+  inspector_name?: string;
   created_at: string;
 }
 
-/**
- * API detail response - full inspection with nested data
- */
 export interface InspectionDetail {
   id: number;
   client_uuid: string;
@@ -143,16 +182,22 @@ export interface InspectionDetail {
   device_id?: string;
   offline_created_at?: string;
   notes?: string;
+  is_external?: boolean;
+  overall_score?: number;
+  pass_fail?: string;
+  inspector_name?: string;
+  inspector_credentials?: string;
+  inspector_company?: string;
+  template_id?: string;
+  report_url?: string;
   created_at: string;
   updated_at: string;
   items: InspectionItem[];
   media: InspectionMedia[];
   meter_readings: InspectionMeterReading[];
+  signatures: InspectionSignature[];
 }
 
-/**
- * Sync result summary
- */
 export interface SyncResult {
   total: number;
   synced: number;
@@ -160,9 +205,6 @@ export interface SyncResult {
   errors: Array<{ uuid: string; error: string }>;
 }
 
-/**
- * Cached property for offline use
- */
 export interface CachedProperty {
   id: number;
   name: string;
@@ -170,9 +212,6 @@ export interface CachedProperty {
   cached_at: string;
 }
 
-/**
- * Cached unit for offline use
- */
 export interface CachedUnit {
   id: number;
   property_id: number;
@@ -185,10 +224,7 @@ export interface CachedUnit {
 // CONSTANTS
 // ============================================
 
-/**
- * Inspection type configuration with labels and icons
- */
-export const INSPECTION_TYPE_CONFIG: Record<InspectionType, { label: string; icon: string; description: string }> = {
+export const INSPECTION_TYPE_CONFIG: Record<InspectionType, { label: string; icon: string; description: string; isExternal?: boolean }> = {
   routine: {
     label: 'Routine Inspection',
     icon: 'ClipboardCheck',
@@ -209,107 +245,90 @@ export const INSPECTION_TYPE_CONFIG: Record<InspectionType, { label: string; ico
     icon: 'Gauge',
     description: 'Record water and electricity meter readings',
   },
+  pre_purchase: {
+    label: 'Pre-Purchase',
+    icon: 'Search',
+    description: 'Pre-purchase / pre-rent property assessment',
+    isExternal: true,
+  },
+  insurance: {
+    label: 'Insurance',
+    icon: 'Shield',
+    description: 'Insurance claim condition report',
+    isExternal: true,
+  },
+  valuation: {
+    label: 'Valuation',
+    icon: 'TrendingUp',
+    description: 'Property valuation assessment',
+    isExternal: true,
+  },
+  fire_safety: {
+    label: 'Fire & Safety',
+    icon: 'Flame',
+    description: 'Fire safety compliance inspection',
+  },
+  emergency_damage: {
+    label: 'Emergency Damage',
+    icon: 'AlertTriangle',
+    description: 'Emergency damage assessment',
+  },
 };
 
-/**
- * Item category configuration with labels and colors
- */
 export const ITEM_CATEGORY_CONFIG: Record<ItemCategory, { label: string; color: string; bgColor: string }> = {
-  plumbing: {
-    label: 'Plumbing',
-    color: 'text-blue-700',
-    bgColor: 'bg-blue-50',
-  },
-  electrical: {
-    label: 'Electrical',
-    color: 'text-yellow-700',
-    bgColor: 'bg-yellow-50',
-  },
-  structure: {
-    label: 'Structure',
-    color: 'text-gray-700',
-    bgColor: 'bg-gray-50',
-  },
-  cleanliness: {
-    label: 'Cleanliness',
-    color: 'text-green-700',
-    bgColor: 'bg-green-50',
-  },
+  plumbing: { label: 'Plumbing', color: 'text-blue-700', bgColor: 'bg-blue-50' },
+  electrical: { label: 'Electrical', color: 'text-yellow-700', bgColor: 'bg-yellow-50' },
+  structure: { label: 'Structure', color: 'text-gray-700', bgColor: 'bg-gray-50' },
+  cleanliness: { label: 'Cleanliness', color: 'text-green-700', bgColor: 'bg-green-50' },
+  safety: { label: 'Safety', color: 'text-red-700', bgColor: 'bg-red-50' },
+  exterior: { label: 'Exterior', color: 'text-orange-700', bgColor: 'bg-orange-50' },
+  appliances: { label: 'Appliances', color: 'text-purple-700', bgColor: 'bg-purple-50' },
+  fixtures: { label: 'Fixtures', color: 'text-teal-700', bgColor: 'bg-teal-50' },
 };
 
-/**
- * Condition configuration with labels and colors
- */
 export const CONDITION_CONFIG: Record<ItemCondition, { label: string; color: string; bgColor: string }> = {
-  good: {
-    label: 'Good',
-    color: 'text-green-700',
-    bgColor: 'bg-green-100',
-  },
-  fair: {
-    label: 'Fair',
-    color: 'text-yellow-700',
-    bgColor: 'bg-yellow-100',
-  },
-  poor: {
-    label: 'Poor',
-    color: 'text-red-700',
-    bgColor: 'bg-red-100',
-  },
+  good: { label: 'Good', color: 'text-green-700', bgColor: 'bg-green-100' },
+  fair: { label: 'Fair', color: 'text-yellow-700', bgColor: 'bg-yellow-100' },
+  poor: { label: 'Poor', color: 'text-red-700', bgColor: 'bg-red-100' },
 };
 
-/**
- * Status configuration with labels and colors
- */
+export const SEVERITY_CONFIG: Record<SeverityLevel, { label: string; color: string; bgColor: string }> = {
+  low: { label: 'Low', color: 'text-green-700', bgColor: 'bg-green-100' },
+  medium: { label: 'Medium', color: 'text-yellow-700', bgColor: 'bg-yellow-100' },
+  high: { label: 'High', color: 'text-orange-700', bgColor: 'bg-orange-100' },
+  critical: { label: 'Critical', color: 'text-red-700', bgColor: 'bg-red-100' },
+};
+
 export const STATUS_CONFIG: Record<InspectionStatus, { label: string; color: string; bgColor: string }> = {
-  draft: {
-    label: 'Draft',
-    color: 'text-gray-700',
-    bgColor: 'bg-gray-100',
-  },
-  submitted: {
-    label: 'Submitted',
-    color: 'text-blue-700',
-    bgColor: 'bg-blue-100',
-  },
-  reviewed: {
-    label: 'Reviewed',
-    color: 'text-purple-700',
-    bgColor: 'bg-purple-100',
-  },
-  locked: {
-    label: 'Locked',
-    color: 'text-green-700',
-    bgColor: 'bg-green-100',
-  },
+  draft: { label: 'Draft', color: 'text-gray-700', bgColor: 'bg-gray-100' },
+  submitted: { label: 'Submitted', color: 'text-blue-700', bgColor: 'bg-blue-100' },
+  reviewed: { label: 'Reviewed', color: 'text-purple-700', bgColor: 'bg-purple-100' },
+  locked: { label: 'Locked', color: 'text-green-700', bgColor: 'bg-green-100' },
 };
 
-/**
- * Sync status configuration
- */
 export const SYNC_STATUS_CONFIG: Record<SyncStatus, { label: string; color: string }> = {
-  pending: {
-    label: 'Pending Sync',
-    color: 'bg-yellow-400',
-  },
-  synced: {
-    label: 'Synced',
-    color: 'bg-green-400',
-  },
-  failed: {
-    label: 'Sync Failed',
-    color: 'bg-red-400',
-  },
+  pending: { label: 'Pending Sync', color: 'bg-yellow-400' },
+  synced: { label: 'Synced', color: 'bg-green-400' },
+  failed: { label: 'Sync Failed', color: 'bg-red-400' },
 };
 
-/**
- * Default checklist items per category
- */
 export const DEFAULT_CHECKLIST_ITEMS: Record<ItemCategory, string[]> = {
   plumbing: ['Faucets', 'Drains', 'Pipes', 'Water heater', 'Toilet', 'Shower/Tub'],
   electrical: ['Light fixtures', 'Outlets', 'Switches', 'Circuit breaker', 'Wiring'],
   structure: ['Walls', 'Floors', 'Ceiling', 'Windows', 'Doors', 'Roof/Ceiling leaks'],
   cleanliness: ['Kitchen', 'Bathroom', 'Living areas', 'Bedrooms', 'Common areas'],
+  safety: ['Smoke detectors', 'Fire extinguisher', 'Emergency exits', 'Security locks', 'Handrails'],
+  exterior: ['Parking', 'Walkways', 'Fencing', 'Landscaping', 'External walls', 'Roof'],
+  appliances: ['Oven/Stove', 'Refrigerator', 'Washing machine', 'Air conditioning', 'Water pump'],
+  fixtures: ['Curtain rods', 'Towel racks', 'Cabinet hardware', 'Shelving', 'Mirrors'],
+};
+
+export const SCORE_LABELS: Record<number, string> = {
+  1: 'Very Poor',
+  2: 'Poor',
+  3: 'Acceptable',
+  4: 'Good',
+  5: 'Excellent',
 };
 
 /**

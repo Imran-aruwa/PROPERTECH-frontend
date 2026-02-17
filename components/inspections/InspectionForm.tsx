@@ -17,6 +17,13 @@ import {
   ChevronDown,
   Check,
   Loader2,
+  Search,
+  Shield,
+  TrendingUp,
+  Flame,
+  AlertTriangle,
+  Star,
+  User,
 } from 'lucide-react';
 import {
   generateUUID,
@@ -24,9 +31,12 @@ import {
   ITEM_CATEGORY_CONFIG,
   CONDITION_CONFIG,
   DEFAULT_CHECKLIST_ITEMS,
+  SCORE_LABELS,
+  SEVERITY_CONFIG,
   type InspectionType,
   type ItemCategory,
   type ItemCondition,
+  type SeverityLevel,
   type InspectionDraft,
   type InspectionItem,
   type InspectionMedia,
@@ -62,6 +72,11 @@ const TYPE_ICONS: Record<InspectionType, React.FC<{ className?: string }>> = {
   move_in: LogIn,
   move_out: LogOut,
   meter: Gauge,
+  pre_purchase: Search,
+  insurance: Shield,
+  valuation: TrendingUp,
+  fire_safety: Flame,
+  emergency_damage: AlertTriangle,
 };
 
 export function InspectionForm({
@@ -93,6 +108,11 @@ export function InspectionForm({
   const [meterReadings, setMeterReadings] = useState<InspectionMeterReading[]>([]);
   const [notes, setNotes] = useState('');
   const [activeCategory, setActiveCategory] = useState<ItemCategory>('plumbing');
+  const [isExternal, setIsExternal] = useState(false);
+  const [inspectorName, setInspectorName] = useState('');
+  const [inspectorCredentials, setInspectorCredentials] = useState('');
+  const [inspectorCompany, setInspectorCompany] = useState('');
+  const [scoringEnabled, setScoringEnabled] = useState(false);
 
   // Dropdown states
   const [propertyDropdownOpen, setPropertyDropdownOpen] = useState(false);
@@ -118,6 +138,10 @@ export function InspectionForm({
         gps_lng: position?.lng,
         device_id: deviceId,
         notes,
+        is_external: isExternal,
+        inspector_name: inspectorName || undefined,
+        inspector_credentials: inspectorCredentials || undefined,
+        inspector_company: inspectorCompany || undefined,
       },
       items,
       media: photos.map((p) => ({
@@ -144,6 +168,10 @@ export function InspectionForm({
     items,
     photos,
     meterReadings,
+    isExternal,
+    inspectorName,
+    inspectorCredentials,
+    inspectorCompany,
   ]);
 
   const { saveStatus, forceSave } = useAutoSave(currentDraft, 2000);
@@ -206,6 +234,16 @@ export function InspectionForm({
 
     loadDraft();
   }, [draftUuid, setInitialPhotos]);
+
+  // Auto-detect external inspection type
+  useEffect(() => {
+    if (inspectionType) {
+      const config = INSPECTION_TYPE_CONFIG[inspectionType];
+      if (config.isExternal) {
+        setIsExternal(true);
+      }
+    }
+  }, [inspectionType]);
 
   // Initialize default checklist items when type is selected
   useEffect(() => {
@@ -285,6 +323,31 @@ export function InspectionForm({
   const updateItemComment = useCallback((itemUuid: string, comment: string) => {
     setItems((prev) =>
       prev.map((item) => (item.client_uuid === itemUuid ? { ...item, comment } : item))
+    );
+  }, []);
+
+  // Update item score (1-5)
+  const updateItemScore = useCallback((itemUuid: string, score: number) => {
+    setItems((prev) =>
+      prev.map((item) => (item.client_uuid === itemUuid ? { ...item, score } : item))
+    );
+  }, []);
+
+  // Update item severity
+  const updateItemSeverity = useCallback((itemUuid: string, severity: SeverityLevel) => {
+    setItems((prev) =>
+      prev.map((item) => (item.client_uuid === itemUuid ? { ...item, severity } : item))
+    );
+  }, []);
+
+  // Toggle item requires followup
+  const toggleItemFollowup = useCallback((itemUuid: string) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.client_uuid === itemUuid
+          ? { ...item, requires_followup: !item.requires_followup }
+          : item
+      )
     );
   }, []);
 
@@ -581,6 +644,83 @@ export function InspectionForm({
           </div>
         </section>
 
+        {/* Section 2b: External Inspector Info */}
+        {isExternal && inspectionType && (
+          <section className="bg-white rounded-lg border p-4">
+            <div className="flex items-center gap-2 mb-4">
+              <User className="w-5 h-5 text-blue-600" />
+              <h2 className="text-lg font-semibold">External Inspector Details</h2>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Inspector Name *
+                </label>
+                <input
+                  type="text"
+                  value={inspectorName}
+                  onChange={(e) => setInspectorName(e.target.value)}
+                  placeholder="e.g. John Kamau"
+                  className="w-full px-3 py-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Credentials / License No.
+                </label>
+                <input
+                  type="text"
+                  value={inspectorCredentials}
+                  onChange={(e) => setInspectorCredentials(e.target.value)}
+                  placeholder="e.g. NEMA/EIA/2024/001"
+                  className="w-full px-3 py-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Company / Organization
+                </label>
+                <input
+                  type="text"
+                  value={inspectorCompany}
+                  onChange={(e) => setInspectorCompany(e.target.value)}
+                  placeholder="e.g. Kenya Property Inspectors Ltd"
+                  className="w-full px-3 py-2 border rounded-lg"
+                />
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Section 2c: Scoring Toggle */}
+        {inspectionType && inspectionType !== 'meter' && (
+          <section className="bg-white rounded-lg border p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-500" />
+                <h2 className="text-lg font-semibold">Enable Scoring</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setScoringEnabled(!scoringEnabled)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  scoringEnabled ? 'bg-blue-600' : 'bg-gray-300'
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    scoringEnabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mt-1">
+              Rate each item 1-5 and set severity levels for issues found
+            </p>
+          </section>
+        )}
+
         {/* Section 3: Checklist Items */}
         {inspectionType && inspectionType !== 'meter' && (
           <section className="bg-white rounded-lg border p-4">
@@ -651,6 +791,74 @@ export function InspectionForm({
                       );
                     })}
                   </div>
+
+                  {/* Scoring (1-5 stars) */}
+                  {scoringEnabled && (
+                    <div className="mt-2">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-500 mr-2">Score:</span>
+                        {[1, 2, 3, 4, 5].map((score) => (
+                          <button
+                            key={score}
+                            type="button"
+                            onClick={() => updateItemScore(item.client_uuid, score)}
+                            className="p-0.5"
+                          >
+                            <Star
+                              className={`w-5 h-5 ${
+                                (item.score || 0) >= score
+                                  ? 'text-yellow-400 fill-yellow-400'
+                                  : 'text-gray-300'
+                              }`}
+                            />
+                          </button>
+                        ))}
+                        {item.score && (
+                          <span className="text-xs text-gray-500 ml-1">
+                            {SCORE_LABELS[item.score]}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Severity (when condition is poor or fair) */}
+                  {scoringEnabled && (item.condition === 'poor' || item.condition === 'fair') && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-xs text-gray-500">Severity:</span>
+                      {(Object.keys(SEVERITY_CONFIG) as SeverityLevel[]).map((level) => {
+                        const sevConfig = SEVERITY_CONFIG[level];
+                        const isSelected = item.severity === level;
+                        return (
+                          <button
+                            key={level}
+                            type="button"
+                            onClick={() => updateItemSeverity(item.client_uuid, level)}
+                            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                              isSelected
+                                ? `${sevConfig.bgColor} ${sevConfig.color}`
+                                : 'bg-gray-100 text-gray-500'
+                            }`}
+                          >
+                            {sevConfig.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Requires followup checkbox */}
+                  {scoringEnabled && (
+                    <label className="flex items-center gap-2 mt-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={item.requires_followup || false}
+                        onChange={() => toggleItemFollowup(item.client_uuid)}
+                        className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                      />
+                      <span className="text-xs text-gray-600">Requires follow-up</span>
+                    </label>
+                  )}
 
                   {/* Comment Input */}
                   <input

@@ -1154,6 +1154,11 @@ export interface InspectionCreatePayload {
     device_id?: string;
     offline_created_at?: string;
     notes?: string;
+    is_external?: boolean;
+    inspector_name?: string;
+    inspector_credentials?: string;
+    inspector_company?: string;
+    template_id?: string;
   };
   items: Array<{
     client_uuid: string;
@@ -1161,6 +1166,11 @@ export interface InspectionCreatePayload {
     category: string;
     condition: string;
     comment?: string;
+    score?: number;
+    severity?: string;
+    pass_fail?: string;
+    requires_followup?: boolean;
+    photo_required?: boolean;
   }>;
   meter_readings: Array<{
     client_uuid: string;
@@ -1183,13 +1193,14 @@ export const inspectionsApi = {
   /**
    * List inspections with optional filters
    */
-  async list(params?: { property_id?: number; status?: string; type?: string; page?: number; size?: number }) {
+  async list(params?: { property_id?: number; status?: string; type?: string; is_external?: boolean; page?: number; size?: number }) {
     let endpoint = '/inspections/';
     if (params) {
       const queryParams = new URLSearchParams();
       if (params.property_id) queryParams.append('property_id', params.property_id.toString());
       if (params.status) queryParams.append('status', params.status);
       if (params.type) queryParams.append('type', params.type);
+      if (params.is_external !== undefined) queryParams.append('is_external', String(params.is_external));
       if (params.page) queryParams.append('page', params.page.toString());
       if (params.size) queryParams.append('size', params.size.toString());
       const queryString = queryParams.toString();
@@ -1255,6 +1266,233 @@ export const inspectionsApi = {
       return { success: true, data: response.data.data };
     }
     return response;
+  },
+
+  /**
+   * Add a digital signature to an inspection
+   */
+  async addSignature(inspectionId: number, data: {
+    signer_name: string;
+    signer_role: string;
+    signature_type: string;
+    signature_data: string;
+    ip_address?: string;
+    device_fingerprint?: string;
+    gps_lat?: number;
+    gps_lng?: number;
+  }) {
+    const response = await apiClient.post(`/inspections/${inspectionId}/sign/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Get signatures for an inspection
+   */
+  async getSignatures(inspectionId: number) {
+    const response = await apiClient.get(`/inspections/${inspectionId}/signatures/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * List inspection templates
+   */
+  async listTemplates(params?: { type?: string; is_external?: boolean }) {
+    let endpoint = '/inspections/templates/';
+    if (params) {
+      const queryParams = new URLSearchParams();
+      if (params.type) queryParams.append('type', params.type);
+      if (params.is_external !== undefined) queryParams.append('is_external', String(params.is_external));
+      const qs = queryParams.toString();
+      if (qs) endpoint += `?${qs}`;
+    }
+    const response = await apiClient.get(endpoint);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Get a single inspection template
+   */
+  async getTemplate(id: string) {
+    const response = await apiClient.get(`/inspections/templates/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Create an inspection template
+   */
+  async createTemplate(data: {
+    name: string;
+    description?: string;
+    inspection_type: string;
+    is_external?: boolean;
+    categories?: string[];
+    default_items?: Array<{ name: string; category: string; required_photo?: boolean }>;
+    scoring_enabled?: boolean;
+    pass_threshold?: number;
+  }) {
+    const response = await apiClient.post('/inspections/templates/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Update an inspection template
+   */
+  async updateTemplate(id: string, data: any) {
+    const response = await apiClient.put(`/inspections/templates/${id}/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  /**
+   * Delete an inspection template
+   */
+  async deleteTemplate(id: string) {
+    const response = await apiClient.delete(`/inspections/templates/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+};
+
+/**
+ * Leases API
+ */
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com';
+
+export const leasesApi = {
+  async list(params?: { status?: string; property_id?: number; tenant_id?: number }) {
+    let endpoint = '/leases/';
+    if (params) {
+      const queryParams = new URLSearchParams();
+      if (params.status) queryParams.append('status', params.status);
+      if (params.property_id) queryParams.append('property_id', params.property_id.toString());
+      if (params.tenant_id) queryParams.append('tenant_id', params.tenant_id.toString());
+      const qs = queryParams.toString();
+      if (qs) endpoint += `?${qs}`;
+    }
+    const response = await apiClient.get(endpoint);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  async get(id: number | string) {
+    const response = await apiClient.get(`/leases/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  async create(data: any) {
+    const response = await apiClient.post('/leases/', data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  async update(id: number | string, data: any) {
+    const response = await apiClient.put(`/leases/${id}/`, data);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  async send(id: number | string, channels: string[]) {
+    const response = await apiClient.post(`/leases/${id}/send/`, { channels });
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  async downloadPdf(id: number | string) {
+    const response = await apiClient.get(`/leases/${id}/pdf/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  async getTemplates() {
+    const response = await apiClient.get('/leases/templates/');
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  async resendSigningLink(id: number | string) {
+    const response = await apiClient.post(`/leases/${id}/resend/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  async delete(id: number | string) {
+    const response = await apiClient.delete(`/leases/${id}/`);
+    if (response.success && response.data?.data) {
+      return { success: true, data: response.data.data };
+    }
+    return response;
+  },
+
+  // Public endpoints (no auth required) - use raw fetch to backend via Next.js API routes
+  async getByToken(token: string) {
+    const response = await fetch(`/api/leases/sign/${token}/`);
+    const data = await response.json();
+    if (!response.ok) {
+      return { success: false, error: data?.error || data?.detail || 'Failed to load lease' };
+    }
+    return { success: true, data: data?.data || data };
+  },
+
+  async sign(token: string, signatureData: any) {
+    const response = await fetch(`/api/leases/sign/${token}/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(signatureData),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return { success: false, error: data?.error || data?.detail || 'Failed to sign lease' };
+    }
+    return { success: true, data: data?.data || data };
+  },
+
+  async verifyOtp(token: string, otp: string) {
+    const response = await fetch(`/api/leases/sign/${token}/verify-otp/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ otp }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return { success: false, error: data?.error || data?.detail || 'OTP verification failed' };
+    }
+    return { success: true, data: data?.data || data };
   },
 };
 

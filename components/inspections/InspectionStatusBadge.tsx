@@ -51,6 +51,11 @@ const TYPE_COLORS: Record<string, { bg: string; text: string }> = {
   move_in: { bg: 'bg-green-100', text: 'text-green-700' },
   move_out: { bg: 'bg-orange-100', text: 'text-orange-700' },
   meter: { bg: 'bg-purple-100', text: 'text-purple-700' },
+  pre_purchase: { bg: 'bg-indigo-100', text: 'text-indigo-700' },
+  insurance: { bg: 'bg-cyan-100', text: 'text-cyan-700' },
+  valuation: { bg: 'bg-emerald-100', text: 'text-emerald-700' },
+  fire_safety: { bg: 'bg-red-100', text: 'text-red-700' },
+  emergency_damage: { bg: 'bg-amber-100', text: 'text-amber-700' },
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -58,6 +63,11 @@ const TYPE_LABELS: Record<string, string> = {
   move_in: 'Move-in',
   move_out: 'Move-out',
   meter: 'Meter',
+  pre_purchase: 'Pre-Purchase',
+  insurance: 'Insurance',
+  valuation: 'Valuation',
+  fire_safety: 'Fire & Safety',
+  emergency_damage: 'Emergency',
 };
 
 export function InspectionTypeBadge({ type, size = 'md' }: InspectionTypeBadgeProps) {

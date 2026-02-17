@@ -7,13 +7,14 @@ import {
   Home, Building2, Users, DollarSign, Wrench, UserCircle,
   BarChart, LogOut, Settings, ChevronLeft, ChevronRight,
   ClipboardList, Calendar, Target, ShieldAlert, AlertTriangle, Timer, MessageSquare,
-  ClipboardCheck
+  ClipboardCheck, FileSignature
 } from 'lucide-react';
 import { useState } from 'react';
 
 const ownerLinks = [
   { href: '/owner', icon: Home, label: 'Dashboard' },
   { href: '/owner/properties', icon: Building2, label: 'Properties' },
+  { href: '/owner/leases', icon: FileSignature, label: 'Leases' },
   { href: '/owner/units', icon: Home, label: 'Units' },
   { href: '/owner/inspections', icon: ClipboardCheck, label: 'Inspections' },
   { href: '/owner/tenants', icon: Users, label: 'Tenants' },

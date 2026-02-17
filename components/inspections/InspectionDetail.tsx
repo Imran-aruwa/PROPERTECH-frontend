@@ -21,14 +21,20 @@ import {
   LogIn,
   LogOut,
   Gauge,
+  Star,
+  Shield,
+  FileSignature,
 } from 'lucide-react';
 import { inspectionsApi } from '@/app/lib/api-services';
 import { InspectionStatusBadge, InspectionTypeBadge } from './InspectionStatusBadge';
 import {
   ITEM_CATEGORY_CONFIG,
   CONDITION_CONFIG,
+  SCORE_LABELS,
+  SEVERITY_CONFIG,
   type InspectionDetail as InspectionDetailType,
   type ItemCategory,
+  type SeverityLevel,
   type UserRole,
 } from '@/app/lib/inspection-types';
 
@@ -223,6 +229,74 @@ export function InspectionDetail({ inspectionId, role }: InspectionDetailProps) 
           </div>
         </div>
 
+        {/* Overall Score Card */}
+        {inspection.overall_score != null && (
+          <div className="bg-white rounded-lg border p-4 mb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-500" />
+                <h2 className="font-semibold text-gray-900">Overall Score</h2>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star
+                      key={s}
+                      className={`w-5 h-5 ${
+                        inspection.overall_score != null && inspection.overall_score >= s
+                          ? 'text-yellow-400 fill-yellow-400'
+                          : 'text-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-lg font-bold text-gray-900">
+                  {inspection.overall_score.toFixed(1)}
+                </span>
+                {inspection.pass_fail && (
+                  <span
+                    className={`px-2 py-1 text-xs font-medium rounded ${
+                      inspection.pass_fail === 'pass'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'
+                    }`}
+                  >
+                    {inspection.pass_fail.toUpperCase()}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* External Inspector Info */}
+        {inspection.is_external && inspection.inspector_name && (
+          <div className="bg-white rounded-lg border p-4 mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Shield className="w-5 h-5 text-blue-600" />
+              <h2 className="font-semibold text-gray-900">External Inspector</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+              <div>
+                <p className="text-gray-500">Name</p>
+                <p className="font-medium text-gray-900">{inspection.inspector_name}</p>
+              </div>
+              {inspection.inspector_credentials && (
+                <div>
+                  <p className="text-gray-500">Credentials</p>
+                  <p className="font-medium text-gray-900">{inspection.inspector_credentials}</p>
+                </div>
+              )}
+              {inspection.inspector_company && (
+                <div>
+                  <p className="text-gray-500">Company</p>
+                  <p className="font-medium text-gray-900">{inspection.inspector_company}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Trust Data */}
         <div className="bg-white rounded-lg border p-4 mb-4">
           <h2 className="font-semibold text-gray-900 mb-3">Verification Data</h2>
@@ -301,19 +375,59 @@ export function InspectionDetail({ inspectionId, role }: InspectionDetailProps) 
                         return (
                           <div
                             key={item.client_uuid || item.id}
-                            className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg"
+                            className="p-3 bg-gray-50 rounded-lg"
                           >
-                            <div className="flex-1">
-                              <p className="font-medium text-gray-900">{item.name}</p>
-                              {item.comment && (
-                                <p className="text-sm text-gray-600 mt-1">{item.comment}</p>
-                              )}
+                            <div className="flex items-start gap-3">
+                              <div className="flex-1">
+                                <p className="font-medium text-gray-900">{item.name}</p>
+                                {item.comment && (
+                                  <p className="text-sm text-gray-600 mt-1">{item.comment}</p>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 flex-shrink-0">
+                                <span
+                                  className={`px-2 py-1 text-xs font-medium rounded ${conditionConfig.bgColor} ${conditionConfig.color}`}
+                                >
+                                  {conditionConfig.label}
+                                </span>
+                              </div>
                             </div>
-                            <span
-                              className={`px-2 py-1 text-xs font-medium rounded ${conditionConfig.bgColor} ${conditionConfig.color}`}
-                            >
-                              {conditionConfig.label}
-                            </span>
+                            {/* Score, severity, followup badges */}
+                            {(item.score || item.severity || item.requires_followup) && (
+                              <div className="flex items-center gap-2 mt-2 flex-wrap">
+                                {item.score && (
+                                  <div className="flex items-center gap-0.5">
+                                    {[1, 2, 3, 4, 5].map((s) => (
+                                      <Star
+                                        key={s}
+                                        className={`w-3.5 h-3.5 ${
+                                          (item.score || 0) >= s
+                                            ? 'text-yellow-400 fill-yellow-400'
+                                            : 'text-gray-300'
+                                        }`}
+                                      />
+                                    ))}
+                                    <span className="text-xs text-gray-500 ml-1">
+                                      {SCORE_LABELS[item.score]}
+                                    </span>
+                                  </div>
+                                )}
+                                {item.severity && SEVERITY_CONFIG[item.severity as SeverityLevel] && (
+                                  <span
+                                    className={`px-2 py-0.5 text-xs font-medium rounded ${
+                                      SEVERITY_CONFIG[item.severity as SeverityLevel].bgColor
+                                    } ${SEVERITY_CONFIG[item.severity as SeverityLevel].color}`}
+                                  >
+                                    {SEVERITY_CONFIG[item.severity as SeverityLevel].label}
+                                  </span>
+                                )}
+                                {item.requires_followup && (
+                                  <span className="px-2 py-0.5 text-xs font-medium rounded bg-orange-100 text-orange-700">
+                                    Follow-up needed
+                                  </span>
+                                )}
+                              </div>
+                            )}
                           </div>
                         );
                       })}
@@ -377,6 +491,56 @@ export function InspectionDetail({ inspectionId, role }: InspectionDetailProps) 
                   <div className="mt-2 text-sm text-gray-600">
                     Usage: <span className="font-medium">{reading.current_reading - reading.previous_reading}</span>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Signatures */}
+        {inspection.signatures && inspection.signatures.length > 0 && (
+          <div className="bg-white rounded-lg border p-4 mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <FileSignature className="w-5 h-5 text-purple-600" />
+              <h2 className="font-semibold text-gray-900">
+                Signatures ({inspection.signatures.length})
+              </h2>
+            </div>
+
+            <div className="space-y-3">
+              {inspection.signatures.map((sig) => (
+                <div
+                  key={sig.id}
+                  className="p-3 bg-gray-50 rounded-lg"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-gray-900">{sig.signer_name}</p>
+                      <p className="text-sm text-gray-500 capitalize">{sig.signer_role}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs px-2 py-1 rounded bg-purple-100 text-purple-700 capitalize">
+                        {sig.signature_type}
+                      </span>
+                      {sig.signed_at && (
+                        <p className="text-xs text-gray-500 mt-1">
+                          {new Date(sig.signed_at).toLocaleString()}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {/* Audit trail info */}
+                  {(sig.ip_address || sig.gps_lat) && (
+                    <div className="mt-2 pt-2 border-t border-gray-200 flex flex-wrap gap-3 text-xs text-gray-500">
+                      {sig.ip_address && <span>IP: {sig.ip_address}</span>}
+                      {sig.gps_lat && sig.gps_lng && (
+                        <span>GPS: {sig.gps_lat.toFixed(4)}, {sig.gps_lng.toFixed(4)}</span>
+                      )}
+                      {sig.device_fingerprint && (
+                        <span className="font-mono">Device: {sig.device_fingerprint.slice(0, 12)}...</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
