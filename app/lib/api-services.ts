@@ -1518,5 +1518,89 @@ export const marketApi = {
   },
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Workflow Automation API
+// Endpoints: /api/workflows/...  (premium feature)
+// ─────────────────────────────────────────────────────────────────────────────
+export const workflowsApi = {
+  /** List all workflows owned by the current user. */
+  async list() {
+    return apiClient.get('/workflows/');
+  },
+
+  /** Create a new workflow. */
+  async create(data: {
+    name: string;
+    description?: string;
+    trigger_event: string;
+    conditions?: Record<string, any>;
+    status?: string;
+    actions?: Array<{
+      order: number;
+      action_type: string;
+      config: Record<string, any>;
+      delay_minutes?: number;
+    }>;
+  }) {
+    return apiClient.post('/workflows/', data);
+  },
+
+  /** Get a single workflow. */
+  async get(id: string) {
+    return apiClient.get(`/workflows/${id}`);
+  },
+
+  /** Update a workflow (partial update). */
+  async update(
+    id: string,
+    data: {
+      name?: string;
+      description?: string;
+      trigger_event?: string;
+      conditions?: Record<string, any>;
+      status?: string;
+      actions?: Array<{
+        order: number;
+        action_type: string;
+        config: Record<string, any>;
+        delay_minutes?: number;
+      }>;
+    },
+  ) {
+    return apiClient.put(`/workflows/${id}`, data);
+  },
+
+  /** Delete a workflow. */
+  async delete(id: string) {
+    return apiClient.delete(`/workflows/${id}`);
+  },
+
+  /** Get execution logs for a specific workflow. */
+  async getLogs(id: string, params?: { skip?: number; limit?: number }) {
+    const qs = params
+      ? `?skip=${params.skip ?? 0}&limit=${params.limit ?? 50}`
+      : '';
+    return apiClient.get(`/workflows/${id}/logs${qs}`);
+  },
+
+  /** Get execution logs across all workflows (paginated). */
+  async getAllLogs(params?: { skip?: number; limit?: number }) {
+    const qs = params
+      ? `?skip=${params.skip ?? 0}&limit=${params.limit ?? 50}`
+      : '';
+    return apiClient.get(`/workflows/logs${qs}`);
+  },
+
+  /** Get built-in workflow templates. */
+  async getTemplates() {
+    return apiClient.get('/workflows/templates');
+  },
+
+  /** Trigger time-based checks (rent overdue, lease expiry) for the current owner. */
+  async checkScheduled() {
+    return apiClient.post('/workflows/check-scheduled', {});
+  },
+};
+
 // Default export for backward compatibility
 export default apiClient;
