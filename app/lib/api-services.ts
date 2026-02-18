@@ -1496,5 +1496,27 @@ export const leasesApi = {
   },
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Market Intelligence API
+// Endpoints: /api/market/...   (premium feature)
+// ─────────────────────────────────────────────────────────────────────────────
+export const marketApi = {
+  /** All tracked neighbourhoods with headline KPIs. */
+  async getAreaOverview(city?: string) {
+    const params = city ? `?city=${encodeURIComponent(city)}` : '';
+    return apiClient.get(`/market/area-overview${params}`);
+  },
+
+  /** Full breakdown for a single area (rent by type, trend, etc.). */
+  async getAreaDetail(areaName: string) {
+    return apiClient.get(`/market/area/${encodeURIComponent(areaName)}`);
+  },
+
+  /** Authenticated owner's properties benchmarked against area averages. */
+  async getMyPropertiesBenchmark() {
+    return apiClient.get('/market/my-properties-benchmark');
+  },
+};
+
 // Default export for backward compatibility
 export default apiClient;

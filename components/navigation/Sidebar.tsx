@@ -7,7 +7,7 @@ import {
   Home, Building2, Users, DollarSign, Wrench, UserCircle,
   BarChart, LogOut, Settings, ChevronLeft, ChevronRight,
   ClipboardList, Calendar, Target, ShieldAlert, AlertTriangle, Timer, MessageSquare,
-  ClipboardCheck, FileSignature
+  ClipboardCheck, FileSignature, TrendingUp
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -21,6 +21,7 @@ const ownerLinks = [
   { href: '/owner/payments', icon: DollarSign, label: 'Payments' },
   { href: '/owner/maintenance', icon: Wrench, label: 'Maintenance' },
   { href: '/owner/staff', icon: UserCircle, label: 'Staff' },
+  { href: '/owner/market-intelligence', icon: TrendingUp, label: 'Market Intel' },
 ];
 
 const caretakerLinks = [
