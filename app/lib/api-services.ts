@@ -1602,5 +1602,154 @@ export const workflowsApi = {
   },
 };
 
+// ════════════════════════════════════════════════════════════
+// Advanced Accounting + KRA Tax API
+// Endpoints: /api/accounting/...  (premium feature)
+// ════════════════════════════════════════════════════════════
+export const accountingApi = {
+  // ── Entries ──
+  async listEntries(params?: {
+    property_id?: string;
+    entry_type?: string;
+    category?: string;
+    date_from?: string;
+    date_to?: string;
+    tax_period?: string;
+    skip?: number;
+    limit?: number;
+  }) {
+    const qs = params
+      ? '?' + Object.entries(params)
+          .filter(([, v]) => v !== undefined && v !== '')
+          .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
+          .join('&')
+      : '';
+    return apiClient.get(`/accounting/entries${qs}`);
+  },
+
+  async createEntry(data: {
+    entry_type: string;
+    category: string;
+    amount: number;
+    description?: string;
+    reference_number?: string;
+    entry_date: string;
+    property_id?: string;
+    unit_id?: string;
+    tenant_id?: string;
+    is_reconciled?: boolean;
+    receipt_url?: string;
+  }) {
+    return apiClient.post('/accounting/entries', data);
+  },
+
+  async updateEntry(id: string, data: Record<string, any>) {
+    return apiClient.put(`/accounting/entries/${id}`, data);
+  },
+
+  async deleteEntry(id: string) {
+    return apiClient.delete(`/accounting/entries/${id}`);
+  },
+
+  async bulkImport(entries: any[]) {
+    return apiClient.post('/accounting/entries/bulk', { entries });
+  },
+
+  // ── Sync ──
+  async syncPayments() {
+    return apiClient.post('/accounting/sync-payments', {});
+  },
+
+  // ── Reports ──
+  async getPnL(params: { year: number; month?: number; period?: string; property_id?: string }) {
+    const qs = '?' + Object.entries(params)
+      .filter(([, v]) => v !== undefined)
+      .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
+      .join('&');
+    return apiClient.get(`/accounting/reports/pnl${qs}`);
+  },
+
+  async getCashflow(params: { year: number }) {
+    return apiClient.get(`/accounting/reports/cashflow?year=${params.year}`);
+  },
+
+  async getPropertyPerformance(params: { year: number; month?: number }) {
+    const qs = '?' + Object.entries(params)
+      .filter(([, v]) => v !== undefined)
+      .map(([k, v]) => `${k}=${v}`)
+      .join('&');
+    return apiClient.get(`/accounting/reports/property-performance${qs}`);
+  },
+
+  async getExpenseBreakdown(params: { year: number; month?: number; property_id?: string }) {
+    const qs = '?' + Object.entries(params)
+      .filter(([, v]) => v !== undefined)
+      .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
+      .join('&');
+    return apiClient.get(`/accounting/reports/expense-breakdown${qs}`);
+  },
+
+  // ── Tax ──
+  async getTaxSummary(params: {
+    year: number;
+    month?: number;
+    period_type?: string;
+    landlord_type?: string;
+  }) {
+    const qs = '?' + Object.entries(params)
+      .filter(([, v]) => v !== undefined)
+      .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
+      .join('&');
+    return apiClient.get(`/accounting/tax/summary${qs}`);
+  },
+
+  async getTaxConstants() {
+    return apiClient.get('/accounting/tax/constants');
+  },
+
+  async createTaxRecord(data: {
+    tax_year: number;
+    tax_period: string;
+    gross_rental_income: number;
+    allowable_deductions: number;
+    net_taxable_income: number;
+    tax_liability: number;
+    tax_rate_applied: number;
+    landlord_type: string;
+    kra_pin?: string;
+    above_threshold: boolean;
+    status: string;
+    notes?: string;
+  }) {
+    return apiClient.post('/accounting/tax/records', data);
+  },
+
+  async listTaxRecords(params?: { year?: number }) {
+    const qs = params?.year ? `?year=${params.year}` : '';
+    return apiClient.get(`/accounting/tax/records${qs}`);
+  },
+
+  async updateTaxRecord(id: string, data: { status?: string; kra_pin?: string; notes?: string }) {
+    return apiClient.put(`/accounting/tax/records/${id}`, data);
+  },
+
+  async listWithholding(params?: { period?: string }) {
+    const qs = params?.period ? `?period=${params.period}` : '';
+    return apiClient.get(`/accounting/tax/withholding${qs}`);
+  },
+
+  async createWithholdingEntry(data: {
+    tenant_name?: string;
+    tenant_kra_pin?: string;
+    amount_paid: number;
+    withholding_rate: number;
+    period: string;
+    certificate_number?: string;
+    notes?: string;
+  }) {
+    return apiClient.post('/accounting/tax/withholding', data);
+  },
+};
+
 // Default export for backward compatibility
 export default apiClient;
