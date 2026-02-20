@@ -341,6 +341,46 @@ export const apiClient = {
       };
     }
   },
+
+  /**
+   * POST with FormData (multipart/form-data) — used for file uploads
+   */
+  async postForm<T = any>(endpoint: string, form: FormData): Promise<ApiResponse<T>> {
+    try {
+      const token = getAuthToken();
+      const authValue = token ? (token.startsWith('Bearer ') ? token : `Bearer ${token}`) : null;
+
+      const response = await fetch(`${API_BASE}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          // Do NOT set Content-Type — fetch sets it automatically with the boundary
+          ...(authValue && { Authorization: authValue }),
+        },
+        body: form,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          error:
+            (data as ApiError).detail ||
+            (data as ApiError).message ||
+            (data as ApiError).error ||
+            'Upload failed',
+        };
+      }
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('[apiClient.postForm] Error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Network error',
+      };
+    }
+  },
 };
 
 /**
@@ -1839,6 +1879,170 @@ export const listingsApi = {
   /** Get analytics summary for a listing. */
   async getAnalytics(listingId: string) {
     return apiClient.get(`/listings/${listingId}/analytics`);
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Mpesa Payment Intelligence API
+// Endpoints: /api/mpesa/...  (premium feature)
+// ─────────────────────────────────────────────────────────────────────────────
+export const mpesaApi = {
+  // ── Config ──────────────────────────────────────────────────────────────────
+
+  /** Get owner's Mpesa configuration. */
+  async getConfig() {
+    return apiClient.get('/mpesa/config');
+  },
+
+  /** Save/update Mpesa credentials. */
+  async saveConfig(data: {
+    shortcode: string;
+    shortcode_type: 'paybill' | 'till';
+    consumer_key: string;
+    consumer_secret: string;
+    passkey?: string;
+    account_reference_format?: string;
+    environment?: 'sandbox' | 'production';
+  }) {
+    return apiClient.post('/mpesa/config', data);
+  },
+
+  /** Send a test STK push to verify credentials. */
+  async testConnection(phone: string) {
+    return apiClient.post('/mpesa/config/test', { phone });
+  },
+
+  /** Register C2B callback URLs with Safaricom. */
+  async registerUrls() {
+    return apiClient.post('/mpesa/register-urls', {});
+  },
+
+  // ── Transactions ─────────────────────────────────────────────────────────────
+
+  /** List transactions with optional filters. */
+  async listTransactions(params?: {
+    reconciliation_status?: string;
+    property_id?: string;
+    date_from?: string;
+    date_to?: string;
+    skip?: number;
+    limit?: number;
+  }) {
+    const qs = params
+      ? '?' + new URLSearchParams(
+          Object.fromEntries(
+            Object.entries(params)
+              .filter(([, v]) => v !== undefined && v !== null)
+              .map(([k, v]) => [k, String(v)])
+          )
+        ).toString()
+      : '';
+    return apiClient.get(`/mpesa/transactions${qs}`);
+  },
+
+  /** Get transaction detail with audit log. */
+  async getTransaction(id: string) {
+    return apiClient.get(`/mpesa/transactions/${id}`);
+  },
+
+  /** Manually match a transaction to a tenant/unit. */
+  async matchTransaction(id: string, data: {
+    tenant_id: string;
+    unit_id: string;
+    property_id: string;
+    payment_month?: string;
+  }) {
+    return apiClient.post(`/mpesa/transactions/${id}/match`, data);
+  },
+
+  /** Flag a transaction as disputed. */
+  async disputeTransaction(id: string, reason: string) {
+    return apiClient.post(`/mpesa/transactions/${id}/dispute`, { reason });
+  },
+
+  /** Initiate STK push to a tenant. */
+  async stkPush(data: { tenant_id: string; amount?: number; description?: string }) {
+    return apiClient.post('/mpesa/stk-push', data);
+  },
+
+  /** Bulk import from Mpesa business statement CSV. */
+  async importCsv(file: File) {
+    const form = new FormData();
+    form.append('file', file);
+    return apiClient.postForm('/mpesa/import', form);
+  },
+
+  // ── Reminder Rules ─────────────────────────────────────────────────────────
+
+  /** Get owner's reminder rules. */
+  async getReminderRules() {
+    return apiClient.get('/mpesa/reminder-rules');
+  },
+
+  /** Save reminder rules. */
+  async saveReminderRules(data: {
+    is_active?: boolean;
+    pre_due_days?: number;
+    channels?: Record<string, string>;
+    escalation_rules?: Record<string, string>;
+    enabled_types?: Record<string, boolean>;
+  }) {
+    return apiClient.post('/mpesa/reminder-rules', data);
+  },
+
+  // ── Reminders ─────────────────────────────────────────────────────────────
+
+  /** List sent/scheduled reminders. */
+  async listReminders(params?: {
+    status?: string;
+    tenant_id?: string;
+    month?: string;
+    skip?: number;
+    limit?: number;
+  }) {
+    const qs = params
+      ? '?' + new URLSearchParams(
+          Object.fromEntries(
+            Object.entries(params)
+              .filter(([, v]) => v !== undefined && v !== null)
+              .map(([k, v]) => [k, String(v)])
+          )
+        ).toString()
+      : '';
+    return apiClient.get(`/mpesa/reminders${qs}`);
+  },
+
+  /** Manually trigger reminders. */
+  async triggerReminders(data?: {
+    tenant_id?: string;
+    reminder_type?: string;
+    channel?: string;
+  }) {
+    return apiClient.post('/mpesa/reminders/trigger', data || {});
+  },
+
+  // ── Analytics ─────────────────────────────────────────────────────────────
+
+  /** Get collection rate for a month. */
+  async getCollectionRate(month?: string) {
+    const qs = month ? `?month=${encodeURIComponent(month)}` : '';
+    return apiClient.get(`/mpesa/analytics/collection-rate${qs}`);
+  },
+
+  /** Get payment timing distribution. */
+  async getPaymentTiming(month?: string) {
+    const qs = month ? `?month=${encodeURIComponent(month)}` : '';
+    return apiClient.get(`/mpesa/analytics/payment-timing${qs}`);
+  },
+
+  /** Get payment risk report. */
+  async getRisk() {
+    return apiClient.get('/mpesa/analytics/risk');
+  },
+
+  /** Get full dashboard summary. */
+  async getDashboard() {
+    return apiClient.get('/mpesa/dashboard');
   },
 };
 
