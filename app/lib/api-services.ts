@@ -6,9 +6,20 @@
 
 const API_BASE = '/api';
 interface ApiError {
-  detail?: string;
+  detail?: any;
   message?: string;
   error?: string;
+}
+
+/** Always returns a plain string from a FastAPI error response body.
+ *  Handles the case where `detail` is an object (e.g. premium_required). */
+function extractError(data: any): string {
+  const d = data?.detail;
+  if (typeof d === 'string') return d;
+  if (d && typeof d === 'object') {
+    return (d as any).message || JSON.stringify(d);
+  }
+  return data?.message || data?.error || 'Request failed';
 }
 
 export interface ApiResponse<T = any> {
@@ -141,11 +152,7 @@ export const apiClient = {
         console.error(`[apiClient.get] ${endpoint} - Error:`, data);
         return {
           success: false,
-          error:
-            (data as ApiError).detail ||
-            (data as ApiError).message ||
-            (data as ApiError).error ||
-            'Request failed',
+          error: extractError(data),
         };
       }
 
@@ -193,11 +200,7 @@ export const apiClient = {
         console.error(`[apiClient.post] ${endpoint} - Error:`, data);
         return {
           success: false,
-          error:
-            (data as ApiError).detail ||
-            (data as ApiError).message ||
-            (data as ApiError).error ||
-            'Request failed',
+          error: extractError(data),
         };
       }
 
@@ -236,11 +239,7 @@ export const apiClient = {
       if (!response.ok) {
         return {
           success: false,
-          error:
-            (data as ApiError).detail ||
-            (data as ApiError).message ||
-            (data as ApiError).error ||
-            'Request failed',
+          error: extractError(data),
         };
       }
 
@@ -279,11 +278,7 @@ export const apiClient = {
       if (!response.ok) {
         return {
           success: false,
-          error:
-            (data as ApiError).detail ||
-            (data as ApiError).message ||
-            (data as ApiError).error ||
-            'Request failed',
+          error: extractError(data),
         };
       }
 
@@ -321,11 +316,7 @@ export const apiClient = {
       if (!response.ok) {
         return {
           success: false,
-          error:
-            (data as ApiError).detail ||
-            (data as ApiError).message ||
-            (data as ApiError).error ||
-            'Request failed',
+          error: extractError(data),
         };
       }
 
@@ -364,11 +355,7 @@ export const apiClient = {
       if (!response.ok) {
         return {
           success: false,
-          error:
-            (data as ApiError).detail ||
-            (data as ApiError).message ||
-            (data as ApiError).error ||
-            'Upload failed',
+          error: extractError(data) || 'Upload failed',
         };
       }
 
