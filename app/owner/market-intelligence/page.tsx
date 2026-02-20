@@ -234,15 +234,13 @@ export default function MarketIntelligencePage() {
         : [];
       setAreas(areaList);
 
-      if (areaList.length > 0 && !selectedArea) {
-        setSelectedArea(areaList[0].area_name);
-      }
+      setSelectedArea(prev => (areaList.length > 0 && !prev) ? areaList[0].area_name : prev);
     } catch (e) {
       setError('Network error. Please try again.');
     } finally {
       isRefresh ? setRefreshing(false) : setLoading(false);
     }
-  }, [selectedArea]);
+  }, []);
 
   const fetchBenchmark = useCallback(async () => {
     try {
@@ -274,7 +272,7 @@ export default function MarketIntelligencePage() {
   useEffect(() => {
     fetchOverview();
     fetchBenchmark();
-  }, []);
+  }, [fetchOverview, fetchBenchmark]);
 
   useEffect(() => {
     if (selectedArea) {

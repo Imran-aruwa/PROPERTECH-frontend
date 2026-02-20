@@ -475,9 +475,9 @@ export default function AccountingPage() {
         date_to: filterDateTo || undefined,
         limit: 100,
       });
-      if (res.success && res.entries) {
-        setEntries(res.entries);
-        setEntriesTotal(res.total || res.entries.length);
+      if (res.success && res.data?.entries) {
+        setEntries(res.data.entries);
+        setEntriesTotal(res.data.total || res.data.entries.length);
       }
     } catch { /* silent */ }
     finally { setLoadingEntries(false); }
@@ -490,8 +490,8 @@ export default function AccountingPage() {
         accountingApi.getPnL({ year: reportYear, month: reportPeriod === 'annual' ? undefined : reportMonth, period: reportPeriod }),
         accountingApi.getCashflow({ year: reportYear }),
       ]);
-      if (pnlRes.success && pnlRes.report) setPnl(pnlRes.report);
-      if (cfRes.success && cfRes.cashflow) setCashflow(cfRes.cashflow);
+      if (pnlRes.success && pnlRes.data?.report) setPnl(pnlRes.data.report);
+      if (cfRes.success && cfRes.data?.cashflow) setCashflow(cfRes.data.cashflow);
     } catch { /* silent */ }
     finally { setLoadingReports(false); }
   }, [reportYear, reportMonth, reportPeriod]);
@@ -509,9 +509,9 @@ export default function AccountingPage() {
         accountingApi.listTaxRecords({ year: taxYear }),
         accountingApi.listWithholding(),
       ]);
-      if (summaryRes.success && summaryRes.tax_summary) setTaxSummary(summaryRes.tax_summary);
-      if (recordsRes.success && recordsRes.records) setTaxRecords(recordsRes.records);
-      if (whtRes.success && whtRes.entries) setWhtEntries(whtRes.entries);
+      if (summaryRes.success && summaryRes.data?.tax_summary) setTaxSummary(summaryRes.data.tax_summary);
+      if (recordsRes.success && recordsRes.data?.records) setTaxRecords(recordsRes.data.records);
+      if (whtRes.success && whtRes.data?.entries) setWhtEntries(whtRes.data.entries);
     } catch { /* silent */ }
     finally { setLoadingTax(false); }
   }, [taxYear, taxMonth, taxPeriodType, landlordType]);
@@ -528,7 +528,7 @@ export default function AccountingPage() {
     try {
       const res = await accountingApi.syncPayments();
       if (res.success) {
-        setSyncResult(res.message || `Synced ${res.synced} payments`);
+        setSyncResult(res.data?.message || `Synced ${res.data?.synced ?? 0} payments`);
         loadEntries();
       }
     } catch { setSyncResult('Sync failed'); }
