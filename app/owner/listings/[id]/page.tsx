@@ -10,9 +10,9 @@ import { ToastContainer } from '@/components/ui/Toast';
 import { useToast } from '@/app/lib/hooks';
 import {
   ArrowLeft, ExternalLink, RefreshCw, CheckCircle, Clock,
-  Eye, MessageSquare, TrendingUp, Copy, Share2, Pause,
-  Play, Home, Building2, Megaphone, Loader2, ChevronDown,
-  User, Phone, Mail, Calendar, AlertCircle, BarChart3,
+  Eye, MessageSquare, Copy, Pause,
+  Play, Building2, Megaphone, Loader2, ChevronDown,
+  User, Phone, Mail, AlertCircle, BarChart3,
 } from 'lucide-react';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -202,7 +202,7 @@ export default function ListingDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [listingId]);
+  }, [listingId, addToast]);
 
   const loadLeads = useCallback(async () => {
     const res = await listingsApi.getLeads(listingId);
@@ -284,7 +284,7 @@ export default function ListingDetailPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
       <div className="flex items-start gap-3 mb-6">

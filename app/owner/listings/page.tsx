@@ -9,10 +9,10 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
 import { useToast } from '@/app/lib/hooks';
 import {
-  Plus, Home, TrendingUp, Users, Clock, CheckCircle,
-  Eye, ExternalLink, MoreVertical, Search, Filter,
-  Share2, Pause, Play, X, Building2, MessageSquare,
-  Tag, Megaphone,
+  Plus, Home, Clock, CheckCircle,
+  Eye, ExternalLink, MoreVertical, Search,
+  Pause, Play, Building2, MessageSquare,
+  Megaphone,
 } from 'lucide-react';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -259,7 +259,6 @@ export default function ListingsPage() {
   const fetchListings = useCallback(async () => {
     try {
       setLoading(true);
-      const params = statusFilter ? `?status=${statusFilter}` : '';
       const res = await listingsApi.list(statusFilter || undefined);
       if (!res.success) {
         if (typeof res.error === 'object' && (res.error as any)?.error === 'premium_required') {
@@ -275,7 +274,7 @@ export default function ListingsPage() {
     } finally {
       setLoading(false);
     }
-  }, [statusFilter]);
+  }, [statusFilter, addToast]);
 
   useEffect(() => {
     if (isAuthenticated) fetchListings();
@@ -338,7 +337,7 @@ export default function ListingsPage() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

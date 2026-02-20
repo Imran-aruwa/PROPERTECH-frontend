@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/auth-context';
-import { listingsApi, unitsApi, propertiesApi } from '@/lib/api-services';
+import { listingsApi, unitsApi } from '@/lib/api-services';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
 import { useToast } from '@/app/lib/hooks';
 import {
-  ArrowLeft, ArrowRight, Check, Home, Share2,
-  Eye, Loader2, Plus, X, Building2, Megaphone,
+  ArrowLeft, ArrowRight, Check,
+  Loader2, Plus, X, Megaphone,
   Wifi, Car, Droplets, Zap, Shield, Dumbbell,
   Waves, Wind, Sofa, Heart, Trees,
 } from 'lucide-react';
@@ -125,7 +125,7 @@ export default function NewListingPage() {
   }, [isAuthenticated]);
 
   // Auto-populate when unit is selected
-  const handleUnitSelect = async (unitId: string) => {
+  const handleUnitSelect = useCallback(async (unitId: string) => {
     setForm(f => ({ ...f, unit_id: unitId }));
     if (!unitId) return;
 
@@ -151,14 +151,14 @@ export default function NewListingPage() {
     } finally {
       setAutoPopulating(false);
     }
-  };
+  }, [addToast]);
 
   // Auto-populate on mount if unit_id was in URL
   useEffect(() => {
     if (prefillUnitId && isAuthenticated) {
       handleUnitSelect(prefillUnitId);
     }
-  }, [prefillUnitId, isAuthenticated]);
+  }, [prefillUnitId, isAuthenticated, handleUnitSelect]);
 
   const toggleAmenity = (key: string) => {
     setForm(f => ({
@@ -539,7 +539,7 @@ export default function NewListingPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
