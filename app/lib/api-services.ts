@@ -1751,5 +1751,96 @@ export const accountingApi = {
   },
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Vacancy Listing Syndication API
+// Endpoints: /api/listings/...  (premium feature)
+// ─────────────────────────────────────────────────────────────────────────────
+export const listingsApi = {
+  /** List all listings for the owner (with optional status filter). */
+  async list(status?: string) {
+    const qs = status ? `?status=${encodeURIComponent(status)}` : '';
+    return apiClient.get(`/listings/${qs}`);
+  },
+
+  /** Create a new listing draft. */
+  async create(data: {
+    title: string;
+    description?: string | null;
+    monthly_rent: number;
+    deposit_amount?: number | null;
+    available_from?: string | null;
+    amenities?: string[];
+    photos?: string[];
+    unit_id?: string | null;
+    property_id?: string | null;
+  }) {
+    return apiClient.post('/listings/', data);
+  },
+
+  /** Get a single listing with syndications and lead count. */
+  async get(id: string) {
+    return apiClient.get(`/listings/${id}`);
+  },
+
+  /** Update listing fields. */
+  async update(id: string, data: Partial<{
+    title: string;
+    description: string | null;
+    monthly_rent: number;
+    deposit_amount: number | null;
+    available_from: string | null;
+    amenities: string[];
+    photos: string[];
+  }>) {
+    return apiClient.put(`/listings/${id}`, data);
+  },
+
+  /** Delete a draft or paused listing. */
+  async delete(id: string) {
+    return apiClient.delete(`/listings/${id}`);
+  },
+
+  /** Publish listing and syndicate to selected platforms. */
+  async publish(id: string, platforms: string[] = ['direct_link']) {
+    return apiClient.post(`/listings/${id}/publish`, { platforms });
+  },
+
+  /** Pause an active listing. */
+  async pause(id: string) {
+    return apiClient.post(`/listings/${id}/pause`, {});
+  },
+
+  /** Mark listing as filled (unit is now occupied). */
+  async markFilled(id: string) {
+    return apiClient.post(`/listings/${id}/mark-filled`, {});
+  },
+
+  /** (Re)syndicate to a specific platform. */
+  async syndicate(id: string, platform: string) {
+    return apiClient.post(`/listings/${id}/syndicate`, { platform });
+  },
+
+  /** Auto-populate listing fields from a unit's existing data. */
+  async autoPopulate(unitId: string) {
+    return apiClient.get(`/listings/auto-populate/${unitId}`);
+  },
+
+  /** List leads for a listing. */
+  async getLeads(listingId: string, status?: string) {
+    const qs = status ? `?status=${encodeURIComponent(status)}` : '';
+    return apiClient.get(`/listings/${listingId}/leads${qs}`);
+  },
+
+  /** Update a lead's status and/or notes. */
+  async updateLead(listingId: string, leadId: string, data: { status?: string; notes?: string }) {
+    return apiClient.put(`/listings/${listingId}/leads/${leadId}`, data);
+  },
+
+  /** Get analytics summary for a listing. */
+  async getAnalytics(listingId: string) {
+    return apiClient.get(`/listings/${listingId}/analytics`);
+  },
+};
+
 // Default export for backward compatibility
 export default apiClient;

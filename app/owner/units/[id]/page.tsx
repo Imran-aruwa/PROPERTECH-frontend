@@ -10,7 +10,7 @@ import { useToast } from '@/app/lib/hooks';
 import {
   Building2, User, CreditCard, Wrench, ArrowLeft,
   Edit, X, Save, Loader2, Home, BedDouble, Bath,
-  Maximize, DollarSign, CheckCircle, AlertCircle
+  Maximize, DollarSign, CheckCircle, AlertCircle, Megaphone
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -489,6 +489,27 @@ export default function UnitDetailPage() {
         onClose={() => setEditModalOpen(false)}
         onSave={handleSaveUnit}
       />
+
+      {/* Vacancy trigger prompt */}
+      {(unit.status?.toLowerCase() === 'vacant' || unit.status?.toLowerCase() === 'available') && !unit.tenant && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="flex items-center gap-3 flex-1">
+            <div className="w-9 h-9 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <Megaphone className="w-5 h-5 text-amber-600" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-amber-900">This unit is now vacant</p>
+              <p className="text-xs text-amber-700">Create a listing to fill it faster — publish to WhatsApp, Facebook, and property portals automatically.</p>
+            </div>
+          </div>
+          <Link
+            href={`/owner/listings/new?unit_id=${unit.id}`}
+            className="flex-shrink-0 flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+          >
+            <Megaphone className="w-4 h-4" /> Create Listing
+          </Link>
+        </div>
+      )}
 
       {/* Header */}
       <div className="bg-white rounded-lg border shadow-sm p-6 mb-6">
