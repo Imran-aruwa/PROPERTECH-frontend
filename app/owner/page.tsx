@@ -69,7 +69,9 @@ export default function OwnerDashboard() {
         setStats({
           total_properties: 0,
           total_units: 0,
+          total_tenants: 0,
           occupied_units: 0,
+          occupancy_rate: 0,
           vacancy_rate: 0,
           monthly_revenue: 0,
           pending_payments: 0,
