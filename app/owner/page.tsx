@@ -11,8 +11,10 @@ import Link from 'next/link';
 interface DashboardStats {
   total_properties: number;
   total_units: number;
-  occupied_units: number;
-  vacancy_rate: number;
+  total_tenants: number;
+  occupied_units?: number; // legacy alias
+  occupancy_rate: number;
+  vacancy_rate?: number; // legacy alias
   monthly_revenue: number;
   pending_payments: number;
   maintenance_requests: number;
@@ -133,8 +135,8 @@ export default function OwnerDashboard() {
       link: '/owner/units'
     },
     {
-      title: 'Occupied Units',
-      value: stats?.occupied_units || 0,
+      title: 'Active Tenants',
+      value: stats?.total_tenants ?? stats?.occupied_units ?? 0,
       icon: Users,
       color: 'bg-purple-500',
       link: '/owner/tenants'
