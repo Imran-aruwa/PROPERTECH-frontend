@@ -113,7 +113,7 @@ const EXPENSE_CATEGORIES = [
   { value: 'advertising', label: 'Advertising' },
   { value: 'depreciation', label: 'Depreciation' },
   { value: 'utilities', label: 'Utilities' },
-  { value: 'caretaker_salary', label: 'Caretaker Salary' },
+  { value: 'caretaker_salary', label: 'Staff Salary' },
   { value: 'security', label: 'Security' },
   { value: 'other', label: 'Other Expense' },
 ];

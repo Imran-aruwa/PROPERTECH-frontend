@@ -116,7 +116,7 @@ export default function CaretakerDashboard() {
                 {user?.full_name || 'Caretaker'}
               </span>!
             </h1>
-            <p className="text-blue-300">Property Caretaker Dashboard</p>
+            <p className="text-blue-300">Property Staff Dashboard</p>
           </div>
         </div>
       </div>

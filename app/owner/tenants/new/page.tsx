@@ -21,6 +21,7 @@ interface TenantFormData {
   lease_end: string;
   rent_amount: string;
   deposit_amount: string;
+  occupancy_type: string;
   emergency_contact_name: string;
   emergency_contact_phone: string;
   notes: string;
@@ -50,6 +51,7 @@ export default function NewTenantPage() {
     lease_end: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     rent_amount: '',
     deposit_amount: '',
+    occupancy_type: 'renting',
     emergency_contact_name: '',
     emergency_contact_phone: '',
     notes: ''
@@ -191,6 +193,7 @@ export default function NewTenantPage() {
         lease_end: formData.lease_end,
         rent_amount: parseFloat(formData.rent_amount) || selectedUnit?.rent_amount || 0,
         deposit_amount: parseFloat(formData.deposit_amount) || 0,
+        occupancy_type: formData.occupancy_type || 'renting',
         emergency_contact_name: formData.emergency_contact_name,
         emergency_contact_phone: formData.emergency_contact_phone,
         notes: formData.notes
@@ -507,6 +510,27 @@ export default function NewTenantPage() {
                   placeholder="+254 700 000 000"
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Occupancy Type */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Occupancy Type</h2>
+            <div>
+              <label htmlFor="occupancy_type" className="block text-sm font-medium text-gray-700 mb-1">
+                How will this tenant occupy the unit?
+              </label>
+              <select
+                id="occupancy_type"
+                name="occupancy_type"
+                value={formData.occupancy_type}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="renting">Renting</option>
+                <option value="mortgaging">Mortgaging</option>
+                <option value="buying">Buying</option>
+              </select>
             </div>
           </div>
 

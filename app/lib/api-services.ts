@@ -819,7 +819,7 @@ export const paymentsApi = {
   },
 
   async getSubscriptions() {
-    return apiClient.get('/payments/subscription/');
+    return apiClient.get('/payments/subscriptions/');
   },
 
   async cancelSubscription(subscriptionId: string) {

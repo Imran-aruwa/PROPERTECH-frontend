@@ -73,7 +73,7 @@ export default function UserDetailPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
                   <label className="block text-sm font-medium text-gray-700">Role</label>
-                  <select value={role} onChange={e => setRole(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white"><option value="owner">Owner</option><option value="agent">Agent</option><option value="tenant">Tenant</option><option value="caretaker">Caretaker</option><option value="staff">Staff</option><option value="admin">Admin</option></select>
+                  <select value={role} onChange={e => setRole(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white"><option value="owner">Owner</option><option value="agent">Agent</option><option value="tenant">Tenant</option><option value="caretaker">Staff (Caretaker)</option><option value="staff">Staff</option><option value="admin">Admin</option></select>
                 </div>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" checked={isActive} onChange={e => setIsActive(e.target.checked)} className="w-5 h-5 text-blue-600 rounded" />

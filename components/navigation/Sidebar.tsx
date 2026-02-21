@@ -169,7 +169,9 @@ export function Sidebar() {
           {!collapsed && (
             <div className="flex-1 min-w-0">
               <p className="font-medium text-gray-900 truncate text-sm">{user?.full_name}</p>
-              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+              <p className="text-xs text-gray-500 capitalize">
+                {user?.role === 'caretaker' ? 'Staff' : user?.role}
+              </p>
             </div>
           )}
         </div>

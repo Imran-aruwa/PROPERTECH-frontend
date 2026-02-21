@@ -212,7 +212,7 @@ function ActionConfigEditor({
             >
               <option value="owner">Owner</option>
               <option value="tenant">Tenant</option>
-              <option value="caretaker">Caretaker</option>
+              <option value="caretaker">Staff</option>
             </select>
           </div>
           {field('subject', 'Subject', 'e.g. Rent Overdue – {{tenant_name}}')}
@@ -243,7 +243,7 @@ function ActionConfigEditor({
               onChange={(e) => onChange({ ...config, assigned_to: e.target.value })}
             >
               <option value="owner">Owner</option>
-              <option value="caretaker">Caretaker</option>
+              <option value="caretaker">Staff</option>
             </select>
           </div>
         </div>
@@ -279,7 +279,7 @@ function ActionConfigEditor({
               onChange={(e) => onChange({ ...config, notify_role: e.target.value })}
             >
               <option value="owner">Owner</option>
-              <option value="caretaker">Caretaker</option>
+              <option value="caretaker">Staff</option>
             </select>
           </div>
           {field('message', 'Escalation Message', 'e.g. {{tenant_name}} is 14 days overdue. Urgent action needed.', true)}

@@ -103,7 +103,7 @@ const roleIcons = {
 const roleTitles = {
   owner: 'Owner Portal',
   agent: 'Agent Portal',
-  caretaker: 'Caretaker Portal',
+  caretaker: 'Staff Portal',
   tenant: 'Tenant Portal',
   security: 'Security Portal',
   gardener: 'Gardener Portal',

@@ -167,7 +167,7 @@ export default function AuthModal({ show, mode, onClose }: Props) {
               </div>
 
               <p className="text-xs text-gray-500 mt-3">
-                Other roles (Caretakers, Staff, Agents) are invited by property owners.
+                Other roles (Staff, Agents, Tenants) are invited by property owners.
               </p>
             </div>
 

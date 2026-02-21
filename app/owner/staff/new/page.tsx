@@ -141,7 +141,7 @@ export default function NewStaffPage() {
         throw new Error(signupResult.error || signupResult.detail || 'Failed to create user account');
       }
 
-      success(`${formData.department === 'caretaker' ? 'Caretaker' : 'Staff member'} added successfully! Login credentials: Email: ${formData.email}, Password: TempPass123!`);
+      success(`Staff member added successfully! Login credentials: Email: ${formData.email}, Password: TempPass123!`);
       setTimeout(() => router.push('/owner/staff'), 2500);
     } catch (err: any) {
       showError(err.message || 'Failed to add staff member');
@@ -154,7 +154,7 @@ export default function NewStaffPage() {
     security: ['Security Guard', 'Security Supervisor', 'Night Guard', 'Gate Keeper'],
     gardening: ['Gardener', 'Landscaper', 'Head Gardener', 'Groundskeeper'],
     maintenance: ['Plumber', 'Electrician', 'General Maintenance', 'Cleaner', 'Handyman', 'HVAC Technician'],
-    caretaker: ['Property Caretaker', 'Building Manager', 'Estate Manager', 'Resident Manager']
+    caretaker: ['Property Staff', 'Building Manager', 'Estate Manager', 'Resident Manager']
   };
 
   if (authLoading || loading) {
@@ -338,7 +338,7 @@ export default function NewStaffPage() {
                   }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
                 >
-                  <option value="caretaker" className="text-gray-900">Caretaker</option>
+                  <option value="caretaker" className="text-gray-900">Staff</option>
                   <option value="maintenance" className="text-gray-900">Maintenance</option>
                   <option value="security" className="text-gray-900">Security</option>
                   <option value="gardening" className="text-gray-900">Gardening</option>

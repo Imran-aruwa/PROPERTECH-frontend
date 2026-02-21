@@ -56,12 +56,12 @@ export default function OwnerTenantsPage() {
 
   const filteredTenants = tenants.filter(tenant => {
     const searchLower = searchTerm.toLowerCase();
-    const tenantUser = (tenant as any).user;
+    const t = tenant as any;
     return (
-      tenantUser?.full_name?.toLowerCase().includes(searchLower) ||
-      tenantUser?.email?.toLowerCase().includes(searchLower) ||
-      tenantUser?.phone?.toLowerCase().includes(searchLower) ||
-      tenant.unit?.unit_number?.toLowerCase().includes(searchLower)
+      t.full_name?.toLowerCase().includes(searchLower) ||
+      t.email?.toLowerCase().includes(searchLower) ||
+      t.phone?.toLowerCase().includes(searchLower) ||
+      t.unit_number?.toLowerCase().includes(searchLower)
     );
   });
 
@@ -234,11 +234,11 @@ export default function OwnerTenantsPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {filteredTenants.map((tenant) => {
-                    const tenantUser = (tenant as any).user;
-                    const leaseStatus = isLeaseExpired(tenant.lease_end) 
-                      ? 'expired' 
-                      : isLeaseExpiringSoon(tenant.lease_end) 
-                      ? 'expiring' 
+                    const t = tenant as any;
+                    const leaseStatus = isLeaseExpired(tenant.lease_end)
+                      ? 'expired'
+                      : isLeaseExpiringSoon(tenant.lease_end)
+                      ? 'expiring'
                       : 'active';
 
                     const statusColors = {
@@ -247,22 +247,29 @@ export default function OwnerTenantsPage() {
                       expired: 'bg-red-100 text-red-800'
                     };
 
+                    const occupancyColors: Record<string, string> = {
+                      renting: 'bg-blue-100 text-blue-700',
+                      mortgaging: 'bg-indigo-100 text-indigo-700',
+                      buying: 'bg-emerald-100 text-emerald-700',
+                    };
+                    const occupancyType: string = t.occupancy_type || 'renting';
+
                     return (
                       <tr key={tenant.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
                               <span className="text-purple-600 font-semibold">
-                                {tenantUser?.full_name?.charAt(0) || 'T'}
+                                {t.full_name?.charAt(0) || 'T'}
                               </span>
                             </div>
                             <div className="ml-3">
                               <div className="font-medium text-gray-900">
-                                {tenantUser?.full_name || 'Unknown'}
+                                {t.full_name || 'Unknown'}
                               </div>
-                              <div className="text-sm text-gray-500">
-                                ID: {tenant.id}
-                              </div>
+                              <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${occupancyColors[occupancyType] || occupancyColors.renting}`}>
+                                {occupancyType.charAt(0).toUpperCase() + occupancyType.slice(1)}
+                              </span>
                             </div>
                           </div>
                         </td>
@@ -270,11 +277,11 @@ export default function OwnerTenantsPage() {
                           <div className="space-y-1">
                             <div className="flex items-center gap-2 text-sm text-gray-900">
                               <Mail className="w-4 h-4 text-gray-400" />
-                              {tenantUser?.email || 'N/A'}
+                              {t.email || 'N/A'}
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-500">
                               <Phone className="w-4 h-4 text-gray-400" />
-                              {tenantUser?.phone || 'N/A'}
+                              {t.phone || 'N/A'}
                             </div>
                           </div>
                         </td>
@@ -282,7 +289,7 @@ export default function OwnerTenantsPage() {
                           <div className="flex items-center gap-2">
                             <Home className="w-4 h-4 text-gray-400" />
                             <span className="font-medium text-gray-900">
-                              {tenant.unit?.unit_number || 'N/A'}
+                              {t.unit_number || 'N/A'}
                             </span>
                           </div>
                         </td>

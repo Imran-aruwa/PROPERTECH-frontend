@@ -125,7 +125,7 @@ export default function AdminUsersPage() {
             <option value="admin">Admin</option>
             <option value="owner">Owner</option>
             <option value="agent">Agent</option>
-            <option value="caretaker">Caretaker</option>
+            <option value="caretaker">Staff (Caretaker)</option>
             <option value="tenant">Tenant</option>
           </select>
         </div>
