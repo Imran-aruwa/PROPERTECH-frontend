@@ -66,7 +66,7 @@ export default function AgentPropertiesPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading properties...</p>
+            <p className="text-tx-secondary">Loading properties...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -78,8 +78,8 @@ export default function AgentPropertiesPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Properties</h1>
-            <p className="text-gray-600 mt-1">View and manage all properties in the system</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Properties</h1>
+            <p className="text-tx-secondary mt-1">View and manage all properties in the system</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Link
@@ -106,9 +106,9 @@ export default function AgentPropertiesPage() {
         )}
 
         {properties.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Building2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500 mb-4">No properties in the system yet</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Building2 className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted mb-4">No properties in the system yet</p>
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
               <Link
                 href="/agent/properties/new"

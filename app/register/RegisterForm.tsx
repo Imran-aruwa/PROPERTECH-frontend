@@ -153,10 +153,10 @@ export default function RegisterForm() {
   };
 
   const inputClasses = (fieldName: keyof RegisterFormData) =>
-    `w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 ${
+    `w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-bg-card text-tx-primary ${
       touched[fieldName] && errors[fieldName]
         ? 'border-red-500'
-        : 'border-gray-300'
+        : 'border-bd-strong'
     }`;
 
   // Auto-dismiss toast after 5 seconds
@@ -186,10 +186,10 @@ export default function RegisterForm() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-tx-primary mb-2">
             Propertech Software
           </h1>
-          <p className="text-gray-600">Create your account</p>
+          <p className="text-tx-secondary">Create your account</p>
 
           <div className="mt-3 inline-flex items-center gap-2 px-4 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
             <BadgeCheck className="w-4 h-4" />
@@ -197,12 +197,12 @@ export default function RegisterForm() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-bg-card rounded-2xl shadow-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-2">Full Name</label>
               <div className="relative">
-                <User className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+                <User className="absolute left-4 top-3.5 w-5 h-5 text-tx-muted" />
                 <input
                   type="text"
                   name="full_name"
@@ -219,9 +219,9 @@ export default function RegisterForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-2">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-4 top-3.5 w-5 h-5 text-tx-muted" />
                 <input
                   type="email"
                   name="email"
@@ -238,9 +238,9 @@ export default function RegisterForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number (Optional)</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-2">Phone Number (Optional)</label>
               <div className="relative">
-                <Phone className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+                <Phone className="absolute left-4 top-3.5 w-5 h-5 text-tx-muted" />
                 <input
                   type="tel"
                   name="phone"
@@ -257,9 +257,9 @@ export default function RegisterForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-2">Password</label>
               <div className="relative">
-                <Lock className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-4 top-3.5 w-5 h-5 text-tx-muted" />
                 <input
                   type="password"
                   name="password"
@@ -277,9 +277,9 @@ export default function RegisterForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-2">Confirm Password</label>
               <div className="relative">
-                <Lock className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-4 top-3.5 w-5 h-5 text-tx-muted" />
                 <input
                   type="password"
                   name="confirmPassword"
@@ -297,7 +297,7 @@ export default function RegisterForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-2">Role</label>
               <div className="flex gap-3">
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -306,9 +306,9 @@ export default function RegisterForm() {
                     value="owner"
                     checked={values.role === 'owner'}
                     onChange={() => handleRoleChange('owner')}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                    className="w-4 h-4 text-blue-600 bg-bg-secondary border-bd-strong focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-sm font-medium text-gray-700">Property Owner</span>
+                  <span className="ml-2 text-sm font-medium text-tx-secondary">Property Owner</span>
                 </label>
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -317,9 +317,9 @@ export default function RegisterForm() {
                     value="agent"
                     checked={values.role === 'agent'}
                     onChange={() => handleRoleChange('agent')}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                    className="w-4 h-4 text-blue-600 bg-bg-secondary border-bd-strong focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-sm font-medium text-gray-700">Real Estate Agent</span>
+                  <span className="ml-2 text-sm font-medium text-tx-secondary">Real Estate Agent</span>
                 </label>
               </div>
             </div>
@@ -344,7 +344,7 @@ export default function RegisterForm() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-tx-secondary">
               Already have an account?{' '}
               <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500">
                 Sign in here

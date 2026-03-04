@@ -66,7 +66,7 @@ export default function AdminPropertiesPage() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading properties...</p>
+          <p className="text-tx-secondary">Loading properties...</p>
         </div>
       </div>
     );
@@ -76,8 +76,8 @@ export default function AdminPropertiesPage() {
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">All Properties</h1>
-          <p className="text-gray-600 mt-1">View all properties in the system</p>
+          <h1 className="text-2xl font-bold text-tx-primary">All Properties</h1>
+          <p className="text-tx-secondary mt-1">View all properties in the system</p>
         </div>
 
         {error && (
@@ -86,9 +86,9 @@ export default function AdminPropertiesPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-sm border p-4">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-4">
           <div className="relative">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-tx-muted absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
@@ -100,32 +100,32 @@ export default function AdminPropertiesPage() {
         </div>
 
         {filteredProperties.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No properties found</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Building2 className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No properties found</p>
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredProperties.map((property) => (
-              <div key={property.id} className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition">
+              <div key={property.id} className="bg-bg-card rounded-lg shadow-sm border p-6 hover:shadow-md transition">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                     <Building2 className="w-6 h-6 text-blue-600" />
                   </div>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    property.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    property.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-bg-secondary text-tx-primary'
                   }`}>
                     {property.status.toUpperCase()}
                   </span>
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">{property.name}</h3>
-                <p className="text-sm text-gray-500 mb-2">Owner: {property.owner_name || '-'}</p>
-                <div className="flex items-center gap-2 text-gray-600 text-sm mb-3">
+                <h3 className="font-semibold text-tx-primary text-lg mb-1">{property.name}</h3>
+                <p className="text-sm text-tx-muted mb-2">Owner: {property.owner_name || '-'}</p>
+                <div className="flex items-center gap-2 text-tx-secondary text-sm mb-3">
                   <MapPin className="w-4 h-4" />
                   {property.location}
                 </div>
                 <div className="flex items-center justify-between pt-3 border-t">
-                  <div className="flex items-center gap-2 text-gray-600 text-sm">
+                  <div className="flex items-center gap-2 text-tx-secondary text-sm">
                     <Users className="w-4 h-4" />
                     {property.occupied} / {property.units} units
                   </div>

@@ -121,8 +121,8 @@ export default function CaretakerReportsPage() {
     <DashboardLayout role="caretaker">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Reports</h1>
-          <p className="text-gray-600 mt-1">Generate and download property reports</p>
+          <h1 className="text-3xl font-bold text-tx-primary">Reports</h1>
+          <p className="text-tx-secondary mt-1">Generate and download property reports</p>
         </div>
 
         {error && (
@@ -132,19 +132,19 @@ export default function CaretakerReportsPage() {
         )}
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold mb-4">Generate New Report</h2>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Report Type
                 </label>
                 <div className="space-y-2">
                   {reportTypes.map((type) => (
                     <label
                       key={type.value}
-                      className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+                      className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-bg-hover"
                     >
                       <input
                         type="radio"
@@ -155,8 +155,8 @@ export default function CaretakerReportsPage() {
                         className="mt-1"
                       />
                       <div className="ml-3">
-                        <p className="font-medium text-gray-900">{type.label}</p>
-                        <p className="text-sm text-gray-600">{type.description}</p>
+                        <p className="font-medium text-tx-primary">{type.label}</p>
+                        <p className="text-sm text-tx-secondary">{type.description}</p>
                       </div>
                     </label>
                   ))}
@@ -164,7 +164,7 @@ export default function CaretakerReportsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   <Calendar className="w-4 h-4 inline mr-2" />
                   Period
                 </label>
@@ -172,7 +172,7 @@ export default function CaretakerReportsPage() {
                   type="month"
                   value={month}
                   onChange={(e) => setMonth(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -196,15 +196,15 @@ export default function CaretakerReportsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold mb-4">Recent Reports</h2>
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
               </div>
             ) : recentReports.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <FileText className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <div className="text-center py-8 text-tx-muted">
+                <FileText className="w-12 h-12 text-tx-muted mx-auto mb-2" />
                 <p>No reports generated yet</p>
               </div>
             ) : (
@@ -212,22 +212,22 @@ export default function CaretakerReportsPage() {
                 {recentReports.map((report) => (
                   <div
                     key={report.id}
-                    className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
+                    className="flex items-center justify-between p-3 border rounded-lg hover:bg-bg-hover"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                         <FileText className="w-5 h-5 text-blue-600" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{report.name}</p>
-                        <p className="text-sm text-gray-600">
+                        <p className="font-medium text-tx-primary">{report.name}</p>
+                        <p className="text-sm text-tx-secondary">
                           {report.type} {report.date && `• ${report.date}`} {report.size && `• ${report.size}`}
                         </p>
                       </div>
                     </div>
                     <button
                       onClick={() => handleDownload(report)}
-                      className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
+                      className="p-2 text-tx-secondary hover:text-blue-600 hover:bg-blue-50 rounded-lg"
                     >
                       <Download className="w-5 h-5" />
                     </button>

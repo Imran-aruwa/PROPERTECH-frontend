@@ -55,41 +55,41 @@ export default function ReportsPage() {
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Reports & Analytics</h1>
-        <p className="text-gray-600 mt-1">Generate comprehensive financial and operational reports</p>
+        <h1 className="text-3xl font-bold text-tx-primary">Reports & Analytics</h1>
+        <p className="text-tx-secondary mt-1">Generate comprehensive financial and operational reports</p>
       </div>
 
       {/* Report Configuration */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Configure Report</h2>
+      <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+        <h2 className="text-xl font-semibold text-tx-primary mb-4">Configure Report</h2>
 
         {/* Date Range */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+          <label className="block text-sm font-medium text-tx-secondary mb-2">Date Range</label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="date"
               value={dateRange.start}
               onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <input
               type="date"
               value={dateRange.end}
               onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
 
         {/* Property Filter */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Properties</label>
+          <label className="block text-sm font-medium text-tx-secondary mb-2">Properties</label>
           <select
             multiple
             value={selectedProperties}
             onChange={(e) => setSelectedProperties(Array.from(e.target.selectedOptions, option => option.value))}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Properties</option>
             {propertyOptions.map((prop) => (
@@ -107,19 +107,19 @@ export default function ReportsPage() {
           <div
             key={report.id}
             onClick={() => setReportType(report.id)}
-            className={`bg-white rounded-lg shadow-sm border-2 p-6 cursor-pointer transition ${
-              reportType === report.id ? 'border-blue-500' : 'border-gray-200 hover:border-blue-300'
+            className={`bg-bg-card rounded-lg shadow-sm border-2 p-6 cursor-pointer transition ${
+              reportType === report.id ? 'border-blue-500' : 'border-bd hover:border-blue-300'
             }`}
           >
             <div className="flex items-start gap-3 mb-3">
-              <FileText className={`w-6 h-6 ${reportType === report.id ? 'text-blue-600' : 'text-gray-400'}`} />
+              <FileText className={`w-6 h-6 ${reportType === report.id ? 'text-blue-600' : 'text-tx-muted'}`} />
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">{report.name}</h3>
-                <p className="text-sm text-gray-600 mt-1">{report.description}</p>
+                <h3 className="font-semibold text-tx-primary">{report.name}</h3>
+                <p className="text-sm text-tx-secondary mt-1">{report.description}</p>
               </div>
             </div>
             {reportType === report.id && (
-              <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="mt-4 pt-4 border-t border-bd">
                 <button
                   onClick={generateReport}
                   className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"

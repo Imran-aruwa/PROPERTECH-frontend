@@ -49,7 +49,7 @@ export function ChartWrapper({
 }: ChartWrapperProps) {
   const renderChart = () => {
     if (!data || data.length === 0) {
-      return <div className="flex items-center justify-center h-full text-gray-500">No data available</div>;
+      return <div className="flex items-center justify-center h-full text-tx-muted">No data available</div>;
     }
 
     switch (type) {
@@ -107,14 +107,14 @@ export function ChartWrapper({
         );
 
       default:
-        return <div className="flex items-center justify-center h-full text-gray-500">Invalid chart type</div>;
+        return <div className="flex items-center justify-center h-full text-tx-muted">Invalid chart type</div>;
     }
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${className}`}>
+    <div className={`bg-bg-card rounded-lg shadow-sm border border-bd p-6 ${className}`}>
       {title && (
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
+        <h3 className="text-lg font-semibold text-tx-primary mb-4">{title}</h3>
       )}
       <ResponsiveContainer width="100%" height={height}>
         {renderChart()}

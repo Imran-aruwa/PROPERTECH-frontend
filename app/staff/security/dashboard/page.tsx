@@ -92,7 +92,7 @@ export default function SecurityDashboard() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading dashboard...</p>
+            <p className="text-tx-secondary">Loading dashboard...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -103,8 +103,8 @@ export default function SecurityDashboard() {
     <DashboardLayout role="security">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Security Dashboard</h1>
-          <p className="text-gray-600 mt-1">Monitor and manage security operations</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Security Dashboard</h1>
+          <p className="text-tx-secondary mt-1">Monitor and manage security operations</p>
         </div>
 
         {error && (
@@ -120,14 +120,14 @@ export default function SecurityDashboard() {
         </div>
 
         <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-red-600" />
               Recent Incidents
             </h2>
             {incidents.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <AlertTriangle className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <div className="text-center py-8 text-tx-muted">
+                <AlertTriangle className="w-12 h-12 text-tx-muted mx-auto mb-2" />
                 <p>No incidents reported</p>
               </div>
             ) : (
@@ -161,23 +161,23 @@ export default function SecurityDashboard() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Users className="w-5 h-5 text-blue-600" />
               Staff on Duty
             </h2>
             {staffOnDuty.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <Users className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <div className="text-center py-8 text-tx-muted">
+                <Users className="w-12 h-12 text-tx-muted mx-auto mb-2" />
                 <p>No staff currently on duty</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {staffOnDuty.map((staff) => (
-                  <div key={staff.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={staff.id} className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg">
                     <div>
-                      <span className="text-sm font-medium text-gray-900">{staff.name}</span>
-                      <p className="text-xs text-gray-500">{staff.post}</p>
+                      <span className="text-sm font-medium text-tx-primary">{staff.name}</span>
+                      <p className="text-xs text-tx-muted">{staff.post}</p>
                     </div>
                     <span className={`text-xs font-medium px-2 py-1 rounded-full ${
                       staff.status === 'active' || staff.status === 'Active'

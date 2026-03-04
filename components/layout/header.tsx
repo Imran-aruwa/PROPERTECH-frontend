@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Bell, Menu, AlertCircle, DollarSign, Wrench, Users, Clock, Loader2 } from 'lucide-react';
 import { notificationsApi, Notification } from '@/lib/api-services';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface HeaderProps {
   role: 'owner' | 'agent' | 'caretaker' | 'tenant' | 'security' | 'gardener';
@@ -37,7 +38,7 @@ const getNotificationIcon = (type: string) => {
     case 'alert':
       return <AlertCircle className="w-4 h-4 text-red-600" />;
     default:
-      return <Bell className="w-4 h-4 text-gray-600" />;
+      return <Bell className="w-4 h-4 text-tx-muted" />;
   }
 };
 
@@ -61,10 +62,8 @@ export function Header({ role, onMenuClick }: HeaderProps) {
       if (response.success && Array.isArray(response.data)) {
         setNotifications(response.data);
       } else if (Array.isArray(response.data)) {
-        // Handle direct array response
         setNotifications(response.data);
       } else {
-        // API not available yet - show empty state
         setNotifications([]);
       }
     } catch (err) {
@@ -76,7 +75,6 @@ export function Header({ role, onMenuClick }: HeaderProps) {
     }
   }, [loading]);
 
-  // Initial fetch on mount
   useEffect(() => {
     if (!hasFetched.current) {
       hasFetched.current = true;
@@ -84,30 +82,21 @@ export function Header({ role, onMenuClick }: HeaderProps) {
     }
   }, [fetchNotifications]);
 
-  // Refresh notifications periodically (every 60 seconds)
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchNotifications();
-    }, 60000);
-
+    const interval = setInterval(() => { fetchNotifications(); }, 60000);
     return () => clearInterval(interval);
   }, [fetchNotifications]);
 
-  // Refresh when dropdown opens
   useEffect(() => {
-    if (isOpen) {
-      fetchNotifications();
-    }
+    if (isOpen) fetchNotifications();
   }, [isOpen, fetchNotifications]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -115,69 +104,58 @@ export function Header({ role, onMenuClick }: HeaderProps) {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const markAsRead = async (id: string) => {
-    // Optimistic update
-    setNotifications(prev =>
-      prev.map(n => (n.id === id ? { ...n, read: true } : n))
-    );
-
-    // Call API
+    setNotifications(prev => prev.map(n => (n.id === id ? { ...n, read: true } : n)));
     try {
       await notificationsApi.markAsRead(id);
-    } catch (err) {
-      console.error('Failed to mark notification as read:', err);
-      // Revert on error
-      setNotifications(prev =>
-        prev.map(n => (n.id === id ? { ...n, read: false } : n))
-      );
+    } catch {
+      setNotifications(prev => prev.map(n => (n.id === id ? { ...n, read: false } : n)));
     }
   };
 
   const markAllAsRead = async () => {
-    // Optimistic update
-    const previousNotifications = [...notifications];
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-
-    // Call API
+    const prev = [...notifications];
+    setNotifications(p => p.map(n => ({ ...n, read: true })));
     try {
       await notificationsApi.markAllAsRead();
-    } catch (err) {
-      console.error('Failed to mark all notifications as read:', err);
-      // Revert on error
-      setNotifications(previousNotifications);
+    } catch {
+      setNotifications(prev);
     }
   };
 
   return (
-    <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <header className="bg-bg-card/80 backdrop-blur-md border-b border-bd shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Mobile menu button */}
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100"
+            className="lg:hidden p-2 text-tx-muted hover:text-tx-primary rounded-lg hover:bg-bg-hover"
             aria-label="Open menu"
           >
             <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          {/* Logo/Title with role badge */}
+          {/* Logo / role badge */}
           <div className="flex items-center min-w-0 flex-1 ml-2 lg:ml-0">
-            <h1 className="text-sm sm:text-base lg:text-xl font-bold text-gray-900 truncate">
+            <h1 className="text-sm sm:text-base lg:text-xl font-bold text-tx-primary truncate">
               <span className="hidden md:inline">PROPERTECH SOFTWARE</span>
               <span className="md:hidden">PROPERTECH</span>
             </h1>
-            <span className="ml-1.5 sm:ml-2 text-[10px] sm:text-xs bg-blue-100 text-blue-800 px-1.5 sm:px-2 py-0.5 rounded-full font-medium flex-shrink-0">
+            <span className="ml-1.5 sm:ml-2 text-[10px] sm:text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 px-1.5 sm:px-2 py-0.5 rounded-full font-medium flex-shrink-0">
               {role.toUpperCase()}
             </span>
           </div>
 
-          {/* Right side: Notifications + Avatar */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          {/* Right side: ThemeToggle + Notifications + Avatar */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
             {/* Notifications Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative p-1.5 sm:p-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
+                className="relative p-1.5 sm:p-2 text-tx-muted hover:text-tx-primary rounded-lg hover:bg-bg-hover transition-colors"
                 aria-label="Notifications"
               >
                 <Bell className="w-5 h-5" />
@@ -190,10 +168,10 @@ export function Header({ role, onMenuClick }: HeaderProps) {
 
               {/* Dropdown Panel */}
               {isOpen && (
-                <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50">
-                  {/* Header */}
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
-                    <h3 className="font-semibold text-gray-900 text-sm">Notifications</h3>
+                <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-bg-card rounded-xl shadow-lg border border-bd overflow-hidden z-50">
+                  {/* Dropdown header */}
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-bd bg-bg-secondary">
+                    <h3 className="font-semibold text-tx-primary text-sm">Notifications</h3>
                     {unreadCount > 0 && (
                       <button
                         onClick={markAllAsRead}
@@ -207,47 +185,48 @@ export function Header({ role, onMenuClick }: HeaderProps) {
                   {/* Notification List */}
                   <div className="max-h-80 overflow-y-auto">
                     {loading && notifications.length === 0 ? (
-                      <div className="px-4 py-8 text-center text-gray-500">
-                        <Loader2 className="w-6 h-6 mx-auto mb-2 text-gray-400 animate-spin" />
+                      <div className="px-4 py-8 text-center text-tx-muted">
+                        <Loader2 className="w-6 h-6 mx-auto mb-2 text-tx-muted animate-spin" />
                         <p className="text-sm">Loading notifications...</p>
                       </div>
                     ) : notifications.length === 0 ? (
-                      <div className="px-4 py-8 text-center text-gray-500">
-                        <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                      <div className="px-4 py-8 text-center text-tx-muted">
+                        <Bell className="w-8 h-8 mx-auto mb-2 text-tx-muted opacity-40" />
                         <p className="text-sm">No notifications</p>
-                        <p className="text-xs text-gray-400 mt-1">You're all caught up!</p>
+                        <p className="text-xs text-tx-muted mt-1 opacity-70">You're all caught up!</p>
                       </div>
                     ) : (
                       notifications.map((notification) => (
                         <div
                           key={notification.id}
                           onClick={() => markAsRead(notification.id)}
-                          className={`px-4 py-3 border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors ${
-                            !notification.read ? 'bg-blue-50/50' : ''
+                          className={`px-4 py-3 border-b border-bd hover:bg-bg-hover cursor-pointer transition-colors ${
+                            !notification.read ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''
                           }`}
                         >
                           <div className="flex items-start gap-3">
                             <div className={`p-2 rounded-lg flex-shrink-0 ${
-                              notification.type === 'payment' ? 'bg-green-100' :
-                              notification.type === 'maintenance' ? 'bg-orange-100' :
-                              notification.type === 'tenant' ? 'bg-blue-100' :
-                              notification.type === 'alert' ? 'bg-red-100' : 'bg-gray-100'
+                              notification.type === 'payment'     ? 'bg-green-100 dark:bg-green-900/30' :
+                              notification.type === 'maintenance' ? 'bg-orange-100 dark:bg-orange-900/30' :
+                              notification.type === 'tenant'      ? 'bg-blue-100 dark:bg-blue-900/30' :
+                              notification.type === 'alert'       ? 'bg-red-100 dark:bg-red-900/30' :
+                                                                    'bg-bg-secondary'
                             }`}>
                               {getNotificationIcon(notification.type)}
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between gap-2">
-                                <p className="text-sm font-medium text-gray-900 truncate">
+                                <p className="text-sm font-medium text-tx-primary truncate">
                                   {notification.title}
                                 </p>
                                 {!notification.read && (
                                   <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
                                 )}
                               </div>
-                              <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">
+                              <p className="text-xs text-tx-secondary mt-0.5 line-clamp-2">
                                 {notification.message}
                               </p>
-                              <div className="flex items-center gap-1 mt-1 text-xs text-gray-400">
+                              <div className="flex items-center gap-1 mt-1 text-xs text-tx-muted">
                                 <Clock className="w-3 h-3" />
                                 {formatRelativeTime(notification.created_at)}
                               </div>
@@ -260,7 +239,7 @@ export function Header({ role, onMenuClick }: HeaderProps) {
 
                   {/* Footer */}
                   {notifications.length > 0 && (
-                    <div className="px-4 py-2 border-t border-gray-100 bg-gray-50">
+                    <div className="px-4 py-2 border-t border-bd bg-bg-secondary">
                       <button className="w-full text-center text-xs text-blue-600 hover:text-blue-700 font-medium py-1">
                         View all notifications
                       </button>
@@ -271,7 +250,7 @@ export function Header({ role, onMenuClick }: HeaderProps) {
             </div>
 
             {/* User Avatar */}
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-sm shadow-md ring-2 ring-white/50">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-sm shadow-md ring-2 ring-white/50 dark:ring-slate-900/50">
               {role.charAt(0).toUpperCase()}
             </div>
           </div>

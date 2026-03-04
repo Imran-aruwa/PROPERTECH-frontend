@@ -27,20 +27,20 @@ export default function UnauthorizedPage() {
           <ShieldX className="w-10 h-10 text-red-600" />
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl font-bold text-tx-primary mb-4">
           Access Denied
         </h1>
 
-        <p className="text-gray-600 mb-8">
+        <p className="text-tx-secondary mb-8">
           You don't have permission to access this page. Please contact your
           administrator if you believe this is an error.
         </p>
 
         {user && (
-          <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
-            <p className="text-sm text-gray-500">Signed in as:</p>
-            <p className="font-medium text-gray-900">{user.email}</p>
-            <p className="text-sm text-gray-500 capitalize">Role: {role}</p>
+          <div className="bg-bg-card rounded-lg p-4 mb-6 shadow-sm">
+            <p className="text-sm text-tx-muted">Signed in as:</p>
+            <p className="font-medium text-tx-primary">{user.email}</p>
+            <p className="text-sm text-tx-muted capitalize">Role: {role}</p>
           </div>
         )}
 
@@ -55,7 +55,7 @@ export default function UnauthorizedPage() {
 
           <button
             onClick={() => window.history.back()}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-bd text-tx-secondary rounded-lg hover:bg-bg-hover transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Go Back
@@ -71,7 +71,7 @@ export default function UnauthorizedPage() {
           </button>
         )}
 
-        <p className="mt-8 text-sm text-gray-500">
+        <p className="mt-8 text-sm text-tx-muted">
           Need help?{' '}
           <a href="mailto:support@propertechsoftware.com" className="text-blue-600 hover:underline">
             Contact Support

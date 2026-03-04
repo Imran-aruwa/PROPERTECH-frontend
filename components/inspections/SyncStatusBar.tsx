@@ -36,13 +36,13 @@ export function SyncStatusBar({
   // Offline state
   if (!isOnline) {
     return (
-      <div className="bg-gray-100 border-b border-gray-200 px-4 py-2">
+      <div className="bg-bg-secondary border-b border-bd px-4 py-2">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-2 text-gray-600">
+          <div className="flex items-center gap-2 text-tx-secondary">
             <WifiOff className="w-4 h-4" />
             <span className="text-sm font-medium">You are offline</span>
             {pendingCount > 0 && (
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-tx-muted">
                 ({pendingCount} inspection{pendingCount !== 1 ? 's' : ''} will sync when online)
               </span>
             )}

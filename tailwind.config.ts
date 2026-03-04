@@ -2,6 +2,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -81,6 +82,39 @@ const config: Config = {
           700: "#374151",
           800: "#1F2937",
           900: "#111827",
+        },
+        // ── Semantic dark-mode tokens (map to CSS custom properties) ──────────
+        bg: {
+          primary: 'rgb(var(--bg-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--bg-secondary) / <alpha-value>)',
+          card: 'rgb(var(--bg-card) / <alpha-value>)',
+          hover: 'rgb(var(--bg-hover) / <alpha-value>)',
+        },
+        tx: {
+          primary: 'rgb(var(--text-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
+          muted: 'rgb(var(--text-muted) / <alpha-value>)',
+          inverse: 'rgb(var(--text-inverse) / <alpha-value>)',
+        },
+        bd: {
+          DEFAULT: 'rgb(var(--border) / <alpha-value>)',
+          strong: 'rgb(var(--border-strong) / <alpha-value>)',
+        },
+        brand: {
+          DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
+          light: 'rgb(var(--brand-light) / <alpha-value>)',
+        },
+        status: {
+          success: 'rgb(var(--success) / <alpha-value>)',
+          successBg: 'rgb(var(--success-bg) / <alpha-value>)',
+          warning: 'rgb(var(--warning) / <alpha-value>)',
+          warningBg: 'rgb(var(--warning-bg) / <alpha-value>)',
+          danger: 'rgb(var(--danger) / <alpha-value>)',
+          dangerBg: 'rgb(var(--danger-bg) / <alpha-value>)',
+        },
+        input: {
+          bg: 'rgb(var(--input-bg) / <alpha-value>)',
+          border: 'rgb(var(--input-border) / <alpha-value>)',
         },
       },
       fontFamily: {

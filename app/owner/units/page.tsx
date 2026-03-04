@@ -119,9 +119,9 @@ export default function OwnerUnitsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen bg-bg-secondary p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="h-8 bg-gray-200 rounded w-64 mb-8 animate-pulse" />
+          <div className="h-8 bg-bd rounded w-64 mb-8 animate-pulse" />
           <TableSkeleton rows={8} cols={7} />
         </div>
       </div>
@@ -129,18 +129,18 @@ export default function OwnerUnitsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Home className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Units</h1>
-                <p className="text-gray-600 mt-1">Manage all your property units</p>
+                <h1 className="text-3xl font-bold text-tx-primary">Units</h1>
+                <p className="text-tx-secondary mt-1">Manage all your property units</p>
               </div>
             </div>
             <Link
@@ -157,43 +157,43 @@ export default function OwnerUnitsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Summary Stats */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Total Units</h3>
-              <Home className="w-5 h-5 text-gray-400" />
+              <h3 className="text-tx-secondary text-sm font-medium">Total Units</h3>
+              <Home className="w-5 h-5 text-tx-muted" />
             </div>
-            <p className="text-3xl font-bold text-gray-900">{units.length}</p>
+            <p className="text-3xl font-bold text-tx-primary">{units.length}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Vacant</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">Vacant</h3>
               <Home className="w-5 h-5 text-yellow-600" />
             </div>
             <p className="text-3xl font-bold text-yellow-600">
               {units.filter(u => u.status?.toLowerCase() === 'vacant').length}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Rented</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">Rented</h3>
               <Home className="w-5 h-5 text-green-600" />
             </div>
             <p className="text-3xl font-bold text-green-600">
               {units.filter(u => u.status?.toLowerCase() === 'rented').length}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Bought</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">Bought</h3>
               <Home className="w-5 h-5 text-indigo-600" />
             </div>
             <p className="text-3xl font-bold text-indigo-600">
               {units.filter(u => u.status?.toLowerCase() === 'bought').length}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Avg. Rent</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">Avg. Rent</h3>
               <DollarSign className="w-5 h-5 text-purple-600" />
             </div>
             <p className="text-3xl font-bold text-purple-600">
@@ -203,11 +203,11 @@ export default function OwnerUnitsPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 mb-6">
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-gray-600" />
-              <span className="font-medium text-gray-700">Filters:</span>
+              <Filter className="w-5 h-5 text-tx-secondary" />
+              <span className="font-medium text-tx-secondary">Filters:</span>
             </div>
             
             <label htmlFor="property-filter" className="sr-only">Filter by property</label>
@@ -215,7 +215,7 @@ export default function OwnerUnitsPage() {
               id="property-filter"
               value={selectedProperty || ''}
               onChange={(e) => setSelectedProperty(e.target.value ? Number(e.target.value) : null)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">All Properties</option>
               {properties.map(property => (
@@ -233,7 +233,7 @@ export default function OwnerUnitsPage() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     statusFilter === status
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                   }`}
                 >
                   {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -248,10 +248,10 @@ export default function OwnerUnitsPage() {
 
         {/* Units Grid */}
         {filteredUnits.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-            <Home className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No units found</h3>
-            <p className="text-gray-600 mb-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-12 text-center">
+            <Home className="w-16 h-16 text-tx-muted mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-tx-primary mb-2">No units found</h3>
+            <p className="text-tx-secondary mb-6">
               {units.length === 0 
                 ? properties.length === 0
                   ? 'Please add properties first before creating units'
@@ -282,7 +282,7 @@ export default function OwnerUnitsPage() {
             {filteredUnits.map((unit) => (
               <div
                 key={unit.id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                className="bg-bg-card rounded-lg shadow-sm border border-bd overflow-hidden hover:shadow-md transition-shadow"
               >
                 {/* Unit Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-4 text-white">
@@ -302,42 +302,42 @@ export default function OwnerUnitsPage() {
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
-                        <Bed className="w-4 h-4 text-gray-600" />
+                        <Bed className="w-4 h-4 text-tx-secondary" />
                       </div>
-                      <p className="text-2xl font-bold text-gray-900">{unit.bedrooms ?? 0}</p>
-                      <p className="text-xs text-gray-600">Bedrooms</p>
+                      <p className="text-2xl font-bold text-tx-primary">{unit.bedrooms ?? 0}</p>
+                      <p className="text-xs text-tx-secondary">Bedrooms</p>
                     </div>
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
-                        <Bath className="w-4 h-4 text-gray-600" />
+                        <Bath className="w-4 h-4 text-tx-secondary" />
                       </div>
-                      <p className="text-2xl font-bold text-gray-900">{unit.bathrooms ?? 0}</p>
-                      <p className="text-xs text-gray-600">Bathrooms</p>
+                      <p className="text-2xl font-bold text-tx-primary">{unit.bathrooms ?? 0}</p>
+                      <p className="text-xs text-tx-secondary">Bathrooms</p>
                     </div>
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
-                        <Maximize className="w-4 h-4 text-gray-600" />
+                        <Maximize className="w-4 h-4 text-tx-secondary" />
                       </div>
-                      <p className="text-2xl font-bold text-gray-900">{(unit as any).square_feet ?? unit.size_sqm ?? 0}</p>
-                      <p className="text-xs text-gray-600">m²</p>
+                      <p className="text-2xl font-bold text-tx-primary">{(unit as any).square_feet ?? unit.size_sqm ?? 0}</p>
+                      <p className="text-xs text-tx-secondary">m²</p>
                     </div>
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4 mb-4">
+                  <div className="border-t border-bd pt-4 mb-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Floor</span>
-                      <span className="font-medium text-gray-900">Floor {unit.floor ?? 0}</span>
+                      <span className="text-tx-secondary">Floor</span>
+                      <span className="font-medium text-tx-primary">Floor {unit.floor ?? 0}</span>
                     </div>
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-gray-600">Monthly Rent</span>
-                      <span className="font-bold text-lg text-gray-900">
+                      <span className="text-tx-secondary">Monthly Rent</span>
+                      <span className="font-bold text-lg text-tx-primary">
                         KSh {((unit as any).monthly_rent || unit.rent_amount || 0).toLocaleString()}
                       </span>
                     </div>
                   </div>
 
                   {unit.description && (
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                    <p className="text-sm text-tx-secondary mb-4 line-clamp-2">
                       {unit.description}
                     </p>
                   )}
@@ -353,7 +353,7 @@ export default function OwnerUnitsPage() {
                     </Link>
                     <Link
                       href={`/owner/units/${unit.id}/edit`}
-                      className="flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      className="flex items-center justify-center px-4 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
                     >
                       <Edit className="w-4 h-4" />
                     </Link>

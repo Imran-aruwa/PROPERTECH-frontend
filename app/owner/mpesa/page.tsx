@@ -137,7 +137,7 @@ function MatchModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+      <div className="bg-bg-card rounded-2xl shadow-2xl w-full max-w-md p-6">
         <h3 className="text-lg font-semibold text-slate-800 mb-1">Match Transaction</h3>
         <p className="text-sm text-slate-500 mb-4">
           Receipt <strong>{transaction.mpesa_receipt_number}</strong> · KES {fmt(transaction.amount)} from {transaction.phone_number}
@@ -300,7 +300,7 @@ export default function MpesaDashboardPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+        <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-4">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-slate-500 font-medium">Collection Rate</p>
             <TrendingUp className="w-4 h-4 text-green-500" />
@@ -309,7 +309,7 @@ export default function MpesaDashboardPage() {
           <p className="text-xs text-slate-400 mt-1">{monthLabel}</p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+        <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-4">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-slate-500 font-medium">Total Collected</p>
             <DollarSign className="w-4 h-4 text-emerald-500" />
@@ -318,7 +318,7 @@ export default function MpesaDashboardPage() {
           <p className="text-xs text-slate-400 mt-1">This month</p>
         </div>
 
-        <div className={`bg-white rounded-2xl border shadow-sm p-4 ${data.unmatched_count > 0 ? 'border-red-200' : 'border-slate-100'}`}>
+        <div className={`bg-bg-card rounded-2xl border shadow-sm p-4 ${data.unmatched_count > 0 ? 'border-red-200' : 'border-slate-100'}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-slate-500 font-medium">Unmatched Txns</p>
             <AlertTriangle className={`w-4 h-4 ${data.unmatched_count > 0 ? 'text-red-500' : 'text-slate-300'}`} />
@@ -331,7 +331,7 @@ export default function MpesaDashboardPage() {
           </Link>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+        <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-4">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-slate-500 font-medium">Reminders Sent</p>
             <Bell className="w-4 h-4 text-blue-500" />
@@ -345,7 +345,7 @@ export default function MpesaDashboardPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Payment Status Board */}
-        <div className="xl:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="xl:col-span-2 bg-bg-card rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between">
             <h2 className="font-semibold text-slate-800">Payment Status Board</h2>
             <span className="text-xs text-slate-400">{data.payment_status_board.length} tenants</span>
@@ -397,7 +397,7 @@ export default function MpesaDashboardPage() {
         </div>
 
         {/* Recent Activity Feed */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-50">
             <h2 className="font-semibold text-slate-800">Recent Activity</h2>
           </div>
@@ -431,7 +431,7 @@ export default function MpesaDashboardPage() {
 
       {/* Unmatched Transactions Panel */}
       {data.unmatched_transactions.length > 0 && (
-        <div className="bg-white rounded-2xl border border-red-100 shadow-sm overflow-hidden">
+        <div className="bg-bg-card rounded-2xl border border-red-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-red-50 flex items-center justify-between bg-red-50/50">
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-red-500" />
@@ -507,7 +507,7 @@ export default function MpesaDashboardPage() {
           <Link
             key={item.href}
             href={item.href}
-            className="flex items-center gap-3 bg-white rounded-xl border border-slate-100 p-3 hover:shadow-sm transition-shadow"
+            className="flex items-center gap-3 bg-bg-card rounded-xl border border-slate-100 p-3 hover:shadow-sm transition-shadow"
           >
             <div className={`w-8 h-8 rounded-lg ${item.color} flex items-center justify-center flex-shrink-0`}>
               <item.icon className="w-4 h-4" />

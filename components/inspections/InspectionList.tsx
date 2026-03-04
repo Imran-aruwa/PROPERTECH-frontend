@@ -209,7 +209,7 @@ export function InspectionList({ role, userId }: InspectionListProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       {/* Sync Status Bar */}
       <SyncStatusBar
         pendingCount={pendingCount}
@@ -224,8 +224,8 @@ export function InspectionList({ role, userId }: InspectionListProps) {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Inspections</h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <h1 className="text-2xl font-bold text-tx-primary">Inspections</h1>
+            <p className="text-sm text-tx-muted mt-1">
               {filteredInspections.length} inspection{filteredInspections.length !== 1 ? 's' : ''}
             </p>
           </div>
@@ -239,11 +239,11 @@ export function InspectionList({ role, userId }: InspectionListProps) {
         </div>
 
         {/* Search and Filter */}
-        <div className="bg-white rounded-lg border p-4 mb-4">
+        <div className="bg-bg-card rounded-lg border p-4 mb-4">
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
             <div className="relative flex-1">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
               <input
                 type="text"
                 placeholder="Search by property, unit, or type..."
@@ -262,7 +262,7 @@ export function InspectionList({ role, userId }: InspectionListProps) {
                   className={`px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                     statusFilter === filter.value
                       ? 'bg-blue-100 text-blue-700'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                   }`}
                 >
                   {filter.label}
@@ -279,9 +279,9 @@ export function InspectionList({ role, userId }: InspectionListProps) {
           </div>
         ) : filteredInspections.length === 0 ? (
           <div className="text-center py-12">
-            <ClipboardCheck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No inspections found</h3>
-            <p className="text-gray-500 mb-6">
+            <ClipboardCheck className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-tx-primary mb-2">No inspections found</h3>
+            <p className="text-tx-muted mb-6">
               {searchQuery || statusFilter !== 'all'
                 ? 'Try adjusting your search or filters'
                 : 'Create your first inspection to get started'}
@@ -306,7 +306,7 @@ export function InspectionList({ role, userId }: InspectionListProps) {
                 <button
                   key={inspection.client_uuid}
                   onClick={() => handleInspectionClick(inspection)}
-                  className="w-full bg-white rounded-lg border p-4 hover:shadow-md transition-shadow text-left"
+                  className="w-full bg-bg-card rounded-lg border p-4 hover:shadow-md transition-shadow text-left"
                 >
                   <div className="flex items-start gap-4">
                     {/* Type Icon */}
@@ -318,15 +318,15 @@ export function InspectionList({ role, userId }: InspectionListProps) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <h3 className="font-medium text-gray-900 truncate">
+                          <h3 className="font-medium text-tx-primary truncate">
                             {inspection.property_name}
                           </h3>
-                          <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                          <div className="flex items-center gap-2 text-sm text-tx-muted mt-1">
                             <Home className="w-4 h-4" />
                             <span>{inspection.unit_number}</span>
                           </div>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                        <ChevronRight className="w-5 h-5 text-tx-muted flex-shrink-0" />
                       </div>
 
                       <div className="flex flex-wrap items-center gap-2 mt-3">
@@ -336,14 +336,14 @@ export function InspectionList({ role, userId }: InspectionListProps) {
                           syncStatus={inspection.sync_status}
                           size="sm"
                         />
-                        <span className="text-xs text-gray-500 flex items-center gap-1">
+                        <span className="text-xs text-tx-muted flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
                           {date.toLocaleDateString()}
                         </span>
                       </div>
 
                       {inspection.performed_by_name && (
-                        <p className="text-xs text-gray-500 mt-2">
+                        <p className="text-xs text-tx-muted mt-2">
                           By: {inspection.performed_by_name}
                         </p>
                       )}

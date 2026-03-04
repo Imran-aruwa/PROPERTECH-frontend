@@ -99,7 +99,7 @@ export default function MeterReadingsPage() {
           min={row.previousReading}
           value={readings[row.id] || ''}
           onChange={(e) => handleReadingChange(row.id, e.target.value)}
-          className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-32 px-3 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           placeholder="Enter reading"
         />
       ),
@@ -122,29 +122,29 @@ export default function MeterReadingsPage() {
         const consumption = current > unit.previousReading ? current - unit.previousReading : 0;
 
         return (
-          <div key={unit.id} className="bg-white rounded-lg border p-4 space-y-3">
+          <div key={unit.id} className="bg-bg-card rounded-lg border p-4 space-y-3">
             <div>
-              <p className="font-medium text-gray-900">Unit {unit.unit}</p>
-              <p className="text-sm text-gray-500">{unit.tenant || 'No tenant'}</p>
+              <p className="font-medium text-tx-primary">Unit {unit.unit}</p>
+              <p className="text-sm text-tx-muted">{unit.tenant || 'No tenant'}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-gray-500">Previous</p>
+                <p className="text-tx-muted">Previous</p>
                 <p className="font-medium">{unit.previousReading.toLocaleString()}</p>
               </div>
               <div>
-                <p className="text-gray-500">Consumption</p>
+                <p className="text-tx-muted">Consumption</p>
                 <p className="font-medium">{consumption > 0 ? `${consumption} units` : '-'}</p>
               </div>
             </div>
             <div>
-              <label className="block text-sm text-gray-500 mb-1">New Reading</label>
+              <label className="block text-sm text-tx-muted mb-1">New Reading</label>
               <input
                 type="number"
                 min={unit.previousReading}
                 value={readings[unit.id] || ''}
                 onChange={(e) => handleReadingChange(unit.id, e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter reading"
               />
             </div>
@@ -160,7 +160,7 @@ export default function MeterReadingsPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading meter readings...</p>
+            <p className="text-tx-secondary">Loading meter readings...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -172,8 +172,8 @@ export default function MeterReadingsPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Meter Readings</h1>
-            <p className="text-gray-600 mt-1">Record monthly utility consumption</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Meter Readings</h1>
+            <p className="text-tx-secondary mt-1">Record monthly utility consumption</p>
           </div>
           <button
             onClick={handleSaveReadings}
@@ -206,7 +206,7 @@ export default function MeterReadingsPage() {
             className={`flex items-center gap-2 px-4 py-2 border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'electricity'
                 ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
+                : 'border-transparent text-tx-secondary hover:text-tx-primary'
             }`}
           >
             <Zap className="w-4 h-4" />
@@ -217,7 +217,7 @@ export default function MeterReadingsPage() {
             className={`flex items-center gap-2 px-4 py-2 border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'water'
                 ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
+                : 'border-transparent text-tx-secondary hover:text-tx-primary'
             }`}
           >
             <Droplet className="w-4 h-4" />
@@ -226,18 +226,18 @@ export default function MeterReadingsPage() {
         </div>
 
         {units.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
             {activeTab === 'electricity' ? (
-              <Zap className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <Zap className="w-12 h-12 text-tx-muted mx-auto mb-4" />
             ) : (
-              <Droplet className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <Droplet className="w-12 h-12 text-tx-muted mx-auto mb-4" />
             )}
-            <p className="text-gray-500">No units found for meter readings</p>
+            <p className="text-tx-muted">No units found for meter readings</p>
           </div>
         ) : (
           <>
             <MobileCardView />
-            <div className="hidden md:block bg-white rounded-lg shadow-sm border p-6">
+            <div className="hidden md:block bg-bg-card rounded-lg shadow-sm border p-6">
               <DataTable data={units} columns={columns} />
             </div>
           </>

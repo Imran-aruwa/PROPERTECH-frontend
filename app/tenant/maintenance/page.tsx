@@ -138,11 +138,11 @@ export default function TenantMaintenancePage() {
   const MobileCardView = () => (
     <div className="space-y-4 md:hidden">
       {requests.map((request) => (
-        <div key={request.id} className="bg-white rounded-lg border p-4 space-y-3">
+        <div key={request.id} className="bg-bg-card rounded-lg border p-4 space-y-3">
           <div className="flex items-start justify-between">
             <div>
-              <p className="font-medium text-gray-900">{request.issue}</p>
-              <p className="text-sm text-gray-500 mt-1 line-clamp-2">{request.description}</p>
+              <p className="font-medium text-tx-primary">{request.issue}</p>
+              <p className="text-sm text-tx-muted mt-1 line-clamp-2">{request.description}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -162,7 +162,7 @@ export default function TenantMaintenancePage() {
             </span>
           </div>
           {request.date && (
-            <p className="text-sm text-gray-500">Submitted: {request.date}</p>
+            <p className="text-sm text-tx-muted">Submitted: {request.date}</p>
           )}
         </div>
       ))}
@@ -175,7 +175,7 @@ export default function TenantMaintenancePage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading maintenance requests...</p>
+            <p className="text-tx-secondary">Loading maintenance requests...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -187,8 +187,8 @@ export default function TenantMaintenancePage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Maintenance Requests</h1>
-            <p className="text-gray-600 mt-1">Submit and track your maintenance requests</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Maintenance Requests</h1>
+            <p className="text-tx-secondary mt-1">Submit and track your maintenance requests</p>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
@@ -206,41 +206,41 @@ export default function TenantMaintenancePage() {
         )}
 
         {showForm && (
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4">Submit Maintenance Request</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Issue *</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-2">Issue *</label>
                 <input
                   type="text"
                   value={formData.issue}
                   onChange={(e) => setFormData({ ...formData, issue: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-tx-primary bg-bg-card"
                   placeholder="Brief description of the issue"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description *</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-2">Description *</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-tx-primary bg-bg-card"
                   rows={4}
                   placeholder="Provide detailed information about the issue"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-2">Priority</label>
                 <select
                   value={formData.priority}
                   onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-tx-primary bg-bg-card"
                 >
-                  <option value="low" className="text-gray-900">Low - Can wait</option>
-                  <option value="medium" className="text-gray-900">Medium - Needs attention soon</option>
-                  <option value="high" className="text-gray-900">High - Urgent issue</option>
+                  <option value="low" className="text-tx-primary">Low - Can wait</option>
+                  <option value="medium" className="text-tx-primary">Medium - Needs attention soon</option>
+                  <option value="high" className="text-tx-primary">High - Urgent issue</option>
                 </select>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -261,7 +261,7 @@ export default function TenantMaintenancePage() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition"
+                  className="bg-bd text-tx-secondary px-6 py-2 rounded-lg hover:bg-bg-hover transition"
                 >
                   Cancel
                 </button>
@@ -271,15 +271,15 @@ export default function TenantMaintenancePage() {
         )}
 
         {requests.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Wrench className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No maintenance requests found</p>
-            <p className="text-gray-400 text-sm mt-1">Click "New Request" to submit your first request</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Wrench className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No maintenance requests found</p>
+            <p className="text-tx-muted text-sm mt-1">Click "New Request" to submit your first request</p>
           </div>
         ) : (
           <>
             <MobileCardView />
-            <div className="hidden md:block bg-white rounded-lg shadow-sm border p-6">
+            <div className="hidden md:block bg-bg-card rounded-lg shadow-sm border p-6">
               <DataTable data={requests} columns={columns} />
             </div>
           </>

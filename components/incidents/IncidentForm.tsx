@@ -51,14 +51,14 @@ export function IncidentForm({ onSubmit, onCancel }: IncidentFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-tx-secondary mb-2">
           <AlertTriangle className="w-4 h-4 inline mr-2" />
           Incident Type
         </label>
         <select
           value={formData.type}
           onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           required
         >
           <option value="">Select type...</option>
@@ -72,7 +72,7 @@ export function IncidentForm({ onSubmit, onCancel }: IncidentFormProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-tx-secondary mb-2">
           Severity
         </label>
         <div className="grid grid-cols-4 gap-2">
@@ -90,7 +90,7 @@ export function IncidentForm({ onSubmit, onCancel }: IncidentFormProps) {
                     : level === 'medium'
                     ? 'bg-yellow-600 text-white'
                     : 'bg-green-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
               }`}
             >
               {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -100,7 +100,7 @@ export function IncidentForm({ onSubmit, onCancel }: IncidentFormProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-tx-secondary mb-2">
           <MapPin className="w-4 h-4 inline mr-2" />
           Location
         </label>
@@ -109,13 +109,13 @@ export function IncidentForm({ onSubmit, onCancel }: IncidentFormProps) {
           value={formData.location}
           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
           placeholder="e.g., Main Gate, Building A - Floor 3"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-tx-secondary mb-2">
           Description
         </label>
         <textarea
@@ -123,13 +123,13 @@ export function IncidentForm({ onSubmit, onCancel }: IncidentFormProps) {
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           rows={4}
           placeholder="Provide detailed description of the incident..."
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-tx-secondary mb-2">
           <User className="w-4 h-4 inline mr-2" />
           Reported By
         </label>
@@ -138,7 +138,7 @@ export function IncidentForm({ onSubmit, onCancel }: IncidentFormProps) {
           value={formData.reportedBy}
           onChange={(e) => setFormData({ ...formData, reportedBy: e.target.value })}
           placeholder="Your name"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           required
         />
       </div>
@@ -154,7 +154,7 @@ export function IncidentForm({ onSubmit, onCancel }: IncidentFormProps) {
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 font-medium"
+          className="flex-1 bg-bd text-tx-secondary px-6 py-3 rounded-lg hover:bg-bg-hover font-medium"
         >
           Cancel
         </button>

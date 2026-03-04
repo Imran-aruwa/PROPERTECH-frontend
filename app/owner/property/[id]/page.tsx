@@ -97,7 +97,7 @@ export default function PropertyDetailPage() {
     };
     const config = statusConfig[status as keyof typeof statusConfig];
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${config?.className || 'bg-gray-100 text-gray-800'}`}>
+      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${config?.className || 'bg-bg-secondary text-tx-primary'}`}>
         {config?.label || status}
       </span>
     );
@@ -127,7 +127,7 @@ export default function PropertyDetailPage() {
     {
       header: 'Days Overdue',
       accessor: ((row: Unit) => (
-        <span className={row.days_overdue > 0 ? 'text-red-600 font-semibold' : 'text-gray-400'}>
+        <span className={row.days_overdue > 0 ? 'text-red-600 font-semibold' : 'text-tx-muted'}>
           {row.days_overdue > 0 ? `${row.days_overdue} days` : '-'}
         </span>
       )) as any,
@@ -139,7 +139,7 @@ export default function PropertyDetailPage() {
       <div className="p-6 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading property...</p>
+          <p className="text-tx-secondary">Loading property...</p>
         </div>
       </div>
     );
@@ -148,9 +148,9 @@ export default function PropertyDetailPage() {
   if (error || !property) {
     return (
       <div className="p-6">
-        <div className="text-center py-12 bg-white rounded-lg border">
-          <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">{error || 'Property not found'}</p>
+        <div className="text-center py-12 bg-bg-card rounded-lg border">
+          <AlertCircle className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+          <p className="text-tx-muted">{error || 'Property not found'}</p>
         </div>
       </div>
     );
@@ -169,11 +169,11 @@ export default function PropertyDetailPage() {
         <div>
           <div className="flex items-center gap-3 mb-2">
             <Building2 className="w-8 h-8 text-blue-600" />
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{property.name}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">{property.name}</h1>
           </div>
-          <p className="text-gray-600">{property.location}</p>
+          <p className="text-tx-secondary">{property.location}</p>
           {property.caretaker && (
-            <p className="text-sm text-gray-500 mt-1">Managed by: {property.caretaker}</p>
+            <p className="text-sm text-tx-muted mt-1">Managed by: {property.caretaker}</p>
           )}
         </div>
         <button className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition w-full sm:w-auto">
@@ -210,22 +210,22 @@ export default function PropertyDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Water Bills</h3>
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 md:p-6">
+          <h3 className="text-lg font-semibold text-tx-primary mb-4">Water Bills</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-gray-600">Collected:</span>
-              <span className="font-semibold text-gray-900">{formatCurrency(property.waterCollected)}</span>
+              <span className="text-tx-secondary">Collected:</span>
+              <span className="font-semibold text-tx-primary">{formatCurrency(property.waterCollected)}</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Electricity Bills</h3>
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 md:p-6">
+          <h3 className="text-lg font-semibold text-tx-primary mb-4">Electricity Bills</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-gray-600">Collected:</span>
-              <span className="font-semibold text-gray-900">{formatCurrency(property.electricityCollected)}</span>
+              <span className="text-tx-secondary">Collected:</span>
+              <span className="font-semibold text-tx-primary">{formatCurrency(property.electricityCollected)}</span>
             </div>
           </div>
         </div>
@@ -242,10 +242,10 @@ export default function PropertyDetailPage() {
         />
       )}
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Unit-by-Unit Breakdown</h2>
+      <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 md:p-6">
+        <h2 className="text-xl font-semibold text-tx-primary mb-4">Unit-by-Unit Breakdown</h2>
         {units.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-tx-muted">
             <p>No units found for this property</p>
           </div>
         ) : (

@@ -45,9 +45,9 @@ export function PaymentCard({
     },
     not_due: {
       icon: AlertCircle,
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
-      borderColor: 'border-gray-200',
+      color: 'text-tx-secondary',
+      bgColor: 'bg-bg-secondary',
+      borderColor: 'border-bd',
       label: 'Not Due',
     },
   };
@@ -61,12 +61,12 @@ export function PaymentCard({
 
   return (
     <div
-      className={`bg-white rounded-lg border-2 ${config.borderColor} p-6 ${className}`}
+      className={`bg-bg-card rounded-lg border-2 ${config.borderColor} p-6 ${className}`}
     >
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-          <p className="text-2xl font-bold text-gray-900 mt-2">
+          <h3 className="text-lg font-semibold text-tx-primary">{title}</h3>
+          <p className="text-2xl font-bold text-tx-primary mt-2">
             {formatCurrency(amount)}
           </p>
         </div>
@@ -77,7 +77,7 @@ export function PaymentCard({
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Status:</span>
+          <span className="text-sm text-tx-secondary">Status:</span>
           <span className={`text-sm font-semibold ${config.color}`}>
             {config.label}
           </span>
@@ -85,21 +85,21 @@ export function PaymentCard({
 
         {dueDate && (
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Due Date:</span>
-            <span className="text-sm font-medium text-gray-900">{dueDate}</span>
+            <span className="text-sm text-tx-secondary">Due Date:</span>
+            <span className="text-sm font-medium text-tx-primary">{dueDate}</span>
           </div>
         )}
 
         {paidDate && status === 'paid' && (
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Paid Date:</span>
-            <span className="text-sm font-medium text-gray-900">{paidDate}</span>
+            <span className="text-sm text-tx-secondary">Paid Date:</span>
+            <span className="text-sm font-medium text-tx-primary">{paidDate}</span>
           </div>
         )}
 
         {daysOverdue && daysOverdue > 0 && (
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Days Overdue:</span>
+            <span className="text-sm text-tx-secondary">Days Overdue:</span>
             <span className="text-sm font-semibold text-red-600">
               {daysOverdue} days
             </span>

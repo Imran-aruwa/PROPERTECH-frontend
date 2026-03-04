@@ -9,8 +9,8 @@ export default function RegisterPage() {
           <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl font-bold text-white">P</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Loading...</h2>
-          <p className="text-gray-600">Preparing registration form</p>
+          <h2 className="text-2xl font-bold text-tx-primary mb-2">Loading...</h2>
+          <p className="text-tx-secondary">Preparing registration form</p>
         </div>
       </div>
     }>

@@ -141,7 +141,7 @@ export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-bg-card shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -150,13 +150,13 @@ export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
           <div className="flex items-center justify-between border-b px-6 py-5">
             <div className="flex items-center gap-3">
               <RoleIcon className="h-7 w-7 text-blue-600" />
-              <span className="text-lg font-bold text-gray-900">
+              <span className="text-lg font-bold text-tx-primary">
                 {roleTitles[role]}
               </span>
             </div>
             <button
               onClick={onClose}
-              className="lg:hidden text-gray-500 hover:text-gray-700"
+              className="lg:hidden text-tx-muted hover:text-tx-secondary"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
@@ -176,7 +176,7 @@ export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                     isActive
                       ? 'bg-blue-50 text-blue-600'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                      : 'text-tx-secondary hover:bg-bg-hover hover:text-tx-primary'
                   }`}
                 >
                   <Icon className="h-5 w-5" />

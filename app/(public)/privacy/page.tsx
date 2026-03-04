@@ -31,13 +31,13 @@ export default function PrivacyPoliciesPage() {
 
       {/* Tabs Navigation */}
       <div className="max-w-4xl mx-auto px-4 mt-8">
-        <div className="flex gap-4 mb-8 border-b border-gray-200">
+        <div className="flex gap-4 mb-8 border-b border-bd">
           <button
             onClick={() => setExpandedSection('privacy')}
             className={`pb-4 px-2 font-semibold transition-colors ${
               expandedSection === 'privacy'
                 ? 'text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-600 hover:text-gray-900'
+                : 'text-tx-secondary hover:text-tx-primary'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ export default function PrivacyPoliciesPage() {
             className={`pb-4 px-2 font-semibold transition-colors ${
               expandedSection === 'terms'
                 ? 'text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-600 hover:text-gray-900'
+                : 'text-tx-secondary hover:text-tx-primary'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -76,7 +76,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="2. Information Collection and Use"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     We collect various types of information in connection with the services we provide, including:
                   </p>
@@ -99,7 +99,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="3. Use of Data"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>Propertech software uses the collected data for various purposes:</p>
                   <ul className="list-disc list-inside space-y-2 ml-2">
                     <li>To provide and maintain our Service</li>
@@ -123,7 +123,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="4. Security of Data"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     We implement appropriate technical and organizational measures designed to protect personal information against accidental or unlawful destruction, loss, alteration, unauthorized disclosure, or access. These measures include:
                   </p>
@@ -136,7 +136,7 @@ export default function PrivacyPoliciesPage() {
                     <li>Regular backup and disaster recovery procedures</li>
                     <li>Compliance with GDPR, CCPA, and other data protection regulations</li>
                   </ul>
-                  <p className="mt-4 text-sm text-gray-600">
+                  <p className="mt-4 text-sm text-tx-secondary">
                     Note: While we implement robust security measures, no method of transmission over the Internet is 100% secure. We cannot guarantee absolute security of your personal information.
                   </p>
                 </div>
@@ -150,7 +150,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="5. Data Retention"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     Propertech Software will retain your personal data only for as long as necessary for the purposes set out in this Privacy Policy:
                   </p>
@@ -172,7 +172,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="6. Your Privacy Rights"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>Depending on your location, you may have certain rights regarding your personal data:</p>
                   <ul className="list-disc list-inside space-y-2 ml-2">
                     <li><strong>Right to Access:</strong> Request a copy of your personal data</li>
@@ -197,7 +197,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="7. Sharing with Third Parties"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     We do not sell, trade, or rent your personal information to third parties. However, we may share data:
                   </p>
@@ -222,7 +222,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="8. Contact Us"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     If you have any questions about this Privacy Policy or our privacy practices, please contact us:
                   </p>
@@ -262,7 +262,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="2. License to Use"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     Propertech Software grants you a limited, non-exclusive, revocable license to use our Service for lawful purposes only. You agree not to:
                   </p>
@@ -286,7 +286,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="3. User Accounts"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     When you create an account with Propertech Software, you are responsible for:
                   </p>
@@ -311,7 +311,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="4. Intellectual Property Rights"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     The Service and its entire contents, features, and functionality (including all information, software, text, displays, images, video, and audio) are owned by Propertech Software, its licensors, or other providers of such material and are protected by copyright, trademark, and other intellectual property laws.
                   </p>
@@ -332,7 +332,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="5. Payments and Billing"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <ul className="list-disc list-inside space-y-2 ml-2">
                     <li><strong>Payment Method:</strong> We accept payments via Paystack. You authorize us to charge your payment method</li>
                     <li><strong>Billing Cycles:</strong> Subscriptions renew automatically unless cancelled before renewal</li>
@@ -352,7 +352,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="6. Disclaimer of Warranties"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     THE SERVICE IS PROVIDED 'AS IS' AND 'AS AVAILABLE' WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. PROPERTECH SOFTWARE DISCLAIMS ALL WARRANTIES, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
                   </p>
@@ -370,7 +370,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="7. Limitation of Liability"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     IN NO EVENT SHALL PROPERTECH SOFTWARE, ITS OFFICERS, DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES RESULTING FROM:
                   </p>
@@ -392,7 +392,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="8. Modifications to Terms"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     Propertech Software may modify these Terms at any time. We will notify users of significant changes via email or prominently on our website. Your continued use of the Service constitutes acceptance of modified Terms.
                   </p>
@@ -410,7 +410,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="9. Termination"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     Propertech Software may suspend or terminate your account and access to the Service immediately, without prior notice or liability, if:
                   </p>
@@ -431,7 +431,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="10. Governing Law"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     These Terms are governed by and construed in accordance with the laws of Kenya, without regard to its conflict of law provisions. Any legal action or proceeding shall be brought exclusively in the courts of Nairobi, Kenya.
                   </p>
@@ -446,7 +446,7 @@ export default function PrivacyPoliciesPage() {
             <PolicySection
               title="11. Contact for Terms Questions"
               content={
-                <div className="space-y-3 text-gray-700">
+                <div className="space-y-3 text-tx-secondary">
                   <p>
                     If you have any questions about these Terms of Service, please contact us:
                   </p>
@@ -472,12 +472,12 @@ export default function PrivacyPoliciesPage() {
       </div>
 
       {/* Footer */}
-      <div className="bg-gray-100 border-t border-gray-200 mt-12">
+      <div className="bg-bg-secondary border-t border-bd mt-12">
         <div className="max-w-4xl mx-auto px-4 py-8">
-          <p className="text-gray-600 text-center">
+          <p className="text-tx-secondary text-center">
             © 2025 PROPERTECH SOFTWARE. All rights reserved.
           </p>
-          <p className="text-gray-500 text-center text-sm mt-2">
+          <p className="text-tx-muted text-center text-sm mt-2">
             Last Updated: {new Date().toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -507,22 +507,22 @@ function PolicySection({
   const isExpanded = expanded === id;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <div className="bg-bg-card border border-bd rounded-lg overflow-hidden">
       <button
         onClick={() => toggle(id)}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+        className="w-full px-6 py-4 flex items-center justify-between hover:bg-bg-hover transition-colors"
       >
-        <h3 className="text-lg font-semibold text-gray-900 text-left">{title}</h3>
+        <h3 className="text-lg font-semibold text-tx-primary text-left">{title}</h3>
         <ChevronDown
-          className={`w-5 h-5 text-gray-500 transition-transform ${
+          className={`w-5 h-5 text-tx-muted transition-transform ${
             isExpanded ? 'rotate-180' : ''
           }`}
         />
       </button>
 
       {isExpanded && (
-        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
-          <div className="text-gray-700">
+        <div className="px-6 py-4 border-t border-bd bg-bg-secondary">
+          <div className="text-tx-secondary">
             {typeof content === 'string' ? <p>{content}</p> : content}
           </div>
         </div>

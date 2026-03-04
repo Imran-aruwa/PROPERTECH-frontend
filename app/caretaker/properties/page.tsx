@@ -59,7 +59,7 @@ export default function CaretakerPropertiesPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading properties...</p>
+            <p className="text-tx-secondary">Loading properties...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -70,8 +70,8 @@ export default function CaretakerPropertiesPage() {
     <DashboardLayout role="caretaker">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">My Properties</h1>
-          <p className="text-gray-600 mt-1">Properties under your care</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">My Properties</h1>
+          <p className="text-tx-secondary mt-1">Properties under your care</p>
         </div>
 
         {error && (
@@ -81,32 +81,32 @@ export default function CaretakerPropertiesPage() {
         )}
 
         {properties.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No properties assigned</p>
-            <p className="text-gray-400 text-sm mt-1">Properties will appear here once assigned to you</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Building2 className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No properties assigned</p>
+            <p className="text-tx-muted text-sm mt-1">Properties will appear here once assigned to you</p>
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {properties.map((property) => (
-              <div key={property.id} className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition">
+              <div key={property.id} className="bg-bg-card rounded-lg shadow-sm border p-6 hover:shadow-md transition">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                     <Building2 className="w-6 h-6 text-blue-600" />
                   </div>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    property.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    property.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-bg-secondary text-tx-primary'
                   }`}>
                     {property.status.toUpperCase()}
                   </span>
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-2">{property.name}</h3>
-                <div className="flex items-center gap-2 text-gray-600 text-sm mb-3">
+                <h3 className="font-semibold text-tx-primary text-lg mb-2">{property.name}</h3>
+                <div className="flex items-center gap-2 text-tx-secondary text-sm mb-3">
                   <MapPin className="w-4 h-4" />
                   {property.location}
                 </div>
                 <div className="flex items-center justify-between pt-3 border-t">
-                  <div className="flex items-center gap-2 text-gray-600 text-sm">
+                  <div className="flex items-center gap-2 text-tx-secondary text-sm">
                     <Users className="w-4 h-4" />
                     {property.occupied} / {property.units} units
                   </div>
@@ -114,7 +114,7 @@ export default function CaretakerPropertiesPage() {
                     <span className="text-green-600 font-medium">
                       {property.units > 0 ? Math.round((property.occupied / property.units) * 100) : 0}%
                     </span>
-                    <span className="text-gray-500"> occupied</span>
+                    <span className="text-tx-muted"> occupied</span>
                   </div>
                 </div>
                 <Link

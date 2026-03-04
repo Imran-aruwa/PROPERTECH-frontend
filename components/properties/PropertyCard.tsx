@@ -44,7 +44,7 @@ export function PropertyCard({
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow ${className}`}
+      className={`bg-bg-card rounded-lg shadow-sm border border-bd overflow-hidden hover:shadow-md transition-shadow ${className}`}
       onClick={onClick}
     >
       {/* Property Image */}
@@ -61,7 +61,7 @@ export function PropertyCard({
             className={`px-3 py-1 rounded-full text-xs font-semibold ${
               normalizedStatus === 'active'
                 ? 'bg-green-500 text-white'
-                : 'bg-gray-500 text-white'
+                : 'bg-bg-secondary0 text-white'
             }`}
           >
             {normalizedStatus.toUpperCase()}
@@ -71,24 +71,24 @@ export function PropertyCard({
 
       {/* Property Info */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-1">{name}</h3>
-        <p className="text-sm text-gray-600 mb-4">{location}</p>
+        <h3 className="text-xl font-bold text-tx-primary mb-1">{name}</h3>
+        <p className="text-sm text-tx-secondary mb-4">{location}</p>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-blue-600" />
             <div>
-              <p className="text-xs text-gray-600">Occupancy</p>
-              <p className="text-lg font-bold text-gray-900">{occupancyRate}%</p>
+              <p className="text-xs text-tx-secondary">Occupancy</p>
+              <p className="text-lg font-bold text-tx-primary">{occupancyRate}%</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             <Building2 className="w-5 h-5 text-blue-600" />
             <div>
-              <p className="text-xs text-gray-600">Units</p>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-xs text-tx-secondary">Units</p>
+              <p className="text-lg font-bold text-tx-primary">
                 {occupiedUnits}/{totalUnits}
               </p>
             </div>
@@ -96,16 +96,16 @@ export function PropertyCard({
         </div>
 
         {/* Financial Stats */}
-        <div className="border-t border-gray-200 pt-4 space-y-2">
+        <div className="border-t border-bd pt-4 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Monthly Revenue</span>
-            <span className="text-sm font-bold text-gray-900">
+            <span className="text-sm text-tx-secondary">Monthly Revenue</span>
+            <span className="text-sm font-bold text-tx-primary">
               {formatCurrency(monthlyRevenue)}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Collection Rate</span>
+            <span className="text-sm text-tx-secondary">Collection Rate</span>
             <span
               className={`text-sm font-bold ${
                 collectionRate >= 95
@@ -121,7 +121,7 @@ export function PropertyCard({
 
           {outstanding > 0 && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600 flex items-center gap-1">
+              <span className="text-sm text-tx-secondary flex items-center gap-1">
                 <AlertCircle className="w-4 h-4 text-red-500" />
                 Outstanding
               </span>

@@ -86,7 +86,7 @@ export default function StaffAttendancePage() {
       case 'absent': return 'bg-red-100 text-red-800';
       case 'late': return 'bg-yellow-100 text-yellow-800';
       case 'half_day': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-bg-secondary text-tx-primary';
     }
   };
 
@@ -95,7 +95,7 @@ export default function StaffAttendancePage() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading attendance...</p>
+          <p className="text-tx-secondary">Loading attendance...</p>
         </div>
       </div>
     );
@@ -105,8 +105,8 @@ export default function StaffAttendancePage() {
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Attendance</h1>
-          <p className="text-gray-600 mt-1">Track your daily attendance</p>
+          <h1 className="text-2xl font-bold text-tx-primary">Attendance</h1>
+          <p className="text-tx-secondary mt-1">Track your daily attendance</p>
         </div>
 
         {error && (
@@ -115,7 +115,7 @@ export default function StaffAttendancePage() {
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-6">
           <h2 className="text-lg font-semibold mb-4">Today's Attendance</h2>
           <div className="flex flex-col sm:flex-row gap-4">
             <button
@@ -123,7 +123,7 @@ export default function StaffAttendancePage() {
               disabled={isCheckedIn}
               className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-medium transition ${
                 isCheckedIn
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  ? 'bg-bg-secondary text-tx-muted cursor-not-allowed'
                   : 'bg-green-600 text-white hover:bg-green-700'
               }`}
             >
@@ -135,7 +135,7 @@ export default function StaffAttendancePage() {
               disabled={!isCheckedIn}
               className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-medium transition ${
                 !isCheckedIn
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  ? 'bg-bg-secondary text-tx-muted cursor-not-allowed'
                   : 'bg-red-600 text-white hover:bg-red-700'
               }`}
             >
@@ -145,32 +145,32 @@ export default function StaffAttendancePage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-6">
           <h2 className="text-lg font-semibold mb-4">Attendance History</h2>
           {records.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+            <div className="text-center py-8 text-tx-muted">
+              <Calendar className="w-12 h-12 text-tx-muted mx-auto mb-2" />
               <p>No attendance records</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b">
+                <thead className="bg-bg-secondary border-b">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Date</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Check In</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Check Out</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Hours</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Check In</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Check Out</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Hours</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {records.map((record) => (
-                    <tr key={record.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-gray-900">{record.date}</td>
-                      <td className="px-4 py-3 text-gray-600">{record.check_in}</td>
-                      <td className="px-4 py-3 text-gray-600">{record.check_out}</td>
-                      <td className="px-4 py-3 text-gray-600">{record.hours_worked}h</td>
+                    <tr key={record.id} className="hover:bg-bg-hover">
+                      <td className="px-4 py-3 text-tx-primary">{record.date}</td>
+                      <td className="px-4 py-3 text-tx-secondary">{record.check_in}</td>
+                      <td className="px-4 py-3 text-tx-secondary">{record.check_out}</td>
+                      <td className="px-4 py-3 text-tx-secondary">{record.hours_worked}h</td>
                       <td className="px-4 py-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(record.status)}`}>
                           {record.status.replace('_', ' ').toUpperCase()}

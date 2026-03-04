@@ -117,14 +117,14 @@ export default function TenantPaymentsPage() {
     pending: 'bg-yellow-500/20 text-yellow-300',
     completed: 'bg-green-500/20 text-green-300',
     failed: 'bg-red-500/20 text-red-300',
-    refunded: 'bg-gray-500/20 text-gray-300'
+    refunded: 'bg-bg-secondary0/20 text-tx-muted'
   };
 
   const paymentTypeColors: Record<string, string> = {
     rent: 'bg-blue-500/20 text-blue-300',
     water: 'bg-cyan-500/20 text-cyan-300',
     electricity: 'bg-yellow-500/20 text-yellow-300',
-    other: 'bg-gray-500/20 text-gray-300'
+    other: 'bg-bg-secondary0/20 text-tx-muted'
   };
 
   if (authLoading || loading) {

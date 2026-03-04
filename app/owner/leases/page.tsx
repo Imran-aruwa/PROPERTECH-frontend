@@ -52,8 +52,8 @@ export default function LeasesPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Leases</h1>
-            <p className="text-gray-600 mt-1">Manage lease agreements and e-signatures</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Leases</h1>
+            <p className="text-tx-secondary mt-1">Manage lease agreements and e-signatures</p>
           </div>
           <Link
             href="/owner/leases/new"
@@ -72,7 +72,7 @@ export default function LeasesPage() {
               className={`px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap transition ${
                 activeTab === tab.value
                   ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+                  : 'border-transparent text-tx-muted hover:text-tx-secondary'
               }`}
             >
               {tab.label}
@@ -85,10 +85,10 @@ export default function LeasesPage() {
             <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
           </div>
         ) : leases.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <FileSignature className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 font-medium">No leases found</p>
-            <p className="text-gray-400 text-sm mt-1">Create your first lease to get started</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <FileSignature className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted font-medium">No leases found</p>
+            <p className="text-tx-muted text-sm mt-1">Create your first lease to get started</p>
             <Link
               href="/owner/leases/new"
               className="inline-flex items-center gap-2 mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm"
@@ -97,33 +97,33 @@ export default function LeasesPage() {
             </Link>
           </div>
         ) : (
-          <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+          <div className="bg-bg-card rounded-lg border shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-bd">
+                <thead className="bg-bg-secondary">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Property</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Unit</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tenant</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Start</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">End</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rent</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-tx-muted uppercase">Property</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-tx-muted uppercase">Unit</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-tx-muted uppercase">Tenant</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-tx-muted uppercase">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-tx-muted uppercase">Start</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-tx-muted uppercase">End</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-tx-muted uppercase">Rent</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-tx-muted uppercase">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-bd">
                   {leases.map((lease) => (
-                    <tr key={lease.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-sm text-gray-900">{lease.property?.name || `Property #${lease.property_id}`}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{lease.unit?.unit_number || `Unit #${lease.unit_id}`}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">
+                    <tr key={lease.id} className="hover:bg-bg-hover">
+                      <td className="px-4 py-3 text-sm text-tx-primary">{lease.property?.name || `Property #${lease.property_id}`}</td>
+                      <td className="px-4 py-3 text-sm text-tx-primary">{lease.unit?.unit_number || `Unit #${lease.unit_id}`}</td>
+                      <td className="px-4 py-3 text-sm text-tx-primary">
                         {lease.tenant?.user?.full_name || `Tenant #${lease.tenant_id}`}
                       </td>
                       <td className="px-4 py-3"><LeaseStatusBadge status={lease.status} /></td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{lease.start_date}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{lease.end_date}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900 font-medium">{formatCurrency(lease.rent_amount)}</td>
+                      <td className="px-4 py-3 text-sm text-tx-secondary">{lease.start_date}</td>
+                      <td className="px-4 py-3 text-sm text-tx-secondary">{lease.end_date}</td>
+                      <td className="px-4 py-3 text-sm text-tx-primary font-medium">{formatCurrency(lease.rent_amount)}</td>
                       <td className="px-4 py-3">
                         <Link
                           href={`/owner/leases/${lease.id}`}

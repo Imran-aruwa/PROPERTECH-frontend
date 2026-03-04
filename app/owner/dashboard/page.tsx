@@ -226,7 +226,7 @@ export default function OwnerDashboard() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <LoadingSpinner size="lg" />
-            <p className="mt-4 text-gray-600">Loading dashboard...</p>
+            <p className="mt-4 text-tx-secondary">Loading dashboard...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -254,8 +254,8 @@ export default function OwnerDashboard() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600 mt-1">Overview of your property portfolio</p>
+            <h1 className="text-3xl font-bold text-tx-primary">Dashboard</h1>
+            <p className="text-tx-secondary mt-1">Overview of your property portfolio</p>
           </div>
           <button onClick={() => fetchDashboardStats(true)} disabled={refreshing} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">
             <RefreshCw className={"w-4 h-4 " + (refreshing ? "animate-spin" : "")} />
@@ -288,9 +288,9 @@ export default function OwnerDashboard() {
 
         {/* Tenants Requiring Attention */}
         {riskTenants.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-tx-primary flex items-center gap-2">
                 <ShieldAlert className="w-5 h-5 text-red-500" />
                 Tenants Requiring Attention
               </h2>
@@ -308,7 +308,7 @@ export default function OwnerDashboard() {
                   <Link
                     key={rs.tenantId}
                     href={`/owner/tenants/${rs.tenantId}`}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg hover:bg-bg-hover transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
@@ -317,24 +317,24 @@ export default function OwnerDashboard() {
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900 text-sm">{tenantUser?.full_name || 'Unknown'}</p>
-                        <p className="text-xs text-gray-500">{rs.tenant.unit?.unit_number || 'N/A'}</p>
+                        <p className="font-medium text-tx-primary text-sm">{tenantUser?.full_name || 'Unknown'}</p>
+                        <p className="text-xs text-tx-muted">{rs.tenant.unit?.unit_number || 'N/A'}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
-                        <div className="bg-gray-200 rounded-full h-2 w-16">
+                        <div className="bg-bd rounded-full h-2 w-16">
                           <div
                             className="h-2 rounded-full"
                             style={{ width: `${rs.score}%`, backgroundColor: RISK_LEVEL_CONFIG[rs.level].color }}
                           />
                         </div>
-                        <span className="text-sm font-semibold text-gray-700 w-6">{rs.score}</span>
+                        <span className="text-sm font-semibold text-tx-secondary w-6">{rs.score}</span>
                       </div>
                       <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getRiskBgClass(rs.level)}`}>
                         {RISK_LEVEL_CONFIG[rs.level].label}
                       </span>
-                      <Eye className="w-4 h-4 text-gray-400" />
+                      <Eye className="w-4 h-4 text-tx-muted" />
                     </div>
                   </Link>
                 );
@@ -345,9 +345,9 @@ export default function OwnerDashboard() {
 
         {/* Predicted Vacancies */}
         {vacancyAlerts.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-tx-primary flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-orange-500" />
                 Predicted Vacancies
               </h2>
@@ -365,7 +365,7 @@ export default function OwnerDashboard() {
                   <Link
                     key={alert.tenantId}
                     href={`/owner/tenants/${alert.tenantId}`}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg hover:bg-bg-hover transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
@@ -374,24 +374,24 @@ export default function OwnerDashboard() {
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900 text-sm">{tenantUser?.full_name || 'Unknown'}</p>
-                        <p className="text-xs text-gray-500">{alert.unitNumber} &middot; {alert.estimatedDays}</p>
+                        <p className="font-medium text-tx-primary text-sm">{tenantUser?.full_name || 'Unknown'}</p>
+                        <p className="text-xs text-tx-muted">{alert.unitNumber} &middot; {alert.estimatedDays}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
-                        <div className="bg-gray-200 rounded-full h-2 w-16">
+                        <div className="bg-bd rounded-full h-2 w-16">
                           <div
                             className="h-2 rounded-full"
                             style={{ width: `${alert.score}%`, backgroundColor: VACANCY_RISK_CONFIG[alert.risk].color }}
                           />
                         </div>
-                        <span className="text-sm font-semibold text-gray-700 w-6">{alert.score}</span>
+                        <span className="text-sm font-semibold text-tx-secondary w-6">{alert.score}</span>
                       </div>
                       <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getVacancyBgClass(alert.risk)}`}>
                         {VACANCY_RISK_CONFIG[alert.risk].label}
                       </span>
-                      <Eye className="w-4 h-4 text-gray-400" />
+                      <Eye className="w-4 h-4 text-tx-muted" />
                     </div>
                   </Link>
                 );
@@ -402,9 +402,9 @@ export default function OwnerDashboard() {
 
         {/* Maintenance SLA Performance */}
         {slaPerformances.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-tx-primary flex items-center gap-2">
                 <Timer className="w-5 h-5 text-blue-500" />
                 Staff SLA Performance
               </h2>
@@ -420,7 +420,7 @@ export default function OwnerDashboard() {
                 <Link
                   key={perf.staffId}
                   href={`/owner/staff/${perf.staffId}`}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg hover:bg-bg-hover transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -429,24 +429,24 @@ export default function OwnerDashboard() {
                       </span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900 text-sm">{perf.staffName}</p>
-                      <p className="text-xs text-gray-500">{perf.completed}/{perf.totalAssigned} completed &middot; {formatHours(perf.avgResolveHours)} avg</p>
+                      <p className="font-medium text-tx-primary text-sm">{perf.staffName}</p>
+                      <p className="text-xs text-tx-muted">{perf.completed}/{perf.totalAssigned} completed &middot; {formatHours(perf.avgResolveHours)} avg</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2">
-                      <div className="bg-gray-200 rounded-full h-2 w-16">
+                      <div className="bg-bd rounded-full h-2 w-16">
                         <div
                           className="h-2 rounded-full"
                           style={{ width: `${perf.score}%`, backgroundColor: PERFORMANCE_GRADE_CONFIG[perf.grade].color }}
                         />
                       </div>
-                      <span className="text-sm font-semibold text-gray-700 w-6">{perf.score}</span>
+                      <span className="text-sm font-semibold text-tx-secondary w-6">{perf.score}</span>
                     </div>
                     <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getGradeBgClass(perf.grade)}`}>
                       {PERFORMANCE_GRADE_CONFIG[perf.grade].label}
                     </span>
-                    <Eye className="w-4 h-4 text-gray-400" />
+                    <Eye className="w-4 h-4 text-tx-muted" />
                   </div>
                 </Link>
               ))}
@@ -456,9 +456,9 @@ export default function OwnerDashboard() {
 
         {/* Overdue Rent Chasing */}
         {chasingSummary && chasingSummary.tenants.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-tx-primary flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-red-500" />
                 Overdue Rent Alerts
               </h2>
@@ -470,7 +470,7 @@ export default function OwnerDashboard() {
               </Link>
             </div>
             <div className="flex items-center gap-4 mb-4 text-sm">
-              <span className="text-gray-500">Outstanding:</span>
+              <span className="text-tx-muted">Outstanding:</span>
               <span className="font-semibold text-red-600">{formatChasingCurrency(chasingSummary.totalAmount)}</span>
               {(chasingSummary.byEscalation.urgent > 0 || chasingSummary.byEscalation.final > 0) && (
                 <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700">
@@ -483,7 +483,7 @@ export default function OwnerDashboard() {
                 <Link
                   key={t.tenantId}
                   href={`/owner/tenants/${t.tenantId}`}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg hover:bg-bg-hover transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div
@@ -495,8 +495,8 @@ export default function OwnerDashboard() {
                       </span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900 text-sm">{t.tenantName}</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="font-medium text-tx-primary text-sm">{t.tenantName}</p>
+                      <p className="text-xs text-tx-muted">
                         {t.unitNumber} &middot; {formatChasingCurrency(t.totalOverdue)}
                         {t.maxDaysOverdue > 0 && (
                           <span className="text-red-600 ml-1">&middot; {t.maxDaysOverdue}d overdue</span>
@@ -508,7 +508,7 @@ export default function OwnerDashboard() {
                     <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getEscalationBgClass(t.escalation)}`}>
                       {ESCALATION_CONFIG[t.escalation].label}
                     </span>
-                    <Eye className="w-4 h-4 text-gray-400" />
+                    <Eye className="w-4 h-4 text-tx-muted" />
                   </div>
                 </Link>
               ))}

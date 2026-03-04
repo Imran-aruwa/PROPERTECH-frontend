@@ -27,17 +27,17 @@ export default function CaretakerNewInspectionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       {/* Header */}
-      <div className="bg-white border-b px-4 py-4">
+      <div className="bg-bg-card border-b px-4 py-4">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Link
             href="/caretaker/inspections"
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-xl font-bold text-gray-900">
+          <h1 className="text-xl font-bold text-tx-primary">
             {draftUuid ? 'Edit Inspection' : 'New Inspection'}
           </h1>
         </div>

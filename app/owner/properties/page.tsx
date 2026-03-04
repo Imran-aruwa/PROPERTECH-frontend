@@ -98,9 +98,9 @@ export default function PropertiesPage() {
   // Show loading while checking auth
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen bg-bg-secondary p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="h-8 bg-gray-200 rounded w-64 mb-8" />
+          <div className="h-8 bg-bd rounded w-64 mb-8" />
           <TableSkeleton rows={5} cols={5} />
         </div>
       </div>
@@ -108,18 +108,18 @@ export default function PropertiesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Building2 className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Properties</h1>
-                <p className="text-gray-600 mt-1">Manage all your properties</p>
+                <h1 className="text-3xl font-bold text-tx-primary">Properties</h1>
+                <p className="text-tx-secondary mt-1">Manage all your properties</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -144,10 +144,10 @@ export default function PropertiesPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {!Array.isArray(properties) || properties.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-            <Building2 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No properties yet</h3>
-            <p className="text-gray-600 mb-6">Get started by adding your first property</p>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-12 text-center">
+            <Building2 className="w-16 h-16 text-tx-muted mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-tx-primary mb-2">No properties yet</h3>
+            <p className="text-tx-secondary mb-6">Get started by adding your first property</p>
             <Link
               href="/owner/properties/new"
               className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -161,7 +161,7 @@ export default function PropertiesPage() {
             {properties.map((property) => (
               <div
                 key={property.id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                className="bg-bg-card rounded-lg shadow-sm border border-bd overflow-hidden hover:shadow-md transition-shadow"
               >
                 {/* Property Image */}
                 <div className="h-48 bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
@@ -178,26 +178,26 @@ export default function PropertiesPage() {
 
                 {/* Property Details */}
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{property.name}</h3>
+                  <h3 className="text-xl font-semibold text-tx-primary mb-2">{property.name}</h3>
                   
-                  <div className="flex items-start gap-2 text-gray-600 mb-4">
+                  <div className="flex items-start gap-2 text-tx-secondary mb-4">
                     <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
                     <p className="text-sm">{property.address}, {property.city}</p>
                   </div>
 
                   {property.description && (
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                    <p className="text-sm text-tx-secondary mb-4 line-clamp-2">
                       {property.description}
                     </p>
                   )}
 
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="bg-bg-secondary rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-1">
-                        <Home className="w-4 h-4 text-gray-600" />
-                        <span className="text-xs text-gray-600">Total Units</span>
+                        <Home className="w-4 h-4 text-tx-secondary" />
+                        <span className="text-xs text-tx-secondary">Total Units</span>
                       </div>
-                      <p className="text-2xl font-bold text-gray-900">
+                      <p className="text-2xl font-bold text-tx-primary">
                         {property.total_units || 0}
                       </p>
                     </div>
@@ -215,14 +215,14 @@ export default function PropertiesPage() {
                   {/* Occupancy Bar */}
                   <div className="mb-4">
                     <div className="flex items-center justify-between text-sm mb-1">
-                      <span className="text-gray-600">Occupancy Rate</span>
-                      <span className="font-medium text-gray-900">
+                      <span className="text-tx-secondary">Occupancy Rate</span>
+                      <span className="font-medium text-tx-primary">
                         {property.total_units 
                           ? Math.round((property.occupied_units || 0) / property.total_units * 100)
                           : 0}%
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-bd rounded-full h-2">
                       <div
                         className="bg-green-600 h-2 rounded-full transition-all"
                         style={{
@@ -245,7 +245,7 @@ export default function PropertiesPage() {
                     </Link>
                     <Link
                       href={`/owner/properties/${property.id}/edit`}
-                      className="flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      className="flex items-center justify-center px-4 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
                     >
                       <Edit className="w-4 h-4" />
                     </Link>

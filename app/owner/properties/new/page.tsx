@@ -152,31 +152,31 @@ export default function NewPropertyPage() {
   };
 
   const inputClasses = (fieldName: keyof PropertyFormData) =>
-    `w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+    `w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card ${
       touched[fieldName] && errors[fieldName]
         ? 'border-red-500'
-        : 'border-gray-300'
+        : 'border-bd-strong'
     }`;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link
               href="/owner/properties"
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-6 h-6 text-gray-600" />
+              <ArrowLeft className="w-6 h-6 text-tx-secondary" />
             </Link>
             <div className="flex items-center gap-3">
               <Building2 className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Add New Property</h1>
-                <p className="text-gray-600 mt-1">Fill in the details below</p>
+                <h1 className="text-3xl font-bold text-tx-primary">Add New Property</h1>
+                <p className="text-tx-secondary mt-1">Fill in the details below</p>
               </div>
             </div>
           </div>
@@ -184,10 +184,10 @@ export default function NewPropertyPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-bg-card rounded-lg shadow-sm border border-bd p-8">
           {/* Property Name */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Property Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -205,7 +205,7 @@ export default function NewPropertyPage() {
 
           {/* Property Type */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Property Type <span className="text-red-500">*</span>
             </label>
             <select
@@ -218,14 +218,14 @@ export default function NewPropertyPage() {
                 <option key={type.value} value={type.value}>{type.label}</option>
               ))}
             </select>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-tx-muted">
               Select the type of property for better categorization and reporting
             </p>
           </div>
 
           {/* Address */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Street Address <span className="text-red-500">*</span>
             </label>
             <input
@@ -244,7 +244,7 @@ export default function NewPropertyPage() {
           {/* City, State, Postal Code */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-tx-secondary mb-2">
                 City <span className="text-red-500">*</span>
               </label>
               <input
@@ -261,7 +261,7 @@ export default function NewPropertyPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-tx-secondary mb-2">
                 State/County <span className="text-red-500">*</span>
               </label>
               <input
@@ -278,7 +278,7 @@ export default function NewPropertyPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-tx-secondary mb-2">
                 Postal Code <span className="text-red-500">*</span>
               </label>
               <input
@@ -297,7 +297,7 @@ export default function NewPropertyPage() {
 
           {/* Country */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Country <span className="text-red-500">*</span>
             </label>
             <input
@@ -315,7 +315,7 @@ export default function NewPropertyPage() {
 
           {/* Description */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Description
             </label>
             <textarea
@@ -330,7 +330,7 @@ export default function NewPropertyPage() {
 
           {/* Image URL */}
           <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Image URL
             </label>
             <input
@@ -341,22 +341,22 @@ export default function NewPropertyPage() {
               className={inputClasses('image_url')}
               placeholder="https://example.com/image.jpg (optional)"
             />
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-tx-muted">
               Provide a URL to an image of your property
             </p>
           </div>
 
           {/* Unit Generation Section */}
           <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Unit Configuration</h3>
-            <p className="text-sm text-gray-600 mb-4">
+            <h3 className="text-lg font-semibold text-tx-primary mb-4">Unit Configuration</h3>
+            <p className="text-sm text-tx-secondary mb-4">
               Automatically generate units for this property. Leave "Number of Units" at 0 to skip automatic unit creation.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Number of Units */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Number of Units
                 </label>
                 <input
@@ -372,7 +372,7 @@ export default function NewPropertyPage() {
 
               {/* Unit Prefix */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Unit Prefix
                 </label>
                 <select
@@ -392,7 +392,7 @@ export default function NewPropertyPage() {
 
               {/* Default Bedrooms */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Default Bedrooms
                 </label>
                 <select
@@ -412,7 +412,7 @@ export default function NewPropertyPage() {
 
               {/* Default Bathrooms */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Default Bathrooms
                 </label>
                 <select
@@ -433,7 +433,7 @@ export default function NewPropertyPage() {
 
               {/* Default Toilets */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Default Toilets (Separate)
                 </label>
                 <select
@@ -452,7 +452,7 @@ export default function NewPropertyPage() {
 
               {/* Default Rent */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Default Monthly Rent (KES)
                 </label>
                 <input
@@ -468,7 +468,7 @@ export default function NewPropertyPage() {
 
               {/* Default Square Feet */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Default Size (sq ft)
                 </label>
                 <input
@@ -485,32 +485,32 @@ export default function NewPropertyPage() {
 
             {/* Additional Features Section */}
             <div className="mt-6 pt-6 border-t border-blue-200">
-              <h4 className="text-md font-medium text-gray-800 mb-4">Additional Features</h4>
+              <h4 className="text-md font-medium text-tx-primary mb-4">Additional Features</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Master Bedroom */}
-                <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                <div className="flex items-center gap-3 p-3 bg-bg-card rounded-lg border border-bd">
                   <input
                     type="checkbox"
                     id="master_bedroom"
                     checked={values.default_has_master_bedroom}
                     onChange={(e) => handleChange('default_has_master_bedroom', e.target.checked)}
-                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-5 h-5 text-blue-600 border-bd-strong rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="master_bedroom" className="text-sm font-medium text-gray-700 cursor-pointer">
+                  <label htmlFor="master_bedroom" className="text-sm font-medium text-tx-secondary cursor-pointer">
                     Has Master Bedroom (En-suite)
                   </label>
                 </div>
 
                 {/* Servant Quarters */}
-                <div className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                <div className="flex items-center gap-3 p-3 bg-bg-card rounded-lg border border-bd">
                   <input
                     type="checkbox"
                     id="servant_quarters"
                     checked={values.default_has_servant_quarters}
                     onChange={(e) => handleChange('default_has_servant_quarters', e.target.checked)}
-                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-5 h-5 text-blue-600 border-bd-strong rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="servant_quarters" className="text-sm font-medium text-gray-700 cursor-pointer">
+                  <label htmlFor="servant_quarters" className="text-sm font-medium text-tx-secondary cursor-pointer">
                     Has Servant Quarters (SQ)
                   </label>
                 </div>
@@ -518,13 +518,13 @@ export default function NewPropertyPage() {
                 {/* SQ Bathrooms - only show if servant quarters is checked */}
                 {values.default_has_servant_quarters && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-tx-secondary mb-2">
                       SQ Bathrooms
                     </label>
                     <select
                       value={values.default_sq_bathrooms}
                       onChange={(e) => handleChange('default_sq_bathrooms', parseInt(e.target.value))}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                      className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                     >
                       <option value="0">No Bathroom</option>
                       <option value="1">1 Bathroom</option>
@@ -536,17 +536,17 @@ export default function NewPropertyPage() {
 
               {/* Unit Description */}
               <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-tx-secondary mb-2">
                   Unit Description (applies to all units)
                 </label>
                 <textarea
                   value={values.default_unit_description}
                   onChange={(e) => handleChange('default_unit_description', e.target.value)}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                   placeholder="e.g., Master en-suite, 2 guest toilets, external SQ with washroom"
                 />
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-tx-muted">
                   This description will be added to all generated units. You can edit individual units later.
                 </p>
               </div>
@@ -585,7 +585,7 @@ export default function NewPropertyPage() {
             </button>
             <Link
               href="/owner/properties"
-              className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-3 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

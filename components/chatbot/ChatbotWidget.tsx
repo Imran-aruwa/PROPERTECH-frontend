@@ -142,12 +142,12 @@ export function ChatbotWidget({
     <div className={`fixed bottom-4 ${positionClasses} z-50`}>
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-[380px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-in slide-in-from-bottom-4 duration-300">
+        <div className="mb-4 w-[380px] max-w-[calc(100vw-2rem)] bg-bg-card rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-in slide-in-from-bottom-4 duration-300">
           {/* Header */}
           <div className={`bg-gradient-to-r ${currentTheme.primary} text-white p-4`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-bg-card/20 rounded-full flex items-center justify-center">
                   <Bot className="w-6 h-6" />
                 </div>
                 <div>
@@ -160,7 +160,7 @@ export function ChatbotWidget({
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                className="p-2 hover:bg-bg-card/20 rounded-lg transition-colors"
                 aria-label="Close chat"
               >
                 <X className="w-5 h-5" />
@@ -169,7 +169,7 @@ export function ChatbotWidget({
           </div>
 
           {/* Messages */}
-          <div className="flex-1 h-[350px] overflow-y-auto p-4 space-y-4 bg-gray-50">
+          <div className="flex-1 h-[350px] overflow-y-auto p-4 space-y-4 bg-bg-secondary">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -179,7 +179,7 @@ export function ChatbotWidget({
                   className={`max-w-[80%] p-3 rounded-2xl ${
                     message.type === 'user'
                       ? `${currentTheme.userMessage} text-white rounded-br-sm`
-                      : 'bg-white text-gray-800 shadow-sm rounded-bl-sm'
+                      : 'bg-bg-card text-tx-primary shadow-sm rounded-bl-sm'
                   }`}
                 >
                   <p className="text-sm whitespace-pre-line">{message.content}</p>
@@ -188,11 +188,11 @@ export function ChatbotWidget({
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-white p-4 rounded-2xl rounded-bl-sm shadow-sm">
+                <div className="bg-bg-card p-4 rounded-2xl rounded-bl-sm shadow-sm">
                   <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    <span className="w-2 h-2 bg-tx-muted rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-2 h-2 bg-tx-muted rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-2 h-2 bg-tx-muted rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                   </div>
                 </div>
               </div>
@@ -201,7 +201,7 @@ export function ChatbotWidget({
           </div>
 
           {/* Input */}
-          <div className="p-4 bg-white border-t border-gray-200">
+          <div className="p-4 bg-bg-card border-t border-bd">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -210,7 +210,7 @@ export function ChatbotWidget({
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
-                className={`flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 ${currentTheme.focus} focus:border-transparent text-gray-900 bg-white`}
+                className={`flex-1 px-4 py-2 border border-bd-strong rounded-full focus:outline-none focus:ring-2 ${currentTheme.focus} focus:border-transparent text-tx-primary bg-bg-card`}
               />
               <button
                 onClick={handleSend}

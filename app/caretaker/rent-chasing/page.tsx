@@ -71,7 +71,7 @@ export default function CaretakerRentChasingPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading rent alerts...</p>
+            <p className="text-tx-secondary">Loading rent alerts...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -85,18 +85,18 @@ export default function CaretakerRentChasingPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary flex items-center gap-3">
               <MessageSquare className="w-7 h-7 text-blue-600" />
               Rent Chasing Alerts
             </h1>
-            <p className="text-gray-600 mt-1">Send reminders to tenants with overdue rent</p>
+            <p className="text-tx-secondary mt-1">Send reminders to tenants with overdue rent</p>
           </div>
           <div className="flex items-center gap-2">
-            <Globe className="w-4 h-4 text-gray-500" />
+            <Globe className="w-4 h-4 text-tx-muted" />
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value as 'en' | 'sw')}
-              className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white"
+              className="text-sm border border-bd-strong rounded-lg px-3 py-1.5 bg-bg-card"
             >
               <option value="en">English</option>
               <option value="sw">Kiswahili</option>
@@ -106,32 +106,32 @@ export default function CaretakerRentChasingPage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-xs text-gray-500 font-medium">To Chase</h3>
+              <h3 className="text-xs text-tx-muted font-medium">To Chase</h3>
               <MessageSquare className="w-4 h-4 text-blue-500" />
             </div>
-            <p className="text-2xl font-bold text-gray-900">{summary?.totalOverdue || 0}</p>
+            <p className="text-2xl font-bold text-tx-primary">{summary?.totalOverdue || 0}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-xs text-gray-500 font-medium">Outstanding</h3>
+              <h3 className="text-xs text-tx-muted font-medium">Outstanding</h3>
               <AlertTriangle className="w-4 h-4 text-red-500" />
             </div>
             <p className="text-2xl font-bold text-red-600">{formatCurrency(summary?.totalAmount || 0)}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-xs text-gray-500 font-medium">Urgent</h3>
+              <h3 className="text-xs text-tx-muted font-medium">Urgent</h3>
               <AlertTriangle className="w-4 h-4 text-orange-500" />
             </div>
             <p className="text-2xl font-bold text-orange-600">
               {(summary?.byEscalation.urgent || 0) + (summary?.byEscalation.final || 0)}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-xs text-gray-500 font-medium">Sent Today</h3>
+              <h3 className="text-xs text-tx-muted font-medium">Sent Today</h3>
               <CheckCircle className="w-4 h-4 text-green-500" />
             </div>
             <p className="text-2xl font-bold text-green-600">{sentReminders.size}</p>
@@ -143,7 +143,7 @@ export default function CaretakerRentChasingPage() {
           <button
             onClick={() => setFilterLevel('all')}
             className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
-              filterLevel === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              filterLevel === 'all' ? 'bg-blue-600 text-white' : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
             }`}
           >
             All ({tenants.length})
@@ -156,7 +156,7 @@ export default function CaretakerRentChasingPage() {
                 key={level}
                 onClick={() => setFilterLevel(level)}
                 className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
-                  filterLevel === level ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  filterLevel === level ? 'bg-blue-600 text-white' : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                 }`}
               >
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: ESCALATION_CONFIG[level].color }} />
@@ -168,10 +168,10 @@ export default function CaretakerRentChasingPage() {
 
         {/* Tenant Alert Cards */}
         {filteredTenants.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-8 text-center">
             <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">All clear!</h3>
-            <p className="text-gray-600">No overdue rent payments to follow up on</p>
+            <h3 className="text-lg font-semibold text-tx-primary mb-1">All clear!</h3>
+            <p className="text-tx-secondary">No overdue rent payments to follow up on</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -184,7 +184,7 @@ export default function CaretakerRentChasingPage() {
               return (
                 <div
                   key={tenant.tenantId}
-                  className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 ${wasSent ? 'opacity-60' : ''}`}
+                  className={`bg-bg-card rounded-lg shadow-sm border border-bd p-4 ${wasSent ? 'opacity-60' : ''}`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     {/* Tenant Info */}
@@ -198,11 +198,11 @@ export default function CaretakerRentChasingPage() {
                         </span>
                       </div>
                       <div className="min-w-0">
-                        <p className="font-medium text-gray-900 truncate">{tenant.tenantName}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="font-medium text-tx-primary truncate">{tenant.tenantName}</p>
+                        <p className="text-sm text-tx-muted">
                           {tenant.unitNumber} &middot; {formatCurrency(tenant.totalOverdue)}
                           {' '}&middot;{' '}
-                          <span className={tenant.maxDaysOverdue > 0 ? 'text-red-600 font-medium' : 'text-gray-500'}>
+                          <span className={tenant.maxDaysOverdue > 0 ? 'text-red-600 font-medium' : 'text-tx-muted'}>
                             {tenant.maxDaysOverdue > 0 ? `${tenant.maxDaysOverdue}d overdue` : `due in ${Math.abs(tenant.maxDaysOverdue)}d`}
                           </span>
                         </p>
@@ -249,7 +249,7 @@ export default function CaretakerRentChasingPage() {
 
                   {/* Message Preview (compact) */}
                   {!wasSent && (
-                    <div className="mt-3 p-3 bg-gray-50 rounded-lg text-sm text-gray-600 line-clamp-2">
+                    <div className="mt-3 p-3 bg-bg-secondary rounded-lg text-sm text-tx-secondary line-clamp-2">
                       {language === 'sw' ? msg.smsSwahili : msg.sms}
                     </div>
                   )}

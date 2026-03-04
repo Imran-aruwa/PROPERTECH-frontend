@@ -78,9 +78,9 @@ export default function OwnerTenantsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen bg-bg-secondary p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="h-8 bg-gray-200 rounded w-64 mb-8 animate-pulse" />
+          <div className="h-8 bg-bd rounded w-64 mb-8 animate-pulse" />
           <TableSkeleton rows={8} cols={6} />
         </div>
       </div>
@@ -88,24 +88,24 @@ export default function OwnerTenantsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Users className="w-8 h-8 text-purple-600" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Tenants</h1>
-                <p className="text-gray-600 mt-1">Manage all your tenants</p>
+                <h1 className="text-3xl font-bold text-tx-primary">Tenants</h1>
+                <p className="text-tx-secondary mt-1">Manage all your tenants</p>
               </div>
             </div>
             <div className="flex gap-3">
               <button
                 onClick={() => window.print()}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
               >
                 <Download className="w-5 h-5" />
                 Export
@@ -125,43 +125,43 @@ export default function OwnerTenantsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Summary Stats */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Total Tenants</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">Total Tenants</h3>
               <Users className="w-5 h-5 text-purple-600" />
             </div>
-            <p className="text-3xl font-bold text-gray-900">{tenants.length}</p>
+            <p className="text-3xl font-bold text-tx-primary">{tenants.length}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Active Leases</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">Active Leases</h3>
               <Calendar className="w-5 h-5 text-green-600" />
             </div>
             <p className="text-3xl font-bold text-green-600">
               {tenants.filter(t => !isLeaseExpired(t.lease_end)).length}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Expiring Soon</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">Expiring Soon</h3>
               <Calendar className="w-5 h-5 text-orange-600" />
             </div>
             <p className="text-3xl font-bold text-orange-600">
               {tenants.filter(t => isLeaseExpiringSoon(t.lease_end)).length}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">Expired</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">Expired</h3>
               <Calendar className="w-5 h-5 text-red-600" />
             </div>
             <p className="text-3xl font-bold text-red-600">
               {tenants.filter(t => isLeaseExpired(t.lease_end)).length}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-gray-600 text-sm font-medium">High Risk</h3>
+              <h3 className="text-tx-secondary text-sm font-medium">High Risk</h3>
               <ShieldAlert className="w-5 h-5 text-red-600" />
             </div>
             <p className="text-3xl font-bold text-red-600">
@@ -171,24 +171,24 @@ export default function OwnerTenantsPage() {
         </div>
 
         {/* Search */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 mb-6">
           <input
             type="text"
             placeholder="Search by name, email, phone, or unit number..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           />
         </div>
 
         {/* Tenants Table */}
         {filteredTenants.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-            <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-12 text-center">
+            <Users className="w-16 h-16 text-tx-muted mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-tx-primary mb-2">
               {tenants.length === 0 ? 'No tenants yet' : 'No tenants found'}
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-tx-secondary mb-6">
               {tenants.length === 0 
                 ? 'Get started by adding your first tenant'
                 : 'No tenants match your search criteria'}
@@ -204,35 +204,35 @@ export default function OwnerTenantsPage() {
             )}
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="bg-bg-secondary border-b border-bd">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase tracking-wider">
                       Tenant
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase tracking-wider">
                       Contact
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase tracking-wider">
                       Unit
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase tracking-wider">
                       Lease Period
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase tracking-wider">
                       Risk
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-tx-muted uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-bd">
                   {filteredTenants.map((tenant) => {
                     const t = tenant as any;
                     const leaseStatus = isLeaseExpired(tenant.lease_end)
@@ -255,7 +255,7 @@ export default function OwnerTenantsPage() {
                     const occupancyType: string = t.occupancy_type || 'renting';
 
                     return (
-                      <tr key={tenant.id} className="hover:bg-gray-50">
+                      <tr key={tenant.id} className="hover:bg-bg-hover">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
@@ -264,7 +264,7 @@ export default function OwnerTenantsPage() {
                               </span>
                             </div>
                             <div className="ml-3">
-                              <div className="font-medium text-gray-900">
+                              <div className="font-medium text-tx-primary">
                                 {t.full_name || 'Unknown'}
                               </div>
                               <span className={`inline-block mt-1 px-2 py-0.5 text-xs rounded-full ${occupancyColors[occupancyType] || occupancyColors.renting}`}>
@@ -275,30 +275,30 @@ export default function OwnerTenantsPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="space-y-1">
-                            <div className="flex items-center gap-2 text-sm text-gray-900">
-                              <Mail className="w-4 h-4 text-gray-400" />
+                            <div className="flex items-center gap-2 text-sm text-tx-primary">
+                              <Mail className="w-4 h-4 text-tx-muted" />
                               {t.email || 'N/A'}
                             </div>
-                            <div className="flex items-center gap-2 text-sm text-gray-500">
-                              <Phone className="w-4 h-4 text-gray-400" />
+                            <div className="flex items-center gap-2 text-sm text-tx-muted">
+                              <Phone className="w-4 h-4 text-tx-muted" />
                               {t.phone || 'N/A'}
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <Home className="w-4 h-4 text-gray-400" />
-                            <span className="font-medium text-gray-900">
+                            <Home className="w-4 h-4 text-tx-muted" />
+                            <span className="font-medium text-tx-primary">
                               {t.unit_number || 'N/A'}
                             </span>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm">
-                            <div className="text-gray-900">
+                            <div className="text-tx-primary">
                               {new Date(tenant.lease_start).toLocaleDateString()}
                             </div>
-                            <div className="text-gray-500">
+                            <div className="text-tx-muted">
                               to {new Date(tenant.lease_end).toLocaleDateString()}
                             </div>
                           </div>
@@ -316,7 +316,7 @@ export default function OwnerTenantsPage() {
                               {RISK_LEVEL_CONFIG[riskScores.get(tenant.id)!.level].label}
                             </span>
                           ) : (
-                            <span className="text-xs text-gray-400">--</span>
+                            <span className="text-xs text-tx-muted">--</span>
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right">

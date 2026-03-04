@@ -126,15 +126,15 @@ function EditUnitModal({
         />
 
         {/* Modal */}
-        <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl">
+        <div className="relative w-full max-w-2xl bg-bg-card rounded-xl shadow-2xl">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">Edit Unit</h2>
+            <h2 className="text-xl font-semibold text-tx-primary">Edit Unit</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <X className="w-5 h-5 text-gray-500" />
+              <X className="w-5 h-5 text-tx-muted" />
             </button>
           </div>
 
@@ -144,26 +144,26 @@ function EditUnitModal({
               {/* Basic Info */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-tx-secondary mb-1">
                     Unit Number
                   </label>
                   <input
                     type="text"
                     value={formData.unit_number}
                     onChange={(e) => setFormData({ ...formData, unit_number: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-tx-secondary mb-1">
                     Floor
                   </label>
                   <input
                     type="number"
                     value={formData.floor}
                     onChange={(e) => setFormData({ ...formData, floor: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g., 1"
                   />
                 </div>
@@ -171,49 +171,49 @@ function EditUnitModal({
 
               {/* Specifications */}
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-3">Specifications</h3>
+                <h3 className="text-sm font-medium text-tx-primary mb-3">Specifications</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Bedrooms</label>
+                    <label className="block text-sm text-tx-secondary mb-1">Bedrooms</label>
                     <input
                       type="number"
                       min="0"
                       value={formData.bedrooms}
                       onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Bathrooms</label>
+                    <label className="block text-sm text-tx-secondary mb-1">Bathrooms</label>
                     <input
                       type="number"
                       min="0"
                       value={formData.bathrooms}
                       onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Toilets</label>
+                    <label className="block text-sm text-tx-secondary mb-1">Toilets</label>
                     <input
                       type="number"
                       min="0"
                       value={formData.toilets}
                       onChange={(e) => setFormData({ ...formData, toilets: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Size (sq ft)</label>
+                    <label className="block text-sm text-tx-secondary mb-1">Size (sq ft)</label>
                     <input
                       type="number"
                       min="0"
                       value={formData.square_feet}
                       onChange={(e) => setFormData({ ...formData, square_feet: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
@@ -223,29 +223,29 @@ function EditUnitModal({
               {/* Pricing & Status */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-tx-secondary mb-1">
                     Monthly Rent (KES)
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-tx-muted" />
                     <input
                       type="number"
                       min="0"
                       value={formData.monthly_rent}
                       onChange={(e) => setFormData({ ...formData, monthly_rent: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="0"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-tx-secondary mb-1">
                     Status
                   </label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="vacant">Vacant</option>
                     <option value="occupied">Occupied</option>
@@ -259,13 +259,13 @@ function EditUnitModal({
 
               {/* Occupancy Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-tx-secondary mb-1">
                   Occupancy Type
                 </label>
                 <select
                   value={formData.occupancy_type}
                   onChange={(e) => setFormData({ ...formData, occupancy_type: e.target.value })}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="available">Available</option>
                   <option value="rented">Rented</option>
@@ -277,50 +277,50 @@ function EditUnitModal({
 
               {/* Features */}
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-3">Features</h3>
+                <h3 className="text-sm font-medium text-tx-primary mb-3">Features</h3>
                 <div className="flex flex-wrap gap-4">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.has_master_bedroom}
                       onChange={(e) => setFormData({ ...formData, has_master_bedroom: e.target.checked })}
-                      className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 rounded border-bd-strong text-blue-600 focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-700">Master Bedroom</span>
+                    <span className="text-sm text-tx-secondary">Master Bedroom</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.has_servant_quarters}
                       onChange={(e) => setFormData({ ...formData, has_servant_quarters: e.target.checked })}
-                      className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 rounded border-bd-strong text-blue-600 focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-700">Servant Quarters (DSQ)</span>
+                    <span className="text-sm text-tx-secondary">Servant Quarters (DSQ)</span>
                   </label>
                 </div>
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-tx-secondary mb-1">
                   Description
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                  className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                   placeholder="Enter unit description..."
                 />
               </div>
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t bg-gray-50 rounded-b-xl">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t bg-bg-secondary rounded-b-xl">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-4 py-2.5 text-sm font-medium text-tx-secondary bg-bg-card border border-bd-strong rounded-lg hover:bg-bg-hover transition-colors"
               >
                 Cancel
               </button>
@@ -447,7 +447,7 @@ export default function UnitDetailPage() {
       completed: "bg-green-100 text-green-800",
       maintenance: "bg-orange-100 text-orange-800"
     };
-    return colors[status?.toLowerCase()] || "bg-gray-100 text-gray-800";
+    return colors[status?.toLowerCase()] || "bg-bg-secondary text-tx-primary";
   };
 
   if (authLoading || loading) {
@@ -462,8 +462,8 @@ export default function UnitDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
         <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Failed to load unit</h2>
-        <p className="text-gray-500 mb-6">{error || "Unit not found"}</p>
+        <h2 className="text-xl font-semibold text-tx-primary mb-2">Failed to load unit</h2>
+        <p className="text-tx-muted mb-6">{error || "Unit not found"}</p>
         <Link
           href="/owner/units"
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -512,23 +512,23 @@ export default function UnitDetailPage() {
       )}
 
       {/* Header */}
-      <div className="bg-white rounded-lg border shadow-sm p-6 mb-6">
+      <div className="bg-bg-card rounded-lg border shadow-sm p-6 mb-6">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div className="flex-1">
             <div className="flex items-center gap-3">
               <Home className="w-6 h-6 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900">{unit.unit_number}</h1>
+              <h1 className="text-2xl font-bold text-tx-primary">{unit.unit_number}</h1>
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadge(unit.status)}`}>
                 {unit.status || 'Unknown'}
               </span>
             </div>
-            <p className="text-gray-500 mt-1">{propertyName || unit.property?.name || "Property"}</p>
+            <p className="text-tx-muted mt-1">{propertyName || unit.property?.name || "Property"}</p>
           </div>
           <div className="flex items-center gap-3">
             {(unit.status?.toLowerCase() === 'vacant' || unit.status?.toLowerCase() === 'available') && !unit.tenant && (
@@ -557,8 +557,8 @@ export default function UnitDetailPage() {
               <BedDouble className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Bedrooms</p>
-              <p className="font-semibold text-gray-900">{unit.bedrooms ?? 'N/A'}</p>
+              <p className="text-xs text-tx-muted">Bedrooms</p>
+              <p className="font-semibold text-tx-primary">{unit.bedrooms ?? 'N/A'}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -566,8 +566,8 @@ export default function UnitDetailPage() {
               <Bath className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Bathrooms</p>
-              <p className="font-semibold text-gray-900">{unit.bathrooms ?? 'N/A'}</p>
+              <p className="text-xs text-tx-muted">Bathrooms</p>
+              <p className="font-semibold text-tx-primary">{unit.bathrooms ?? 'N/A'}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -575,8 +575,8 @@ export default function UnitDetailPage() {
               <Maximize className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Size</p>
-              <p className="font-semibold text-gray-900">{sizeValue ? `${sizeValue} sq ft` : 'N/A'}</p>
+              <p className="text-xs text-tx-muted">Size</p>
+              <p className="font-semibold text-tx-primary">{sizeValue ? `${sizeValue} sq ft` : 'N/A'}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -584,7 +584,7 @@ export default function UnitDetailPage() {
               <DollarSign className="w-5 h-5 text-yellow-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Monthly Rent</p>
+              <p className="text-xs text-tx-muted">Monthly Rent</p>
               <p className="font-semibold text-green-600">{formatCurrency(rentAmount)}</p>
             </div>
           </div>
@@ -592,7 +592,7 @@ export default function UnitDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-lg border shadow-sm">
+      <div className="bg-bg-card rounded-lg border shadow-sm">
         <div className="border-b">
           <nav className="flex gap-8 px-6">
             {tabs.map((tab) => (
@@ -602,7 +602,7 @@ export default function UnitDetailPage() {
                 className={`flex items-center gap-2 py-4 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
                     ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
+                    : "border-transparent text-tx-muted hover:text-tx-secondary"
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -616,39 +616,39 @@ export default function UnitDetailPage() {
           {activeTab === "overview" && (
             <div className="grid gap-6 md:grid-cols-2">
               {/* Unit Details */}
-              <div className="bg-gray-50 rounded-lg p-6">
+              <div className="bg-bg-secondary rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4">Unit Details</h3>
                 <dl className="space-y-4">
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Unit Number</dt>
-                    <dd className="font-medium text-gray-900">{unit.unit_number}</dd>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Unit Number</dt>
+                    <dd className="font-medium text-tx-primary">{unit.unit_number}</dd>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Floor</dt>
-                    <dd className="font-medium text-gray-900">{formatValue(unit.floor)}</dd>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Floor</dt>
+                    <dd className="font-medium text-tx-primary">{formatValue(unit.floor)}</dd>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Bedrooms</dt>
-                    <dd className="font-medium text-gray-900">{formatValue(unit.bedrooms)}</dd>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Bedrooms</dt>
+                    <dd className="font-medium text-tx-primary">{formatValue(unit.bedrooms)}</dd>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Bathrooms</dt>
-                    <dd className="font-medium text-gray-900">{formatValue(unit.bathrooms)}</dd>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Bathrooms</dt>
+                    <dd className="font-medium text-tx-primary">{formatValue(unit.bathrooms)}</dd>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Toilets</dt>
-                    <dd className="font-medium text-gray-900">{formatValue(unit.toilets)}</dd>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Toilets</dt>
+                    <dd className="font-medium text-tx-primary">{formatValue(unit.toilets)}</dd>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Size</dt>
-                    <dd className="font-medium text-gray-900">{sizeValue ? `${sizeValue} sq ft` : 'Not specified'}</dd>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Size</dt>
+                    <dd className="font-medium text-tx-primary">{sizeValue ? `${sizeValue} sq ft` : 'Not specified'}</dd>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Monthly Rent</dt>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Monthly Rent</dt>
                     <dd className="font-medium text-green-600">{formatCurrency(rentAmount)}</dd>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Status</dt>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Status</dt>
                     <dd>
                       <span className={`px-2 py-1 rounded text-sm font-medium ${getStatusBadge(unit.status)}`}>
                         {unit.status || "N/A"}
@@ -656,8 +656,8 @@ export default function UnitDetailPage() {
                     </dd>
                   </div>
                   <div className="flex justify-between py-2">
-                    <dt className="text-gray-500">Occupancy Type</dt>
-                    <dd className="font-medium text-gray-900 capitalize">
+                    <dt className="text-tx-muted">Occupancy Type</dt>
+                    <dd className="font-medium text-tx-primary capitalize">
                       {(unit.occupancy_type || 'available').replace('_', ' ')}
                     </dd>
                   </div>
@@ -665,46 +665,46 @@ export default function UnitDetailPage() {
               </div>
 
               {/* Features */}
-              <div className="bg-gray-50 rounded-lg p-6">
+              <div className="bg-bg-secondary rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4">Features</h3>
                 <dl className="space-y-4">
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Master Bedroom</dt>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Master Bedroom</dt>
                     <dd className="font-medium">
                       {unit.has_master_bedroom ? (
                         <span className="flex items-center gap-1 text-green-600">
                           <CheckCircle className="w-4 h-4" /> Yes
                         </span>
                       ) : (
-                        <span className="text-gray-500">No</span>
+                        <span className="text-tx-muted">No</span>
                       )}
                     </dd>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200">
-                    <dt className="text-gray-500">Servant Quarters (DSQ)</dt>
+                  <div className="flex justify-between py-2 border-b border-bd">
+                    <dt className="text-tx-muted">Servant Quarters (DSQ)</dt>
                     <dd className="font-medium">
                       {unit.has_servant_quarters ? (
                         <span className="flex items-center gap-1 text-green-600">
                           <CheckCircle className="w-4 h-4" /> Yes
                         </span>
                       ) : (
-                        <span className="text-gray-500">No</span>
+                        <span className="text-tx-muted">No</span>
                       )}
                     </dd>
                   </div>
                   {unit.sq_bathrooms !== undefined && unit.sq_bathrooms !== null && unit.sq_bathrooms > 0 && (
-                    <div className="flex justify-between py-2 border-b border-gray-200">
-                      <dt className="text-gray-500">SQ Bathrooms</dt>
-                      <dd className="font-medium text-gray-900">{unit.sq_bathrooms}</dd>
+                    <div className="flex justify-between py-2 border-b border-bd">
+                      <dt className="text-tx-muted">SQ Bathrooms</dt>
+                      <dd className="font-medium text-tx-primary">{unit.sq_bathrooms}</dd>
                     </div>
                   )}
                 </dl>
 
                 <div className="mt-6 pt-4 border-t">
-                  <dt className="text-gray-500 text-sm mb-2">Description</dt>
-                  <dd className="text-gray-700">
+                  <dt className="text-tx-muted text-sm mb-2">Description</dt>
+                  <dd className="text-tx-secondary">
                     {unit.description || (
-                      <span className="text-gray-400 italic">No description available</span>
+                      <span className="text-tx-muted italic">No description available</span>
                     )}
                   </dd>
                 </div>
@@ -715,27 +715,27 @@ export default function UnitDetailPage() {
           {activeTab === "tenant" && (
             <div>
               {unit.tenant ? (
-                <div className="bg-gray-50 rounded-lg p-6">
+                <div className="bg-bg-secondary rounded-lg p-6">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                       <User className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">{unit.tenant.full_name}</h3>
-                      <p className="text-gray-500">Current Tenant</p>
+                      <h3 className="text-lg font-semibold text-tx-primary">{unit.tenant.full_name}</h3>
+                      <p className="text-tx-muted">Current Tenant</p>
                     </div>
                   </div>
                   <dl className="grid gap-4 md:grid-cols-2">
-                    <div className="p-4 bg-white rounded-lg border">
-                      <dt className="text-gray-500 text-sm">Email</dt>
-                      <dd className="font-medium text-gray-900 mt-1">{unit.tenant.email}</dd>
+                    <div className="p-4 bg-bg-card rounded-lg border">
+                      <dt className="text-tx-muted text-sm">Email</dt>
+                      <dd className="font-medium text-tx-primary mt-1">{unit.tenant.email}</dd>
                     </div>
-                    <div className="p-4 bg-white rounded-lg border">
-                      <dt className="text-gray-500 text-sm">Phone</dt>
-                      <dd className="font-medium text-gray-900 mt-1">{unit.tenant.phone || 'Not provided'}</dd>
+                    <div className="p-4 bg-bg-card rounded-lg border">
+                      <dt className="text-tx-muted text-sm">Phone</dt>
+                      <dd className="font-medium text-tx-primary mt-1">{unit.tenant.phone || 'Not provided'}</dd>
                     </div>
-                    <div className="p-4 bg-white rounded-lg border md:col-span-2">
-                      <dt className="text-gray-500 text-sm">Balance Due</dt>
+                    <div className="p-4 bg-bg-card rounded-lg border md:col-span-2">
+                      <dt className="text-tx-muted text-sm">Balance Due</dt>
                       <dd className={`font-semibold text-lg mt-1 ${unit.tenant.balance_due > 0 ? 'text-red-600' : 'text-green-600'}`}>
                         {formatCurrency(unit.tenant.balance_due)}
                       </dd>
@@ -744,9 +744,9 @@ export default function UnitDetailPage() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <User className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No tenant assigned</h3>
-                  <p className="text-gray-500 mb-6">This unit is currently vacant</p>
+                  <User className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-tx-primary mb-2">No tenant assigned</h3>
+                  <p className="text-tx-muted mb-6">This unit is currently vacant</p>
                   <Link
                     href={`/owner/tenants/new?unit_id=${unit.id}&property_id=${unit.property_id}`}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -765,23 +765,23 @@ export default function UnitDetailPage() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Amount</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Type</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Status</th>
-                        <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Date</th>
+                        <th className="text-left py-3 px-4 text-sm font-medium text-tx-muted">Amount</th>
+                        <th className="text-left py-3 px-4 text-sm font-medium text-tx-muted">Type</th>
+                        <th className="text-left py-3 px-4 text-sm font-medium text-tx-muted">Status</th>
+                        <th className="text-left py-3 px-4 text-sm font-medium text-tx-muted">Date</th>
                       </tr>
                     </thead>
                     <tbody>
                       {unit.payments.map((p) => (
-                        <tr key={p.id} className="border-b last:border-0 hover:bg-gray-50">
+                        <tr key={p.id} className="border-b last:border-0 hover:bg-bg-hover">
                           <td className="py-3 px-4 font-medium">{formatCurrency(p.amount)}</td>
-                          <td className="py-3 px-4 text-gray-600 capitalize">{p.payment_type || 'N/A'}</td>
+                          <td className="py-3 px-4 text-tx-secondary capitalize">{p.payment_type || 'N/A'}</td>
                           <td className="py-3 px-4">
                             <span className={`px-2 py-1 rounded text-sm font-medium ${getStatusBadge(p.status)}`}>
                               {p.status}
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-gray-500">{p.date || 'N/A'}</td>
+                          <td className="py-3 px-4 text-tx-muted">{p.date || 'N/A'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -789,9 +789,9 @@ export default function UnitDetailPage() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No payments</h3>
-                  <p className="text-gray-500">No payment records for this unit</p>
+                  <CreditCard className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-tx-primary mb-2">No payments</h3>
+                  <p className="text-tx-muted">No payment records for this unit</p>
                 </div>
               )}
             </div>
@@ -802,10 +802,10 @@ export default function UnitDetailPage() {
               {unit.maintenance_requests && unit.maintenance_requests.length > 0 ? (
                 <div className="space-y-4">
                   {unit.maintenance_requests.map((m) => (
-                    <div key={m.id} className="p-4 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <div key={m.id} className="p-4 bg-bg-secondary rounded-lg flex items-center justify-between">
                       <div>
-                        <h4 className="font-medium text-gray-900">{m.title}</h4>
-                        <p className="text-sm text-gray-500 capitalize">Priority: {m.priority}</p>
+                        <h4 className="font-medium text-tx-primary">{m.title}</h4>
+                        <p className="text-sm text-tx-muted capitalize">Priority: {m.priority}</p>
                       </div>
                       <span className={`px-2 py-1 rounded text-sm font-medium ${getStatusBadge(m.status)}`}>
                         {m.status}
@@ -815,9 +815,9 @@ export default function UnitDetailPage() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <Wrench className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No maintenance requests</h3>
-                  <p className="text-gray-500">No maintenance requests for this unit</p>
+                  <Wrench className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-tx-primary mb-2">No maintenance requests</h3>
+                  <p className="text-tx-muted">No maintenance requests for this unit</p>
                 </div>
               )}
             </div>

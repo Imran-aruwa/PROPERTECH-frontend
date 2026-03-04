@@ -51,17 +51,17 @@ export default function ForgotPasswordPage() {
             <CheckCircle className="w-10 h-10 text-green-600" />
           </div>
 
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl font-bold text-tx-primary mb-4">
             Check Your Email
           </h1>
 
-          <p className="text-gray-600 mb-6">
+          <p className="text-tx-secondary mb-6">
             We've sent password reset instructions to{' '}
-            <span className="font-medium text-gray-900">{email}</span>
+            <span className="font-medium text-tx-primary">{email}</span>
           </p>
 
-          <div className="bg-white rounded-lg p-4 mb-6 shadow-sm text-left">
-            <p className="text-sm text-gray-600 mb-2">
+          <div className="bg-bg-card rounded-lg p-4 mb-6 shadow-sm text-left">
+            <p className="text-sm text-tx-secondary mb-2">
               Didn't receive the email? Check your spam folder or
             </p>
             <button
@@ -94,28 +94,28 @@ export default function ForgotPasswordPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-tx-primary mb-2">
             Forgot Password?
           </h1>
-          <p className="text-gray-600">
+          <p className="text-tx-secondary">
             No worries! Enter your email and we'll send you reset instructions.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-bg-card rounded-2xl shadow-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-tx-secondary mb-2">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 ${
-                    error ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-bg-card text-tx-primary ${
+                    error ? 'border-red-500' : 'border-bd-strong'
                   }`}
                   placeholder="you@example.com"
                   autoComplete="email"
@@ -146,7 +146,7 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
 
-        <p className="mt-8 text-center text-sm text-gray-500">
+        <p className="mt-8 text-center text-sm text-tx-muted">
           Remember your password?{' '}
           <Link href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
             Sign in

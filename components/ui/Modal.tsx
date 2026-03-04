@@ -61,14 +61,14 @@ export function Modal({
         />
 
         {/* Modal */}
-        <div className={`relative bg-white rounded-lg shadow-xl w-full ${sizes[size]} max-h-[90vh] flex flex-col animate-in fade-in zoom-in-95 duration-200`}>
+        <div className={`relative bg-bg-card rounded-lg shadow-xl w-full ${sizes[size]} max-h-[90vh] flex flex-col animate-in fade-in zoom-in-95 duration-200`}>
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+            <h2 className="text-xl font-semibold text-tx-primary">{title}</h2>
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-tx-muted hover:text-tx-secondary transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -117,12 +117,12 @@ export function ConfirmModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm" showCloseButton={false}>
       <div className="space-y-4">
-        <p className="text-gray-600">{message}</p>
+        <p className="text-tx-secondary">{message}</p>
         <div className="flex gap-3 justify-end">
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm font-medium text-tx-secondary bg-bg-card border border-bd-strong rounded-lg hover:bg-bg-hover disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {cancelText}
           </button>

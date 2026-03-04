@@ -17,18 +17,18 @@ function CookieSection({
   content: React.ReactNode
 }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-bg-card rounded-xl shadow-sm border border-bd overflow-hidden">
       <button
         onClick={() => toggle(id)}
-        className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between p-6 hover:bg-bg-hover transition-colors"
       >
-        <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-xl font-semibold text-tx-primary">{title}</h2>
         <ChevronDown 
           className={`w-5 h-5 transition-transform ${expandedId === id ? 'rotate-180' : ''}`} 
         />
       </button>
       {expandedId === id && (
-        <div className="px-6 pb-6 border-t border-gray-100">
+        <div className="px-6 pb-6 border-t border-bd">
           {content}
         </div>
       )}
@@ -66,7 +66,7 @@ export default function CookiesPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 Cookies are small text files that are stored on your device when
                 you visit our website or use our services. They help us remember
@@ -96,31 +96,31 @@ export default function CookiesPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-4 text-gray-700">
+            <div className="space-y-4 text-tx-secondary">
               <p>We use different types of cookies for various purposes:</p>
               <div className="grid md:grid-cols-2 gap-4 mt-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">Essential Cookies</h4>
-                  <p className="text-sm text-gray-600">
+                <div className="bg-bg-secondary p-4 rounded-lg">
+                  <h4 className="font-semibold text-tx-primary mb-2">Essential Cookies</h4>
+                  <p className="text-sm text-tx-secondary">
                     Required for the website to function properly. These cookies ensure
                     basic functionalities like page navigation and access to secure areas.
                   </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">Analytics Cookies</h4>
-                  <p className="text-sm text-gray-600">
+                <div className="bg-bg-secondary p-4 rounded-lg">
+                  <h4 className="font-semibold text-tx-primary mb-2">Analytics Cookies</h4>
+                  <p className="text-sm text-tx-secondary">
                     Help us understand how visitors use our site so we can improve it.
                   </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">Functionality Cookies</h4>
-                  <p className="text-sm text-gray-600">
+                <div className="bg-bg-secondary p-4 rounded-lg">
+                  <h4 className="font-semibold text-tx-primary mb-2">Functionality Cookies</h4>
+                  <p className="text-sm text-tx-secondary">
                     Remember your preferences and settings to provide personalized experience.
                   </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">Marketing Cookies</h4>
-                  <p className="text-sm text-gray-600">
+                <div className="bg-bg-secondary p-4 rounded-lg">
+                  <h4 className="font-semibold text-tx-primary mb-2">Marketing Cookies</h4>
+                  <p className="text-sm text-tx-secondary">
                     Used to deliver personalized ads and content based on your interests.
                   </p>
                 </div>
@@ -135,32 +135,32 @@ export default function CookiesPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>Below is a list of cookies currently used on our platform:</p>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 font-semibold text-gray-900">Name</th>
-                      <th className="text-left py-3 font-semibold text-gray-900">Purpose</th>
-                      <th className="text-left py-3 font-semibold text-gray-900">Duration</th>
-                      <th className="text-left py-3 font-semibold text-gray-900">Type</th>
+                    <tr className="border-b border-bd">
+                      <th className="text-left py-3 font-semibold text-tx-primary">Name</th>
+                      <th className="text-left py-3 font-semibold text-tx-primary">Purpose</th>
+                      <th className="text-left py-3 font-semibold text-tx-primary">Duration</th>
+                      <th className="text-left py-3 font-semibold text-tx-primary">Type</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr className="border-b border-bd hover:bg-bg-hover">
                       <td className="py-3 font-mono">session_id</td>
                       <td className="py-3">Maintain user session</td>
                       <td className="py-3">Session</td>
                       <td className="py-3"><span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Essential</span></td>
                     </tr>
-                    <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr className="border-b border-bd hover:bg-bg-hover">
                       <td className="py-3 font-mono">_ga</td>
                       <td className="py-3">Google Analytics</td>
                       <td className="py-3">2 years</td>
                       <td className="py-3"><span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Analytics</span></td>
                     </tr>
-                    <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr className="border-b border-bd hover:bg-bg-hover">
                       <td className="py-3 font-mono">preferences</td>
                       <td className="py-3">User preferences</td>
                       <td className="py-3">1 year</td>
@@ -169,7 +169,7 @@ export default function CookiesPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-sm text-gray-500 mt-4">
+              <p className="text-sm text-tx-muted mt-4">
                 This list is updated periodically. Third-party cookies may change based on service providers.
               </p>
             </div>
@@ -182,7 +182,7 @@ export default function CookiesPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>You can control cookies through your browser settings:</p>
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li>Most browsers let you accept, block, or delete cookies</li>
@@ -202,7 +202,7 @@ export default function CookiesPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 We work with trusted third parties (like Google Analytics) that may place
                 cookies on your device. These third parties have their own privacy policies.
@@ -225,7 +225,7 @@ export default function CookiesPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 We may update this Cookie Policy from time to time. Significant changes
                 will be communicated via our website and cookie consent banner.
@@ -244,14 +244,14 @@ export default function CookiesPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p className="font-semibold">
                 Questions about our Cookie Policy? Contact us at{' '}
                 <a href="mailto:support@propertech.co.ke" className="text-blue-600 hover:underline">
                   support@propertech.co.ke
                 </a>
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-tx-muted">
                 Last updated: December 12, 2025
               </p>
             </div>

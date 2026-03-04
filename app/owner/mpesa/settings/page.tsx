@@ -164,7 +164,7 @@ export default function MpesaSettingsPage() {
       )}
 
       {/* Credentials form */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
+      <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-5 space-y-4">
         <h2 className="font-semibold text-slate-800">Daraja API Credentials</h2>
         <p className="text-xs text-slate-400">
           Get these from <a href="https://developer.safaricom.co.ke" target="_blank" rel="noopener" className="text-green-600 hover:underline">developer.safaricom.co.ke</a>. Keep them confidential.
@@ -294,7 +294,7 @@ export default function MpesaSettingsPage() {
 
       {/* Test Connection */}
       {config && (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-3">
+        <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-5 space-y-3">
           <h2 className="font-semibold text-slate-800">Test Connection</h2>
           <p className="text-xs text-slate-400">
             Send a KES 1 STK push to your phone to verify your credentials work.
@@ -321,7 +321,7 @@ export default function MpesaSettingsPage() {
 
       {/* Register C2B URLs */}
       {config && (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 space-y-3">
+        <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-5 space-y-3">
           <h2 className="font-semibold text-slate-800">Register Callback URLs</h2>
           <p className="text-xs text-slate-400">
             Click once to register your PROPERTECH callback URLs with Safaricom. Required for receiving Paybill payments automatically.

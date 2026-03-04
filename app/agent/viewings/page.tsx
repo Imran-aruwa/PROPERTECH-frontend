@@ -140,7 +140,7 @@ export default function AgentViewingsPage() {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'cancelled': return 'bg-red-100 text-red-800';
       case 'no_show': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-bg-secondary text-tx-primary';
     }
   };
 
@@ -149,7 +149,7 @@ export default function AgentViewingsPage() {
       header: 'Property',
       accessor: (row: Viewing) => (
         <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-gray-400" />
+          <MapPin className="w-4 h-4 text-tx-muted" />
           {row.property}
         </div>
       ),
@@ -158,8 +158,8 @@ export default function AgentViewingsPage() {
       header: 'Client',
       accessor: (row: Viewing) => (
         <div>
-          <p className="font-medium text-gray-900">{row.client_name}</p>
-          <p className="text-sm text-gray-500">{row.client_phone}</p>
+          <p className="font-medium text-tx-primary">{row.client_name}</p>
+          <p className="text-sm text-tx-muted">{row.client_phone}</p>
         </div>
       ),
     },
@@ -167,7 +167,7 @@ export default function AgentViewingsPage() {
       header: 'Date & Time',
       accessor: (row: Viewing) => (
         <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-gray-400" />
+          <Clock className="w-4 h-4 text-tx-muted" />
           {row.date} at {row.time}
         </div>
       ),
@@ -193,17 +193,17 @@ export default function AgentViewingsPage() {
   const MobileCardView = () => (
     <div className="space-y-4 md:hidden">
       {filteredViewings.map((viewing) => (
-        <div key={viewing.id} className="bg-white rounded-lg border p-4 space-y-3">
+        <div key={viewing.id} className="bg-bg-card rounded-lg border p-4 space-y-3">
           <div className="flex items-start justify-between">
             <div>
-              <p className="font-medium text-gray-900">{viewing.property}</p>
-              <p className="text-sm text-gray-500">{viewing.client_name}</p>
+              <p className="font-medium text-tx-primary">{viewing.property}</p>
+              <p className="text-sm text-tx-muted">{viewing.client_name}</p>
             </div>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(viewing.status)}`}>
               {viewing.status.replace('_', ' ').toUpperCase()}
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-gray-600">
+          <div className="flex items-center gap-4 text-sm text-tx-secondary">
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               {viewing.date}
@@ -229,7 +229,7 @@ export default function AgentViewingsPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading viewings...</p>
+            <p className="text-tx-secondary">Loading viewings...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -241,8 +241,8 @@ export default function AgentViewingsPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Property Viewings</h1>
-            <p className="text-gray-600 mt-1">Schedule and manage property viewings</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Property Viewings</h1>
+            <p className="text-tx-secondary mt-1">Schedule and manage property viewings</p>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
@@ -266,69 +266,69 @@ export default function AgentViewingsPage() {
         </div>
 
         {showForm && (
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4">Schedule New Viewing</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Property *</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Property *</label>
                   <input
                     type="text"
                     value={formData.property}
                     onChange={(e) => setFormData({ ...formData, property: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Property name or address"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Client Name *</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Client Name *</label>
                   <input
                     type="text"
                     value={formData.client_name}
                     onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Client full name"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Client Phone</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Client Phone</label>
                   <input
                     type="tel"
                     value={formData.client_phone}
                     onChange={(e) => setFormData({ ...formData, client_phone: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Phone number"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Date *</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Date *</label>
                   <input
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Time *</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Time *</label>
                   <input
                     type="time"
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-2">Notes</label>
                 <textarea
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   rows={3}
                   placeholder="Additional notes"
                 />
@@ -351,7 +351,7 @@ export default function AgentViewingsPage() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition"
+                  className="bg-bd text-tx-secondary px-6 py-2 rounded-lg hover:bg-bg-hover transition"
                 >
                   Cancel
                 </button>
@@ -360,7 +360,7 @@ export default function AgentViewingsPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-sm border p-4">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-4">
           <div className="flex flex-wrap gap-2">
             {['all', 'scheduled', 'completed', 'cancelled', 'no_show'].map((status) => (
               <button
@@ -369,7 +369,7 @@ export default function AgentViewingsPage() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                   filter === status
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                 }`}
               >
                 {status === 'no_show' ? 'No Show' : status.charAt(0).toUpperCase() + status.slice(1)}
@@ -379,15 +379,15 @@ export default function AgentViewingsPage() {
         </div>
 
         {filteredViewings.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No viewings found</p>
-            <p className="text-gray-400 text-sm mt-1">Click "Schedule Viewing" to create your first viewing</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Calendar className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No viewings found</p>
+            <p className="text-tx-muted text-sm mt-1">Click "Schedule Viewing" to create your first viewing</p>
           </div>
         ) : (
           <>
             <MobileCardView />
-            <div className="hidden md:block bg-white rounded-lg shadow-sm border p-6">
+            <div className="hidden md:block bg-bg-card rounded-lg shadow-sm border p-6">
               <DataTable data={filteredViewings} columns={columns} />
             </div>
           </>

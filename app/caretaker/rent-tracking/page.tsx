@@ -172,7 +172,7 @@ export default function CaretakerRentTracking() {
     {
       header: 'Days Overdue',
       accessor: ((row: Tenant) => (
-        <span className={row.daysOverdue > 0 ? 'text-red-600 font-semibold' : 'text-gray-400'}>
+        <span className={row.daysOverdue > 0 ? 'text-red-600 font-semibold' : 'text-tx-muted'}>
           {row.daysOverdue > 0 ? `${row.daysOverdue} days` : '-'}
         </span>
       )) as any,
@@ -203,7 +203,7 @@ export default function CaretakerRentTracking() {
       <div className="p-6 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading rent data...</p>
+          <p className="text-tx-secondary">Loading rent data...</p>
         </div>
       </div>
     );
@@ -213,8 +213,8 @@ export default function CaretakerRentTracking() {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Rent Management</h1>
-        <p className="text-gray-600 mt-1">Track and manage rent collection for your property</p>
+        <h1 className="text-3xl font-bold text-tx-primary">Rent Management</h1>
+        <p className="text-tx-secondary mt-1">Track and manage rent collection for your property</p>
       </div>
 
       {/* Summary Cards */}
@@ -258,10 +258,10 @@ export default function CaretakerRentTracking() {
           height={250}
         />
       ) : (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Collection Progress</h3>
-          <div className="text-center py-8 text-gray-500">
-            <TrendingUp className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+          <h3 className="text-lg font-semibold text-tx-primary mb-4">Monthly Collection Progress</h3>
+          <div className="text-center py-8 text-tx-muted">
+            <TrendingUp className="w-12 h-12 text-tx-muted mx-auto mb-2" />
             <p>No collection data available</p>
           </div>
         </div>
@@ -270,63 +270,63 @@ export default function CaretakerRentTracking() {
       {/* Bills Summary */}
       {utilityBills ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Water Bills</h3>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h3 className="text-lg font-semibold text-tx-primary mb-4">Water Bills</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-600">Expected:</span>
-                <span className="font-semibold text-gray-900">{formatCurrency(utilityBills.water.expected)}</span>
+                <span className="text-tx-secondary">Expected:</span>
+                <span className="font-semibold text-tx-primary">{formatCurrency(utilityBills.water.expected)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Collected:</span>
+                <span className="text-tx-secondary">Collected:</span>
                 <span className="font-semibold text-green-600">{formatCurrency(utilityBills.water.collected)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Rate:</span>
+                <span className="text-tx-secondary">Rate:</span>
                 <span className="font-semibold text-green-600">{utilityBills.water.rate}%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Pending:</span>
+                <span className="text-tx-secondary">Pending:</span>
                 <span className="font-semibold text-yellow-600">{formatCurrency(utilityBills.water.pending)}</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Electricity Bills</h3>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h3 className="text-lg font-semibold text-tx-primary mb-4">Electricity Bills</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-600">Expected:</span>
-                <span className="font-semibold text-gray-900">{formatCurrency(utilityBills.electricity.expected)}</span>
+                <span className="text-tx-secondary">Expected:</span>
+                <span className="font-semibold text-tx-primary">{formatCurrency(utilityBills.electricity.expected)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Collected:</span>
+                <span className="text-tx-secondary">Collected:</span>
                 <span className="font-semibold text-green-600">{formatCurrency(utilityBills.electricity.collected)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Rate:</span>
+                <span className="text-tx-secondary">Rate:</span>
                 <span className="font-semibold text-green-600">{utilityBills.electricity.rate}%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Pending:</span>
+                <span className="text-tx-secondary">Pending:</span>
                 <span className="font-semibold text-yellow-600">{formatCurrency(utilityBills.electricity.pending)}</span>
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Utility Bills</h3>
-          <div className="text-center py-8 text-gray-500">
-            <DollarSign className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+          <h3 className="text-lg font-semibold text-tx-primary mb-4">Utility Bills</h3>
+          <div className="text-center py-8 text-tx-muted">
+            <DollarSign className="w-12 h-12 text-tx-muted mx-auto mb-2" />
             <p>No utility bill data available</p>
           </div>
         </div>
       )}
 
       {/* Tenant Payment Status Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+      <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+        <h2 className="text-xl font-semibold text-tx-primary mb-4">
           Tenant Payment Status
         </h2>
         <DataTable data={tenants} columns={columns} isLoading={loading} />

@@ -253,7 +253,7 @@ export default function OwnerSettingsPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading settings...</p>
+            <p className="text-tx-secondary">Loading settings...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -264,8 +264,8 @@ export default function OwnerSettingsPage() {
     <DashboardLayout role="owner">
       <div className="space-y-6 max-w-5xl">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600 mt-1">Manage your account and preferences</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Settings</h1>
+          <p className="text-tx-secondary mt-1">Manage your account and preferences</p>
         </div>
 
         {/* Message Alert */}
@@ -295,7 +295,7 @@ export default function OwnerSettingsPage() {
                 className={`flex items-center gap-2 px-4 py-3 font-medium transition-colors whitespace-nowrap border-b-2 -mb-[2px] ${
                   activeTab === tab.id
                     ? 'text-blue-600 border-blue-600'
-                    : 'text-gray-600 border-transparent hover:text-gray-900'
+                    : 'text-tx-secondary border-transparent hover:text-tx-primary'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -309,107 +309,107 @@ export default function OwnerSettingsPage() {
         {activeTab === 'profile' && (
           <div className="space-y-6">
             {/* Avatar Section */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <div className="flex flex-col sm:flex-row items-center gap-6">
                 <div className="relative">
                   <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
                     {profile.full_name?.charAt(0)?.toUpperCase() || 'U'}
                   </div>
-                  <button className="absolute bottom-0 right-0 p-2 bg-white rounded-full shadow-md border hover:bg-gray-50">
-                    <Camera className="w-4 h-4 text-gray-600" />
+                  <button className="absolute bottom-0 right-0 p-2 bg-bg-card rounded-full shadow-md border hover:bg-bg-hover">
+                    <Camera className="w-4 h-4 text-tx-secondary" />
                   </button>
                 </div>
                 <div className="text-center sm:text-left">
-                  <h3 className="text-xl font-semibold text-gray-900">{profile.full_name || 'Your Name'}</h3>
-                  <p className="text-gray-600">{profile.email}</p>
+                  <h3 className="text-xl font-semibold text-tx-primary">{profile.full_name || 'Your Name'}</h3>
+                  <p className="text-tx-secondary">{profile.email}</p>
                 </div>
               </div>
             </div>
 
             {/* Personal Information */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                 <User className="w-5 h-5 text-blue-600" />
                 Personal Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Full Name</label>
                   <input
                     type="text"
                     value={profile.full_name}
                     onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your full name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Email Address</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                     <input
                       type="email"
                       value={profile.email}
                       onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="your@email.com"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Phone Number</label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                     <input
                       type="tel"
                       value={profile.phone}
                       onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="+254 700 000 000"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Company Name</label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                     <input
                       type="text"
                       value={profile.company_name}
                       onChange={(e) => setProfile({ ...profile, company_name: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Your company name"
                     />
                   </div>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Address</label>
                   <input
                     type="text"
                     value={profile.address}
                     onChange={(e) => setProfile({ ...profile, address: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Street address"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">City</label>
                   <input
                     type="text"
                     value={profile.city}
                     onChange={(e) => setProfile({ ...profile, city: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="City"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Country</label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                     <select
                       value={profile.country}
                       onChange={(e) => setProfile({ ...profile, country: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none text-gray-900 bg-white"
+                      className="w-full pl-10 pr-4 py-2.5 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none text-tx-primary bg-bg-card"
                     >
                       <option value="Kenya">Kenya</option>
                       <option value="Uganda">Uganda</option>
@@ -441,7 +441,7 @@ export default function OwnerSettingsPage() {
 
         {/* Notifications Tab */}
         {activeTab === 'notifications' && (
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <Bell className="w-5 h-5 text-blue-600" />
               Notification Preferences
@@ -449,14 +449,14 @@ export default function OwnerSettingsPage() {
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-sm font-medium text-gray-900 mb-4">Notification Channels</h3>
+                <h3 className="text-sm font-medium text-tx-primary mb-4">Notification Channels</h3>
                 <div className="space-y-4">
                   {[
                     { key: 'email_notifications', label: 'Email Notifications', desc: 'Receive updates via email' },
                     { key: 'sms_notifications', label: 'SMS Notifications', desc: 'Receive SMS alerts for urgent matters' },
                     { key: 'push_notifications', label: 'Push Notifications', desc: 'Browser push notifications' },
                   ].map((item) => (
-                    <label key={item.key} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                    <label key={item.key} className="flex items-start gap-4 p-4 bg-bg-secondary rounded-lg cursor-pointer hover:bg-bg-hover transition-colors">
                       <input
                         type="checkbox"
                         checked={notifications[item.key as keyof NotificationSettings] as boolean}
@@ -464,8 +464,8 @@ export default function OwnerSettingsPage() {
                         className="w-5 h-5 text-blue-600 rounded mt-0.5"
                       />
                       <div>
-                        <p className="font-medium text-gray-900">{item.label}</p>
-                        <p className="text-sm text-gray-600">{item.desc}</p>
+                        <p className="font-medium text-tx-primary">{item.label}</p>
+                        <p className="text-sm text-tx-secondary">{item.desc}</p>
                       </div>
                     </label>
                   ))}
@@ -473,7 +473,7 @@ export default function OwnerSettingsPage() {
               </div>
 
               <div className="border-t pt-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-4">Notification Types</h3>
+                <h3 className="text-sm font-medium text-tx-primary mb-4">Notification Types</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
                     { key: 'rent_reminders', label: 'Rent Payment Reminders', desc: 'Before rent is due' },
@@ -483,7 +483,7 @@ export default function OwnerSettingsPage() {
                     { key: 'weekly_reports', label: 'Weekly Reports', desc: 'Weekly summary digest' },
                     { key: 'monthly_statements', label: 'Monthly Statements', desc: 'Monthly financial reports' },
                   ].map((item) => (
-                    <label key={item.key} className="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                    <label key={item.key} className="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-bg-hover transition-colors">
                       <input
                         type="checkbox"
                         checked={notifications[item.key as keyof NotificationSettings] as boolean}
@@ -491,8 +491,8 @@ export default function OwnerSettingsPage() {
                         className="w-4 h-4 text-blue-600 rounded mt-1"
                       />
                       <div>
-                        <p className="font-medium text-gray-900 text-sm">{item.label}</p>
-                        <p className="text-xs text-gray-500">{item.desc}</p>
+                        <p className="font-medium text-tx-primary text-sm">{item.label}</p>
+                        <p className="text-xs text-tx-muted">{item.desc}</p>
                       </div>
                     </label>
                   ))}
@@ -521,65 +521,65 @@ export default function OwnerSettingsPage() {
         {activeTab === 'security' && (
           <div className="space-y-6">
             {/* Change Password */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                 <Lock className="w-5 h-5 text-blue-600" />
                 Change Password
               </h2>
               <div className="space-y-4 max-w-md">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Current Password</label>
                   <div className="relative">
                     <input
                       type={showPasswords.current ? 'text' : 'password'}
                       value={passwordForm.current_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, current_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Enter current password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-tx-muted hover:text-tx-secondary"
                     >
                       {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">New Password</label>
                   <div className="relative">
                     <input
                       type={showPasswords.new ? 'text' : 'password'}
                       value={passwordForm.new_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, new_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Enter new password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-tx-muted hover:text-tx-secondary"
                     >
                       {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+                  <p className="text-xs text-tx-muted mt-1">Minimum 8 characters</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Confirm New Password</label>
                   <div className="relative">
                     <input
                       type={showPasswords.confirm ? 'text' : 'password'}
                       value={passwordForm.confirm_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, confirm_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Confirm new password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-tx-muted hover:text-tx-secondary"
                     >
                       {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -597,24 +597,24 @@ export default function OwnerSettingsPage() {
             </div>
 
             {/* Two-Factor Authentication */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 <Shield className="w-5 h-5 text-blue-600" />
                 Two-Factor Authentication
               </h2>
-              <p className="text-gray-600 mb-4">Add an extra layer of security to your account</p>
+              <p className="text-tx-secondary mb-4">Add an extra layer of security to your account</p>
               <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
                 Enable 2FA
               </button>
             </div>
 
             {/* Delete Account */}
-            <div className="bg-white rounded-lg shadow-sm border border-red-200 p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border border-red-200 p-6">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-red-600">
                 <Trash2 className="w-5 h-5" />
                 Delete Account
               </h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-tx-secondary mb-4">
                 Permanently delete your account and all associated data. This action cannot be undone.
               </p>
               {!showDeleteConfirm ? (
@@ -649,7 +649,7 @@ export default function OwnerSettingsPage() {
                         setShowDeleteConfirm(false);
                         setDeleteConfirmText('');
                       }}
-                      className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="px-4 py-2 border border-bd-strong rounded-lg hover:bg-bg-hover transition-colors"
                     >
                       Cancel
                     </button>
@@ -664,7 +664,7 @@ export default function OwnerSettingsPage() {
         {activeTab === 'billing' && (
           <div className="space-y-6">
             {/* Current Plan */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-blue-600" />
                 Current Plan
@@ -686,7 +686,7 @@ export default function OwnerSettingsPage() {
             </div>
 
             {/* Payment Method */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-6">Payment Method</h2>
               {billing.card_last_four ? (
                 <div className="flex items-center justify-between p-4 border rounded-lg">
@@ -696,7 +696,7 @@ export default function OwnerSettingsPage() {
                     </div>
                     <div>
                       <p className="font-medium">•••• •••• •••• {billing.card_last_four}</p>
-                      <p className="text-sm text-gray-500">Expires 12/25</p>
+                      <p className="text-sm text-tx-muted">Expires 12/25</p>
                     </div>
                   </div>
                   <button
@@ -708,8 +708,8 @@ export default function OwnerSettingsPage() {
                 </div>
               ) : (
                 <div className="text-center py-8 border rounded-lg border-dashed">
-                  <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 mb-4">No payment method added</p>
+                  <CreditCard className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+                  <p className="text-tx-muted mb-4">No payment method added</p>
                   <button
                     onClick={() => router.push('/checkout')}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -721,9 +721,9 @@ export default function OwnerSettingsPage() {
             </div>
 
             {/* Billing History */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-6">Billing History</h2>
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-tx-muted">
                 <p>No billing history available</p>
               </div>
             </div>

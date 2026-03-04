@@ -3,7 +3,7 @@
 import { LeaseStatus } from '@/app/lib/types';
 
 const STATUS_CONFIG: Record<LeaseStatus, { label: string; className: string }> = {
-  draft: { label: 'Draft', className: 'bg-gray-100 text-gray-700' },
+  draft: { label: 'Draft', className: 'bg-bg-secondary text-tx-secondary' },
   sent: { label: 'Sent', className: 'bg-yellow-100 text-yellow-700' },
   signed: { label: 'Signed', className: 'bg-blue-100 text-blue-700' },
   active: { label: 'Active', className: 'bg-green-100 text-green-700' },

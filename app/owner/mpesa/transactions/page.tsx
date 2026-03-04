@@ -79,7 +79,7 @@ function MatchModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-5">
+      <div className="bg-bg-card rounded-2xl shadow-2xl w-full max-w-sm p-5">
         <h3 className="font-semibold text-slate-800 mb-3">Match Transaction</h3>
         <p className="text-xs text-slate-500 mb-4">
           {txn.mpesa_receipt_number} · KES {fmt(txn.amount)} · {txn.phone_number}
@@ -131,7 +131,7 @@ function DisputeModal({ txn, onClose, onDone }: { txn: Transaction; onClose: () 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-5">
+      <div className="bg-bg-card rounded-2xl shadow-2xl w-full max-w-sm p-5">
         <h3 className="font-semibold text-slate-800 mb-3">Flag as Disputed</h3>
         <textarea value={reason} onChange={e => setReason(e.target.value)} rows={3} placeholder="Reason for dispute…"
           className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-purple-500" />
@@ -166,7 +166,7 @@ function STKModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-5">
+      <div className="bg-bg-card rounded-2xl shadow-2xl w-full max-w-sm p-5">
         <h3 className="font-semibold text-slate-800 mb-3">Send STK Push</h3>
         {msg ? (
           <>
@@ -292,7 +292,7 @@ export default function MpesaTransactionsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl border border-slate-100 p-4 flex flex-wrap gap-3 items-end">
+      <div className="bg-bg-card rounded-2xl border border-slate-100 p-4 flex flex-wrap gap-3 items-end">
         <div>
           <label className="text-xs text-slate-500 mb-1 block">Status</label>
           <select
@@ -324,7 +324,7 @@ export default function MpesaTransactionsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+      <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-40">
             <div className="w-6 h-6 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />

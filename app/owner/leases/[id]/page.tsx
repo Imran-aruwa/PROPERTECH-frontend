@@ -107,15 +107,15 @@ export default function LeaseDetailPage() {
         {/* Header */}
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
-            <Link href="/owner/leases" className="text-gray-500 hover:text-gray-700">
+            <Link href="/owner/leases" className="text-tx-muted hover:text-tx-secondary">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-gray-900">Lease #{lease.id}</h1>
+                <h1 className="text-2xl font-bold text-tx-primary">Lease #{lease.id}</h1>
                 <LeaseStatusBadge status={lease.status} />
               </div>
-              <p className="text-gray-600 text-sm">
+              <p className="text-tx-secondary text-sm">
                 {lease.property?.name || `Property #${lease.property_id}`} — Unit {lease.unit?.unit_number || lease.unit_id}
               </p>
             </div>
@@ -125,7 +125,7 @@ export default function LeaseDetailPage() {
               <>
                 <Link
                   href={`/owner/leases/${lease.id}/edit`}
-                  className="flex items-center gap-1 px-3 py-2 text-sm border rounded-lg text-gray-700 hover:bg-gray-50"
+                  className="flex items-center gap-1 px-3 py-2 text-sm border rounded-lg text-tx-secondary hover:bg-bg-hover"
                 >
                   <Edit className="w-4 h-4" /> Edit
                 </Link>
@@ -169,50 +169,50 @@ export default function LeaseDetailPage() {
         )}
 
         {/* Timeline */}
-        <div className="bg-white rounded-lg border p-6">
+        <div className="bg-bg-card rounded-lg border p-6">
           <LeaseTimeline status={lease.status} />
         </div>
 
         {/* Details */}
-        <div className="bg-white rounded-lg border p-6">
+        <div className="bg-bg-card rounded-lg border p-6">
           <h2 className="text-lg font-semibold mb-4">Lease Details</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
             <div>
-              <p className="text-gray-500">Property</p>
-              <p className="font-medium text-gray-900">{lease.property?.name || `#${lease.property_id}`}</p>
+              <p className="text-tx-muted">Property</p>
+              <p className="font-medium text-tx-primary">{lease.property?.name || `#${lease.property_id}`}</p>
             </div>
             <div>
-              <p className="text-gray-500">Unit</p>
-              <p className="font-medium text-gray-900">{lease.unit?.unit_number || `#${lease.unit_id}`}</p>
+              <p className="text-tx-muted">Unit</p>
+              <p className="font-medium text-tx-primary">{lease.unit?.unit_number || `#${lease.unit_id}`}</p>
             </div>
             <div>
-              <p className="text-gray-500">Tenant</p>
-              <p className="font-medium text-gray-900">{lease.tenant?.user?.full_name || `#${lease.tenant_id}`}</p>
+              <p className="text-tx-muted">Tenant</p>
+              <p className="font-medium text-tx-primary">{lease.tenant?.user?.full_name || `#${lease.tenant_id}`}</p>
             </div>
             <div>
-              <p className="text-gray-500">Start Date</p>
-              <p className="font-medium text-gray-900">{lease.start_date}</p>
+              <p className="text-tx-muted">Start Date</p>
+              <p className="font-medium text-tx-primary">{lease.start_date}</p>
             </div>
             <div>
-              <p className="text-gray-500">End Date</p>
-              <p className="font-medium text-gray-900">{lease.end_date}</p>
+              <p className="text-tx-muted">End Date</p>
+              <p className="font-medium text-tx-primary">{lease.end_date}</p>
             </div>
             <div>
-              <p className="text-gray-500">Payment Cycle</p>
-              <p className="font-medium text-gray-900 capitalize">{lease.payment_cycle}</p>
+              <p className="text-tx-muted">Payment Cycle</p>
+              <p className="font-medium text-tx-primary capitalize">{lease.payment_cycle}</p>
             </div>
             <div>
-              <p className="text-gray-500">Rent Amount</p>
-              <p className="font-medium text-gray-900">{formatCurrency(lease.rent_amount)}</p>
+              <p className="text-tx-muted">Rent Amount</p>
+              <p className="font-medium text-tx-primary">{formatCurrency(lease.rent_amount)}</p>
             </div>
             <div>
-              <p className="text-gray-500">Deposit</p>
-              <p className="font-medium text-gray-900">{formatCurrency(lease.deposit_amount)}</p>
+              <p className="text-tx-muted">Deposit</p>
+              <p className="font-medium text-tx-primary">{formatCurrency(lease.deposit_amount)}</p>
             </div>
             {lease.escalation_rate && (
               <div>
-                <p className="text-gray-500">Escalation</p>
-                <p className="font-medium text-gray-900">{lease.escalation_rate}% per year</p>
+                <p className="text-tx-muted">Escalation</p>
+                <p className="font-medium text-tx-primary">{lease.escalation_rate}% per year</p>
               </div>
             )}
           </div>
@@ -220,25 +220,25 @@ export default function LeaseDetailPage() {
 
         {/* Clauses */}
         {lease.clauses && lease.clauses.length > 0 && (
-          <div className="bg-white rounded-lg border p-6">
+          <div className="bg-bg-card rounded-lg border p-6">
             <h2 className="text-lg font-semibold mb-4">Clauses ({lease.clauses.length})</h2>
             <div className="space-y-2">
               {lease.clauses.map((clause) => (
                 <div key={clause.id} className="border rounded-lg">
                   <button
                     onClick={() => setExpandedClause(expandedClause === clause.id ? null : clause.id)}
-                    className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50"
+                    className="w-full flex items-center justify-between p-3 text-left hover:bg-bg-hover"
                   >
-                    <span className="text-sm font-medium capitalize text-gray-700">{clause.type}</span>
+                    <span className="text-sm font-medium capitalize text-tx-secondary">{clause.type}</span>
                     {expandedClause === clause.id ? (
-                      <ChevronDown className="w-4 h-4 text-gray-400" />
+                      <ChevronDown className="w-4 h-4 text-tx-muted" />
                     ) : (
-                      <ChevronRight className="w-4 h-4 text-gray-400" />
+                      <ChevronRight className="w-4 h-4 text-tx-muted" />
                     )}
                   </button>
                   {expandedClause === clause.id && (
                     <div className="px-3 pb-3">
-                      <p className="text-sm text-gray-600">{clause.text}</p>
+                      <p className="text-sm text-tx-secondary">{clause.text}</p>
                     </div>
                   )}
                 </div>
@@ -249,26 +249,26 @@ export default function LeaseDetailPage() {
 
         {/* Signatures */}
         {lease.signatures && lease.signatures.length > 0 && (
-          <div className="bg-white rounded-lg border p-6">
+          <div className="bg-bg-card rounded-lg border p-6">
             <h2 className="text-lg font-semibold mb-4">Signatures</h2>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200 text-sm">
+              <table className="min-w-full divide-y divide-bd text-sm">
                 <thead>
                   <tr>
-                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Signer</th>
-                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Channel</th>
-                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">OTP Verified</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-tx-muted uppercase">Signer</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-tx-muted uppercase">Date</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-tx-muted uppercase">Channel</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-tx-muted uppercase">OTP Verified</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-bd">
                   {lease.signatures.map((sig) => (
                     <tr key={sig.id}>
-                      <td className="px-3 py-2 text-gray-900 capitalize">{sig.signer_role}</td>
-                      <td className="px-3 py-2 text-gray-600">{sig.signed_at}</td>
-                      <td className="px-3 py-2 text-gray-600 uppercase">{sig.channel}</td>
+                      <td className="px-3 py-2 text-tx-primary capitalize">{sig.signer_role}</td>
+                      <td className="px-3 py-2 text-tx-secondary">{sig.signed_at}</td>
+                      <td className="px-3 py-2 text-tx-secondary uppercase">{sig.channel}</td>
                       <td className="px-3 py-2">
-                        <span className={`text-xs px-2 py-0.5 rounded-full ${sig.otp_verified ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${sig.otp_verified ? 'bg-green-100 text-green-700' : 'bg-bg-secondary text-tx-muted'}`}>
                           {sig.otp_verified ? 'Yes' : 'No'}
                         </span>
                       </td>

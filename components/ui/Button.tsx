@@ -12,8 +12,8 @@ export default function Button({ variant = 'primary', className = '', children, 
     variant === 'primary'
       ? 'bg-blue-600 text-white hover:bg-blue-700 px-4 py-2'
       : variant === 'ghost'
-      ? 'bg-gray-100 text-gray-900 hover:bg-gray-200 px-4 py-2'
-      : 'border border-gray-200 text-gray-900 hover:bg-gray-50 px-4 py-2';
+      ? 'bg-bg-secondary text-tx-primary hover:bg-bd px-4 py-2'
+      : 'border border-bd text-tx-primary hover:bg-bg-hover px-4 py-2';
   return (
     <button className={`${base} ${style} ${className}`} {...rest}>
       {children}

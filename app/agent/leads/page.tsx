@@ -161,7 +161,7 @@ export default function AgentLeadsPage() {
       case 'qualified': return 'bg-purple-100 text-purple-800';
       case 'converted': return 'bg-green-100 text-green-800';
       case 'lost': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-bg-secondary text-tx-primary';
     }
   };
 
@@ -170,8 +170,8 @@ export default function AgentLeadsPage() {
       header: 'Lead',
       accessor: (row: Lead) => (
         <div>
-          <p className="font-medium text-gray-900">{row.name}</p>
-          <p className="text-sm text-gray-500">{row.source}</p>
+          <p className="font-medium text-tx-primary">{row.name}</p>
+          <p className="text-sm text-tx-muted">{row.source}</p>
         </div>
       ),
     },
@@ -180,11 +180,11 @@ export default function AgentLeadsPage() {
       accessor: (row: Lead) => (
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-sm">
-            <Phone className="w-3 h-3 text-gray-400" />
+            <Phone className="w-3 h-3 text-tx-muted" />
             {row.phone || '-'}
           </div>
           <div className="flex items-center gap-2 text-sm">
-            <Mail className="w-3 h-3 text-gray-400" />
+            <Mail className="w-3 h-3 text-tx-muted" />
             {row.email || '-'}
           </div>
         </div>
@@ -223,11 +223,11 @@ export default function AgentLeadsPage() {
   const MobileCardView = () => (
     <div className="space-y-4 md:hidden">
       {filteredLeads.map((lead) => (
-        <div key={lead.id} className="bg-white rounded-lg border p-4 space-y-3">
+        <div key={lead.id} className="bg-bg-card rounded-lg border p-4 space-y-3">
           <div className="flex items-start justify-between">
             <div>
-              <p className="font-medium text-gray-900">{lead.name}</p>
-              <p className="text-sm text-gray-500">{lead.source}</p>
+              <p className="font-medium text-tx-primary">{lead.name}</p>
+              <p className="text-sm text-tx-muted">{lead.source}</p>
             </div>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(lead.status)}`}>
               {lead.status.toUpperCase()}
@@ -236,24 +236,24 @@ export default function AgentLeadsPage() {
           <div className="space-y-2 text-sm">
             {lead.phone && (
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-gray-400" />
+                <Phone className="w-4 h-4 text-tx-muted" />
                 <a href={`tel:${lead.phone}`} className="text-blue-600">{lead.phone}</a>
               </div>
             )}
             {lead.email && (
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-gray-400" />
+                <Mail className="w-4 h-4 text-tx-muted" />
                 <span className="truncate">{lead.email}</span>
               </div>
             )}
           </div>
           <div className="pt-2 border-t grid grid-cols-2 gap-2 text-sm">
             <div>
-              <p className="text-gray-500">Interest</p>
+              <p className="text-tx-muted">Interest</p>
               <p className="font-medium">{lead.property_interest || '-'}</p>
             </div>
             <div>
-              <p className="text-gray-500">Budget</p>
+              <p className="text-tx-muted">Budget</p>
               <p className="font-medium">{lead.budget ? formatCurrency(lead.budget) : '-'}</p>
             </div>
           </div>
@@ -268,7 +268,7 @@ export default function AgentLeadsPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading leads...</p>
+            <p className="text-tx-secondary">Loading leads...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -280,8 +280,8 @@ export default function AgentLeadsPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Leads Management</h1>
-            <p className="text-gray-600 mt-1">Track and manage your property leads</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Leads Management</h1>
+            <p className="text-tx-secondary mt-1">Track and manage your property leads</p>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
@@ -305,68 +305,68 @@ export default function AgentLeadsPage() {
         </div>
 
         {showForm && (
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4">Add New Lead</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Name *</label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Full name"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone *</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Phone *</label>
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Phone number"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Email</label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Email address"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Budget (KES)</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Budget (KES)</label>
                   <input
                     type="number"
                     value={formData.budget}
                     onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Budget amount"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Property Interest</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Property Interest</label>
                   <input
                     type="text"
                     value={formData.property_interest}
                     onChange={(e) => setFormData({ ...formData, property_interest: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g., 2BR Apartment, Westlands"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Source</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Source</label>
                   <select
                     value={formData.source}
                     onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="website">Website</option>
                     <option value="referral">Referral</option>
@@ -378,11 +378,11 @@ export default function AgentLeadsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-2">Notes</label>
                 <textarea
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   rows={3}
                   placeholder="Additional notes about this lead"
                 />
@@ -405,7 +405,7 @@ export default function AgentLeadsPage() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition"
+                  className="bg-bd text-tx-secondary px-6 py-2 rounded-lg hover:bg-bg-hover transition"
                 >
                   Cancel
                 </button>
@@ -414,7 +414,7 @@ export default function AgentLeadsPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-sm border p-4">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-4">
           <div className="flex flex-wrap gap-2">
             {['all', 'new', 'contacted', 'qualified', 'converted', 'lost'].map((status) => (
               <button
@@ -423,7 +423,7 @@ export default function AgentLeadsPage() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                   filter === status
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                 }`}
               >
                 {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -433,15 +433,15 @@ export default function AgentLeadsPage() {
         </div>
 
         {filteredLeads.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Target className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No leads found</p>
-            <p className="text-gray-400 text-sm mt-1">Click "Add Lead" to create your first lead</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Target className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No leads found</p>
+            <p className="text-tx-muted text-sm mt-1">Click "Add Lead" to create your first lead</p>
           </div>
         ) : (
           <>
             <MobileCardView />
-            <div className="hidden md:block bg-white rounded-lg shadow-sm border p-6">
+            <div className="hidden md:block bg-bg-card rounded-lg shadow-sm border p-6">
               <DataTable data={filteredLeads} columns={columns} />
             </div>
           </>

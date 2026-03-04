@@ -97,7 +97,7 @@ export default function OwnerDashboard() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading dashboard..." />
       </div>
     );
@@ -105,11 +105,11 @@ export default function OwnerDashboard() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Dashboard</h2>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <h2 className="text-xl font-semibold text-tx-primary mb-2">Error Loading Dashboard</h2>
+          <p className="text-tx-secondary mb-4">{error}</p>
           <button
             onClick={fetchDashboardData}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -167,16 +167,16 @@ export default function OwnerDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-tx-primary">
                 Welcome back, {user?.full_name || 'Owner'}!
               </h1>
-              <p className="text-gray-600 mt-1">Here&apos;s what&apos;s happening with your properties today</p>
+              <p className="text-tx-secondary mt-1">Here&apos;s what&apos;s happening with your properties today</p>
             </div>
             <Link
               href="/owner/properties/new"
@@ -196,7 +196,7 @@ export default function OwnerDashboard() {
             <Link
               key={index}
               href={stat.link}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+              className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className={`${stat.color} w-12 h-12 rounded-lg flex items-center justify-center`}>
@@ -204,16 +204,16 @@ export default function OwnerDashboard() {
                 </div>
                 <TrendingUp className="w-5 h-5 text-green-500" />
               </div>
-              <h3 className="text-gray-600 text-sm font-medium mb-1">{stat.title}</h3>
-              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+              <h3 className="text-tx-secondary text-sm font-medium mb-1">{stat.title}</h3>
+              <p className="text-3xl font-bold text-tx-primary">{stat.value}</p>
             </Link>
           ))}
         </div>
 
         {/* Properties List */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Your Properties</h2>
+            <h2 className="text-xl font-semibold text-tx-primary">Your Properties</h2>
             <Link
               href="/owner/properties"
               className="text-blue-600 hover:text-blue-700 text-sm font-medium"
@@ -224,9 +224,9 @@ export default function OwnerDashboard() {
 
           {!Array.isArray(properties) || properties.length === 0 ? (
             <div className="text-center py-12">
-              <Building2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No properties yet</h3>
-              <p className="text-gray-600 mb-6">Get started by adding your first property</p>
+              <Building2 className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-tx-primary mb-2">No properties yet</h3>
+              <p className="text-tx-secondary mb-6">Get started by adding your first property</p>
               <Link
                 href="/owner/properties/new"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -241,17 +241,17 @@ export default function OwnerDashboard() {
                 <Link
                   key={property.id}
                   href={`/owner/properties/${property.id}`}
-                  className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                  className="border border-bd rounded-lg p-4 hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900">{property.name || 'Unnamed Property'}</h3>
+                    <h3 className="font-semibold text-tx-primary">{property.name || 'Unnamed Property'}</h3>
                     <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
                       Active
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">{property.address || 'No address'}</p>
+                  <p className="text-sm text-tx-secondary mb-3">{property.address || 'No address'}</p>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">
+                    <span className="text-tx-secondary">
                       {property.occupied_units || 0}/{property.total_units || 0} Occupied
                     </span>
                     <span className="text-blue-600 font-medium">
@@ -268,29 +268,29 @@ export default function OwnerDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <Link
             href="/owner/tenants"
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+            className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
           >
             <Users className="w-8 h-8 text-purple-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">Manage Tenants</h3>
-            <p className="text-sm text-gray-600">View and manage all your tenants</p>
+            <h3 className="font-semibold text-tx-primary mb-1">Manage Tenants</h3>
+            <p className="text-sm text-tx-secondary">View and manage all your tenants</p>
           </Link>
 
           <Link
             href="/owner/payments"
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+            className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
           >
             <DollarSign className="w-8 h-8 text-green-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">Track Payments</h3>
-            <p className="text-sm text-gray-600">Monitor rent and utility payments</p>
+            <h3 className="font-semibold text-tx-primary mb-1">Track Payments</h3>
+            <p className="text-sm text-tx-secondary">Monitor rent and utility payments</p>
           </Link>
 
           <Link
             href="/owner/maintenance"
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+            className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
           >
             <Wrench className="w-8 h-8 text-red-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">Maintenance</h3>
-            <p className="text-sm text-gray-600">Handle maintenance requests</p>
+            <h3 className="font-semibold text-tx-primary mb-1">Maintenance</h3>
+            <p className="text-sm text-tx-secondary">Handle maintenance requests</p>
           </Link>
         </div>
       </div>

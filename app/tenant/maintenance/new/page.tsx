@@ -96,12 +96,12 @@ export default function NewMaintenanceRequestPage() {
     `w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
       touched[fieldName] && errors[fieldName]
         ? 'border-red-500'
-        : 'border-gray-300'
+        : 'border-bd-strong'
     }`;
 
   if (loadingTenant) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );
@@ -109,11 +109,11 @@ export default function NewMaintenanceRequestPage() {
 
   if (!tenantInfo) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Unable to Submit Request</h2>
-          <p className="text-gray-600 mb-6">Tenant information not found. Please contact support.</p>
+          <h2 className="text-2xl font-semibold text-tx-primary mb-2">Unable to Submit Request</h2>
+          <p className="text-tx-secondary mb-6">Tenant information not found. Please contact support.</p>
           <Link
             href="/tenant"
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -127,31 +127,31 @@ export default function NewMaintenanceRequestPage() {
   }
 
   const priorityOptions = [
-    { value: 'low', label: 'Low - Can wait', color: 'text-gray-600', description: 'Non-urgent, cosmetic issues' },
+    { value: 'low', label: 'Low - Can wait', color: 'text-tx-secondary', description: 'Non-urgent, cosmetic issues' },
     { value: 'medium', label: 'Medium - Normal', color: 'text-blue-600', description: 'Regular maintenance needs' },
     { value: 'high', label: 'High - Important', color: 'text-orange-600', description: 'Affects comfort or functionality' },
     { value: 'urgent', label: 'Urgent - Immediate', color: 'text-red-600', description: 'Safety hazard or critical issue' }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link
               href="/tenant/maintenance"
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-6 h-6 text-gray-600" />
+              <ArrowLeft className="w-6 h-6 text-tx-secondary" />
             </Link>
             <div className="flex items-center gap-3">
               <Wrench className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Submit Maintenance Request</h1>
-                <p className="text-gray-600 mt-1">Describe the issue you&apos;re experiencing</p>
+                <h1 className="text-3xl font-bold text-tx-primary">Submit Maintenance Request</h1>
+                <p className="text-tx-secondary mt-1">Describe the issue you&apos;re experiencing</p>
               </div>
             </div>
           </div>
@@ -178,10 +178,10 @@ export default function NewMaintenanceRequestPage() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-bg-card rounded-lg shadow-sm border border-bd p-8">
           {/* Title */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Issue Title <span className="text-red-500">*</span>
             </label>
             <input
@@ -199,7 +199,7 @@ export default function NewMaintenanceRequestPage() {
 
           {/* Description */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Detailed Description <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -217,7 +217,7 @@ export default function NewMaintenanceRequestPage() {
 
           {/* Priority Selection */}
           <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-tx-secondary mb-3">
               Priority Level <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -229,7 +229,7 @@ export default function NewMaintenanceRequestPage() {
                   className={`p-4 border-2 rounded-lg text-left transition-all ${
                     values.priority === option.value
                       ? 'border-blue-600 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-bd hover:border-bd-strong'
                   }`}
                 >
                   <div className="flex items-start justify-between mb-2">
@@ -244,7 +244,7 @@ export default function NewMaintenanceRequestPage() {
                       </div>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600">{option.description}</p>
+                  <p className="text-sm text-tx-secondary">{option.description}</p>
                 </button>
               ))}
             </div>
@@ -284,7 +284,7 @@ export default function NewMaintenanceRequestPage() {
             </button>
             <Link
               href="/tenant/maintenance"
-              className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-3 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

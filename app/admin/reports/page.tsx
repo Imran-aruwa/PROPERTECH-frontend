@@ -83,7 +83,7 @@ export default function AdminReportsPage() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading reports...</p>
+          <p className="text-tx-secondary">Loading reports...</p>
         </div>
       </div>
     );
@@ -93,8 +93,8 @@ export default function AdminReportsPage() {
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">System Reports</h1>
-          <p className="text-gray-600 mt-1">Generate and download system reports</p>
+          <h1 className="text-2xl font-bold text-tx-primary">System Reports</h1>
+          <p className="text-tx-secondary mt-1">Generate and download system reports</p>
         </div>
 
         {error && (
@@ -104,14 +104,14 @@ export default function AdminReportsPage() {
         )}
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-blue-600" />
               Generate Report
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-2">Report Type</label>
                 <select
                   value={reportType}
                   onChange={(e) => setReportType(e.target.value)}
@@ -125,7 +125,7 @@ export default function AdminReportsPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Period</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-2">Period</label>
                 <select
                   value={period}
                   onChange={(e) => setPeriod(e.target.value)}
@@ -157,14 +157,14 @@ export default function AdminReportsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-blue-600" />
               Recent Reports
             </h2>
             {reports.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <FileText className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <div className="text-center py-8 text-tx-muted">
+                <FileText className="w-12 h-12 text-tx-muted mx-auto mb-2" />
                 <p>No reports generated yet</p>
               </div>
             ) : (
@@ -172,20 +172,20 @@ export default function AdminReportsPage() {
                 {reports.map((report) => (
                   <div
                     key={report.id}
-                    className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
+                    className="flex items-center justify-between p-3 border rounded-lg hover:bg-bg-hover"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                         <FileText className="w-5 h-5 text-blue-600" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{report.name}</p>
-                        <p className="text-sm text-gray-600">
+                        <p className="font-medium text-tx-primary">{report.name}</p>
+                        <p className="text-sm text-tx-secondary">
                           {report.type} - {report.date} {report.size && `- ${report.size}`}
                         </p>
                       </div>
                     </div>
-                    <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg">
+                    <button className="p-2 text-tx-secondary hover:text-blue-600 hover:bg-blue-50 rounded-lg">
                       <Download className="w-5 h-5" />
                     </button>
                   </div>

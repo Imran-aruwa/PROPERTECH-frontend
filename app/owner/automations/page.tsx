@@ -136,7 +136,7 @@ function formatDate(iso?: string | null): string {
 function StatusBadge({ status }: { status: WorkflowStatus }) {
   const map: Record<WorkflowStatus, string> = {
     active: 'bg-green-100 text-green-700',
-    inactive: 'bg-gray-100 text-gray-600',
+    inactive: 'bg-bg-secondary text-tx-secondary',
     draft: 'bg-amber-100 text-amber-700',
   };
   return (
@@ -149,7 +149,7 @@ function StatusBadge({ status }: { status: WorkflowStatus }) {
 function LogStatusIcon({ s }: { s: LogStatus }) {
   if (s === 'success') return <CheckCircle2 className="w-4 h-4 text-green-500" />;
   if (s === 'failed') return <XCircle className="w-4 h-4 text-red-500" />;
-  return <SkipForward className="w-4 h-4 text-gray-400" />;
+  return <SkipForward className="w-4 h-4 text-tx-muted" />;
 }
 
 // ─────────────────────────── Action Config Editor ───────────────────────────
@@ -170,10 +170,10 @@ function ActionConfigEditor({
     multiline = false,
   ) => (
     <div key={key}>
-      <label className="block text-xs font-medium text-gray-600 mb-0.5">{label}</label>
+      <label className="block text-xs font-medium text-tx-secondary mb-0.5">{label}</label>
       {multiline ? (
         <textarea
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
+          className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm resize-none"
           rows={3}
           placeholder={placeholder}
           value={config[key] ?? ''}
@@ -182,7 +182,7 @@ function ActionConfigEditor({
       ) : (
         <input
           type="text"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+          className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm"
           placeholder={placeholder}
           value={config[key] ?? ''}
           onChange={(e) => onChange({ ...config, [key]: e.target.value })}
@@ -204,9 +204,9 @@ function ActionConfigEditor({
       return (
         <div className="space-y-2 mt-2">
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-0.5">Send To</label>
+            <label className="block text-xs font-medium text-tx-secondary mb-0.5">Send To</label>
             <select
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm"
               value={config.to ?? 'owner'}
               onChange={(e) => onChange({ ...config, to: e.target.value })}
             >
@@ -226,19 +226,19 @@ function ActionConfigEditor({
           {field('title', 'Task Title', 'e.g. Follow up – {{tenant_name}}')}
           {field('description', 'Description', 'e.g. Tenant {{tenant_name}} is overdue on rent.', true)}
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-0.5">Due In (days)</label>
+            <label className="block text-xs font-medium text-tx-secondary mb-0.5">Due In (days)</label>
             <input
               type="number"
               min={0}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm"
               value={config.due_in_days ?? 1}
               onChange={(e) => onChange({ ...config, due_in_days: parseInt(e.target.value) || 1 })}
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-0.5">Assign To</label>
+            <label className="block text-xs font-medium text-tx-secondary mb-0.5">Assign To</label>
             <select
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm"
               value={config.assigned_to ?? 'owner'}
               onChange={(e) => onChange({ ...config, assigned_to: e.target.value })}
             >
@@ -253,9 +253,9 @@ function ActionConfigEditor({
       return (
         <div className="space-y-2 mt-2">
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-0.5">Model</label>
+            <label className="block text-xs font-medium text-tx-secondary mb-0.5">Model</label>
             <select
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm"
               value={config.model ?? 'unit'}
               onChange={(e) => onChange({ ...config, model: e.target.value })}
             >
@@ -272,9 +272,9 @@ function ActionConfigEditor({
       return (
         <div className="space-y-2 mt-2">
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-0.5">Notify Role</label>
+            <label className="block text-xs font-medium text-tx-secondary mb-0.5">Notify Role</label>
             <select
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm"
               value={config.notify_role ?? 'owner'}
               onChange={(e) => onChange({ ...config, notify_role: e.target.value })}
             >
@@ -376,14 +376,14 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden mx-4">
+      <div className="bg-bg-card rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden mx-4">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-bd">
+          <h2 className="text-lg font-semibold text-tx-primary">
             {initial ? 'Edit Workflow' : 'New Workflow'}
           </h2>
-          <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
-            <X className="w-5 h-5 text-gray-500" />
+          <button onClick={onClose} className="p-1 rounded hover:bg-bg-hover">
+            <X className="w-5 h-5 text-tx-muted" />
           </button>
         </div>
 
@@ -404,11 +404,11 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
                   {templates.map((tpl) => (
                     <button
                       key={tpl.id}
-                      className="text-left border border-gray-200 rounded-xl p-3 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                      className="text-left border border-bd rounded-xl p-3 hover:border-blue-400 hover:bg-blue-50 transition-colors"
                       onClick={() => applyTemplate(tpl)}
                     >
-                      <p className="text-sm font-medium text-gray-900 leading-snug">{tpl.name}</p>
-                      <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{tpl.description}</p>
+                      <p className="text-sm font-medium text-tx-primary leading-snug">{tpl.name}</p>
+                      <p className="text-xs text-tx-muted mt-0.5 line-clamp-2">{tpl.description}</p>
                       <span className={`mt-1 inline-block text-xs px-2 py-0.5 rounded-full ${TRIGGER_COLORS[tpl.trigger_event]}`}>
                         {TRIGGER_LABELS[tpl.trigger_event]}
                       </span>
@@ -421,12 +421,12 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
 
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-tx-secondary mb-1">
               Workflow Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. Send rent reminder at 7 days overdue"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -435,9 +435,9 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-tx-secondary mb-1">Description</label>
             <textarea
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={2}
               placeholder="Optional description"
               value={description}
@@ -447,11 +447,11 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
 
           {/* Trigger */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-tx-secondary mb-1">
               Trigger Event <span className="text-red-500">*</span>
             </label>
             <select
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={triggerEvent}
               onChange={(e) => setTriggerEvent(e.target.value as TriggerEvent)}
             >
@@ -463,9 +463,9 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
 
           {/* Status */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label className="block text-sm font-medium text-tx-secondary mb-1">Status</label>
             <select
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm"
               value={wfStatus}
               onChange={(e) => setWfStatus(e.target.value as WorkflowStatus)}
             >
@@ -478,7 +478,7 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
           {/* Actions */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-gray-700">
+              <label className="text-sm font-medium text-tx-secondary">
                 Actions ({actions.length})
               </label>
               <button
@@ -490,13 +490,13 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
             </div>
             <div className="space-y-3">
               {actions.map((action, idx) => (
-                <div key={idx} className="border border-gray-200 rounded-xl p-4 bg-gray-50">
+                <div key={idx} className="border border-bd rounded-xl p-4 bg-bg-secondary">
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-gray-400 w-5 shrink-0">
+                    <span className="text-xs font-bold text-tx-muted w-5 shrink-0">
                       {idx + 1}
                     </span>
                     <select
-                      className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm bg-white"
+                      className="flex-1 border border-bd-strong rounded-lg px-3 py-1.5 text-sm bg-bg-card"
                       value={action.action_type}
                       onChange={(e) => {
                         const at = e.target.value as ActionType;
@@ -519,7 +519,7 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
                     </select>
                     <button
                       onClick={() => removeAction(idx)}
-                      className="p-1 text-gray-400 hover:text-red-500 rounded"
+                      className="p-1 text-tx-muted hover:text-red-500 rounded"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -532,11 +532,11 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
                   />
 
                   <div className="mt-2 flex items-center gap-2">
-                    <label className="text-xs text-gray-500">Delay (min):</label>
+                    <label className="text-xs text-tx-muted">Delay (min):</label>
                     <input
                       type="number"
                       min={0}
-                      className="w-20 border border-gray-200 rounded px-2 py-1 text-xs"
+                      className="w-20 border border-bd rounded px-2 py-1 text-xs"
                       value={action.delay_minutes}
                       onChange={(e) =>
                         updateAction(idx, { delay_minutes: parseInt(e.target.value) || 0 })
@@ -556,10 +556,10 @@ function WorkflowBuilderModal({ initial, templates, onSave, onClose }: BuilderPr
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-bd">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="px-4 py-2 text-sm text-tx-secondary border border-bd-strong rounded-lg hover:bg-bg-hover"
           >
             Cancel
           </button>
@@ -590,35 +590,35 @@ function LogsDrawer({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-end bg-black/30">
-      <div className="bg-white w-full sm:w-[480px] h-full sm:h-full flex flex-col shadow-2xl">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+      <div className="bg-bg-card w-full sm:w-[480px] h-full sm:h-full flex flex-col shadow-2xl">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-bd">
           <div>
-            <h3 className="font-semibold text-gray-900 text-sm">Execution Logs</h3>
-            <p className="text-xs text-gray-500 mt-0.5 truncate max-w-xs">{workflowName}</p>
+            <h3 className="font-semibold text-tx-primary text-sm">Execution Logs</h3>
+            <p className="text-xs text-tx-muted mt-0.5 truncate max-w-xs">{workflowName}</p>
           </div>
-          <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
-            <X className="w-5 h-5 text-gray-500" />
+          <button onClick={onClose} className="p-1 rounded hover:bg-bg-hover">
+            <X className="w-5 h-5 text-tx-muted" />
           </button>
         </div>
         <div className="overflow-y-auto flex-1 px-5 py-3 space-y-3">
           {logs.length === 0 ? (
-            <div className="text-center py-16 text-gray-400">
+            <div className="text-center py-16 text-tx-muted">
               <Clock className="w-10 h-10 mx-auto mb-3 opacity-30" />
               <p className="text-sm">No executions yet</p>
             </div>
           ) : (
             logs.map((log) => (
-              <div key={log.id} className="border border-gray-100 rounded-xl p-4">
+              <div key={log.id} className="border border-bd rounded-xl p-4">
                 <div className="flex items-start gap-3">
                   <LogStatusIcon s={log.status} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-semibold text-gray-700 capitalize">
+                      <span className="text-xs font-semibold text-tx-secondary capitalize">
                         {log.status}
                       </span>
-                      <span className="text-xs text-gray-400">{formatDate(log.triggered_at)}</span>
+                      <span className="text-xs text-tx-muted">{formatDate(log.triggered_at)}</span>
                     </div>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-xs text-tx-muted mt-0.5">
                       Actions executed: {log.actions_run}
                     </p>
                     {log.error_message && (
@@ -633,7 +633,7 @@ function LogsDrawer({
                         const visible = keys.filter((k) => ctx[k] !== undefined && ctx[k] !== '');
                         if (visible.length === 0) return null;
                         return (
-                          <div className="mt-2 text-xs text-gray-500 space-y-0.5">
+                          <div className="mt-2 text-xs text-tx-muted space-y-0.5">
                             {visible.map((k) => (
                               <span key={k} className="inline-block mr-2">
                                 <span className="font-medium">{k.replace(/_/g, ' ')}</span>: {ctx[k]}
@@ -672,28 +672,28 @@ function WorkflowCard({
   onViewLogs: () => void;
 }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-sm transition-shadow">
+    <div className="bg-bg-card border border-bd rounded-xl p-5 hover:shadow-sm transition-shadow">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-semibold text-gray-900 text-sm truncate">{wf.name}</h3>
+            <h3 className="font-semibold text-tx-primary text-sm truncate">{wf.name}</h3>
             <StatusBadge status={wf.status} />
           </div>
           {wf.description && (
-            <p className="text-xs text-gray-500 mt-1 line-clamp-2">{wf.description}</p>
+            <p className="text-xs text-tx-muted mt-1 line-clamp-2">{wf.description}</p>
           )}
           <div className="flex items-center gap-3 mt-2 flex-wrap">
             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TRIGGER_COLORS[wf.trigger_event]}`}>
               {TRIGGER_LABELS[wf.trigger_event]}
             </span>
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-tx-muted">
               {wf.actions.length} action{wf.actions.length !== 1 ? 's' : ''}
             </span>
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-tx-muted">
               {wf.run_count} run{wf.run_count !== 1 ? 's' : ''}
             </span>
             {wf.last_triggered_at && (
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-tx-muted">
                 Last: {formatDate(wf.last_triggered_at)}
               </span>
             )}
@@ -705,7 +705,7 @@ function WorkflowCard({
           <button
             onClick={onToggle}
             title={wf.status === 'active' ? 'Pause' : 'Activate'}
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-500"
+            className="p-2 rounded-lg hover:bg-bg-hover text-tx-muted"
           >
             {wf.status === 'active'
               ? <Pause className="w-4 h-4" />
@@ -714,21 +714,21 @@ function WorkflowCard({
           <button
             onClick={onViewLogs}
             title="View Logs"
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-500"
+            className="p-2 rounded-lg hover:bg-bg-hover text-tx-muted"
           >
             <Eye className="w-4 h-4" />
           </button>
           <button
             onClick={onEdit}
             title="Edit"
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-500"
+            className="p-2 rounded-lg hover:bg-bg-hover text-tx-muted"
           >
             <Settings2 className="w-4 h-4" />
           </button>
           <button
             onClick={onDelete}
             title="Delete"
-            className="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500"
+            className="p-2 rounded-lg hover:bg-red-50 text-tx-muted hover:text-red-500"
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -739,8 +739,8 @@ function WorkflowCard({
       {wf.actions.length > 0 && (
         <div className="mt-3 flex items-center gap-1.5 flex-wrap">
           {wf.actions.map((a, i) => (
-            <span key={i} className="flex items-center gap-1 bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
-              {i > 0 && <ChevronRight className="w-3 h-3 text-gray-400" />}
+            <span key={i} className="flex items-center gap-1 bg-bg-secondary text-tx-secondary text-xs px-2 py-0.5 rounded-full">
+              {i > 0 && <ChevronRight className="w-3 h-3 text-tx-muted" />}
               {ACTION_LABELS[a.action_type]}
             </span>
           ))}
@@ -758,8 +758,8 @@ function PremiumGate() {
       <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
         <Zap className="w-8 h-8 text-blue-600" />
       </div>
-      <h2 className="text-xl font-bold text-gray-900 mb-2">Workflow Automation</h2>
-      <p className="text-gray-500 max-w-sm text-sm mb-6">
+      <h2 className="text-xl font-bold text-tx-primary mb-2">Workflow Automation</h2>
+      <p className="text-tx-muted max-w-sm text-sm mb-6">
         Automate your property management workflows with triggers and actions.
         Available on Professional and Enterprise plans.
       </p>
@@ -922,11 +922,11 @@ export default function AutomationsPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-tx-primary flex items-center gap-2">
             <Zap className="w-6 h-6 text-blue-600" />
             Workflow Automations
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-tx-muted mt-1">
             Automate actions when events happen in your properties.
           </p>
         </div>
@@ -935,7 +935,7 @@ export default function AutomationsPage() {
             onClick={runScheduledCheck}
             disabled={scheduledChecking}
             title="Check rent overdue & lease expiry conditions now"
-            className="flex items-center gap-2 px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 disabled:opacity-60"
+            className="flex items-center gap-2 px-3 py-2 text-sm border border-bd-strong rounded-lg text-tx-secondary hover:bg-bg-hover disabled:opacity-60"
           >
             <RefreshCw className={`w-4 h-4 ${scheduledChecking ? 'animate-spin' : ''}`} />
             Run Checks
@@ -970,19 +970,19 @@ export default function AutomationsPage() {
             value: workflows.reduce((s, w) => s + w.run_count, 0),
           },
         ].map(({ label, value, color }) => (
-          <div key={label} className="bg-white border border-gray-200 rounded-xl px-5 py-4">
-            <p className="text-xs text-gray-500">{label}</p>
-            <p className={`text-2xl font-bold mt-1 ${color ?? 'text-gray-900'}`}>{value}</p>
+          <div key={label} className="bg-bg-card border border-bd rounded-xl px-5 py-4">
+            <p className="text-xs text-tx-muted">{label}</p>
+            <p className={`text-2xl font-bold mt-1 ${color ?? 'text-tx-primary'}`}>{value}</p>
           </div>
         ))}
       </div>
 
       {/* Workflow list */}
       {workflows.length === 0 ? (
-        <div className="bg-white border border-gray-200 rounded-xl py-20 text-center">
-          <Zap className="w-12 h-12 text-gray-200 mx-auto mb-3" />
-          <p className="text-gray-500 text-sm">No workflows yet.</p>
-          <p className="text-gray-400 text-xs mt-1 mb-4">
+        <div className="bg-bg-card border border-bd rounded-xl py-20 text-center">
+          <Zap className="w-12 h-12 text-tx-muted mx-auto mb-3" />
+          <p className="text-tx-muted text-sm">No workflows yet.</p>
+          <p className="text-tx-muted text-xs mt-1 mb-4">
             Create one manually or start from a template.
           </p>
           <button

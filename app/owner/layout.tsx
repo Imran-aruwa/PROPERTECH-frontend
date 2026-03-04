@@ -26,7 +26,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );
@@ -37,7 +37,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
+    <div className="h-screen flex flex-col overflow-hidden bg-bg-secondary">
       {/* Header - Fixed at top */}
       <Header role="owner" onMenuClick={() => setSidebarOpen(true)} />
 
@@ -63,7 +63,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           <div className="lg:hidden absolute top-3 right-3 z-10">
             <button
               onClick={() => setSidebarOpen(false)}
-              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+              className="p-2 text-tx-secondary hover:text-tx-primary hover:bg-bg-hover rounded-lg"
             >
               <X className="w-5 h-5" />
             </button>
@@ -72,7 +72,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Main Content - Scrollable */}
-        <main className="flex-1 overflow-y-auto bg-gray-50">
+        <main className="flex-1 overflow-y-auto bg-bg-secondary">
           {children}
         </main>
       </div>

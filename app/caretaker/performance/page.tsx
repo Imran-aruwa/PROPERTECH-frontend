@@ -112,7 +112,7 @@ export default function CaretakerPerformancePage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading performance data...</p>
+            <p className="text-tx-secondary">Loading performance data...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -123,11 +123,11 @@ export default function CaretakerPerformancePage() {
     <DashboardLayout role="caretaker">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-3">
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary flex items-center gap-3">
             <Timer className="w-7 h-7 text-blue-600" />
             My Performance
           </h1>
-          <p className="text-gray-600 mt-1">Track your maintenance response times and SLA compliance</p>
+          <p className="text-tx-secondary mt-1">Track your maintenance response times and SLA compliance</p>
         </div>
 
         {error && (
@@ -138,7 +138,7 @@ export default function CaretakerPerformancePage() {
 
         {/* Performance Score Card */}
         {performance ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex flex-col md:flex-row md:items-center gap-6">
               {/* Score Circle */}
               <div className="flex-shrink-0 flex flex-col items-center">
@@ -150,7 +150,7 @@ export default function CaretakerPerformancePage() {
                     <p className="text-3xl font-bold" style={{ color: PERFORMANCE_GRADE_CONFIG[performance.grade].color }}>
                       {performance.score}
                     </p>
-                    <p className="text-xs text-gray-500">/ 100</p>
+                    <p className="text-xs text-tx-muted">/ 100</p>
                   </div>
                 </div>
                 <span className={`mt-2 px-3 py-1 text-sm font-medium rounded-full ${getGradeBgClass(performance.grade)}`}>
@@ -160,31 +160,31 @@ export default function CaretakerPerformancePage() {
 
               {/* Factor Breakdown */}
               <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Acknowledgement</p>
-                  <p className="text-xl font-bold text-gray-900">{performance.factors.acknowledgement}</p>
-                  <div className="bg-gray-200 rounded-full h-1.5 mt-2">
+                <div className="bg-bg-secondary rounded-lg p-4">
+                  <p className="text-xs text-tx-muted mb-1">Acknowledgement</p>
+                  <p className="text-xl font-bold text-tx-primary">{performance.factors.acknowledgement}</p>
+                  <div className="bg-bd rounded-full h-1.5 mt-2">
                     <div className="h-1.5 rounded-full bg-blue-500" style={{ width: `${performance.factors.acknowledgement}%` }} />
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Resolution Speed</p>
-                  <p className="text-xl font-bold text-gray-900">{performance.factors.resolution}</p>
-                  <div className="bg-gray-200 rounded-full h-1.5 mt-2">
+                <div className="bg-bg-secondary rounded-lg p-4">
+                  <p className="text-xs text-tx-muted mb-1">Resolution Speed</p>
+                  <p className="text-xl font-bold text-tx-primary">{performance.factors.resolution}</p>
+                  <div className="bg-bd rounded-full h-1.5 mt-2">
                     <div className="h-1.5 rounded-full bg-green-500" style={{ width: `${performance.factors.resolution}%` }} />
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Completion Rate</p>
-                  <p className="text-xl font-bold text-gray-900">{performance.factors.completionRate}</p>
-                  <div className="bg-gray-200 rounded-full h-1.5 mt-2">
+                <div className="bg-bg-secondary rounded-lg p-4">
+                  <p className="text-xs text-tx-muted mb-1">Completion Rate</p>
+                  <p className="text-xl font-bold text-tx-primary">{performance.factors.completionRate}</p>
+                  <div className="bg-bd rounded-full h-1.5 mt-2">
                     <div className="h-1.5 rounded-full bg-purple-500" style={{ width: `${performance.factors.completionRate}%` }} />
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-1">Repeat Issues</p>
-                  <p className="text-xl font-bold text-gray-900">{performance.factors.repeatIssues}</p>
-                  <div className="bg-gray-200 rounded-full h-1.5 mt-2">
+                <div className="bg-bg-secondary rounded-lg p-4">
+                  <p className="text-xs text-tx-muted mb-1">Repeat Issues</p>
+                  <p className="text-xl font-bold text-tx-primary">{performance.factors.repeatIssues}</p>
+                  <div className="bg-bd rounded-full h-1.5 mt-2">
                     <div className="h-1.5 rounded-full bg-amber-500" style={{ width: `${performance.factors.repeatIssues}%` }} />
                   </div>
                 </div>
@@ -192,40 +192,40 @@ export default function CaretakerPerformancePage() {
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-            <TrendingUp className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-600">No assignments found yet. Performance scores will appear once maintenance requests are assigned to you.</p>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-8 text-center">
+            <TrendingUp className="w-12 h-12 text-tx-muted mx-auto mb-3" />
+            <p className="text-tx-secondary">No assignments found yet. Performance scores will appear once maintenance requests are assigned to you.</p>
           </div>
         )}
 
         {/* Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-xs text-gray-500 font-medium">Total Assigned</h3>
-              <Clock className="w-4 h-4 text-gray-400" />
+              <h3 className="text-xs text-tx-muted font-medium">Total Assigned</h3>
+              <Clock className="w-4 h-4 text-tx-muted" />
             </div>
-            <p className="text-2xl font-bold text-gray-900">{performance?.totalAssigned || requests.length}</p>
+            <p className="text-2xl font-bold text-tx-primary">{performance?.totalAssigned || requests.length}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-xs text-gray-500 font-medium">Completed</h3>
+              <h3 className="text-xs text-tx-muted font-medium">Completed</h3>
               <CheckCircle className="w-4 h-4 text-green-500" />
             </div>
             <p className="text-2xl font-bold text-green-600">{performance?.completed || requests.filter(r => r.status === 'completed').length}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-xs text-gray-500 font-medium">Avg. Response</h3>
+              <h3 className="text-xs text-tx-muted font-medium">Avg. Response</h3>
               <Timer className="w-4 h-4 text-blue-500" />
             </div>
             <p className="text-2xl font-bold text-blue-600">
               {performance ? formatHours(performance.avgAcknowledgeHours) : '—'}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-xs text-gray-500 font-medium">SLA Compliance</h3>
+              <h3 className="text-xs text-tx-muted font-medium">SLA Compliance</h3>
               <AlertTriangle className="w-4 h-4 text-amber-500" />
             </div>
             <p className={`text-2xl font-bold ${(performance?.slaComplianceRate || 0) >= 80 ? 'text-green-600' : (performance?.slaComplianceRate || 0) >= 50 ? 'text-amber-600' : 'text-red-600'}`}>
@@ -235,20 +235,20 @@ export default function CaretakerPerformancePage() {
         </div>
 
         {/* Weekly Summary */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+          <h2 className="text-lg font-semibold text-tx-primary flex items-center gap-2 mb-4">
             <BarChart3 className="w-5 h-5 text-blue-600" />
             Weekly Summary
           </h2>
           {weeklySummary.every(w => w.count === 0) ? (
-            <p className="text-gray-500 text-center py-4">No completed requests in the last 4 weeks</p>
+            <p className="text-tx-muted text-center py-4">No completed requests in the last 4 weeks</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {weeklySummary.map((week, i) => (
-                <div key={i} className="border border-gray-100 rounded-lg p-4">
-                  <p className="text-xs text-gray-500 mb-2">{week.label}</p>
-                  <p className="text-2xl font-bold text-gray-900">{week.count}</p>
-                  <p className="text-xs text-gray-500">completed</p>
+                <div key={i} className="border border-bd rounded-lg p-4">
+                  <p className="text-xs text-tx-muted mb-2">{week.label}</p>
+                  <p className="text-2xl font-bold text-tx-primary">{week.count}</p>
+                  <p className="text-xs text-tx-muted">completed</p>
                   {week.count > 0 && (
                     <p className="text-xs text-blue-600 mt-1">
                       Avg. resolve: {formatHours(week.avgResolveHours)}
@@ -261,28 +261,28 @@ export default function CaretakerPerformancePage() {
         </div>
 
         {/* Recent Requests with SLA */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
-            <Clock className="w-5 h-5 text-gray-600" />
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+          <h2 className="text-lg font-semibold text-tx-primary flex items-center gap-2 mb-4">
+            <Clock className="w-5 h-5 text-tx-secondary" />
             Recent Requests
           </h2>
           {recentRequests.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No maintenance requests found</p>
+            <p className="text-tx-muted text-center py-4">No maintenance requests found</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="bg-bg-secondary border-b border-bd">
                   <tr>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">SLA Target</th>
-                    <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Actual</th>
-                    <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">SLA Met</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-tx-muted uppercase">Title</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-tx-muted uppercase">Unit</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-tx-muted uppercase">Priority</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-tx-muted uppercase">Status</th>
+                    <th className="px-4 py-2 text-center text-xs font-medium text-tx-muted uppercase">SLA Target</th>
+                    <th className="px-4 py-2 text-center text-xs font-medium text-tx-muted uppercase">Actual</th>
+                    <th className="px-4 py-2 text-center text-xs font-medium text-tx-muted uppercase">SLA Met</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-bd">
                   {recentRequests.map((req) => {
                     const sla = calculateRequestSLA(req);
                     const target = SLA_TARGETS[req.priority] || SLA_TARGETS.medium;
@@ -291,20 +291,20 @@ export default function CaretakerPerformancePage() {
                       pending: 'bg-yellow-100 text-yellow-800',
                       in_progress: 'bg-blue-100 text-blue-800',
                       completed: 'bg-green-100 text-green-800',
-                      cancelled: 'bg-gray-100 text-gray-800',
+                      cancelled: 'bg-bg-secondary text-tx-primary',
                     };
 
                     const priorityColors: Record<string, string> = {
-                      low: 'bg-gray-100 text-gray-800',
+                      low: 'bg-bg-secondary text-tx-primary',
                       medium: 'bg-blue-100 text-blue-800',
                       high: 'bg-orange-100 text-orange-800',
                       urgent: 'bg-red-100 text-red-800',
                     };
 
                     return (
-                      <tr key={req.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm text-gray-900">{req.title}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{req.unit?.unit_number || 'N/A'}</td>
+                      <tr key={req.id} className="hover:bg-bg-hover">
+                        <td className="px-4 py-3 text-sm text-tx-primary">{req.title}</td>
+                        <td className="px-4 py-3 text-sm text-tx-secondary">{req.unit?.unit_number || 'N/A'}</td>
                         <td className="px-4 py-3">
                           <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${priorityColors[req.priority]}`}>
                             {req.priority.toUpperCase()}
@@ -315,10 +315,10 @@ export default function CaretakerPerformancePage() {
                             {req.status.replace('_', ' ').toUpperCase()}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-center text-sm text-gray-600">
+                        <td className="px-4 py-3 text-center text-sm text-tx-secondary">
                           {formatHours(target.resolve)}
                         </td>
-                        <td className="px-4 py-3 text-center text-sm text-gray-600">
+                        <td className="px-4 py-3 text-center text-sm text-tx-secondary">
                           {sla.resolveTimeHours !== null ? formatHours(sla.resolveTimeHours) : '—'}
                         </td>
                         <td className="px-4 py-3 text-center">
@@ -329,7 +329,7 @@ export default function CaretakerPerformancePage() {
                               <AlertTriangle className="w-5 h-5 text-red-500 mx-auto" />
                             )
                           ) : (
-                            <span className="text-xs text-gray-400">Pending</span>
+                            <span className="text-xs text-tx-muted">Pending</span>
                           )}
                         </td>
                       </tr>

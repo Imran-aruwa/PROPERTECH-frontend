@@ -91,7 +91,7 @@ export default function TenantDocumentsPage() {
         <div className="min-h-[400px] flex items-center justify-center">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading documents...</p>
+            <p className="text-tx-secondary">Loading documents...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -102,8 +102,8 @@ export default function TenantDocumentsPage() {
     <DashboardLayout role="tenant">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Documents</h1>
-          <p className="text-gray-600 mt-1">Access your lease and property documents</p>
+          <h1 className="text-3xl font-bold text-tx-primary">Documents</h1>
+          <p className="text-tx-secondary mt-1">Access your lease and property documents</p>
         </div>
 
         {error && (
@@ -113,7 +113,7 @@ export default function TenantDocumentsPage() {
         )}
 
         {activeLease && (
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -121,10 +121,10 @@ export default function TenantDocumentsPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-gray-900">Lease Agreement</h3>
+                    <h3 className="font-semibold text-tx-primary">Lease Agreement</h3>
                     <LeaseStatusBadge status={activeLease.status as LeaseStatus} />
                   </div>
-                  <p className="text-sm text-gray-600 mt-0.5">
+                  <p className="text-sm text-tx-secondary mt-0.5">
                     {activeLease.start_date} — {activeLease.end_date} &middot; KES {activeLease.rent_amount?.toLocaleString()}/month
                   </p>
                 </div>
@@ -144,24 +144,24 @@ export default function TenantDocumentsPage() {
         )}
 
         {documents.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No documents available</p>
-            <p className="text-gray-400 text-sm mt-1">Your lease and property documents will appear here</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <FileText className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No documents available</p>
+            <p className="text-tx-muted text-sm mt-1">Your lease and property documents will appear here</p>
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {documents.map((doc) => (
-              <div key={doc.id} className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
+              <div key={doc.id} className="bg-bg-card rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                       <FileText className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{doc.name}</h3>
-                      <p className="text-sm text-gray-600">{doc.type} {doc.size && `• ${doc.size}`}</p>
-                      {doc.date && <p className="text-xs text-gray-500 mt-1">Uploaded: {doc.date}</p>}
+                      <h3 className="font-semibold text-tx-primary">{doc.name}</h3>
+                      <p className="text-sm text-tx-secondary">{doc.type} {doc.size && `• ${doc.size}`}</p>
+                      {doc.date && <p className="text-xs text-tx-muted mt-1">Uploaded: {doc.date}</p>}
                     </div>
                   </div>
                   <button

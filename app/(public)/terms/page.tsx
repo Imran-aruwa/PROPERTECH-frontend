@@ -17,18 +17,18 @@ function TermsSection({
   content: React.ReactNode
 }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-bg-card rounded-xl shadow-sm border border-bd overflow-hidden">
       <button
         onClick={() => toggle(id)}
-        className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between p-6 hover:bg-bg-hover transition-colors"
       >
-        <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-xl font-semibold text-tx-primary">{title}</h2>
         <ChevronDown 
           className={`w-5 h-5 transition-transform ${expandedId === id ? 'rotate-180' : ''}`} 
         />
       </button>
       {expandedId === id && (
-        <div className="px-6 pb-6 border-t border-gray-100">
+        <div className="px-6 pb-6 border-t border-bd">
           {content}
         </div>
       )}
@@ -66,7 +66,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 These Terms of Service govern your access to and use of the
                 Propertech Software platform, including our website,
@@ -87,7 +87,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>To use the Service, you represent and warrant that:</p>
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li>You are at least 18 years old or the age of majority in your jurisdiction.</li>
@@ -112,7 +112,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 Propertech Software grants you a limited, non-exclusive,
                 non-transferable, revocable license to access and use the
@@ -137,7 +137,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 Access to certain features of the Service may require a paid
                 subscription. When you activate a subscription, you authorize
@@ -164,7 +164,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 Your use of the Service is also governed by our{' '}
                 <a href="/privacy" className="text-blue-600 hover:underline font-medium">
@@ -193,7 +193,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 All content and materials within the Service, including software,
                 designs, text, graphics, logos, and trademarks, are owned by
@@ -220,7 +220,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 We may suspend or terminate your access to the Service at any
                 time if we reasonably believe that:
@@ -247,7 +247,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p className="font-semibold">
                 The Service is provided "as is" and "as available" without
                 warranties of any kind, either express or implied.
@@ -273,7 +273,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 You agree to indemnify, defend, and hold harmless Propertech
                 Software and its affiliates from any claims, losses, damages,
@@ -294,7 +294,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 We may update these Terms from time to time. We will notify you
                 of material changes by posting the updated Terms on our website
@@ -314,7 +314,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>
                 These Terms are governed by the laws of the Republic of Kenya,
                 without regard to conflict of law principles.
@@ -334,7 +334,7 @@ export default function TermsPage() {
           expandedId={expandedId}
           toggle={toggle}
           content={
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-3 text-tx-secondary">
               <p>These Terms constitute the entire agreement between you and Propertech Software.</p>
               <p>
                 If any provision is found invalid, the remaining provisions

@@ -114,8 +114,8 @@ export default function AgentNewPropertyPage() {
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Property Created!</h2>
-            <p className="text-gray-600">Redirecting to properties list...</p>
+            <h2 className="text-2xl font-bold text-tx-primary mb-2">Property Created!</h2>
+            <p className="text-tx-secondary">Redirecting to properties list...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -129,13 +129,13 @@ export default function AgentNewPropertyPage() {
         <div className="flex items-center gap-4 mb-6">
           <Link
             href="/agent/properties"
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-600" />
+            <ArrowLeft className="w-5 h-5 text-tx-secondary" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Add New Property</h1>
-            <p className="text-gray-600">Create a property listing for management</p>
+            <h1 className="text-2xl font-bold text-tx-primary">Add New Property</h1>
+            <p className="text-tx-secondary">Create a property listing for management</p>
           </div>
         </div>
 
@@ -147,15 +147,15 @@ export default function AgentNewPropertyPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Property Details */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <Building2 className="w-5 h-5 text-blue-600" />
               Property Details
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-tx-secondary mb-1">
                   Property Name *
                 </label>
                 <input
@@ -166,12 +166,12 @@ export default function AgentNewPropertyPage() {
                   onChange={handleChange}
                   required
                   placeholder="e.g., Sunrise Apartments"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="address" className="block text-sm font-medium text-tx-secondary mb-1">
                   Address *
                 </label>
                 <input
@@ -182,12 +182,12 @@ export default function AgentNewPropertyPage() {
                   onChange={handleChange}
                   required
                   placeholder="Street address"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="city" className="block text-sm font-medium text-tx-secondary mb-1">
                   City
                 </label>
                 <input
@@ -197,12 +197,12 @@ export default function AgentNewPropertyPage() {
                   value={formData.city}
                   onChange={handleChange}
                   placeholder="e.g., Nairobi"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="state" className="block text-sm font-medium text-tx-secondary mb-1">
                   State/County
                 </label>
                 <input
@@ -212,12 +212,12 @@ export default function AgentNewPropertyPage() {
                   value={formData.state}
                   onChange={handleChange}
                   placeholder="e.g., Nairobi County"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="postal_code" className="block text-sm font-medium text-tx-secondary mb-1">
                   Postal Code
                 </label>
                 <input
@@ -227,12 +227,12 @@ export default function AgentNewPropertyPage() {
                   value={formData.postal_code}
                   onChange={handleChange}
                   placeholder="e.g., 00100"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="property_type" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="property_type" className="block text-sm font-medium text-tx-secondary mb-1">
                   Property Type
                 </label>
                 <select
@@ -240,7 +240,7 @@ export default function AgentNewPropertyPage() {
                   name="property_type"
                   value={formData.property_type}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="residential">Residential</option>
                   <option value="commercial">Commercial</option>
@@ -249,7 +249,7 @@ export default function AgentNewPropertyPage() {
               </div>
 
               <div className="md:col-span-2">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="description" className="block text-sm font-medium text-tx-secondary mb-1">
                   Property Description
                 </label>
                 <textarea
@@ -259,15 +259,15 @@ export default function AgentNewPropertyPage() {
                   onChange={handleChange}
                   rows={3}
                   placeholder="Describe the property..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
           </div>
 
           {/* Unit Generation */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <Home className="w-5 h-5 text-green-600" />
               Unit Configuration
             </h2>
@@ -284,7 +284,7 @@ export default function AgentNewPropertyPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label htmlFor="total_units" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="total_units" className="block text-sm font-medium text-tx-secondary mb-1">
                   Number of Units
                 </label>
                 <input
@@ -294,12 +294,12 @@ export default function AgentNewPropertyPage() {
                   value={formData.total_units}
                   onChange={handleChange}
                   min="0"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="unit_prefix" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="unit_prefix" className="block text-sm font-medium text-tx-secondary mb-1">
                   Unit Prefix
                 </label>
                 <input
@@ -309,12 +309,12 @@ export default function AgentNewPropertyPage() {
                   value={formData.unit_prefix}
                   onChange={handleChange}
                   placeholder="e.g., Unit, Apt, House"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="default_rent" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="default_rent" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1">
                     <DollarSign className="w-4 h-4" />
                     Monthly Rent (KES)
@@ -327,12 +327,12 @@ export default function AgentNewPropertyPage() {
                   value={formData.default_rent}
                   onChange={handleChange}
                   min="0"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="default_bedrooms" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="default_bedrooms" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1">
                     <Bed className="w-4 h-4" />
                     Bedrooms
@@ -345,12 +345,12 @@ export default function AgentNewPropertyPage() {
                   value={formData.default_bedrooms}
                   onChange={handleChange}
                   min="0"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="default_bathrooms" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="default_bathrooms" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1">
                     <Bath className="w-4 h-4" />
                     Bathrooms
@@ -364,12 +364,12 @@ export default function AgentNewPropertyPage() {
                   onChange={handleChange}
                   min="0"
                   step="0.5"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="default_toilets" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="default_toilets" className="block text-sm font-medium text-tx-secondary mb-1">
                   Guest Toilets
                 </label>
                 <input
@@ -379,12 +379,12 @@ export default function AgentNewPropertyPage() {
                   value={formData.default_toilets}
                   onChange={handleChange}
                   min="0"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="default_square_feet" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="default_square_feet" className="block text-sm font-medium text-tx-secondary mb-1">
                   Square Feet
                 </label>
                 <input
@@ -394,47 +394,47 @@ export default function AgentNewPropertyPage() {
                   value={formData.default_square_feet}
                   onChange={handleChange}
                   min="0"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Additional Features */}
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Additional Features</h3>
+            <div className="mt-6 pt-6 border-t border-bd">
+              <h3 className="text-sm font-medium text-tx-secondary mb-3">Additional Features</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
+                <label className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg cursor-pointer hover:bg-bg-hover">
                   <input
                     type="checkbox"
                     name="default_has_master_bedroom"
                     checked={formData.default_has_master_bedroom}
                     onChange={handleChange}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-blue-600 border-bd-strong rounded focus:ring-blue-500"
                   />
                   <div>
-                    <span className="font-medium text-gray-900">Master Bedroom En-suite</span>
-                    <p className="text-sm text-gray-500">Master bedroom has attached bathroom</p>
+                    <span className="font-medium text-tx-primary">Master Bedroom En-suite</span>
+                    <p className="text-sm text-tx-muted">Master bedroom has attached bathroom</p>
                   </div>
                 </label>
 
-                <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
+                <label className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg cursor-pointer hover:bg-bg-hover">
                   <input
                     type="checkbox"
                     name="default_has_servant_quarters"
                     checked={formData.default_has_servant_quarters}
                     onChange={handleChange}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-blue-600 border-bd-strong rounded focus:ring-blue-500"
                   />
                   <div>
-                    <span className="font-medium text-gray-900">Servant Quarters (SQ)</span>
-                    <p className="text-sm text-gray-500">Separate staff accommodation</p>
+                    <span className="font-medium text-tx-primary">Servant Quarters (SQ)</span>
+                    <p className="text-sm text-tx-muted">Separate staff accommodation</p>
                   </div>
                 </label>
               </div>
 
               {formData.default_has_servant_quarters && (
                 <div className="mt-4">
-                  <label htmlFor="default_sq_bathrooms" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="default_sq_bathrooms" className="block text-sm font-medium text-tx-secondary mb-1">
                     SQ Bathrooms
                   </label>
                   <input
@@ -444,13 +444,13 @@ export default function AgentNewPropertyPage() {
                     value={formData.default_sq_bathrooms}
                     onChange={handleChange}
                     min="0"
-                    className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-32 px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
               )}
 
               <div className="mt-4">
-                <label htmlFor="default_unit_description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="default_unit_description" className="block text-sm font-medium text-tx-secondary mb-1">
                   Unit Description Template
                 </label>
                 <textarea
@@ -460,7 +460,7 @@ export default function AgentNewPropertyPage() {
                   onChange={handleChange}
                   rows={2}
                   placeholder="e.g., Master en-suite, 2 guest toilets, external SQ with washroom"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -468,15 +468,15 @@ export default function AgentNewPropertyPage() {
 
           {/* Preview */}
           {formData.total_units > 0 && (
-            <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
-              <h3 className="font-medium text-gray-900 mb-3">Preview</h3>
-              <p className="text-sm text-gray-600">
+            <div className="bg-bg-secondary rounded-lg border border-bd p-6">
+              <h3 className="font-medium text-tx-primary mb-3">Preview</h3>
+              <p className="text-sm text-tx-secondary">
                 This will create <span className="font-semibold">{formData.total_units}</span> units named{' '}
-                <span className="font-mono bg-white px-2 py-0.5 rounded border">
+                <span className="font-mono bg-bg-card px-2 py-0.5 rounded border">
                   {formData.unit_prefix} 1
                 </span>{' '}
                 through{' '}
-                <span className="font-mono bg-white px-2 py-0.5 rounded border">
+                <span className="font-mono bg-bg-card px-2 py-0.5 rounded border">
                   {formData.unit_prefix} {formData.total_units}
                 </span>
                 {formData.default_rent > 0 && (
@@ -490,7 +490,7 @@ export default function AgentNewPropertyPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href="/agent/properties"
-              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

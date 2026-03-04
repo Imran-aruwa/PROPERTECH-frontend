@@ -86,11 +86,11 @@ export default function OwnerMaintenancePage() {
     pending: 'bg-yellow-100 text-yellow-800',
     in_progress: 'bg-blue-100 text-blue-800',
     completed: 'bg-green-100 text-green-800',
-    cancelled: 'bg-gray-100 text-gray-800'
+    cancelled: 'bg-bg-secondary text-tx-primary'
   };
 
   const priorityColors: Record<string, string> = {
-    low: 'bg-gray-100 text-gray-800',
+    low: 'bg-bg-secondary text-tx-primary',
     medium: 'bg-blue-100 text-blue-800',
     high: 'bg-orange-100 text-orange-800',
     urgent: 'bg-red-100 text-red-800'
@@ -98,9 +98,9 @@ export default function OwnerMaintenancePage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen bg-bg-secondary p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="h-8 bg-gray-200 rounded w-64 mb-8 animate-pulse" />
+          <div className="h-8 bg-bd rounded w-64 mb-8 animate-pulse" />
           <TableSkeleton rows={8} cols={7} />
         </div>
       </div>
@@ -108,17 +108,17 @@ export default function OwnerMaintenancePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-3">
             <Wrench className="w-8 h-8 text-red-600" />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Maintenance Requests</h1>
-              <p className="text-gray-600 mt-1">Manage and track all maintenance requests</p>
+              <h1 className="text-3xl font-bold text-tx-primary">Maintenance Requests</h1>
+              <p className="text-tx-secondary mt-1">Manage and track all maintenance requests</p>
             </div>
           </div>
         </div>
@@ -127,24 +127,24 @@ export default function OwnerMaintenancePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Summary Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-gray-600 text-sm font-medium mb-2">Total Requests</h3>
-            <p className="text-3xl font-bold text-gray-900">{requests.length}</p>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h3 className="text-tx-secondary text-sm font-medium mb-2">Total Requests</h3>
+            <p className="text-3xl font-bold text-tx-primary">{requests.length}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-gray-600 text-sm font-medium mb-2">Pending</h3>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h3 className="text-tx-secondary text-sm font-medium mb-2">Pending</h3>
             <p className="text-3xl font-bold text-yellow-600">
               {requests.filter(r => r.status === 'pending').length}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-gray-600 text-sm font-medium mb-2">In Progress</h3>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h3 className="text-tx-secondary text-sm font-medium mb-2">In Progress</h3>
             <p className="text-3xl font-bold text-blue-600">
               {requests.filter(r => r.status === 'in_progress').length}
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-gray-600 text-sm font-medium mb-2">Completed</h3>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h3 className="text-tx-secondary text-sm font-medium mb-2">Completed</h3>
             <p className="text-3xl font-bold text-green-600">
               {requests.filter(r => r.status === 'completed').length}
             </p>
@@ -152,9 +152,9 @@ export default function OwnerMaintenancePage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 mb-6">
           <div className="flex items-center gap-4">
-            <Filter className="w-5 h-5 text-gray-600" />
+            <Filter className="w-5 h-5 text-tx-secondary" />
             <div className="flex gap-2">
               {(['all', 'pending', 'in_progress', 'completed'] as const).map((status) => (
                 <button
@@ -163,7 +163,7 @@ export default function OwnerMaintenancePage() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     statusFilter === status
                       ? 'bg-red-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                   }`}
                 >
                   {status === 'all' ? 'All' : status.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
@@ -178,37 +178,37 @@ export default function OwnerMaintenancePage() {
 
         {/* Requests Table */}
         {filteredRequests.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-            <Wrench className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No maintenance requests</h3>
-            <p className="text-gray-600">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-12 text-center">
+            <Wrench className="w-16 h-16 text-tx-muted mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-tx-primary mb-2">No maintenance requests</h3>
+            <p className="text-tx-secondary">
               {requests.length === 0 
                 ? 'All caught up! No maintenance requests at the moment.'
                 : 'No requests match the selected filter.'}
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="bg-bg-secondary border-b border-bd">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Unit</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assigned To</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reported</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase">Title</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase">Unit</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase">Priority</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase">Assigned To</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-tx-muted uppercase">Reported</th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-tx-muted uppercase">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-bd">
                   {filteredRequests.map((request) => (
-                    <tr key={request.id} className="hover:bg-gray-50">
+                    <tr key={request.id} className="hover:bg-bg-hover">
                       <td className="px-6 py-4">
                         <div>
-                          <div className="font-medium text-gray-900">{request.title}</div>
-                          <div className="text-sm text-gray-500 line-clamp-1">{request.description}</div>
+                          <div className="font-medium text-tx-primary">{request.title}</div>
+                          <div className="text-sm text-tx-muted line-clamp-1">{request.description}</div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -233,7 +233,7 @@ export default function OwnerMaintenancePage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {request.assigned_to ? (
-                          <span className="text-sm text-gray-900">
+                          <span className="text-sm text-tx-primary">
                             {(request.assigned_staff?.user as any)?.full_name || 'Assigned'}
                           </span>
                         ) : (
@@ -245,7 +245,7 @@ export default function OwnerMaintenancePage() {
                           </button>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-tx-muted">
                         {new Date(request.reported_date).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
@@ -272,13 +272,13 @@ export default function OwnerMaintenancePage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-tx-secondary mb-2">
               Select Staff Member
             </label>
             <select
               value={selectedStaff || ''}
               onChange={(e) => setSelectedStaff(Number(e.target.value))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-red-500"
+              className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-red-500"
             >
               <option value="">Choose a staff member</option>
               {staff.map((s) => (
@@ -305,7 +305,7 @@ export default function OwnerMaintenancePage() {
             <button
               onClick={() => setAssignModal({ isOpen: false, requestId: null })}
               disabled={assigning}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+              className="px-4 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd"
             >
               Cancel
             </button>

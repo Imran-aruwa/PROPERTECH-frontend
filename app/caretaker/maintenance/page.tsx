@@ -105,7 +105,7 @@ export default function MaintenancePage() {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      pending: 'bg-gray-100 text-gray-800',
+      pending: 'bg-bg-secondary text-tx-primary',
       in_progress: 'bg-blue-100 text-blue-800',
       completed: 'bg-green-100 text-green-800',
     };
@@ -150,7 +150,7 @@ export default function MaintenancePage() {
       accessor: (row: typeof maintenanceRequests[0]) => (
         <select
           onChange={(e) => handleStatusChange(row.id, e.target.value)}
-          className="px-3 py-1 border border-gray-300 rounded text-sm"
+          className="px-3 py-1 border border-bd-strong rounded text-sm"
           defaultValue={row.status}
         >
           <option value="pending">Pending</option>
@@ -165,8 +165,8 @@ export default function MaintenancePage() {
     <DashboardLayout role="caretaker">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Maintenance Requests</h1>
-          <p className="text-gray-600 mt-1">Manage and track all maintenance activities</p>
+          <h1 className="text-3xl font-bold text-tx-primary">Maintenance Requests</h1>
+          <p className="text-tx-secondary mt-1">Manage and track all maintenance activities</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
@@ -183,7 +183,7 @@ export default function MaintenancePage() {
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filter === status
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
               }`}
             >
               {status.replace('_', ' ').toUpperCase()}
@@ -191,7 +191,7 @@ export default function MaintenancePage() {
           ))}
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-6">
           <DataTable data={filteredRequests} columns={columns} />
         </div>
       </div>

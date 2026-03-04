@@ -185,13 +185,13 @@ export default function MpesaRemindersPage() {
       <div className="flex gap-1 bg-slate-100 rounded-xl p-1 w-fit">
         <button
           onClick={() => setTab('history')}
-          className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${tab === 'history' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${tab === 'history' ? 'bg-bg-card text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
         >
           History
         </button>
         <button
           onClick={() => setTab('rules')}
-          className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${tab === 'rules' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${tab === 'rules' ? 'bg-bg-card text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
         >
           Rules & Templates
         </button>
@@ -199,7 +199,7 @@ export default function MpesaRemindersPage() {
 
       {/* ── HISTORY TAB ────────────────────────────────────────────────────── */}
       {tab === 'history' && (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="px-4 py-3 border-b border-slate-50 flex flex-wrap gap-2 items-center">
             <select
               value={statusFilter}
@@ -282,7 +282,7 @@ export default function MpesaRemindersPage() {
           ) : (
             <>
               {/* Master toggle + pre-due days */}
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+              <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="font-semibold text-slate-800">Reminder Engine</h3>
@@ -310,7 +310,7 @@ export default function MpesaRemindersPage() {
               </div>
 
               {/* Per-type config */}
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+              <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-slate-50">
                   <h3 className="font-semibold text-slate-800">Reminder Types</h3>
                   <p className="text-xs text-slate-400 mt-0.5">Configure which reminders to send and how</p>

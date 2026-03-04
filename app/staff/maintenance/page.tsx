@@ -76,7 +76,7 @@ export default function StaffMaintenancePage() {
       case 'high': return 'bg-red-100 text-red-800';
       case 'medium': return 'bg-yellow-100 text-yellow-800';
       case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-bg-secondary text-tx-primary';
     }
   };
 
@@ -85,7 +85,7 @@ export default function StaffMaintenancePage() {
       case 'pending': return 'bg-yellow-100 text-yellow-800';
       case 'in_progress': return 'bg-blue-100 text-blue-800';
       case 'completed': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-bg-secondary text-tx-primary';
     }
   };
 
@@ -94,7 +94,7 @@ export default function StaffMaintenancePage() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading maintenance requests...</p>
+          <p className="text-tx-secondary">Loading maintenance requests...</p>
         </div>
       </div>
     );
@@ -104,8 +104,8 @@ export default function StaffMaintenancePage() {
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Maintenance Requests</h1>
-          <p className="text-gray-600 mt-1">View and manage assigned maintenance tasks</p>
+          <h1 className="text-2xl font-bold text-tx-primary">Maintenance Requests</h1>
+          <p className="text-tx-secondary mt-1">View and manage assigned maintenance tasks</p>
         </div>
 
         {error && (
@@ -114,7 +114,7 @@ export default function StaffMaintenancePage() {
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-sm border p-4">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-4">
           <div className="flex flex-wrap gap-2">
             {['all', 'pending', 'in_progress', 'completed'].map((status) => (
               <button
@@ -123,7 +123,7 @@ export default function StaffMaintenancePage() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                   filter === status
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                 }`}
               >
                 {status === 'in_progress' ? 'In Progress' : status.charAt(0).toUpperCase() + status.slice(1)}
@@ -133,19 +133,19 @@ export default function StaffMaintenancePage() {
         </div>
 
         {filteredRequests.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Wrench className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No maintenance requests found</p>
-            <p className="text-gray-400 text-sm mt-1">Assigned requests will appear here</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Wrench className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No maintenance requests found</p>
+            <p className="text-tx-muted text-sm mt-1">Assigned requests will appear here</p>
           </div>
         ) : (
           <div className="space-y-4">
             {filteredRequests.map((request) => (
-              <div key={request.id} className="bg-white rounded-lg shadow-sm border p-4">
+              <div key={request.id} className="bg-bg-card rounded-lg shadow-sm border p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="font-semibold text-gray-900">{request.title}</h3>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                    <h3 className="font-semibold text-tx-primary">{request.title}</h3>
+                    <div className="flex items-center gap-2 text-sm text-tx-secondary mt-1">
                       <MapPin className="w-4 h-4" />
                       {request.property} {request.unit && `- Unit ${request.unit}`}
                     </div>
@@ -155,7 +155,7 @@ export default function StaffMaintenancePage() {
                   </span>
                 </div>
                 {request.description && (
-                  <p className="text-gray-600 text-sm mb-3">{request.description}</p>
+                  <p className="text-tx-secondary text-sm mb-3">{request.description}</p>
                 )}
                 <div className="flex items-center justify-between pt-3 border-t">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>

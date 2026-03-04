@@ -19,7 +19,7 @@ const CLAUSE_TYPE_COLORS: Record<string, string> = {
   maintenance: 'bg-yellow-100 text-yellow-700',
   pets: 'bg-purple-100 text-purple-700',
   utilities: 'bg-blue-100 text-blue-700',
-  custom: 'bg-gray-100 text-gray-700',
+  custom: 'bg-bg-secondary text-tx-secondary',
 };
 
 const STEPS = ['Property & Tenant', 'Lease Terms', 'Clauses', 'Review & Send'];
@@ -248,17 +248,17 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
                     ? 'bg-green-500 text-white'
                     : i === step
                     ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200 text-gray-500'
+                    : 'bg-bd text-tx-muted'
                 }`}
               >
                 {i < step ? <Check className="w-4 h-4" /> : i + 1}
               </div>
-              <span className={`mt-1 text-xs hidden sm:block ${i === step ? 'text-blue-600 font-medium' : 'text-gray-500'}`}>
+              <span className={`mt-1 text-xs hidden sm:block ${i === step ? 'text-blue-600 font-medium' : 'text-tx-muted'}`}>
                 {label}
               </span>
             </div>
             {i < STEPS.length - 1 && (
-              <div className={`flex-1 h-0.5 mx-2 ${i < step ? 'bg-green-500' : 'bg-gray-200'}`} />
+              <div className={`flex-1 h-0.5 mx-2 ${i < step ? 'bg-green-500' : 'bg-bd'}`} />
             )}
           </div>
         ))}
@@ -270,20 +270,20 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="bg-bg-card rounded-lg shadow-sm border p-6">
         {/* Step 1: Property/Unit/Tenant */}
         {step === 0 && (
           <div className="space-y-4">
             <h2 className="text-lg font-semibold">Select Property, Unit & Tenant</h2>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Property</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Property</label>
               <select
                 value={propertyId}
                 onChange={(e) => {
                   setPropertyId(e.target.value ? Number(e.target.value) : '');
                   setUnitId('');
                 }}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
               >
                 <option value="">Select a property</option>
                 {properties.map((p) => (
@@ -292,11 +292,11 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Unit</label>
               <select
                 value={unitId}
                 onChange={(e) => setUnitId(e.target.value ? Number(e.target.value) : '')}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
                 disabled={!propertyId}
               >
                 <option value="">Select a unit</option>
@@ -306,11 +306,11 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tenant</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Tenant</label>
               <select
                 value={tenantId}
                 onChange={(e) => setTenantId(e.target.value ? Number(e.target.value) : '')}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
               >
                 <option value="">Select a tenant</option>
                 {tenants.map((t) => (
@@ -329,49 +329,49 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
             <h2 className="text-lg font-semibold">Lease Terms</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">Start Date</label>
                 <input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                  className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">End Date</label>
                 <input
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                  className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Rent Amount (KES)</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">Rent Amount (KES)</label>
                 <input
                   type="number"
                   value={rentAmount}
                   onChange={(e) => setRentAmount(e.target.value ? Number(e.target.value) : '')}
                   placeholder="e.g. 25000"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                  className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Deposit Amount (KES)</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">Deposit Amount (KES)</label>
                 <input
                   type="number"
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value ? Number(e.target.value) : '')}
                   placeholder="e.g. 25000"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                  className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Payment Cycle</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">Payment Cycle</label>
                 <select
                   value={paymentCycle}
                   onChange={(e) => setPaymentCycle(e.target.value as LeasePaymentCycle)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                  className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
                 >
                   <option value="monthly">Monthly</option>
                   <option value="quarterly">Quarterly</option>
@@ -379,13 +379,13 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Annual Escalation (%)</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">Annual Escalation (%)</label>
                 <input
                   type="number"
                   value={escalationRate}
                   onChange={(e) => setEscalationRate(e.target.value ? Number(e.target.value) : '')}
                   placeholder="e.g. 10"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                  className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
                 />
               </div>
             </div>
@@ -406,7 +406,7 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
               </button>
             </div>
             {clauses.length === 0 && (
-              <p className="text-gray-500 text-sm py-4 text-center">
+              <p className="text-tx-muted text-sm py-4 text-center">
                 No clauses yet. They will be auto-generated when you enter lease terms.
               </p>
             )}
@@ -432,10 +432,10 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
                       value={clause.text}
                       onChange={(e) => updateClause(clause.id, e.target.value)}
                       rows={3}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900"
+                      className="w-full border border-bd-strong rounded-lg px-3 py-2 text-sm text-tx-primary"
                     />
                   ) : (
-                    <p className="text-sm text-gray-700">{clause.text}</p>
+                    <p className="text-sm text-tx-secondary">{clause.text}</p>
                   )}
                 </div>
               ))}
@@ -450,48 +450,48 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-gray-500">Property</p>
-                <p className="font-medium text-gray-900">{selectedProperty?.name || '—'}</p>
+                <p className="text-tx-muted">Property</p>
+                <p className="font-medium text-tx-primary">{selectedProperty?.name || '—'}</p>
               </div>
               <div>
-                <p className="text-gray-500">Unit</p>
-                <p className="font-medium text-gray-900">{selectedUnit?.unit_number || '—'}</p>
+                <p className="text-tx-muted">Unit</p>
+                <p className="font-medium text-tx-primary">{selectedUnit?.unit_number || '—'}</p>
               </div>
               <div>
-                <p className="text-gray-500">Tenant</p>
-                <p className="font-medium text-gray-900">
+                <p className="text-tx-muted">Tenant</p>
+                <p className="font-medium text-tx-primary">
                   {selectedTenant?.user?.full_name || selectedTenant?.user?.email || '—'}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500">Payment Cycle</p>
-                <p className="font-medium text-gray-900 capitalize">{paymentCycle}</p>
+                <p className="text-tx-muted">Payment Cycle</p>
+                <p className="font-medium text-tx-primary capitalize">{paymentCycle}</p>
               </div>
               <div>
-                <p className="text-gray-500">Lease Period</p>
-                <p className="font-medium text-gray-900">{startDate} → {endDate}</p>
+                <p className="text-tx-muted">Lease Period</p>
+                <p className="font-medium text-tx-primary">{startDate} → {endDate}</p>
               </div>
               <div>
-                <p className="text-gray-500">Rent</p>
-                <p className="font-medium text-gray-900">KES {Number(rentAmount).toLocaleString()}</p>
+                <p className="text-tx-muted">Rent</p>
+                <p className="font-medium text-tx-primary">KES {Number(rentAmount).toLocaleString()}</p>
               </div>
               <div>
-                <p className="text-gray-500">Deposit</p>
-                <p className="font-medium text-gray-900">KES {Number(depositAmount).toLocaleString()}</p>
+                <p className="text-tx-muted">Deposit</p>
+                <p className="font-medium text-tx-primary">KES {Number(depositAmount).toLocaleString()}</p>
               </div>
               {escalationRate && (
                 <div>
-                  <p className="text-gray-500">Escalation</p>
-                  <p className="font-medium text-gray-900">{escalationRate}% per year</p>
+                  <p className="text-tx-muted">Escalation</p>
+                  <p className="font-medium text-tx-primary">{escalationRate}% per year</p>
                 </div>
               )}
             </div>
 
             <div>
-              <p className="text-sm text-gray-500 mb-2">{clauses.length} clause(s) included</p>
+              <p className="text-sm text-tx-muted mb-2">{clauses.length} clause(s) included</p>
               <div className="border rounded-lg divide-y max-h-48 overflow-y-auto">
                 {clauses.map((c) => (
-                  <div key={c.id} className="p-3 text-sm text-gray-700">
+                  <div key={c.id} className="p-3 text-sm text-tx-secondary">
                     <span className={`text-xs px-1.5 py-0.5 rounded font-medium capitalize mr-2 ${
                       CLAUSE_TYPE_COLORS[c.type] || CLAUSE_TYPE_COLORS.custom
                     }`}>
@@ -504,7 +504,7 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
             </div>
 
             <div>
-              <p className="text-sm font-medium text-gray-700 mb-2">Delivery Channels</p>
+              <p className="text-sm font-medium text-tx-secondary mb-2">Delivery Channels</p>
               <div className="flex gap-4">
                 {['email', 'sms'].map((ch) => (
                   <label key={ch} className="flex items-center gap-2 cursor-pointer">
@@ -512,9 +512,9 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
                       type="checkbox"
                       checked={channels.has(ch)}
                       onChange={() => toggleChannel(ch)}
-                      className="rounded border-gray-300 text-blue-600"
+                      className="rounded border-bd-strong text-blue-600"
                     />
-                    <span className="text-sm capitalize text-gray-900">{ch}</span>
+                    <span className="text-sm capitalize text-tx-primary">{ch}</span>
                   </label>
                 ))}
               </div>
@@ -528,7 +528,7 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
             type="button"
             onClick={handleBack}
             disabled={step === 0}
-            className="flex items-center gap-1 px-4 py-2 text-sm text-gray-600 hover:text-gray-900 disabled:opacity-30"
+            className="flex items-center gap-1 px-4 py-2 text-sm text-tx-secondary hover:text-tx-primary disabled:opacity-30"
           >
             <ChevronLeft className="w-4 h-4" /> Back
           </button>
@@ -540,7 +540,7 @@ export function LeaseForm({ mode, initialData, leaseId }: LeaseFormProps) {
                   type="button"
                   onClick={handleSaveDraft}
                   disabled={saving}
-                  className="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                  className="px-4 py-2 text-sm border border-bd-strong rounded-lg text-tx-secondary hover:bg-bg-hover disabled:opacity-50"
                 >
                   {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save as Draft'}
                 </button>

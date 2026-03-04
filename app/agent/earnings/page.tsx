@@ -140,23 +140,23 @@ export default function AgentEarningsPage() {
   const MobileCommissionsView = () => (
     <div className="space-y-4 md:hidden">
       {propertyCommissions.map((pc) => (
-        <div key={pc.id} className="bg-gray-50 rounded-lg p-4 space-y-2">
-          <p className="font-medium text-gray-900">{pc.property}</p>
+        <div key={pc.id} className="bg-bg-secondary rounded-lg p-4 space-y-2">
+          <p className="font-medium text-tx-primary">{pc.property}</p>
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div>
-              <p className="text-gray-500">Rent</p>
+              <p className="text-tx-muted">Rent</p>
               <p className="font-medium">{formatCurrency(pc.rent)}</p>
             </div>
             <div>
-              <p className="text-gray-500">Bills</p>
+              <p className="text-tx-muted">Bills</p>
               <p className="font-medium">{formatCurrency(pc.bills)}</p>
             </div>
             <div>
-              <p className="text-gray-500">Bonus</p>
+              <p className="text-tx-muted">Bonus</p>
               <p className="font-medium">{formatCurrency(pc.bonus)}</p>
             </div>
             <div>
-              <p className="text-gray-500">Total</p>
+              <p className="text-tx-muted">Total</p>
               <p className="font-bold text-green-600">{formatCurrency(pc.total)}</p>
             </div>
           </div>
@@ -171,7 +171,7 @@ export default function AgentEarningsPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading earnings...</p>
+            <p className="text-tx-secondary">Loading earnings...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -183,8 +183,8 @@ export default function AgentEarningsPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Commission Earnings</h1>
-            <p className="text-gray-600 mt-1">Track your performance and earnings</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Commission Earnings</h1>
+            <p className="text-tx-secondary mt-1">Track your performance and earnings</p>
           </div>
           <button className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition w-full sm:w-auto">
             <Download className="w-4 h-4" />
@@ -212,12 +212,12 @@ export default function AgentEarningsPage() {
             icon={Award}
             valueClassName="text-green-600"
           />
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-            <p className="text-sm text-gray-600 mb-2">Next Payout</p>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 md:p-6">
+            <p className="text-sm text-tx-secondary mb-2">Next Payout</p>
             <p className="text-xl md:text-2xl font-bold text-blue-600">
               {earnings?.nextPayout || '-'}
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-tx-muted mt-1">
               Pending: {formatCurrency(earnings?.thisMonth || 0)}
             </p>
           </div>
@@ -246,30 +246,30 @@ export default function AgentEarningsPage() {
               height={300}
             />
           )}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Bonuses</h3>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 md:p-6">
+            <h3 className="text-lg font-semibold text-tx-primary mb-4">Performance Bonuses</h3>
             <div className="space-y-3">
               {bonuses.length > 0 ? (
                 bonuses.map((bonus, index) => (
                   <div
                     key={index}
                     className={`flex items-center justify-between p-3 rounded-lg ${
-                      bonus.achieved ? 'bg-green-50' : 'bg-gray-50 opacity-50'
+                      bonus.achieved ? 'bg-green-50' : 'bg-bg-secondary opacity-50'
                     }`}
                   >
                     <div className="min-w-0 flex-1 mr-2">
-                      <p className="font-medium text-gray-900">{bonus.name}</p>
-                      <p className="text-sm text-gray-600 truncate">
+                      <p className="font-medium text-tx-primary">{bonus.name}</p>
+                      <p className="text-sm text-tx-secondary truncate">
                         {bonus.description || (bonus.achieved ? 'Target achieved' : 'Target not met')}
                       </p>
                     </div>
-                    <span className={`font-bold whitespace-nowrap ${bonus.achieved ? 'text-green-600' : 'text-gray-400'}`}>
+                    <span className={`font-bold whitespace-nowrap ${bonus.achieved ? 'text-green-600' : 'text-tx-muted'}`}>
                       {bonus.achieved ? '+' : ''}{formatCurrency(bonus.amount)}
                     </span>
                   </div>
                 ))
               ) : (
-                <p className="text-gray-500 text-sm">No performance bonuses available</p>
+                <p className="text-tx-muted text-sm">No performance bonuses available</p>
               )}
             </div>
           </div>
@@ -277,8 +277,8 @@ export default function AgentEarningsPage() {
 
         {/* Commission by Property */}
         {propertyCommissions.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Commission by Property</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 md:p-6">
+            <h2 className="text-xl font-semibold text-tx-primary mb-4">Commission by Property</h2>
             <MobileCommissionsView />
             <div className="hidden md:block">
               <DataTable data={propertyCommissions} columns={columns} />
@@ -288,19 +288,19 @@ export default function AgentEarningsPage() {
 
         {/* Payout History */}
         {payoutHistory.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Payout History</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4 md:p-6">
+            <h2 className="text-xl font-semibold text-tx-primary mb-4">Payout History</h2>
             <div className="space-y-3">
               {payoutHistory.map((payout, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 md:p-4 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 md:p-4 bg-bg-secondary rounded-lg"
                 >
                   <div>
-                    <p className="font-medium text-gray-900">{payout.date}</p>
-                    <p className="text-sm text-gray-600">{payout.status}</p>
+                    <p className="font-medium text-tx-primary">{payout.date}</p>
+                    <p className="text-sm text-tx-secondary">{payout.status}</p>
                   </div>
-                  <span className="text-lg font-bold text-gray-900">
+                  <span className="text-lg font-bold text-tx-primary">
                     {formatCurrency(payout.amount)}
                   </span>
                 </div>

@@ -4,9 +4,56 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* ── Dark-mode semantic tokens ─────────────────────────────────────────────── */
 :root {
   --primary: #0070F3;
   --primary-dark: #0059C2;
+
+  /* Light theme values (R G B, no # — for Tailwind rgb() compatibility) */
+  --bg-primary:     255 255 255;
+  --bg-secondary:   249 250 251;
+  --bg-card:        255 255 255;
+  --bg-hover:       243 244 246;
+  --text-primary:   17 24 39;
+  --text-secondary: 107 114 128;
+  --text-muted:     156 163 175;
+  --text-inverse:   255 255 255;
+  --border:         229 231 235;
+  --border-strong:  156 163 175;
+  --brand:          30 64 175;
+  --brand-light:    219 234 254;
+  --success:        6 95 70;
+  --success-bg:     209 250 229;
+  --warning:        146 64 14;
+  --warning-bg:     254 243 199;
+  --danger:         153 27 27;
+  --danger-bg:      254 226 226;
+  --input-bg:       255 255 255;
+  --input-border:   209 213 219;
+}
+
+.dark {
+  /* Dark theme values */
+  --bg-primary:     15 23 42;
+  --bg-secondary:   30 41 59;
+  --bg-card:        30 41 59;
+  --bg-hover:       51 65 85;
+  --text-primary:   226 232 240;
+  --text-secondary: 148 163 184;
+  --text-muted:     100 116 139;
+  --text-inverse:   15 23 42;
+  --border:         51 65 85;
+  --border-strong:  71 85 105;
+  --brand:          56 189 248;
+  --brand-light:    12 74 110;
+  --success:        52 211 153;
+  --success-bg:     6 78 59;
+  --warning:        251 191 36;
+  --warning-bg:     120 53 15;
+  --danger:         248 113 113;
+  --danger-bg:      127 29 29;
+  --input-bg:       30 41 59;
+  --input-border:   71 85 105;
 }
 
 * {

@@ -42,26 +42,26 @@ export function LeaseTimeline({ status, dates }: LeaseTimelineProps) {
                     ? 'bg-green-500 text-white'
                     : isCurrent
                     ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200 text-gray-500'
+                    : 'bg-bd text-tx-muted'
                 }`}
               >
                 {isCompleted ? <Check className="w-4 h-4" /> : index + 1}
               </div>
               <span
                 className={`mt-1 text-xs ${
-                  isCurrent ? 'text-blue-600 font-medium' : 'text-gray-500'
+                  isCurrent ? 'text-blue-600 font-medium' : 'text-tx-muted'
                 }`}
               >
                 {step.label}
               </span>
               {dates?.[step.key] && (
-                <span className="text-[10px] text-gray-400">{dates[step.key]}</span>
+                <span className="text-[10px] text-tx-muted">{dates[step.key]}</span>
               )}
             </div>
             {index < STEPS.length - 1 && (
               <div
                 className={`flex-1 h-0.5 mx-1 ${
-                  index < currentIndex ? 'bg-green-500' : 'bg-gray-200'
+                  index < currentIndex ? 'bg-green-500' : 'bg-bd'
                 }`}
               />
             )}

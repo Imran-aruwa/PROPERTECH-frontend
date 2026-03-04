@@ -62,7 +62,7 @@ const STATUS_COLOURS: Record<string, string> = {
   published: 'text-green-700 bg-green-100',
   pending: 'text-yellow-700 bg-yellow-100',
   failed: 'text-red-700 bg-red-100',
-  expired: 'text-gray-600 bg-gray-100',
+  expired: 'text-tx-secondary bg-bg-secondary',
 };
 const LEAD_STATUS_OPTIONS = ['new', 'contacted', 'viewing_scheduled', 'approved', 'rejected'];
 const LEAD_STATUS_COLOURS: Record<string, string> = {
@@ -90,54 +90,54 @@ function LeadRow({ lead, onUpdate }: { lead: Lead; onUpdate: (id: string, status
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+    <div className="bg-bg-card rounded-xl border border-bd overflow-hidden">
       <button
         onClick={() => setExpanded(e => !e)}
-        className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center gap-3 p-4 text-left hover:bg-bg-hover transition-colors"
       >
         <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
           <User className="w-4 h-4 text-blue-600" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-gray-900 text-sm">{lead.name}</span>
+            <span className="font-semibold text-tx-primary text-sm">{lead.name}</span>
             {lead.source_platform && (
-              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+              <span className="text-xs text-tx-muted bg-bg-secondary px-2 py-0.5 rounded-full">
                 via {lead.source_platform}
               </span>
             )}
           </div>
-          <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
+          <div className="flex items-center gap-3 text-xs text-tx-muted mt-0.5">
             {lead.phone && <span className="flex items-center gap-1"><Phone className="w-3 h-3" />{lead.phone}</span>}
             {lead.email && <span className="flex items-center gap-1"><Mail className="w-3 h-3" />{lead.email}</span>}
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          <span className={`text-xs font-medium px-2 py-1 rounded-full ${LEAD_STATUS_COLOURS[lead.status] || 'bg-gray-100 text-gray-600'}`}>
+          <span className={`text-xs font-medium px-2 py-1 rounded-full ${LEAD_STATUS_COLOURS[lead.status] || 'bg-bg-secondary text-tx-secondary'}`}>
             {lead.status.replace(/_/g, ' ')}
           </span>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-tx-muted">
             {new Date(lead.created_at).toLocaleDateString('en-KE', { day: 'numeric', month: 'short' })}
           </span>
-          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-tx-muted transition-transform ${expanded ? 'rotate-180' : ''}`} />
         </div>
       </button>
 
       {expanded && (
-        <div className="border-t border-gray-100 p-4 bg-gray-50 space-y-3">
+        <div className="border-t border-bd p-4 bg-bg-secondary space-y-3">
           {lead.message && (
             <div>
-              <p className="text-xs text-gray-500 mb-1">Message</p>
-              <p className="text-sm text-gray-700 bg-white rounded-lg p-3 border border-gray-200">{lead.message}</p>
+              <p className="text-xs text-tx-muted mb-1">Message</p>
+              <p className="text-sm text-tx-secondary bg-bg-card rounded-lg p-3 border border-bd">{lead.message}</p>
             </div>
           )}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Update Status</label>
+              <label className="text-xs text-tx-muted mb-1 block">Update Status</label>
               <select
                 value={status}
                 onChange={e => setStatus(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                className="w-full px-3 py-2 border border-bd rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-bg-card"
               >
                 {LEAD_STATUS_OPTIONS.map(s => (
                   <option key={s} value={s}>{s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
@@ -145,13 +145,13 @@ function LeadRow({ lead, onUpdate }: { lead: Lead; onUpdate: (id: string, status
               </select>
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Notes</label>
+              <label className="text-xs text-tx-muted mb-1 block">Notes</label>
               <input
                 type="text"
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
                 placeholder="Add a note..."
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-bd rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -267,8 +267,8 @@ export default function ListingDetailPage() {
   if (!listing) {
     return (
       <div className="p-6 text-center mt-16">
-        <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-        <p className="text-gray-500">Listing not found.</p>
+        <AlertCircle className="w-12 h-12 text-tx-muted mx-auto mb-3" />
+        <p className="text-tx-muted">Listing not found.</p>
         <Link href="/owner/listings" className="text-blue-600 text-sm hover:underline mt-2 inline-block">Back to Listings</Link>
       </div>
     );
@@ -277,7 +277,7 @@ export default function ListingDetailPage() {
   const publicUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/listings/${listing.slug}`;
   const STATUS_STYLES: Record<string, string> = {
     active: 'bg-green-100 text-green-700',
-    draft: 'bg-gray-100 text-gray-600',
+    draft: 'bg-bg-secondary text-tx-secondary',
     paused: 'bg-yellow-100 text-yellow-700',
     filled: 'bg-blue-100 text-blue-700',
   };
@@ -288,7 +288,7 @@ export default function ListingDetailPage() {
 
       {/* Header */}
       <div className="flex items-start gap-3 mb-6">
-        <Link href="/owner/listings" className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg mt-0.5">
+        <Link href="/owner/listings" className="p-2 text-tx-muted hover:text-tx-secondary hover:bg-bg-hover rounded-lg mt-0.5">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div className="flex-1 min-w-0">
@@ -297,15 +297,15 @@ export default function ListingDetailPage() {
               {listing.status.charAt(0).toUpperCase() + listing.status.slice(1)}
             </span>
             {listing.property_name && (
-              <span className="text-xs text-gray-500 flex items-center gap-1">
+              <span className="text-xs text-tx-muted flex items-center gap-1">
                 <Building2 className="w-3 h-3" /> {listing.property_name}
                 {listing.unit_number && ` · Unit ${listing.unit_number}`}
               </span>
             )}
           </div>
-          <h1 className="text-xl font-bold text-gray-900 leading-tight">{listing.title}</h1>
+          <h1 className="text-xl font-bold text-tx-primary leading-tight">{listing.title}</h1>
           <p className="text-lg font-bold text-blue-600 mt-0.5">
-            KES {Number(listing.monthly_rent).toLocaleString()}<span className="text-sm font-normal text-gray-500">/mo</span>
+            KES {Number(listing.monthly_rent).toLocaleString()}<span className="text-sm font-normal text-tx-muted">/mo</span>
           </p>
         </div>
 
@@ -325,7 +325,7 @@ export default function ListingDetailPage() {
             <button
               onClick={() => handleAction('pause')}
               disabled={!!actionLoading}
-              className="flex items-center gap-1.5 border border-gray-300 text-gray-700 text-sm font-medium px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 border border-bd-strong text-tx-secondary text-sm font-medium px-3 py-2 rounded-xl hover:bg-bg-hover transition-colors disabled:opacity-50"
             >
               <Pause className="w-4 h-4" /> Pause
             </button>
@@ -352,13 +352,13 @@ export default function ListingDetailPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-6 w-fit">
+      <div className="flex gap-1 bg-bg-secondary rounded-xl p-1 mb-6 w-fit">
         {(['overview', 'leads', 'analytics'] as Tab[]).map(t => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize
-              ${tab === t ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+              ${tab === t ? 'bg-bg-card shadow-sm text-blue-600' : 'text-tx-muted hover:text-tx-secondary'}`}
           >
             {t === 'leads' ? `Leads (${leads.length})` : t === 'analytics' ? 'Analytics' : 'Overview'}
           </button>
@@ -376,21 +376,21 @@ export default function ListingDetailPage() {
               { icon: <Clock className="w-4 h-4 text-orange-500" />, label: 'Days on Market', value: listing.days_on_market != null ? `${listing.days_on_market}d` : '—' },
               { icon: <CheckCircle className="w-4 h-4 text-purple-500" />, label: 'Status', value: listing.status.charAt(0).toUpperCase() + listing.status.slice(1) },
             ].map((s, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
-                <div className="flex items-center gap-2 mb-1">{s.icon}<span className="text-xs text-gray-500">{s.label}</span></div>
-                <p className="text-xl font-bold text-gray-900">{s.value}</p>
+              <div key={i} className="bg-bg-card rounded-xl p-4 border border-bd shadow-sm">
+                <div className="flex items-center gap-2 mb-1">{s.icon}<span className="text-xs text-tx-muted">{s.label}</span></div>
+                <p className="text-xl font-bold text-tx-primary">{s.value}</p>
               </div>
             ))}
           </div>
 
           {/* Share tools */}
           {listing.status === 'active' && (
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Share Listing</h3>
+            <div className="bg-bg-card rounded-xl p-5 border border-bd shadow-sm">
+              <h3 className="text-sm font-semibold text-tx-primary mb-3">Share Listing</h3>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => copyLink(publicUrl)}
-                  className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 bg-bg-secondary hover:bg-bd text-tx-secondary rounded-lg text-sm font-medium transition-colors"
                 >
                   <Copy className="w-4 h-4" /> Copy Link
                 </button>
@@ -398,7 +398,7 @@ export default function ListingDetailPage() {
                   href={publicUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 bg-bg-secondary hover:bg-bd text-tx-secondary rounded-lg text-sm font-medium transition-colors"
                 >
                   <ExternalLink className="w-4 h-4" /> Open Public Page
                 </a>
@@ -427,19 +427,19 @@ export default function ListingDetailPage() {
           )}
 
           {/* Syndication status */}
-          <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Platform Status</h3>
+          <div className="bg-bg-card rounded-xl p-5 border border-bd shadow-sm">
+            <h3 className="text-sm font-semibold text-tx-primary mb-3">Platform Status</h3>
             <div className="space-y-3">
               {listing.syndications.length === 0 ? (
-                <p className="text-sm text-gray-400">No platforms synced yet. Publish the listing to syndicate.</p>
+                <p className="text-sm text-tx-muted">No platforms synced yet. Publish the listing to syndicate.</p>
               ) : (
                 listing.syndications.map(s => (
-                  <div key={s.id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                  <div key={s.id} className="flex items-center gap-3 py-2 border-b border-bd last:border-0">
                     <span className="text-xl w-7 flex-shrink-0">{PLATFORM_ICONS[s.platform] || '🌐'}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-gray-900">{PLATFORM_LABELS[s.platform] || s.platform}</span>
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${STATUS_COLOURS[s.status] || 'bg-gray-100 text-gray-600'}`}>
+                        <span className="text-sm font-medium text-tx-primary">{PLATFORM_LABELS[s.platform] || s.platform}</span>
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${STATUS_COLOURS[s.status] || 'bg-bg-secondary text-tx-secondary'}`}>
                           {s.status}
                         </span>
                       </div>
@@ -451,7 +451,7 @@ export default function ListingDetailPage() {
                           href={s.share_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          className="p-1.5 text-tx-muted hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
@@ -459,7 +459,7 @@ export default function ListingDetailPage() {
                       <button
                         onClick={() => handleAction('resync', s.platform)}
                         disabled={!!actionLoading}
-                        className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1 text-xs text-tx-muted hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-lg transition-colors disabled:opacity-50"
                       >
                         <RefreshCw className={`w-3.5 h-3.5 ${actionLoading === 'resync' ? 'animate-spin' : ''}`} />
                         Re-sync
@@ -473,9 +473,9 @@ export default function ListingDetailPage() {
 
           {/* Listing preview */}
           {listing.description && (
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Description</h3>
-              <p className="text-sm text-gray-600 whitespace-pre-line">{listing.description}</p>
+            <div className="bg-bg-card rounded-xl p-5 border border-bd shadow-sm">
+              <h3 className="text-sm font-semibold text-tx-primary mb-3">Description</h3>
+              <p className="text-sm text-tx-secondary whitespace-pre-line">{listing.description}</p>
             </div>
           )}
         </div>
@@ -485,10 +485,10 @@ export default function ListingDetailPage() {
       {tab === 'leads' && (
         <div className="space-y-3">
           {leads.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-xl border border-gray-100">
-              <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500 font-medium">No leads yet</p>
-              <p className="text-sm text-gray-400 mt-1">Share your listing to start receiving inquiries</p>
+            <div className="text-center py-16 bg-bg-card rounded-xl border border-bd">
+              <MessageSquare className="w-12 h-12 text-tx-muted mx-auto mb-3" />
+              <p className="text-tx-muted font-medium">No leads yet</p>
+              <p className="text-sm text-tx-muted mt-1">Share your listing to start receiving inquiries</p>
             </div>
           ) : (
             leads.map(lead => (
@@ -510,7 +510,7 @@ export default function ListingDetailPage() {
               { label: 'Days on Market', value: analytics.days_on_market != null ? `${analytics.days_on_market}d` : '—', colour: 'text-orange-600', bg: 'bg-orange-50' },
             ].map((card, i) => (
               <div key={i} className={`${card.bg} rounded-xl p-4 border border-white`}>
-                <p className="text-xs text-gray-500 mb-1">{card.label}</p>
+                <p className="text-xs text-tx-muted mb-1">{card.label}</p>
                 <p className={`text-2xl font-bold ${card.colour}`}>{card.value}</p>
               </div>
             ))}
@@ -518,8 +518,8 @@ export default function ListingDetailPage() {
 
           {/* Views by platform */}
           {Object.keys(analytics.views_by_platform).length > 0 && (
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">Views by Platform</h3>
+            <div className="bg-bg-card rounded-xl p-5 border border-bd shadow-sm">
+              <h3 className="text-sm font-semibold text-tx-primary mb-4">Views by Platform</h3>
               <div className="space-y-3">
                 {Object.entries(analytics.views_by_platform)
                   .sort(([, a], [, b]) => b - a)
@@ -528,11 +528,11 @@ export default function ListingDetailPage() {
                     const pct = maxViews > 0 ? (count / maxViews) * 100 : 0;
                     return (
                       <div key={platform} className="flex items-center gap-3">
-                        <span className="text-xs text-gray-600 w-24 flex-shrink-0 capitalize">{platform.replace(/_/g, ' ')}</span>
-                        <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
+                        <span className="text-xs text-tx-secondary w-24 flex-shrink-0 capitalize">{platform.replace(/_/g, ' ')}</span>
+                        <div className="flex-1 bg-bg-secondary rounded-full h-2 overflow-hidden">
                           <div className="bg-blue-500 h-full rounded-full" style={{ width: `${pct}%` }} />
                         </div>
-                        <span className="text-xs font-semibold text-gray-900 w-8 text-right">{count}</span>
+                        <span className="text-xs font-semibold text-tx-primary w-8 text-right">{count}</span>
                       </div>
                     );
                   })}
@@ -542,13 +542,13 @@ export default function ListingDetailPage() {
 
           {/* Lead status breakdown */}
           {Object.keys(analytics.leads_by_status).length > 0 && (
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">Lead Pipeline</h3>
+            <div className="bg-bg-card rounded-xl p-5 border border-bd shadow-sm">
+              <h3 className="text-sm font-semibold text-tx-primary mb-4">Lead Pipeline</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {Object.entries(analytics.leads_by_status).map(([status, count]) => (
-                  <div key={status} className="bg-gray-50 rounded-lg p-3 text-center">
-                    <p className="text-xl font-bold text-gray-900">{count}</p>
-                    <p className="text-xs text-gray-500 mt-0.5 capitalize">{status.replace(/_/g, ' ')}</p>
+                  <div key={status} className="bg-bg-secondary rounded-lg p-3 text-center">
+                    <p className="text-xl font-bold text-tx-primary">{count}</p>
+                    <p className="text-xs text-tx-muted mt-0.5 capitalize">{status.replace(/_/g, ' ')}</p>
                   </div>
                 ))}
               </div>
@@ -556,10 +556,10 @@ export default function ListingDetailPage() {
           )}
 
           {analytics.total_views === 0 && (
-            <div className="text-center py-16 bg-white rounded-xl border border-gray-100">
-              <BarChart3 className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500 font-medium">No analytics data yet</p>
-              <p className="text-sm text-gray-400 mt-1">Publish and share your listing to start tracking engagement</p>
+            <div className="text-center py-16 bg-bg-card rounded-xl border border-bd">
+              <BarChart3 className="w-12 h-12 text-tx-muted mx-auto mb-3" />
+              <p className="text-tx-muted font-medium">No analytics data yet</p>
+              <p className="text-sm text-tx-muted mt-1">Publish and share your listing to start tracking engagement</p>
             </div>
           )}
         </div>

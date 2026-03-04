@@ -98,14 +98,14 @@ const fmtPct = (n: number | null | undefined, multiply = false) =>
   n != null ? `${(multiply ? n * 100 : n).toFixed(1)}%` : '—';
 
 const scoreColor = (score: number | null) => {
-  if (score == null) return 'text-gray-500';
+  if (score == null) return 'text-tx-muted';
   if (score >= 80) return 'text-green-600';
   if (score >= 60) return 'text-amber-600';
   return 'text-red-500';
 };
 
 const scoreBg = (score: number | null) => {
-  if (score == null) return 'bg-gray-100';
+  if (score == null) return 'bg-bg-secondary';
   if (score >= 80) return 'bg-green-50 border-green-200';
   if (score >= 60) return 'bg-amber-50 border-amber-200';
   return 'bg-red-50 border-red-200';
@@ -131,26 +131,26 @@ function PremiumGate() {
       <div className="blur-sm pointer-events-none select-none opacity-40" aria-hidden>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {['Avg Rent', 'Vacancy Rate', 'Avg Tenancy', 'Health Score'].map((t) => (
-            <div key={t} className="bg-white rounded-lg border p-6 h-28" />
+            <div key={t} className="bg-bg-card rounded-lg border p-6 h-28" />
           ))}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <div className="bg-white rounded-lg border h-64" />
-          <div className="bg-white rounded-lg border h-64" />
+          <div className="bg-bg-card rounded-lg border h-64" />
+          <div className="bg-bg-card rounded-lg border h-64" />
         </div>
-        <div className="bg-white rounded-lg border h-48" />
+        <div className="bg-bg-card rounded-lg border h-48" />
       </div>
 
       {/* Lock overlay */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-10 max-w-md text-center mx-4">
+        <div className="bg-bg-card rounded-2xl shadow-xl border border-bd p-10 max-w-md text-center mx-4">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Lock className="w-8 h-8 text-blue-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold text-tx-primary mb-2">
             Premium Feature
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-tx-secondary mb-6">
             Market Intelligence is available on the{' '}
             <span className="font-semibold text-blue-600">Professional</span> and{' '}
             <span className="font-semibold text-blue-600">Enterprise</span> plans.
@@ -164,7 +164,7 @@ function PremiumGate() {
               'My Properties vs Market comparison',
               'Area Health Scores (0–100)',
             ].map((f) => (
-              <div key={f} className="flex items-center gap-2 text-sm text-gray-700">
+              <div key={f} className="flex items-center gap-2 text-sm text-tx-secondary">
                 <Star className="w-4 h-4 text-blue-500 flex-shrink-0" />
                 {f}
               </div>
@@ -176,7 +176,7 @@ function PremiumGate() {
           >
             Upgrade Now
           </a>
-          <p className="text-xs text-gray-400 mt-3">Cancel anytime · No setup fees</p>
+          <p className="text-xs text-tx-muted mt-3">Cancel anytime · No setup fees</p>
         </div>
       </div>
     </div>
@@ -326,7 +326,7 @@ export default function MarketIntelligencePage() {
       <div className="flex items-center justify-center min-h-96">
         <div className="text-center">
           <Loader2 className="w-10 h-10 text-blue-500 animate-spin mx-auto mb-3" />
-          <p className="text-gray-500">Loading market data…</p>
+          <p className="text-tx-muted">Loading market data…</p>
         </div>
       </div>
     );
@@ -336,8 +336,8 @@ export default function MarketIntelligencePage() {
     return (
       <div className="p-4 md:p-6 lg:p-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Market Intelligence</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-tx-primary">Market Intelligence</h1>
+          <p className="text-tx-muted text-sm mt-1">
             Neighbourhood rent benchmarks, vacancy trends &amp; portfolio comparison
           </p>
         </div>
@@ -351,15 +351,15 @@ export default function MarketIntelligencePage() {
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Market Intelligence</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-tx-primary">Market Intelligence</h1>
+          <p className="text-tx-muted text-sm mt-1">
             Neighbourhood rent benchmarks, vacancy trends &amp; portfolio comparison
           </p>
         </div>
         <button
           onClick={() => { fetchOverview(true); if (selectedArea) fetchAreaDetail(selectedArea); fetchBenchmark(); }}
           disabled={refreshing}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-60 transition-colors self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-bg-card border border-bd rounded-lg text-sm text-tx-secondary hover:bg-bg-hover disabled:opacity-60 transition-colors self-start sm:self-auto"
         >
           <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
           {refreshing ? 'Refreshing…' : 'Refresh'}
@@ -375,9 +375,9 @@ export default function MarketIntelligencePage() {
       )}
 
       {/* ── Area Selector ── */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+      <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-          <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <div className="flex items-center gap-2 text-sm font-medium text-tx-secondary">
             <MapPin className="w-4 h-4 text-blue-500" />
             Select Neighbourhood
           </div>
@@ -385,7 +385,7 @@ export default function MarketIntelligencePage() {
             <select
               value={selectedArea}
               onChange={(e) => setSelectedArea(e.target.value)}
-              className="appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-10 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-48"
+              className="appearance-none bg-bg-card border border-bd-strong rounded-lg pl-3 pr-10 py-2 text-sm text-tx-primary focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-48"
             >
               {areas.map((a) => (
                 <option key={a.area_name} value={a.area_name}>
@@ -394,7 +394,7 @@ export default function MarketIntelligencePage() {
                 </option>
               ))}
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-tx-muted" />
           </div>
           {currentArea?.data_points === 0 && (
             <span className="inline-flex items-center gap-1 text-xs text-amber-700 bg-amber-50 border border-amber-200 px-2 py-1 rounded-full">
@@ -445,14 +445,14 @@ export default function MarketIntelligencePage() {
         <div className={`rounded-lg shadow-sm border p-6 ${scoreBg(currentArea?.area_health_score ?? null)}`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600 mb-1">Area Health Score</p>
+              <p className="text-sm font-medium text-tx-secondary mb-1">Area Health Score</p>
               <p className={`text-3xl font-bold ${scoreColor(currentArea?.area_health_score ?? null)}`}>
                 {currentArea?.area_health_score != null
                   ? currentArea.area_health_score.toFixed(0)
                   : '—'}
-                <span className="text-base font-normal text-gray-400"> / 100</span>
+                <span className="text-base font-normal text-tx-muted"> / 100</span>
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-tx-muted mt-1">
                 {(currentArea?.area_health_score ?? 0) >= 80
                   ? 'Excellent market'
                   : (currentArea?.area_health_score ?? 0) >= 60
@@ -461,7 +461,7 @@ export default function MarketIntelligencePage() {
               </p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm">
+              <div className="w-12 h-12 bg-bg-card rounded-lg flex items-center justify-center shadow-sm">
                 <Activity className="w-6 h-6 text-blue-600" />
               </div>
             </div>
@@ -471,17 +471,17 @@ export default function MarketIntelligencePage() {
 
       {/* ── Charts Row ── */}
       {detailLoading ? (
-        <div className="flex items-center justify-center h-64 bg-white rounded-lg border border-gray-200">
+        <div className="flex items-center justify-center h-64 bg-bg-card rounded-lg border border-bd">
           <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Rent Benchmark Chart */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-1">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h3 className="text-base font-semibold text-tx-primary mb-1">
               Rent Benchmark by Unit Type
             </h3>
-            <p className="text-xs text-gray-500 mb-4">
+            <p className="text-xs text-tx-muted mb-4">
               Area average vs your properties in {selectedArea}
             </p>
             {rentBenchmarkData.length > 0 ? (
@@ -502,7 +502,7 @@ export default function MarketIntelligencePage() {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex flex-col items-center justify-center h-48 text-gray-400">
+              <div className="flex flex-col items-center justify-center h-48 text-tx-muted">
                 <Building2 className="w-8 h-8 mb-2 opacity-40" />
                 <p className="text-sm">
                   {areaDetail
@@ -514,11 +514,11 @@ export default function MarketIntelligencePage() {
           </div>
 
           {/* Vacancy Trend Chart */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-1">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h3 className="text-base font-semibold text-tx-primary mb-1">
               Vacancy Trend
             </h3>
-            <p className="text-xs text-gray-500 mb-4">
+            <p className="text-xs text-tx-muted mb-4">
               Monthly vacancy rate over the last 6 months — {selectedArea}
             </p>
             {vacancyTrendData.length > 0 ? (
@@ -543,7 +543,7 @@ export default function MarketIntelligencePage() {
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex flex-col items-center justify-center h-48 text-gray-400">
+              <div className="flex flex-col items-center justify-center h-48 text-tx-muted">
                 <TrendingUp className="w-8 h-8 mb-2 opacity-40" />
                 <p className="text-sm">No trend data available</p>
               </div>
@@ -554,8 +554,8 @@ export default function MarketIntelligencePage() {
 
       {/* ── Area Metrics Detail ── */}
       {areaDetail && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-base font-semibold text-gray-900 mb-4">
+        <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+          <h3 className="text-base font-semibold text-tx-primary mb-4">
             Rent Breakdown by Bedroom Type — {areaDetail.area_name}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
@@ -564,10 +564,10 @@ export default function MarketIntelligencePage() {
             ).map(([key, val]) => (
               <div
                 key={key}
-                className="bg-gray-50 rounded-lg p-3 text-center border border-gray-100"
+                className="bg-bg-secondary rounded-lg p-3 text-center border border-bd"
               >
-                <p className="text-xs text-gray-500 mb-1">{bedroomLabel(key)}</p>
-                <p className="text-sm font-semibold text-gray-900">
+                <p className="text-xs text-tx-muted mb-1">{bedroomLabel(key)}</p>
+                <p className="text-sm font-semibold text-tx-primary">
                   {val != null ? `KES ${val.toLocaleString('en-KE', { maximumFractionDigits: 0 })}` : '—'}
                 </p>
               </div>
@@ -575,24 +575,24 @@ export default function MarketIntelligencePage() {
           </div>
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
             <div>
-              <span className="text-gray-500">Total Units</span>
-              <p className="font-semibold text-gray-900">{areaDetail.total_units || '—'}</p>
+              <span className="text-tx-muted">Total Units</span>
+              <p className="font-semibold text-tx-primary">{areaDetail.total_units || '—'}</p>
             </div>
             <div>
-              <span className="text-gray-500">Vacant Units</span>
-              <p className="font-semibold text-gray-900">{areaDetail.vacant_units ?? '—'}</p>
+              <span className="text-tx-muted">Vacant Units</span>
+              <p className="font-semibold text-tx-primary">{areaDetail.vacant_units ?? '—'}</p>
             </div>
             <div>
-              <span className="text-gray-500">Maintenance Rate</span>
-              <p className="font-semibold text-gray-900">
+              <span className="text-tx-muted">Maintenance Rate</span>
+              <p className="font-semibold text-tx-primary">
                 {areaDetail.maintenance_rate != null
                   ? `${areaDetail.maintenance_rate.toFixed(2)} / unit`
                   : '—'}
               </p>
             </div>
             <div>
-              <span className="text-gray-500">Data Points</span>
-              <p className="font-semibold text-gray-900">
+              <span className="text-tx-muted">Data Points</span>
+              <p className="font-semibold text-tx-primary">
                 {areaDetail.data_points === 0
                   ? 'Reference data'
                   : `${areaDetail.data_points} ${areaDetail.data_points === 1 ? 'property' : 'properties'}`}
@@ -603,19 +603,19 @@ export default function MarketIntelligencePage() {
       )}
 
       {/* ── My Properties vs Market Table ── */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="p-6 border-b border-gray-100">
-          <h3 className="text-base font-semibold text-gray-900">
+      <div className="bg-bg-card rounded-lg shadow-sm border border-bd">
+        <div className="p-6 border-b border-bd">
+          <h3 className="text-base font-semibold text-tx-primary">
             My Properties vs Market
           </h3>
           {benchmark?.summary && (
-            <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600">
+            <div className="mt-2 flex flex-wrap gap-4 text-sm text-tx-secondary">
               <span>
-                <span className="font-medium text-gray-900">{benchmark.summary.total_properties}</span>{' '}
+                <span className="font-medium text-tx-primary">{benchmark.summary.total_properties}</span>{' '}
                 propert{benchmark.summary.total_properties === 1 ? 'y' : 'ies'}
               </span>
               <span>
-                <span className="font-medium text-gray-900">{benchmark.summary.total_units}</span> units
+                <span className="font-medium text-tx-primary">{benchmark.summary.total_units}</span> units
               </span>
               {benchmark.summary.avg_delta_pct != null && (
                 <span className={benchmark.summary.avg_delta_pct >= 0 ? 'text-green-600 font-medium' : 'text-red-500 font-medium'}>
@@ -628,7 +628,7 @@ export default function MarketIntelligencePage() {
         </div>
 
         {!benchmark || benchmark.properties.length === 0 ? (
-          <div className="p-10 text-center text-gray-400">
+          <div className="p-10 text-center text-tx-muted">
             <Building2 className="w-10 h-10 mx-auto mb-3 opacity-30" />
             <p className="text-sm">No properties found for comparison.</p>
             <p className="text-xs mt-1">
@@ -646,8 +646,8 @@ export default function MarketIntelligencePage() {
                       <Home className="w-4 h-4 text-blue-600" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 text-sm">{prop.property_name}</p>
-                      <p className="text-xs text-gray-400">
+                      <p className="font-semibold text-tx-primary text-sm">{prop.property_name}</p>
+                      <p className="text-xs text-tx-muted">
                         {prop.area_name}{prop.city ? ` · ${prop.city}` : ''}
                       </p>
                     </div>
@@ -666,7 +666,7 @@ export default function MarketIntelligencePage() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="text-xs text-gray-400 border-b border-gray-100">
+                        <tr className="text-xs text-tx-muted border-b border-bd">
                           <th className="text-left pb-2 font-medium">Unit</th>
                           <th className="text-left pb-2 font-medium">Bedrooms</th>
                           <th className="text-right pb-2 font-medium">My Rent</th>
@@ -676,20 +676,20 @@ export default function MarketIntelligencePage() {
                       </thead>
                       <tbody className="divide-y divide-gray-50">
                         {prop.units.map((unit) => (
-                          <tr key={unit.unit_id} className="text-gray-700">
+                          <tr key={unit.unit_id} className="text-tx-secondary">
                             <td className="py-2 font-medium">{unit.unit_number}</td>
-                            <td className="py-2 text-gray-500">
+                            <td className="py-2 text-tx-muted">
                               {unit.bedrooms === 0 ? 'Studio' : `${unit.bedrooms} BR`}
                             </td>
                             <td className="py-2 text-right">
                               {fmt(unit.monthly_rent, 'KES ')}
                             </td>
-                            <td className="py-2 text-right text-gray-400">
+                            <td className="py-2 text-right text-tx-muted">
                               {unit.area_avg_rent != null ? fmt(unit.area_avg_rent, 'KES ') : '—'}
                             </td>
                             <td className="py-2 text-right">
                               {unit.delta == null || unit.area_avg_rent == null ? (
-                                <span className="text-gray-300">—</span>
+                                <span className="text-tx-muted">—</span>
                               ) : unit.delta > 0 ? (
                                 <span className="inline-flex items-center gap-1 text-green-600 font-medium">
                                   <ArrowUpRight className="w-3 h-3" />
@@ -701,7 +701,7 @@ export default function MarketIntelligencePage() {
                                   {unit.delta_pct?.toFixed(1)}%
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center gap-1 text-gray-400">
+                                <span className="inline-flex items-center gap-1 text-tx-muted">
                                   <Minus className="w-3 h-3" />
                                   At market
                                 </span>
@@ -720,17 +720,17 @@ export default function MarketIntelligencePage() {
       </div>
 
       {/* ── All Areas Overview Table ── */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="p-6 border-b border-gray-100">
-          <h3 className="text-base font-semibold text-gray-900">All Areas Overview</h3>
-          <p className="text-xs text-gray-400 mt-1">
+      <div className="bg-bg-card rounded-lg shadow-sm border border-bd">
+        <div className="p-6 border-b border-bd">
+          <h3 className="text-base font-semibold text-tx-primary">All Areas Overview</h3>
+          <p className="text-xs text-tx-muted mt-1">
             Click a row to switch the selected area
           </p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50">
-              <tr className="text-xs text-gray-500 uppercase tracking-wide">
+            <thead className="bg-bg-secondary">
+              <tr className="text-xs text-tx-muted uppercase tracking-wide">
                 <th className="text-left px-6 py-3 font-medium">Area</th>
                 <th className="text-right px-4 py-3 font-medium">Avg Rent</th>
                 <th className="text-right px-4 py-3 font-medium">Vacancy</th>
@@ -749,21 +749,21 @@ export default function MarketIntelligencePage() {
                       : ''
                   }`}
                 >
-                  <td className="px-6 py-3 font-medium text-gray-900">
+                  <td className="px-6 py-3 font-medium text-tx-primary">
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-3 h-3 text-gray-400" />
+                      <MapPin className="w-3 h-3 text-tx-muted" />
                       {area.area_name}
                       {area.city && (
-                        <span className="text-xs text-gray-400">{area.city}</span>
+                        <span className="text-xs text-tx-muted">{area.city}</span>
                       )}
                       {area.data_points === 0 && (
-                        <span className="text-xs bg-gray-100 text-gray-400 px-1 rounded">
+                        <span className="text-xs bg-bg-secondary text-tx-muted px-1 rounded">
                           ref
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-right text-gray-700">
+                  <td className="px-4 py-3 text-right text-tx-secondary">
                     {fmt(area.avg_rent_overall)}
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -773,13 +773,13 @@ export default function MarketIntelligencePage() {
                           ? 'text-red-500 font-medium'
                           : area.vacancy_rate < 0.08
                           ? 'text-green-600 font-medium'
-                          : 'text-gray-700'
+                          : 'text-tx-secondary'
                       }
                     >
                       {fmtPct(area.vacancy_rate, true)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right text-gray-700">
+                  <td className="px-4 py-3 text-right text-tx-secondary">
                     {area.avg_tenancy_months != null
                       ? `${area.avg_tenancy_months.toFixed(1)} mo`
                       : '—'}

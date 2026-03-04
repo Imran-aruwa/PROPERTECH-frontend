@@ -87,7 +87,7 @@ export default function StaffDashboard() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading dashboard..." />
       </div>
     );
@@ -95,11 +95,11 @@ export default function StaffDashboard() {
 
   if (!staffInfo) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <div className="text-center">
-          <CheckSquare className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Staff Information Not Found</h2>
-          <p className="text-gray-600">Please contact your administrator.</p>
+          <CheckSquare className="w-16 h-16 text-tx-muted mx-auto mb-4" />
+          <h2 className="text-2xl font-semibold text-tx-primary mb-2">Staff Information Not Found</h2>
+          <p className="text-tx-secondary">Please contact your administrator.</p>
         </div>
       </div>
     );
@@ -143,18 +143,18 @@ export default function StaffDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-tx-primary">
                 Welcome back, {user?.full_name || 'Staff Member'}!
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-tx-secondary mt-1">
                 {staffInfo.position} • {staffInfo.department}
               </p>
             </div>
@@ -185,7 +185,7 @@ export default function StaffDashboard() {
             <Link
               key={index}
               href={stat.link}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+              className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className={`${stat.color} w-12 h-12 rounded-lg flex items-center justify-center`}>
@@ -193,17 +193,17 @@ export default function StaffDashboard() {
                 </div>
                 <TrendingUp className="w-5 h-5 text-green-500" />
               </div>
-              <h3 className="text-gray-600 text-sm font-medium mb-1">{stat.title}</h3>
-              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+              <h3 className="text-tx-secondary text-sm font-medium mb-1">{stat.title}</h3>
+              <p className="text-3xl font-bold text-tx-primary">{stat.value}</p>
             </Link>
           ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Today's Tasks */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Today&apos;s Tasks</h2>
+              <h2 className="text-xl font-semibold text-tx-primary">Today&apos;s Tasks</h2>
               <Link
                 href="/staff/tasks"
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium"
@@ -214,19 +214,19 @@ export default function StaffDashboard() {
 
             {tasks.length === 0 ? (
               <div className="text-center py-8">
-                <CheckSquare className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                <p className="text-gray-600">No pending tasks</p>
-                <p className="text-sm text-gray-500 mt-1">All caught up! Great work!</p>
+                <CheckSquare className="w-12 h-12 text-tx-muted mx-auto mb-3" />
+                <p className="text-tx-secondary">No pending tasks</p>
+                <p className="text-sm text-tx-muted mt-1">All caught up! Great work!</p>
               </div>
             ) : (
               <div className="space-y-4">
                 {tasks.slice(0, 5).map((task) => (
                   <div
                     key={task.id}
-                    className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                    className="border border-bd rounded-lg p-4 hover:bg-bg-hover transition-colors"
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-medium text-gray-900">{task.title}</h3>
+                      <h3 className="font-medium text-tx-primary">{task.title}</h3>
                       <span className={`text-xs px-2 py-1 rounded ${
                         task.priority === 'urgent' ? 'bg-red-100 text-red-800' :
                         task.priority === 'high' ? 'bg-orange-100 text-orange-800' :
@@ -235,10 +235,10 @@ export default function StaffDashboard() {
                         {task.priority}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                    <p className="text-sm text-tx-secondary mb-2 line-clamp-2">
                       {task.description}
                     </p>
-                    <div className="flex items-center justify-between text-xs text-gray-500">
+                    <div className="flex items-center justify-between text-xs text-tx-muted">
                       <span>Unit: {task.unit?.unit_number || 'N/A'}</span>
                       <span className={`px-2 py-1 rounded ${
                         task.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
@@ -254,9 +254,9 @@ export default function StaffDashboard() {
           </div>
 
           {/* Recent Attendance */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Attendance Summary</h2>
+              <h2 className="text-xl font-semibold text-tx-primary">Attendance Summary</h2>
               <Link
                 href="/staff/attendance"
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium"
@@ -292,23 +292,23 @@ export default function StaffDashboard() {
 
               {attendance.length > 0 && (
                 <div className="space-y-2 max-h-48 overflow-y-auto">
-                  <h3 className="text-sm font-medium text-gray-700 sticky top-0 bg-white py-2">
+                  <h3 className="text-sm font-medium text-tx-secondary sticky top-0 bg-bg-card py-2">
                     Recent Check-ins
                   </h3>
                   {attendance.slice(0, 5).map((record, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between py-2 border-b border-gray-100"
+                      className="flex items-center justify-between py-2 border-b border-bd"
                     >
                       <div>
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-tx-primary">
                           {new Date(record.date).toLocaleDateString('en-US', { 
                             weekday: 'short', 
                             month: 'short', 
                             day: 'numeric' 
                           })}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-tx-muted">
                           Check-in: {record.check_in ? new Date(record.check_in).toLocaleTimeString('en-US', { 
                             hour: '2-digit', 
                             minute: '2-digit' 
@@ -334,29 +334,29 @@ export default function StaffDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <Link
             href="/staff/tasks"
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+            className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
           >
             <CheckSquare className="w-8 h-8 text-blue-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">View My Tasks</h3>
-            <p className="text-sm text-gray-600">See all assigned maintenance tasks</p>
+            <h3 className="font-semibold text-tx-primary mb-1">View My Tasks</h3>
+            <p className="text-sm text-tx-secondary">See all assigned maintenance tasks</p>
           </Link>
 
           <Link
             href="/staff/attendance"
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+            className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
           >
             <Calendar className="w-8 h-8 text-purple-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">Attendance</h3>
-            <p className="text-sm text-gray-600">View attendance history</p>
+            <h3 className="font-semibold text-tx-primary mb-1">Attendance</h3>
+            <p className="text-sm text-tx-secondary">View attendance history</p>
           </Link>
 
           <Link
             href="/staff/maintenance"
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+            className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
           >
             <Wrench className="w-8 h-8 text-red-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">Maintenance</h3>
-            <p className="text-sm text-gray-600">Update maintenance requests</p>
+            <h3 className="font-semibold text-tx-primary mb-1">Maintenance</h3>
+            <p className="text-sm text-tx-secondary">Update maintenance requests</p>
           </Link>
         </div>
       </div>

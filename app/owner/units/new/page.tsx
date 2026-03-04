@@ -138,7 +138,7 @@ export default function NewUnitPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );
@@ -146,11 +146,11 @@ export default function NewUnitPage() {
 
   if (properties.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <div className="text-center">
-          <Building2 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">No Properties Found</h2>
-          <p className="text-gray-600 mb-4">You need to add a property before you can add units.</p>
+          <Building2 className="w-16 h-16 text-tx-muted mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-tx-primary mb-2">No Properties Found</h2>
+          <p className="text-tx-secondary mb-4">You need to add a property before you can add units.</p>
           <Link
             href="/owner/properties/new"
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -163,24 +163,24 @@ export default function NewUnitPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link
               href="/owner/units"
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-tx-secondary" />
             </Link>
             <div className="flex items-center gap-3">
               <Home className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Add New Unit</h1>
-                <p className="text-gray-600 text-sm">Create a new unit for your property</p>
+                <h1 className="text-2xl font-bold text-tx-primary">Add New Unit</h1>
+                <p className="text-tx-secondary text-sm">Create a new unit for your property</p>
               </div>
             </div>
           </div>
@@ -190,13 +190,13 @@ export default function NewUnitPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Property Selection */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <Building2 className="w-5 h-5 text-blue-600" />
               Property
             </h2>
             <div>
-              <label htmlFor="property_id" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="property_id" className="block text-sm font-medium text-tx-secondary mb-1">
                 Select Property *
               </label>
               <select
@@ -204,8 +204,8 @@ export default function NewUnitPage() {
                 name="property_id"
                 value={formData.property_id}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.property_id ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  errors.property_id ? 'border-red-500' : 'border-bd-strong'
                 }`}
               >
                 <option value="">Select a property</option>
@@ -220,14 +220,14 @@ export default function NewUnitPage() {
           </div>
 
           {/* Unit Details */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <Home className="w-5 h-5 text-blue-600" />
               Unit Details
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="unit_number" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="unit_number" className="block text-sm font-medium text-tx-secondary mb-1">
                   Unit Number *
                 </label>
                 <input
@@ -236,8 +236,8 @@ export default function NewUnitPage() {
                   name="unit_number"
                   value={formData.unit_number}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.unit_number ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.unit_number ? 'border-red-500' : 'border-bd-strong'
                   }`}
                   placeholder="e.g., A101, Unit 5"
                 />
@@ -245,7 +245,7 @@ export default function NewUnitPage() {
               </div>
 
               <div>
-                <label htmlFor="floor" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="floor" className="block text-sm font-medium text-tx-secondary mb-1">
                   Floor *
                 </label>
                 <input
@@ -255,15 +255,15 @@ export default function NewUnitPage() {
                   value={formData.floor}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.floor ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.floor ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.floor && <p className="mt-1 text-sm text-red-500">{errors.floor}</p>}
               </div>
 
               <div>
-                <label htmlFor="bedrooms" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="bedrooms" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1">
                     <Bed className="w-4 h-4" /> Bedrooms *
                   </span>
@@ -275,15 +275,15 @@ export default function NewUnitPage() {
                   value={formData.bedrooms}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.bedrooms ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.bedrooms ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.bedrooms && <p className="mt-1 text-sm text-red-500">{errors.bedrooms}</p>}
               </div>
 
               <div>
-                <label htmlFor="bathrooms" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="bathrooms" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1">
                     <Bath className="w-4 h-4" /> Bathrooms *
                   </span>
@@ -295,15 +295,15 @@ export default function NewUnitPage() {
                   value={formData.bathrooms}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.bathrooms ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.bathrooms ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.bathrooms && <p className="mt-1 text-sm text-red-500">{errors.bathrooms}</p>}
               </div>
 
               <div>
-                <label htmlFor="size_sqm" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="size_sqm" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1">
                     <Maximize className="w-4 h-4" /> Size (m²) *
                   </span>
@@ -316,8 +316,8 @@ export default function NewUnitPage() {
                   onChange={handleChange}
                   min="1"
                   step="0.1"
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.size_sqm ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.size_sqm ? 'border-red-500' : 'border-bd-strong'
                   }`}
                   placeholder="e.g., 75"
                 />
@@ -325,7 +325,7 @@ export default function NewUnitPage() {
               </div>
 
               <div>
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="status" className="block text-sm font-medium text-tx-secondary mb-1">
                   Status
                 </label>
                 <select
@@ -333,7 +333,7 @@ export default function NewUnitPage() {
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="available">Available</option>
                   <option value="occupied">Occupied</option>
@@ -344,17 +344,17 @@ export default function NewUnitPage() {
           </div>
 
           {/* Rent */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-green-600" />
               Pricing
             </h2>
             <div>
-              <label htmlFor="rent_amount" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="rent_amount" className="block text-sm font-medium text-tx-secondary mb-1">
                 Monthly Rent (KES) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">KES</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-tx-muted">KES</span>
                 <input
                   type="number"
                   id="rent_amount"
@@ -363,8 +363,8 @@ export default function NewUnitPage() {
                   onChange={handleChange}
                   min="0"
                   step="100"
-                  className={`w-full pl-14 pr-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.rent_amount ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full pl-14 pr-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.rent_amount ? 'border-red-500' : 'border-bd-strong'
                   }`}
                   placeholder="25000"
                 />
@@ -374,11 +374,11 @@ export default function NewUnitPage() {
           </div>
 
           {/* Additional Info */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Additional Information</h2>
             <div className="space-y-6">
               <div>
-                <label htmlFor="amenities" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="amenities" className="block text-sm font-medium text-tx-secondary mb-1">
                   Amenities (comma-separated)
                 </label>
                 <input
@@ -387,13 +387,13 @@ export default function NewUnitPage() {
                   name="amenities"
                   value={formData.amenities}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="e.g., WiFi, Parking, Balcony, AC"
                 />
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="description" className="block text-sm font-medium text-tx-secondary mb-1">
                   Description
                 </label>
                 <textarea
@@ -402,7 +402,7 @@ export default function NewUnitPage() {
                   value={formData.description}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Describe the unit features, view, special characteristics..."
                 />
               </div>
@@ -413,7 +413,7 @@ export default function NewUnitPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href="/owner/units"
-              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

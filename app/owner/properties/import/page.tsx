@@ -319,31 +319,31 @@ export default function BulkImportPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link
               href="/owner/properties"
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-tx-secondary" />
             </Link>
             <div className="flex items-center gap-3">
               <Building2 className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Bulk Import Property</h1>
-                <p className="text-gray-600 text-sm">Create a property with multiple units at once</p>
+                <h1 className="text-2xl font-bold text-tx-primary">Bulk Import Property</h1>
+                <p className="text-tx-secondary text-sm">Create a property with multiple units at once</p>
               </div>
             </div>
           </div>
@@ -353,11 +353,11 @@ export default function BulkImportPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Property Information */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Property Information</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Property Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-tx-secondary mb-1">
                   Property Name *
                 </label>
                 <input
@@ -365,81 +365,81 @@ export default function BulkImportPage() {
                   value={property.name}
                   onChange={(e) => setProperty(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="e.g., Kuscco Homes Kitengela"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                   required
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-tx-secondary mb-1">
                   Address *
                 </label>
                 <input
                   type="text"
                   value={property.address}
                   onChange={(e) => setProperty(prev => ({ ...prev, address: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">City *</label>
                 <input
                   type="text"
                   value={property.city}
                   onChange={(e) => setProperty(prev => ({ ...prev, city: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">State/County</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">State/County</label>
                 <input
                   type="text"
                   value={property.state}
                   onChange={(e) => setProperty(prev => ({ ...prev, state: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">Postal Code</label>
                 <input
                   type="text"
                   value={property.postal_code}
                   onChange={(e) => setProperty(prev => ({ ...prev, postal_code: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">Country</label>
                 <input
                   type="text"
                   value={property.country}
                   onChange={(e) => setProperty(prev => ({ ...prev, country: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-tx-secondary mb-1">Description</label>
                 <textarea
                   value={property.description}
                   onChange={(e) => setProperty(prev => ({ ...prev, description: e.target.value }))}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
             </div>
           </div>
 
           {/* Bulk Unit Generation */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Generate Units</h2>
-            <p className="text-sm text-gray-600 mb-4">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Generate Units</h2>
+            <p className="text-sm text-tx-secondary mb-4">
               Quickly generate multiple units with similar specifications, or upload a CSV file.
             </p>
 
@@ -451,7 +451,7 @@ export default function BulkImportPage() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                   importMode === 'manual'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                 }`}
               >
                 <Plus className="w-4 h-4" />
@@ -463,7 +463,7 @@ export default function BulkImportPage() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                   importMode === 'csv'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                 }`}
               >
                 <FileSpreadsheet className="w-4 h-4" />
@@ -475,34 +475,34 @@ export default function BulkImportPage() {
               <div className="space-y-6">
                 {/* Basic Configuration */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-3">Basic Configuration</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
+                  <h3 className="text-sm font-semibold text-tx-primary mb-3">Basic Configuration</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-bg-secondary rounded-lg">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Unit Prefix</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Unit Prefix</label>
                       <input
                         type="text"
                         value={bulkUnitConfig.prefix}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, prefix: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Total Units</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Total Units</label>
                       <input
                         type="number"
                         value={bulkUnitConfig.count}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, count: parseInt(e.target.value) || 1 }))}
                         min="1"
                         max="500"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">House Type</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">House Type</label>
                       <select
                         value={bulkUnitConfig.house_type}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, house_type: e.target.value as any, unit_type: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       >
                         <option value="maisonette">Maisonette</option>
                         <option value="villa">Villa</option>
@@ -512,53 +512,53 @@ export default function BulkImportPage() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Floors</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Floors</label>
                       <input
                         type="number"
                         value={bulkUnitConfig.floors}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, floors: parseInt(e.target.value) || 1 }))}
                         min="1"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Bedrooms</label>
                       <input
                         type="number"
                         value={bulkUnitConfig.bedrooms}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, bedrooms: parseInt(e.target.value) || 1 }))}
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Size (sqm)</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Size (sqm)</label>
                       <input
                         type="number"
                         value={bulkUnitConfig.size_sqm}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, size_sqm: parseFloat(e.target.value) || 50 }))}
                         min="1"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Monthly Rent (KES)</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Monthly Rent (KES)</label>
                       <input
                         type="number"
                         value={bulkUnitConfig.monthly_rent}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, monthly_rent: parseFloat(e.target.value) || 15000 }))}
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Total Bathrooms</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Total Bathrooms</label>
                       <input
                         type="number"
                         value={bulkUnitConfig.bathrooms}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, bathrooms: parseInt(e.target.value) || 1 }))}
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                   </div>
@@ -566,7 +566,7 @@ export default function BulkImportPage() {
 
                 {/* Kuscco Homes Specifications */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-3">Bathroom Configuration (Kuscco Homes Style)</h3>
+                  <h3 className="text-sm font-semibold text-tx-primary mb-3">Bathroom Configuration (Kuscco Homes Style)</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
                     <div className="flex items-center gap-2">
                       <input
@@ -576,26 +576,26 @@ export default function BulkImportPage() {
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, has_master_ensuite: e.target.checked }))}
                         className="w-4 h-4 text-blue-600 rounded"
                       />
-                      <label htmlFor="masterEnsuite" className="text-sm text-gray-700">Master Ensuite</label>
+                      <label htmlFor="masterEnsuite" className="text-sm text-tx-secondary">Master Ensuite</label>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Upstairs Bathrooms</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Upstairs Bathrooms</label>
                       <input
                         type="number"
                         value={bulkUnitConfig.upstairs_bathrooms}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, upstairs_bathrooms: parseInt(e.target.value) || 0 }))}
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Downstairs Toilets</label>
+                      <label className="block text-sm font-medium text-tx-secondary mb-1">Downstairs Toilets</label>
                       <input
                         type="number"
                         value={bulkUnitConfig.downstairs_toilets}
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, downstairs_toilets: parseInt(e.target.value) || 0 }))}
                         min="0"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                        className="w-full px-3 py-2 border border-bd-strong rounded-lg text-sm text-tx-primary bg-bg-card"
                       />
                     </div>
                   </div>
@@ -603,7 +603,7 @@ export default function BulkImportPage() {
 
                 {/* Servant Quarters Configuration */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-3">Servant Quarters (SQ)</h3>
+                  <h3 className="text-sm font-semibold text-tx-primary mb-3">Servant Quarters (SQ)</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-green-50 rounded-lg border border-green-100">
                     <div className="flex items-center gap-2">
                       <input
@@ -613,7 +613,7 @@ export default function BulkImportPage() {
                         onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, has_servant_quarters: e.target.checked }))}
                         className="w-4 h-4 text-green-600 rounded"
                       />
-                      <label htmlFor="hasSQ" className="text-sm text-gray-700">Has Servant Quarters (SQ)</label>
+                      <label htmlFor="hasSQ" className="text-sm text-tx-secondary">Has Servant Quarters (SQ)</label>
                     </div>
                     {bulkUnitConfig.has_servant_quarters && (
                       <div className="flex items-center gap-2">
@@ -624,7 +624,7 @@ export default function BulkImportPage() {
                           onChange={(e) => setBulkUnitConfig(prev => ({ ...prev, sq_has_washroom: e.target.checked }))}
                           className="w-4 h-4 text-green-600 rounded"
                         />
-                        <label htmlFor="sqWashroom" className="text-sm text-gray-700">SQ has Washroom</label>
+                        <label htmlFor="sqWashroom" className="text-sm text-tx-secondary">SQ has Washroom</label>
                       </div>
                     )}
                   </div>
@@ -667,13 +667,13 @@ export default function BulkImportPage() {
                   <button
                     type="button"
                     onClick={downloadTemplate}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     Download Template
                   </button>
                 </div>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-tx-muted">
                   CSV columns: unit_number, floor, bedrooms, bathrooms, size_sqm, monthly_rent, status, unit_type, amenities
                 </p>
               </div>
@@ -682,9 +682,9 @@ export default function BulkImportPage() {
 
           {/* Units Preview */}
           {property.units.length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-tx-primary">
                   Units Preview ({property.units.length})
                 </h2>
                 <button
@@ -700,33 +700,33 @@ export default function BulkImportPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-2 px-2 text-gray-600 font-medium">Unit</th>
-                      <th className="text-left py-2 px-2 text-gray-600 font-medium">Type</th>
-                      <th className="text-left py-2 px-2 text-gray-600 font-medium">Beds</th>
-                      <th className="text-left py-2 px-2 text-gray-600 font-medium">Baths</th>
-                      <th className="text-left py-2 px-2 text-gray-600 font-medium">Rent</th>
-                      <th className="text-left py-2 px-2 text-gray-600 font-medium">Ownership</th>
-                      <th className="text-left py-2 px-2 text-gray-600 font-medium">SQ</th>
-                      <th className="text-left py-2 px-2 text-gray-600 font-medium"></th>
+                    <tr className="border-b border-bd">
+                      <th className="text-left py-2 px-2 text-tx-secondary font-medium">Unit</th>
+                      <th className="text-left py-2 px-2 text-tx-secondary font-medium">Type</th>
+                      <th className="text-left py-2 px-2 text-tx-secondary font-medium">Beds</th>
+                      <th className="text-left py-2 px-2 text-tx-secondary font-medium">Baths</th>
+                      <th className="text-left py-2 px-2 text-tx-secondary font-medium">Rent</th>
+                      <th className="text-left py-2 px-2 text-tx-secondary font-medium">Ownership</th>
+                      <th className="text-left py-2 px-2 text-tx-secondary font-medium">SQ</th>
+                      <th className="text-left py-2 px-2 text-tx-secondary font-medium"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {property.units.slice(0, 50).map((unit, index) => (
-                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
+                      <tr key={index} className="border-b border-bd hover:bg-bg-hover">
                         <td className="py-2 px-2">
                           <input
                             type="text"
                             value={unit.unit_number}
                             onChange={(e) => updateUnit(index, 'unit_number', e.target.value)}
-                            className="w-24 px-2 py-1 border border-gray-200 rounded text-gray-900 bg-white"
+                            className="w-24 px-2 py-1 border border-bd rounded text-tx-primary bg-bg-card"
                           />
                         </td>
                         <td className="py-2 px-2">
                           <select
                             value={unit.house_type}
                             onChange={(e) => updateUnit(index, 'house_type', e.target.value)}
-                            className="w-24 px-2 py-1 border border-gray-200 rounded text-gray-900 bg-white"
+                            className="w-24 px-2 py-1 border border-bd rounded text-tx-primary bg-bg-card"
                           >
                             <option value="maisonette">Maisonette</option>
                             <option value="villa">Villa</option>
@@ -740,7 +740,7 @@ export default function BulkImportPage() {
                             type="number"
                             value={unit.bedrooms}
                             onChange={(e) => updateUnit(index, 'bedrooms', parseInt(e.target.value) || 0)}
-                            className="w-14 px-2 py-1 border border-gray-200 rounded text-gray-900 bg-white"
+                            className="w-14 px-2 py-1 border border-bd rounded text-tx-primary bg-bg-card"
                           />
                         </td>
                         <td className="py-2 px-2">
@@ -748,7 +748,7 @@ export default function BulkImportPage() {
                             type="number"
                             value={unit.bathrooms}
                             onChange={(e) => updateUnit(index, 'bathrooms', parseInt(e.target.value) || 0)}
-                            className="w-14 px-2 py-1 border border-gray-200 rounded text-gray-900 bg-white"
+                            className="w-14 px-2 py-1 border border-bd rounded text-tx-primary bg-bg-card"
                           />
                         </td>
                         <td className="py-2 px-2">
@@ -756,14 +756,14 @@ export default function BulkImportPage() {
                             type="number"
                             value={unit.monthly_rent}
                             onChange={(e) => updateUnit(index, 'monthly_rent', parseFloat(e.target.value) || 0)}
-                            className="w-20 px-2 py-1 border border-gray-200 rounded text-gray-900 bg-white"
+                            className="w-20 px-2 py-1 border border-bd rounded text-tx-primary bg-bg-card"
                           />
                         </td>
                         <td className="py-2 px-2">
                           <select
                             value={unit.ownership_status}
                             onChange={(e) => updateUnit(index, 'ownership_status', e.target.value)}
-                            className="w-24 px-2 py-1 border border-gray-200 rounded text-gray-900 bg-white"
+                            className="w-24 px-2 py-1 border border-bd rounded text-tx-primary bg-bg-card"
                           >
                             <option value="available">Available</option>
                             <option value="rented">Rented</option>
@@ -793,7 +793,7 @@ export default function BulkImportPage() {
                   </tbody>
                 </table>
                 {property.units.length > 50 && (
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-tx-muted mt-2">
                     Showing first 50 of {property.units.length} units
                   </p>
                 )}
@@ -805,7 +805,7 @@ export default function BulkImportPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href="/owner/properties"
-              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

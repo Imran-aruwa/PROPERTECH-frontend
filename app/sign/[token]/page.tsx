@@ -124,12 +124,12 @@ export default function PublicSigningPage() {
   const formatCurrency = (amount: number) => `KES ${amount?.toLocaleString() || '0'}`;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="bg-bg-card border-b">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center gap-2">
           <Building2 className="w-6 h-6 text-blue-600" />
-          <span className="font-bold text-gray-900">Propertech</span>
+          <span className="font-bold text-tx-primary">Propertech</span>
         </div>
       </div>
 
@@ -137,60 +137,60 @@ export default function PublicSigningPage() {
         {loading && (
           <div className="text-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading lease...</p>
+            <p className="text-tx-secondary">Loading lease...</p>
           </div>
         )}
 
         {!loading && error && step === 'review' && !lease && (
-          <div className="text-center py-12 bg-white rounded-lg border p-6">
+          <div className="text-center py-12 bg-bg-card rounded-lg border p-6">
             <p className="text-red-600 font-medium">{error}</p>
-            <p className="text-gray-500 text-sm mt-2">This signing link may be invalid or expired.</p>
+            <p className="text-tx-muted text-sm mt-2">This signing link may be invalid or expired.</p>
           </div>
         )}
 
         {/* Step 1: Review */}
         {!loading && lease && step === 'review' && (
-          <div className="bg-white rounded-lg border p-6 space-y-6">
+          <div className="bg-bg-card rounded-lg border p-6 space-y-6">
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Lease Agreement</h1>
-              <p className="text-gray-600 text-sm mt-1">Please review the lease details below</p>
+              <h1 className="text-xl font-bold text-tx-primary">Lease Agreement</h1>
+              <p className="text-tx-secondary text-sm mt-1">Please review the lease details below</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-gray-500">Property</p>
-                <p className="font-medium text-gray-900">{lease.property?.name || `Property #${lease.property_id}`}</p>
+                <p className="text-tx-muted">Property</p>
+                <p className="font-medium text-tx-primary">{lease.property?.name || `Property #${lease.property_id}`}</p>
               </div>
               <div>
-                <p className="text-gray-500">Unit</p>
-                <p className="font-medium text-gray-900">{lease.unit?.unit_number || `#${lease.unit_id}`}</p>
+                <p className="text-tx-muted">Unit</p>
+                <p className="font-medium text-tx-primary">{lease.unit?.unit_number || `#${lease.unit_id}`}</p>
               </div>
               <div>
-                <p className="text-gray-500">Start Date</p>
-                <p className="font-medium text-gray-900">{lease.start_date}</p>
+                <p className="text-tx-muted">Start Date</p>
+                <p className="font-medium text-tx-primary">{lease.start_date}</p>
               </div>
               <div>
-                <p className="text-gray-500">End Date</p>
-                <p className="font-medium text-gray-900">{lease.end_date}</p>
+                <p className="text-tx-muted">End Date</p>
+                <p className="font-medium text-tx-primary">{lease.end_date}</p>
               </div>
               <div>
-                <p className="text-gray-500">Rent</p>
-                <p className="font-medium text-gray-900">{formatCurrency(lease.rent_amount)}</p>
+                <p className="text-tx-muted">Rent</p>
+                <p className="font-medium text-tx-primary">{formatCurrency(lease.rent_amount)}</p>
               </div>
               <div>
-                <p className="text-gray-500">Deposit</p>
-                <p className="font-medium text-gray-900">{formatCurrency(lease.deposit_amount)}</p>
+                <p className="text-tx-muted">Deposit</p>
+                <p className="font-medium text-tx-primary">{formatCurrency(lease.deposit_amount)}</p>
               </div>
             </div>
 
             {lease.clauses && lease.clauses.length > 0 && (
               <div>
-                <h2 className="text-sm font-semibold text-gray-700 mb-2">Terms & Conditions</h2>
+                <h2 className="text-sm font-semibold text-tx-secondary mb-2">Terms & Conditions</h2>
                 <div className="border rounded-lg divide-y max-h-64 overflow-y-auto">
                   {lease.clauses.map((clause, i) => (
                     <div key={clause.id || i} className="p-3">
-                      <p className="text-xs font-medium text-gray-500 capitalize mb-1">{clause.type}</p>
-                      <p className="text-sm text-gray-700">{clause.text}</p>
+                      <p className="text-xs font-medium text-tx-muted capitalize mb-1">{clause.type}</p>
+                      <p className="text-sm text-tx-secondary">{clause.text}</p>
                     </div>
                   ))}
                 </div>
@@ -208,9 +208,9 @@ export default function PublicSigningPage() {
                 type="checkbox"
                 checked={agreed}
                 onChange={(e) => setAgreed(e.target.checked)}
-                className="mt-1 rounded border-gray-300 text-blue-600"
+                className="mt-1 rounded border-bd-strong text-blue-600"
               />
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-tx-secondary">
                 I have read and agree to all the terms and conditions of this lease agreement.
               </span>
             </label>
@@ -227,17 +227,17 @@ export default function PublicSigningPage() {
 
         {/* Step 2: Sign */}
         {step === 'sign' && (
-          <div className="bg-white rounded-lg border p-6 space-y-6">
+          <div className="bg-bg-card rounded-lg border p-6 space-y-6">
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Sign Lease</h1>
-              <p className="text-gray-600 text-sm mt-1">Choose how you would like to sign</p>
+              <h1 className="text-xl font-bold text-tx-primary">Sign Lease</h1>
+              <p className="text-tx-secondary text-sm mt-1">Choose how you would like to sign</p>
             </div>
 
             <div className="flex border-b">
               <button
                 onClick={() => setSignTab('type')}
                 className={`flex-1 py-2 text-sm font-medium border-b-2 ${
-                  signTab === 'type' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500'
+                  signTab === 'type' ? 'border-blue-600 text-blue-600' : 'border-transparent text-tx-muted'
                 }`}
               >
                 Type Name
@@ -245,7 +245,7 @@ export default function PublicSigningPage() {
               <button
                 onClick={() => setSignTab('draw')}
                 className={`flex-1 py-2 text-sm font-medium border-b-2 ${
-                  signTab === 'draw' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500'
+                  signTab === 'draw' ? 'border-blue-600 text-blue-600' : 'border-transparent text-tx-muted'
                 }`}
               >
                 Draw Signature
@@ -259,14 +259,14 @@ export default function PublicSigningPage() {
                   value={typedName}
                   onChange={(e) => setTypedName(e.target.value)}
                   placeholder="Type your full name"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+                  className="w-full border border-bd-strong rounded-lg px-3 py-2 text-tx-primary"
                 />
                 {typedName && (
-                  <div className="border rounded-lg p-4 bg-gray-50 text-center">
-                    <p className="text-2xl italic text-gray-800" style={{ fontFamily: 'cursive' }}>
+                  <div className="border rounded-lg p-4 bg-bg-secondary text-center">
+                    <p className="text-2xl italic text-tx-primary" style={{ fontFamily: 'cursive' }}>
                       {typedName}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">Signature preview</p>
+                    <p className="text-xs text-tx-muted mt-1">Signature preview</p>
                   </div>
                 )}
               </div>
@@ -283,7 +283,7 @@ export default function PublicSigningPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => { setError(null); setStep('review'); }}
-                className="flex-1 border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50"
+                className="flex-1 border border-bd-strong text-tx-secondary py-3 rounded-lg font-medium hover:bg-bg-hover"
               >
                 Back
               </button>
@@ -301,10 +301,10 @@ export default function PublicSigningPage() {
 
         {/* Step 3: Verify OTP */}
         {step === 'verify' && (
-          <div className="bg-white rounded-lg border p-6 space-y-6">
+          <div className="bg-bg-card rounded-lg border p-6 space-y-6">
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Verify Your Identity</h1>
-              <p className="text-gray-600 text-sm mt-1">
+              <h1 className="text-xl font-bold text-tx-primary">Verify Your Identity</h1>
+              <p className="text-tx-secondary text-sm mt-1">
                 Enter the 6-digit code sent to your phone/email
               </p>
             </div>
@@ -315,7 +315,7 @@ export default function PublicSigningPage() {
               onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
               placeholder="000000"
               maxLength={6}
-              className="w-full border border-gray-300 rounded-lg px-3 py-3 text-center text-2xl tracking-widest text-gray-900"
+              className="w-full border border-bd-strong rounded-lg px-3 py-3 text-center text-2xl tracking-widest text-tx-primary"
             />
 
             {error && (
@@ -336,7 +336,7 @@ export default function PublicSigningPage() {
               <button
                 onClick={handleResendOtp}
                 disabled={resendCooldown > 0}
-                className="text-sm text-blue-600 hover:text-blue-700 disabled:text-gray-400 flex items-center gap-1 mx-auto"
+                className="text-sm text-blue-600 hover:text-blue-700 disabled:text-tx-muted flex items-center gap-1 mx-auto"
               >
                 <RefreshCw className="w-3 h-3" />
                 {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend code'}
@@ -347,10 +347,10 @@ export default function PublicSigningPage() {
 
         {/* Step 4: Complete */}
         {step === 'complete' && (
-          <div className="bg-white rounded-lg border p-6 text-center space-y-4">
+          <div className="bg-bg-card rounded-lg border p-6 text-center space-y-4">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
-            <h1 className="text-xl font-bold text-gray-900">Lease Signed Successfully</h1>
-            <p className="text-gray-600">
+            <h1 className="text-xl font-bold text-tx-primary">Lease Signed Successfully</h1>
+            <p className="text-tx-secondary">
               Your lease agreement has been signed and verified. You will receive a confirmation shortly.
             </p>
             {pdfUrl && (

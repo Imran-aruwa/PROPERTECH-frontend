@@ -93,8 +93,8 @@ function InquiryForm({ slug, sourcePlatform }: { slug: string; sourcePlatform?: 
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-8 h-8 text-green-600" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Inquiry Sent!</h3>
-        <p className="text-gray-600 text-sm">
+        <h3 className="text-lg font-semibold text-tx-primary mb-2">Inquiry Sent!</h3>
+        <p className="text-tx-secondary text-sm">
           The landlord has been notified and will contact you soon.
         </p>
       </div>
@@ -111,47 +111,47 @@ function InquiryForm({ slug, sourcePlatform }: { slug: string; sourcePlatform?: 
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
+        <label className="block text-sm font-medium text-tx-secondary mb-1">Your Name *</label>
         <input
           type="text"
           required
           value={form.name}
           onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
           placeholder="John Kamau"
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+        <label className="block text-sm font-medium text-tx-secondary mb-1">Phone Number</label>
         <input
           type="tel"
           value={form.phone}
           onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
           placeholder="+254 7XX XXX XXX"
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+        <label className="block text-sm font-medium text-tx-secondary mb-1">Email Address</label>
         <input
           type="email"
           value={form.email}
           onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
           placeholder="john@example.com"
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+        <label className="block text-sm font-medium text-tx-secondary mb-1">Message</label>
         <textarea
           rows={3}
           value={form.message}
           onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
           placeholder="I'm interested in viewing this property..."
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          className="w-full px-3 py-2.5 border border-bd-strong rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
         />
       </div>
 
@@ -167,7 +167,7 @@ function InquiryForm({ slug, sourcePlatform }: { slug: string; sourcePlatform?: 
         )}
       </button>
 
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs text-tx-muted text-center">
         Your contact details will only be shared with the property owner.
       </p>
     </form>
@@ -220,7 +220,7 @@ function PhotoGallery({ photos, title }: { photos: string[]; title: string }) {
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                className={`w-2 h-2 rounded-full transition-all ${i === current ? 'bg-white w-4' : 'bg-white/60'}`}
+                className={`w-2 h-2 rounded-full transition-all ${i === current ? 'bg-bg-card w-4' : 'bg-bg-card/60'}`}
               />
             ))}
           </div>
@@ -268,10 +268,10 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-bg-secondary">
         <div className="text-center">
           <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
-          <p className="text-gray-500 text-sm">Loading listing...</p>
+          <p className="text-tx-muted text-sm">Loading listing...</p>
         </div>
       </div>
     );
@@ -279,13 +279,13 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
 
   if (error || !listing) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-bg-secondary px-4">
         <div className="text-center max-w-sm">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-red-500" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900 mb-2">Listing Not Found</h1>
-          <p className="text-gray-500 text-sm mb-6">{error || 'This property listing is no longer available.'}</p>
+          <h1 className="text-xl font-bold text-tx-primary mb-2">Listing Not Found</h1>
+          <p className="text-tx-muted text-sm mb-6">{error || 'This property listing is no longer available.'}</p>
           <a href="/" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
             <ArrowRight className="w-4 h-4 rotate-180" /> Back to Home
           </a>
@@ -303,14 +303,14 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
   const location = locationParts.join(', ');
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       {/* Header bar */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+      <header className="bg-bg-card border-b border-bd sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-blue-600 font-bold text-lg">PROPERTECH</span>
           </div>
-          <span className="text-xs text-gray-500">Property Listing</span>
+          <span className="text-xs text-tx-muted">Property Listing</span>
         </div>
       </header>
 
@@ -324,12 +324,12 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
             <PhotoGallery photos={listing.photos} title={listing.title} />
 
             {/* Title + price */}
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+            <div className="bg-bg-card rounded-xl p-5 shadow-sm border border-bd">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900 leading-tight">{listing.title}</h1>
+                  <h1 className="text-xl font-bold text-tx-primary leading-tight">{listing.title}</h1>
                   {location && (
-                    <p className="flex items-center gap-1 text-gray-500 text-sm mt-1">
+                    <p className="flex items-center gap-1 text-tx-muted text-sm mt-1">
                       <MapPin className="w-3.5 h-3.5 text-blue-500" /> {location}
                     </p>
                   )}
@@ -338,48 +338,48 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
                   <p className="text-2xl font-bold text-blue-600">
                     KES {Number(listing.monthly_rent).toLocaleString()}
                   </p>
-                  <p className="text-xs text-gray-500">per month</p>
+                  <p className="text-xs text-tx-muted">per month</p>
                 </div>
               </div>
 
               {/* Key stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
                 {listing.bedrooms !== null && (
-                  <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center gap-2 bg-bg-secondary rounded-lg p-3">
                     <Bed className="w-4 h-4 text-blue-500" />
                     <div>
-                      <p className="text-xs text-gray-500">Bedrooms</p>
-                      <p className="font-semibold text-gray-900 text-sm">
+                      <p className="text-xs text-tx-muted">Bedrooms</p>
+                      <p className="font-semibold text-tx-primary text-sm">
                         {listing.bedrooms === 0 ? 'Studio' : listing.bedrooms}
                       </p>
                     </div>
                   </div>
                 )}
                 {listing.bathrooms !== null && (
-                  <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center gap-2 bg-bg-secondary rounded-lg p-3">
                     <Bath className="w-4 h-4 text-blue-500" />
                     <div>
-                      <p className="text-xs text-gray-500">Bathrooms</p>
-                      <p className="font-semibold text-gray-900 text-sm">{listing.bathrooms}</p>
+                      <p className="text-xs text-tx-muted">Bathrooms</p>
+                      <p className="font-semibold text-tx-primary text-sm">{listing.bathrooms}</p>
                     </div>
                   </div>
                 )}
                 {listing.deposit_amount && listing.deposit_amount > 0 ? (
-                  <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center gap-2 bg-bg-secondary rounded-lg p-3">
                     <DollarSign className="w-4 h-4 text-green-500" />
                     <div>
-                      <p className="text-xs text-gray-500">Deposit</p>
-                      <p className="font-semibold text-gray-900 text-sm">
+                      <p className="text-xs text-tx-muted">Deposit</p>
+                      <p className="font-semibold text-tx-primary text-sm">
                         KES {Number(listing.deposit_amount).toLocaleString()}
                       </p>
                     </div>
                   </div>
                 ) : null}
-                <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-3">
+                <div className="flex items-center gap-2 bg-bg-secondary rounded-lg p-3">
                   <Calendar className="w-4 h-4 text-purple-500" />
                   <div>
-                    <p className="text-xs text-gray-500">Available</p>
-                    <p className="font-semibold text-gray-900 text-sm">{formatDate(listing.available_from)}</p>
+                    <p className="text-xs text-tx-muted">Available</p>
+                    <p className="font-semibold text-tx-primary text-sm">{formatDate(listing.available_from)}</p>
                   </div>
                 </div>
               </div>
@@ -387,9 +387,9 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
 
             {/* Description */}
             {listing.description && (
-              <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                <h2 className="text-base font-semibold text-gray-900 mb-3">About This Property</h2>
-                <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+              <div className="bg-bg-card rounded-xl p-5 shadow-sm border border-bd">
+                <h2 className="text-base font-semibold text-tx-primary mb-3">About This Property</h2>
+                <p className="text-tx-secondary text-sm leading-relaxed whitespace-pre-line">
                   {listing.description}
                 </p>
               </div>
@@ -397,11 +397,11 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
 
             {/* Amenities */}
             {listing.amenities && listing.amenities.length > 0 && (
-              <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                <h2 className="text-base font-semibold text-gray-900 mb-4">Amenities</h2>
+              <div className="bg-bg-card rounded-xl p-5 shadow-sm border border-bd">
+                <h2 className="text-base font-semibold text-tx-primary mb-4">Amenities</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {listing.amenities.map((amenity) => (
-                    <div key={amenity} className="flex items-center gap-2 text-sm text-gray-700">
+                    <div key={amenity} className="flex items-center gap-2 text-sm text-tx-secondary">
                       <span className="w-7 h-7 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 flex-shrink-0">
                         {AMENITY_ICONS[amenity] || <CheckCircle className="w-4 h-4" />}
                       </span>
@@ -417,8 +417,8 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
           {/* Right column — inquiry form */}
           <div className="lg:col-span-1">
             <div className="sticky top-20">
-              <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                <h2 className="text-base font-semibold text-gray-900 mb-4">
+              <div className="bg-bg-card rounded-xl p-5 shadow-sm border border-bd">
+                <h2 className="text-base font-semibold text-tx-primary mb-4">
                   Book a Viewing
                 </h2>
                 <InquiryForm slug={slug} sourcePlatform={ref} />
@@ -445,9 +445,9 @@ export default function PublicListingClient({ slug, ref: refProp }: { slug: stri
       </main>
 
       {/* PROPERTECH Branding Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-3 px-4 z-10">
+      <footer className="fixed bottom-0 left-0 right-0 bg-bg-card border-t border-bd py-3 px-4 z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-tx-muted">
             Listed on <span className="font-semibold text-blue-600">PROPERTECH</span> — Smart Property Management
           </p>
           <a

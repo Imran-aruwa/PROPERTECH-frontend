@@ -195,16 +195,16 @@ function EntryModal({ onClose, onSaved }: EntryModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl">
+      <div className="bg-bg-card rounded-2xl w-full max-w-lg shadow-2xl">
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">Add Accounting Entry</h2>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
+          <h2 className="text-lg font-semibold text-tx-primary">Add Accounting Entry</h2>
+          <button onClick={onClose} className="p-2 hover:bg-bg-hover rounded-lg">
             <X className="w-4 h-4" />
           </button>
         </div>
         <div className="p-6 space-y-4">
           {/* Type toggle */}
-          <div className="flex rounded-xl overflow-hidden border border-gray-200">
+          <div className="flex rounded-xl overflow-hidden border border-bd">
             {(['income', 'expense'] as EntryType[]).map(t => (
               <button
                 key={t}
@@ -214,7 +214,7 @@ function EntryModal({ onClose, onSaved }: EntryModalProps) {
                     ? t === 'income'
                       ? 'bg-emerald-600 text-white'
                       : 'bg-red-600 text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-50'
+                    : 'bg-bg-card text-tx-secondary hover:bg-bg-hover'
                 }`}
               >
                 {t === 'income' ? '↑ Income' : '↓ Expense'}
@@ -224,11 +224,11 @@ function EntryModal({ onClose, onSaved }: EntryModalProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Category *</label>
               <select
                 value={form.category}
                 onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 {categories.map(c => (
                   <option key={c.value} value={c.value}>{c.label}</option>
@@ -236,7 +236,7 @@ function EntryModal({ onClose, onSaved }: EntryModalProps) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Amount (KES) *</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Amount (KES) *</label>
               <input
                 type="number"
                 min="0"
@@ -244,46 +244,46 @@ function EntryModal({ onClose, onSaved }: EntryModalProps) {
                 placeholder="0.00"
                 value={form.amount}
                 onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Date *</label>
               <input
                 type="date"
                 value={form.entry_date}
                 onChange={e => setForm(f => ({ ...f, entry_date: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Description</label>
               <input
                 type="text"
                 placeholder="Brief description..."
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Reference #</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Reference #</label>
               <input
                 type="text"
                 placeholder="Receipt / invoice ref"
                 value={form.reference_number}
                 onChange={e => setForm(f => ({ ...f, reference_number: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Property ID</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Property ID</label>
               <input
                 type="text"
                 placeholder="Optional"
                 value={form.property_id}
                 onChange={e => setForm(f => ({ ...f, property_id: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -298,7 +298,7 @@ function EntryModal({ onClose, onSaved }: EntryModalProps) {
         <div className="flex gap-3 p-6 pt-0">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50"
+            className="flex-1 px-4 py-2.5 border border-bd-strong text-tx-secondary rounded-xl text-sm font-medium hover:bg-bg-hover"
           >
             Cancel
           </button>
@@ -354,10 +354,10 @@ function WhtModal({ onClose, onSaved }: WhtModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl">
+      <div className="bg-bg-card rounded-2xl w-full max-w-lg shadow-2xl">
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">Add Withholding Tax Entry</h2>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg"><X className="w-4 h-4" /></button>
+          <h2 className="text-lg font-semibold text-tx-primary">Add Withholding Tax Entry</h2>
+          <button onClick={onClose} className="p-2 hover:bg-bg-hover rounded-lg"><X className="w-4 h-4" /></button>
         </div>
         <div className="p-6 space-y-4">
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
@@ -365,29 +365,29 @@ function WhtModal({ onClose, onSaved }: WhtModalProps) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tenant Name</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Tenant Name</label>
               <input type="text" value={form.tenant_name} onChange={e => setForm(f => ({ ...f, tenant_name: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tenant KRA PIN</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Tenant KRA PIN</label>
               <input type="text" placeholder="P0123..." value={form.tenant_kra_pin} onChange={e => setForm(f => ({ ...f, tenant_kra_pin: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Period</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Period</label>
               <input type="month" value={form.period} onChange={e => setForm(f => ({ ...f, period: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Net Amount Received (KES)</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Net Amount Received (KES)</label>
               <input type="number" min="0" step="0.01" placeholder="0.00" value={form.amount_paid} onChange={e => setForm(f => ({ ...f, amount_paid: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">WHT Rate (%)</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">WHT Rate (%)</label>
               <select value={form.withholding_rate} onChange={e => setForm(f => ({ ...f, withholding_rate: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <option value="10">10% (Resident Corporate)</option>
                 <option value="30">30% (Non-Resident)</option>
               </select>
@@ -398,14 +398,14 @@ function WhtModal({ onClose, onSaved }: WhtModalProps) {
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Number</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Certificate Number</label>
               <input type="text" placeholder="WHT cert number" value={form.certificate_number} onChange={e => setForm(f => ({ ...f, certificate_number: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
             </div>
           </div>
         </div>
         <div className="flex gap-3 p-6 pt-0">
-          <button onClick={onClose} className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50">Cancel</button>
+          <button onClick={onClose} className="flex-1 px-4 py-2.5 border border-bd-strong text-tx-secondary rounded-xl text-sm font-medium hover:bg-bg-hover">Cancel</button>
           <button onClick={handleSubmit} disabled={saving} className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2">
             {saving && <Loader2 className="w-4 h-4 animate-spin" />}
             Save Entry
@@ -617,13 +617,13 @@ export default function AccountingPage() {
 
   // ─────────────────── RENDER ───────────────────
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-5">
+      <div className="bg-bg-card border-b border-bd px-6 py-5">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Accounting & Tax</h1>
-            <p className="text-sm text-gray-500 mt-0.5">KRA-ready financial management for your portfolio</p>
+            <h1 className="text-2xl font-bold text-tx-primary">Accounting & Tax</h1>
+            <p className="text-sm text-tx-muted mt-0.5">KRA-ready financial management for your portfolio</p>
           </div>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-semibold border border-purple-200">
@@ -634,7 +634,7 @@ export default function AccountingPage() {
       </div>
 
       {/* Tab bar */}
-      <div className="bg-white border-b border-gray-200 px-6">
+      <div className="bg-bg-card border-b border-bd px-6">
         <div className="flex gap-1">
           {([
             { id: 'ledger', icon: BookOpen, label: 'Ledger' },
@@ -648,7 +648,7 @@ export default function AccountingPage() {
               className={`flex items-center gap-2 px-4 py-3.5 text-sm font-medium border-b-2 transition-colors ${
                 tab === id
                   ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-tx-muted hover:text-tx-secondary hover:border-bd-strong'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -665,27 +665,27 @@ export default function AccountingPage() {
           <div className="space-y-6">
             {/* Stats bar */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-white rounded-xl p-5 border border-gray-200">
+              <div className="bg-bg-card rounded-xl p-5 border border-bd">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 bg-emerald-100 rounded-lg">
                     <ArrowUpRight className="w-5 h-5 text-emerald-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Total Income</p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-xs text-tx-muted">Total Income</p>
+                    <p className="text-lg font-bold text-tx-primary">
                       {fmtShort(entries.filter(e => e.entry_type === 'income').reduce((s, e) => s + e.amount, 0))}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white rounded-xl p-5 border border-gray-200">
+              <div className="bg-bg-card rounded-xl p-5 border border-bd">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 bg-red-100 rounded-lg">
                     <ArrowDownRight className="w-5 h-5 text-red-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Total Expenses</p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-xs text-tx-muted">Total Expenses</p>
+                    <p className="text-lg font-bold text-tx-primary">
                       {fmtShort(entries.filter(e => e.entry_type === 'expense').reduce((s, e) => s + e.amount, 0))}
                     </p>
                   </div>
@@ -697,7 +697,7 @@ export default function AccountingPage() {
                     <DollarSign className={`w-5 h-5 ${runningBalance >= 0 ? 'text-blue-600' : 'text-red-600'}`} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Running Balance</p>
+                    <p className="text-xs text-tx-muted">Running Balance</p>
                     <p className={`text-lg font-bold ${runningBalance >= 0 ? 'text-blue-700' : 'text-red-700'}`}>
                       {fmtShort(runningBalance)}
                     </p>
@@ -717,7 +717,7 @@ export default function AccountingPage() {
               <button
                 onClick={handleSync}
                 disabled={syncing}
-                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2.5 bg-bg-card border border-bd-strong text-tx-secondary rounded-xl text-sm font-medium hover:bg-bg-hover disabled:opacity-50"
               >
                 {syncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
                 Sync Payments
@@ -730,20 +730,20 @@ export default function AccountingPage() {
 
               <div className="flex items-center gap-2 ml-auto flex-wrap">
                 <select value={filterType} onChange={e => setFilterType(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+                  className="border border-bd-strong rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
                   <option value="">All Types</option>
                   <option value="income">Income</option>
                   <option value="expense">Expense</option>
                 </select>
                 <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+                  className="border border-bd-strong rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
                   <option value="">All Categories</option>
                   {ALL_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
                 <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" />
+                  className="border border-bd-strong rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" />
                 <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" />
+                  className="border border-bd-strong rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" />
                 <button onClick={loadEntries} className="flex items-center gap-1.5 px-3 py-2 bg-gray-700 text-white rounded-lg text-sm hover:bg-gray-800">
                   <Filter className="w-3.5 h-3.5" /> Filter
                 </button>
@@ -751,32 +751,32 @@ export default function AccountingPage() {
             </div>
 
             {/* Entries table */}
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">Entries ({entriesTotal})</h3>
-                {loadingEntries && <Loader2 className="w-4 h-4 animate-spin text-gray-400" />}
+            <div className="bg-bg-card rounded-2xl border border-bd overflow-hidden">
+              <div className="px-6 py-4 border-b border-bd flex items-center justify-between">
+                <h3 className="font-semibold text-tx-primary">Entries ({entriesTotal})</h3>
+                {loadingEntries && <Loader2 className="w-4 h-4 animate-spin text-tx-muted" />}
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-100">
+                  <thead className="bg-bg-secondary border-b border-bd">
                     <tr>
                       {['Date', 'Type', 'Category', 'Description', 'Reference', 'Amount (KES)', ''].map(h => (
-                        <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
+                        <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-tx-muted uppercase tracking-wide">{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
                     {entries.length === 0 && !loadingEntries && (
                       <tr>
-                        <td colSpan={7} className="px-4 py-12 text-center text-gray-400">
+                        <td colSpan={7} className="px-4 py-12 text-center text-tx-muted">
                           <BookOpen className="w-8 h-8 mx-auto mb-2 opacity-40" />
                           No entries yet. Add one or sync payments.
                         </td>
                       </tr>
                     )}
                     {entries.map(e => (
-                      <tr key={e.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">{e.entry_date?.slice(0, 10)}</td>
+                      <tr key={e.id} className="hover:bg-bg-hover transition-colors">
+                        <td className="px-4 py-3 text-sm text-tx-secondary whitespace-nowrap">{e.entry_date?.slice(0, 10)}</td>
                         <td className="px-4 py-3">
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
                             e.entry_type === 'income' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
@@ -784,9 +784,9 @@ export default function AccountingPage() {
                             {e.entry_type === 'income' ? '↑' : '↓'} {e.entry_type}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-700">{e.category.replace(/_/g, ' ')}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">{e.description || '—'}</td>
-                        <td className="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">{e.reference_number || '—'}</td>
+                        <td className="px-4 py-3 text-sm text-tx-secondary">{e.category.replace(/_/g, ' ')}</td>
+                        <td className="px-4 py-3 text-sm text-tx-secondary max-w-xs truncate">{e.description || '—'}</td>
+                        <td className="px-4 py-3 text-sm text-tx-muted whitespace-nowrap">{e.reference_number || '—'}</td>
                         <td className={`px-4 py-3 text-sm font-semibold whitespace-nowrap ${
                           e.entry_type === 'income' ? 'text-emerald-600' : 'text-red-600'
                         }`}>
@@ -813,29 +813,29 @@ export default function AccountingPage() {
         {tab === 'reports' && (
           <div className="space-y-6">
             {/* Controls */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-5">
+            <div className="bg-bg-card rounded-2xl border border-bd p-5">
               <div className="flex flex-wrap items-center gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Period</label>
+                  <label className="block text-xs font-medium text-tx-muted mb-1">Period</label>
                   <select value={reportPeriod} onChange={e => setReportPeriod(e.target.value as any)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+                    className="border border-bd-strong rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
                     <option value="monthly">Monthly</option>
                     <option value="quarterly">Quarterly</option>
                     <option value="annual">Annual</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Year</label>
+                  <label className="block text-xs font-medium text-tx-muted mb-1">Year</label>
                   <select value={reportYear} onChange={e => setReportYear(Number(e.target.value))}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+                    className="border border-bd-strong rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
                     {years.map(y => <option key={y} value={y}>{y}</option>)}
                   </select>
                 </div>
                 {reportPeriod !== 'annual' && (
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">Month</label>
+                    <label className="block text-xs font-medium text-tx-muted mb-1">Month</label>
                     <select value={reportMonth} onChange={e => setReportMonth(Number(e.target.value))}
-                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+                      className="border border-bd-strong rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
                       {MONTHS.map((m, i) => <option key={i + 1} value={i + 1}>{m}</option>)}
                     </select>
                   </div>
@@ -861,8 +861,8 @@ export default function AccountingPage() {
                     { label: 'Net Profit', value: pnl.net_profit, color: pnl.net_profit >= 0 ? 'blue' : 'red' },
                     { label: 'Net Margin', value: null, extra: `${pnl.net_margin_pct.toFixed(1)}%`, color: pnl.net_margin_pct >= 0 ? 'purple' : 'red' },
                   ].map(card => (
-                    <div key={card.label} className="bg-white rounded-xl p-5 border border-gray-200">
-                      <p className="text-xs text-gray-500 mb-1">{card.label}</p>
+                    <div key={card.label} className="bg-bg-card rounded-xl p-5 border border-bd">
+                      <p className="text-xs text-tx-muted mb-1">{card.label}</p>
                       <p className={`text-xl font-bold text-${card.color}-600`}>
                         {card.extra || fmtShort(card.value!)}
                       </p>
@@ -871,8 +871,8 @@ export default function AccountingPage() {
                 </div>
 
                 {/* Cash Flow Chart */}
-                <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                  <h3 className="font-semibold text-gray-900 mb-4">Monthly Cash Flow ({reportYear})</h3>
+                <div className="bg-bg-card rounded-2xl border border-bd p-6">
+                  <h3 className="font-semibold text-tx-primary mb-4">Monthly Cash Flow ({reportYear})</h3>
                   <ResponsiveContainer width="100%" height={260}>
                     <BarChart data={cashflow} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -888,8 +888,8 @@ export default function AccountingPage() {
 
                 {/* Expense Breakdown Chart */}
                 {expenseChartData.length > 0 && (
-                  <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                    <h3 className="font-semibold text-gray-900 mb-4">Expense Breakdown</h3>
+                  <div className="bg-bg-card rounded-2xl border border-bd p-6">
+                    <h3 className="font-semibold text-tx-primary mb-4">Expense Breakdown</h3>
                     <div className="flex flex-col lg:flex-row items-center gap-6">
                       <ResponsiveContainer width={280} height={280}>
                         <PieChart>
@@ -914,9 +914,9 @@ export default function AccountingPage() {
                           <div key={idx} className="flex items-center justify-between text-sm">
                             <div className="flex items-center gap-2">
                               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: CHART_COLORS[idx % CHART_COLORS.length] }} />
-                              <span className="text-gray-700">{item.name}</span>
+                              <span className="text-tx-secondary">{item.name}</span>
                             </div>
-                            <span className="font-medium text-gray-900">{fmt(item.value)}</span>
+                            <span className="font-medium text-tx-primary">{fmt(item.value)}</span>
                           </div>
                         ))}
                       </div>
@@ -927,7 +927,7 @@ export default function AccountingPage() {
             )}
 
             {!pnl && !loadingReports && (
-              <div className="bg-white rounded-2xl border border-gray-200 py-16 text-center text-gray-400">
+              <div className="bg-bg-card rounded-2xl border border-bd py-16 text-center text-tx-muted">
                 <BarChart3 className="w-10 h-10 mx-auto mb-3 opacity-40" />
                 Select a period and click <strong>Generate Report</strong>
               </div>
@@ -939,38 +939,38 @@ export default function AccountingPage() {
         {tab === 'tax' && (
           <div className="space-y-6">
             {/* Tax settings */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Tax Computation Settings</h3>
+            <div className="bg-bg-card rounded-2xl border border-bd p-6">
+              <h3 className="font-semibold text-tx-primary mb-4">Tax Computation Settings</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Landlord Type</label>
+                  <label className="block text-xs font-medium text-tx-muted mb-1">Landlord Type</label>
                   <select value={landlordType} onChange={e => setLandlordType(e.target.value as LandlordType)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                    className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
                     <option value="resident_individual">Resident Individual</option>
                     <option value="non_resident">Non-Resident</option>
                     <option value="corporate">Corporate</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Period Type</label>
+                  <label className="block text-xs font-medium text-tx-muted mb-1">Period Type</label>
                   <select value={taxPeriodType} onChange={e => setTaxPeriodType(e.target.value as any)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                    className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
                     <option value="monthly">Monthly</option>
                     <option value="annual">Annual</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Year</label>
+                  <label className="block text-xs font-medium text-tx-muted mb-1">Year</label>
                   <select value={taxYear} onChange={e => setTaxYear(Number(e.target.value))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                    className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
                     {years.map(y => <option key={y} value={y}>{y}</option>)}
                   </select>
                 </div>
                 {taxPeriodType === 'monthly' && (
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">Month</label>
+                    <label className="block text-xs font-medium text-tx-muted mb-1">Month</label>
                     <select value={taxMonth} onChange={e => setTaxMonth(Number(e.target.value))}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                      className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
                       {MONTHS.map((m, i) => <option key={i + 1} value={i + 1}>{m}</option>)}
                     </select>
                   </div>
@@ -978,13 +978,13 @@ export default function AccountingPage() {
               </div>
               <div className="mt-4 flex items-center gap-4">
                 <div className="flex-1">
-                  <label className="block text-xs font-medium text-gray-500 mb-1">KRA PIN (saved to record)</label>
+                  <label className="block text-xs font-medium text-tx-muted mb-1">KRA PIN (saved to record)</label>
                   <input
                     type="text"
                     placeholder="e.g. A012345678Z"
                     value={kraPin}
                     onChange={e => setKraPin(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <button
@@ -1000,12 +1000,12 @@ export default function AccountingPage() {
 
             {/* Tax computation result */}
             {taxSummary && (
-              <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+              <div className="bg-bg-card rounded-2xl border border-bd overflow-hidden">
                 <div className={`px-6 py-4 border-b ${taxSummary.above_mri_threshold ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'}`}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold text-gray-900">Tax Computation — {taxSummary.period}</h3>
-                      <p className="text-sm text-gray-600 mt-0.5">{taxSummary.calculation_method}</p>
+                      <h3 className="font-semibold text-tx-primary">Tax Computation — {taxSummary.period}</h3>
+                      <p className="text-sm text-tx-secondary mt-0.5">{taxSummary.calculation_method}</p>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                       taxSummary.above_mri_threshold
@@ -1027,9 +1027,9 @@ export default function AccountingPage() {
                       { label: 'Tax Rate Applied', value: `${(taxSummary.tax_rate_applied * 100).toFixed(2)}%`, highlight: false },
                       { label: 'Tax Liability', value: fmt(taxSummary.tax_liability), highlight: true },
                     ].map(item => (
-                      <div key={item.label} className={`rounded-xl p-4 ${item.highlight ? 'bg-red-50 border border-red-200' : 'bg-gray-50 border border-gray-100'}`}>
-                        <p className="text-xs text-gray-500 mb-1">{item.label}</p>
-                        <p className={`text-lg font-bold ${item.highlight ? 'text-red-700' : 'text-gray-900'}`}>{item.value}</p>
+                      <div key={item.label} className={`rounded-xl p-4 ${item.highlight ? 'bg-red-50 border border-red-200' : 'bg-bg-secondary border border-bd'}`}>
+                        <p className="text-xs text-tx-muted mb-1">{item.label}</p>
+                        <p className={`text-lg font-bold ${item.highlight ? 'text-red-700' : 'text-tx-primary'}`}>{item.value}</p>
                       </div>
                     ))}
                   </div>
@@ -1039,7 +1039,7 @@ export default function AccountingPage() {
                     <button
                       onClick={() => handleSaveTaxRecord('draft')}
                       disabled={savingTaxRecord}
-                      className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
+                      className="flex items-center gap-2 px-4 py-2.5 border border-bd-strong text-tx-secondary rounded-xl text-sm font-medium hover:bg-bg-hover disabled:opacity-50"
                     >
                       {savingTaxRecord ? <Loader2 className="w-4 h-4 animate-spin" /> : <Clock className="w-4 h-4" />}
                       Save as Draft
@@ -1058,11 +1058,11 @@ export default function AccountingPage() {
             )}
 
             {/* Withholding Tax section */}
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div className="bg-bg-card rounded-2xl border border-bd overflow-hidden">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-bd">
                 <div>
-                  <h3 className="font-semibold text-gray-900">Withholding Tax</h3>
-                  <p className="text-xs text-gray-500 mt-0.5">Corporate tenants who deduct WHT before remitting rent</p>
+                  <h3 className="font-semibold text-tx-primary">Withholding Tax</h3>
+                  <p className="text-xs text-tx-muted mt-0.5">Corporate tenants who deduct WHT before remitting rent</p>
                 </div>
                 <button
                   onClick={() => setShowWhtModal(true)}
@@ -1072,26 +1072,26 @@ export default function AccountingPage() {
                 </button>
               </div>
               {whtEntries.length === 0 ? (
-                <div className="py-10 text-center text-gray-400 text-sm">No withholding tax entries yet</div>
+                <div className="py-10 text-center text-tx-muted text-sm">No withholding tax entries yet</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-bg-secondary">
                       <tr>
                         {['Period', 'Tenant', 'Net Received', 'WHT Rate', 'WHT Amount', 'Certificate'].map(h => (
-                          <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
+                          <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-tx-muted uppercase tracking-wide">{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
                       {whtEntries.map(w => (
-                        <tr key={w.id} className="hover:bg-gray-50">
+                        <tr key={w.id} className="hover:bg-bg-hover">
                           <td className="px-4 py-3 text-sm">{w.period}</td>
                           <td className="px-4 py-3 text-sm">{w.tenant_name || '—'}</td>
                           <td className="px-4 py-3 text-sm font-medium">{fmt(w.amount_paid)}</td>
                           <td className="px-4 py-3 text-sm">{w.withholding_rate}%</td>
                           <td className="px-4 py-3 text-sm text-red-600 font-medium">{fmt(w.withholding_amount)}</td>
-                          <td className="px-4 py-3 text-sm text-gray-500">{w.certificate_number || '—'}</td>
+                          <td className="px-4 py-3 text-sm text-tx-muted">{w.certificate_number || '—'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1101,25 +1101,25 @@ export default function AccountingPage() {
             </div>
 
             {/* Tax Records History */}
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100">
-                <h3 className="font-semibold text-gray-900">Tax Filing History</h3>
+            <div className="bg-bg-card rounded-2xl border border-bd overflow-hidden">
+              <div className="px-6 py-4 border-b border-bd">
+                <h3 className="font-semibold text-tx-primary">Tax Filing History</h3>
               </div>
               {taxRecords.length === 0 ? (
-                <div className="py-10 text-center text-gray-400 text-sm">No saved tax records yet</div>
+                <div className="py-10 text-center text-tx-muted text-sm">No saved tax records yet</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-bg-secondary">
                       <tr>
                         {['Period', 'Gross Income', 'Tax Liability', 'Rate', 'Status', 'KRA PIN', ''].map(h => (
-                          <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
+                          <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-tx-muted uppercase tracking-wide">{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
                       {taxRecords.map(r => (
-                        <tr key={r.id} className="hover:bg-gray-50">
+                        <tr key={r.id} className="hover:bg-bg-hover">
                           <td className="px-4 py-3 text-sm font-medium">{r.tax_year} / {r.tax_period}</td>
                           <td className="px-4 py-3 text-sm">{fmt(r.gross_rental_income)}</td>
                           <td className="px-4 py-3 text-sm font-semibold text-red-600">{fmt(r.tax_liability)}</td>
@@ -1128,12 +1128,12 @@ export default function AccountingPage() {
                             <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${
                               r.status === 'filed' ? 'bg-emerald-100 text-emerald-700'
                               : r.status === 'paid' ? 'bg-blue-100 text-blue-700'
-                              : 'bg-gray-100 text-gray-600'
+                              : 'bg-bg-secondary text-tx-secondary'
                             }`}>
                               {r.status}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-500">{r.kra_pin || '—'}</td>
+                          <td className="px-4 py-3 text-sm text-tx-muted">{r.kra_pin || '—'}</td>
                           <td className="px-4 py-3">
                             {r.status === 'draft' && (
                               <button
@@ -1158,29 +1158,29 @@ export default function AccountingPage() {
         {tab === 'export' && (
           <div className="space-y-6">
             {/* Period selectors */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Export Settings</h3>
+            <div className="bg-bg-card rounded-2xl border border-bd p-6">
+              <h3 className="font-semibold text-tx-primary mb-4">Export Settings</h3>
               <div className="flex flex-wrap items-end gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Period Type</label>
+                  <label className="block text-xs font-medium text-tx-muted mb-1">Period Type</label>
                   <select value={exportPeriodType} onChange={e => setExportPeriodType(e.target.value as any)}
-                    className="border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                    className="border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
                     <option value="monthly">Monthly</option>
                     <option value="annual">Annual</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Year</label>
+                  <label className="block text-xs font-medium text-tx-muted mb-1">Year</label>
                   <select value={exportYear} onChange={e => setExportYear(Number(e.target.value))}
-                    className="border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                    className="border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
                     {years.map(y => <option key={y} value={y}>{y}</option>)}
                   </select>
                 </div>
                 {exportPeriodType === 'monthly' && (
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">Month</label>
+                    <label className="block text-xs font-medium text-tx-muted mb-1">Month</label>
                     <select value={exportMonth} onChange={e => setExportMonth(Number(e.target.value))}
-                      className="border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
+                      className="border border-bd-strong rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500">
                       {MONTHS.map((m, i) => <option key={i + 1} value={i + 1}>{m}</option>)}
                     </select>
                   </div>
@@ -1221,12 +1221,12 @@ export default function AccountingPage() {
               ].map(({ type, icon: Icon, title, desc, color, bg, border }) => (
                 <div key={type} className={`rounded-2xl border ${border} ${bg} p-6`}>
                   <div className="flex items-start gap-4">
-                    <div className={`p-3 bg-white rounded-xl shadow-sm border ${border}`}>
+                    <div className={`p-3 bg-bg-card rounded-xl shadow-sm border ${border}`}>
                       <Icon className={`w-6 h-6 text-${color}-600`} />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900 mb-1">{title}</h4>
-                      <p className="text-sm text-gray-600 mb-4">{desc}</p>
+                      <h4 className="font-semibold text-tx-primary mb-1">{title}</h4>
+                      <p className="text-sm text-tx-secondary mb-4">{desc}</p>
                       <button
                         onClick={() => handleExport(type as any)}
                         disabled={!!exporting}

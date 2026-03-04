@@ -219,7 +219,7 @@ export default function FinancialAnalytics() {
       <div className="p-6 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading analytics...</p>
+          <p className="text-tx-secondary">Loading analytics...</p>
         </div>
       </div>
     );
@@ -230,8 +230,8 @@ export default function FinancialAnalytics() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Financial Analytics</h1>
-          <p className="text-gray-600 mt-1">Comprehensive financial insights and reports</p>
+          <h1 className="text-3xl font-bold text-tx-primary">Financial Analytics</h1>
+          <p className="text-tx-secondary mt-1">Comprehensive financial insights and reports</p>
         </div>
       </div>
 
@@ -306,23 +306,23 @@ export default function FinancialAnalytics() {
       )}
 
       {/* Detailed Metrics */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Key Metrics</h2>
+      <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+        <h2 className="text-xl font-semibold text-tx-primary mb-4">Key Metrics</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <p className="text-sm text-gray-600 mb-1">Collection Rate</p>
+            <p className="text-sm text-tx-secondary mb-1">Collection Rate</p>
             <p className="text-2xl font-bold text-green-600">{analytics.collectionRate.toFixed(1)}%</p>
-            <p className="text-xs text-gray-500 mt-1">Completed rent payments</p>
+            <p className="text-xs text-tx-muted mt-1">Completed rent payments</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 mb-1">Profit Margin</p>
+            <p className="text-sm text-tx-secondary mb-1">Profit Margin</p>
             <p className="text-2xl font-bold text-blue-600">{analytics.profitMargin.toFixed(1)}%</p>
-            <p className="text-xs text-gray-500 mt-1">Revenue minus expenses</p>
+            <p className="text-xs text-tx-muted mt-1">Revenue minus expenses</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 mb-1">Average Occupancy</p>
-            <p className="text-2xl font-bold text-gray-900">{analytics.occupancyRate.toFixed(1)}%</p>
-            <p className="text-xs text-gray-500 mt-1">Across all properties</p>
+            <p className="text-sm text-tx-secondary mb-1">Average Occupancy</p>
+            <p className="text-2xl font-bold text-tx-primary">{analytics.occupancyRate.toFixed(1)}%</p>
+            <p className="text-xs text-tx-muted mt-1">Across all properties</p>
           </div>
         </div>
       </div>

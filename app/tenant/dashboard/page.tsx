@@ -116,7 +116,7 @@ export default function TenantDashboard() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading dashboard...</p>
+            <p className="text-tx-secondary">Loading dashboard...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -127,8 +127,8 @@ export default function TenantDashboard() {
     <DashboardLayout role="tenant">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Tenant Dashboard</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Tenant Dashboard</h1>
+          <p className="text-tx-secondary mt-1">
             {stats?.unitNumber && stats?.propertyName
               ? `Unit ${stats.unitNumber}, ${stats.propertyName}`
               : 'Welcome to your dashboard'}
@@ -148,13 +148,13 @@ export default function TenantDashboard() {
         </div>
 
         {activeLease && (
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-6">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 <FileSignature className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <h2 className="font-semibold text-gray-900">Active Lease</h2>
+                <h2 className="font-semibold text-tx-primary">Active Lease</h2>
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                   activeLease.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
                 }`}>
@@ -164,16 +164,16 @@ export default function TenantDashboard() {
             </div>
             <div className="grid grid-cols-3 gap-4 text-sm mb-3">
               <div>
-                <p className="text-gray-500">Start</p>
-                <p className="font-medium text-gray-900">{activeLease.start_date}</p>
+                <p className="text-tx-muted">Start</p>
+                <p className="font-medium text-tx-primary">{activeLease.start_date}</p>
               </div>
               <div>
-                <p className="text-gray-500">End</p>
-                <p className="font-medium text-gray-900">{activeLease.end_date}</p>
+                <p className="text-tx-muted">End</p>
+                <p className="font-medium text-tx-primary">{activeLease.end_date}</p>
               </div>
               <div>
-                <p className="text-gray-500">Rent</p>
-                <p className="font-medium text-gray-900">KES {activeLease.rent_amount?.toLocaleString()}</p>
+                <p className="text-tx-muted">Rent</p>
+                <p className="font-medium text-tx-primary">KES {activeLease.rent_amount?.toLocaleString()}</p>
               </div>
             </div>
             <Link href="/tenant/documents" className="text-blue-600 text-sm hover:underline">
@@ -188,7 +188,7 @@ export default function TenantDashboard() {
             <p className="mb-4 opacity-90">Next payment due: {stats.nextPaymentDue}</p>
             <Link
               href="/tenant/payments"
-              className="inline-block bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition"
+              className="inline-block bg-bg-card text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition"
             >
               Pay Now - {formatCurrency(stats.rentAmount)}
             </Link>
@@ -196,18 +196,18 @@ export default function TenantDashboard() {
         )}
 
         <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4">Recent Payments</h2>
             {recentPayments.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <div className="text-center py-8 text-tx-muted">
+                <CreditCard className="w-12 h-12 text-tx-muted mx-auto mb-2" />
                 <p>No payment history</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {recentPayments.map((payment) => (
                   <div key={payment.id} className="flex justify-between items-center border-b pb-2">
-                    <span className="text-gray-700">{payment.month}</span>
+                    <span className="text-tx-secondary">{payment.month}</span>
                     <span className={`font-semibold ${payment.status === 'completed' ? 'text-green-600' : 'text-yellow-600'}`}>
                       {formatCurrency(payment.amount)}
                     </span>
@@ -217,7 +217,7 @@ export default function TenantDashboard() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Maintenance Requests</h2>
               <Link href="/tenant/maintenance" className="text-blue-600 text-sm hover:underline">
@@ -225,8 +225,8 @@ export default function TenantDashboard() {
               </Link>
             </div>
             {maintenanceRequests.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <Wrench className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <div className="text-center py-8 text-tx-muted">
+                <Wrench className="w-12 h-12 text-tx-muted mx-auto mb-2" />
                 <p>No maintenance requests</p>
               </div>
             ) : (

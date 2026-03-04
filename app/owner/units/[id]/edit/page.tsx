@@ -217,7 +217,7 @@ export default function EditUnitPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading unit..." />
       </div>
     );
@@ -230,24 +230,24 @@ export default function EditUnitPage() {
   const tenantId = currentTenant?.id ?? currentTenant?.user_id;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link
               href={`/owner/units/${unitId}`}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-tx-secondary" />
             </Link>
             <div className="flex items-center gap-3">
               <Home className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Edit Unit {unit?.unit_number}</h1>
-                <p className="text-gray-600 text-sm">{property?.name}</p>
+                <h1 className="text-2xl font-bold text-tx-primary">Edit Unit {unit?.unit_number}</h1>
+                <p className="text-tx-secondary text-sm">{property?.name}</p>
               </div>
             </div>
           </div>
@@ -257,8 +257,8 @@ export default function EditUnitPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Tenant Management Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <Users className="w-5 h-5 text-purple-600" />
               Tenant Management
             </h2>
@@ -269,11 +269,11 @@ export default function EditUnitPage() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm text-purple-600 font-medium mb-1">Current Tenant</p>
-                      <p className="text-lg font-semibold text-gray-900">{tenantName}</p>
-                      {tenantEmail && <p className="text-sm text-gray-600">{tenantEmail}</p>}
-                      {tenantPhone && <p className="text-sm text-gray-600">{tenantPhone}</p>}
+                      <p className="text-lg font-semibold text-tx-primary">{tenantName}</p>
+                      {tenantEmail && <p className="text-sm text-tx-secondary">{tenantEmail}</p>}
+                      {tenantPhone && <p className="text-sm text-tx-secondary">{tenantPhone}</p>}
                       {currentTenant.lease_start && (
-                        <p className="text-sm text-gray-500 mt-2">
+                        <p className="text-sm text-tx-muted mt-2">
                           Lease: {new Date(currentTenant.lease_start).toLocaleDateString()} - {currentTenant.lease_end ? new Date(currentTenant.lease_end).toLocaleDateString() : 'Ongoing'}
                         </p>
                       )}
@@ -319,7 +319,7 @@ export default function EditUnitPage() {
                       <button
                         type="button"
                         onClick={() => setShowRemoveConfirm(false)}
-                        className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                        className="px-4 py-2 text-sm bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
                       >
                         Cancel
                       </button>
@@ -329,10 +329,10 @@ export default function EditUnitPage() {
               </div>
             ) : (
               <div className="text-center py-6">
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="w-6 h-6 text-gray-400" />
+                <div className="w-12 h-12 bg-bg-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Users className="w-6 h-6 text-tx-muted" />
                 </div>
-                <p className="text-gray-500 mb-4">This unit is currently vacant. No tenant assigned.</p>
+                <p className="text-tx-muted mb-4">This unit is currently vacant. No tenant assigned.</p>
                 <Link
                   href={`/owner/tenants/new?unit_id=${unitId}`}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
@@ -345,11 +345,11 @@ export default function EditUnitPage() {
           </div>
 
           {/* Unit Details */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Unit Details</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Unit Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="unit_number" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="unit_number" className="block text-sm font-medium text-tx-secondary mb-1">
                   Unit Number *
                 </label>
                 <input
@@ -358,15 +358,15 @@ export default function EditUnitPage() {
                   name="unit_number"
                   value={formData.unit_number}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.unit_number ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.unit_number ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.unit_number && <p className="mt-1 text-sm text-red-500">{errors.unit_number}</p>}
               </div>
 
               <div>
-                <label htmlFor="floor" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="floor" className="block text-sm font-medium text-tx-secondary mb-1">
                   Floor *
                 </label>
                 <input
@@ -376,15 +376,15 @@ export default function EditUnitPage() {
                   value={formData.floor}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.floor ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.floor ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.floor && <p className="mt-1 text-sm text-red-500">{errors.floor}</p>}
               </div>
 
               <div>
-                <label htmlFor="bedrooms" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="bedrooms" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1"><Bed className="w-4 h-4" /> Bedrooms *</span>
                 </label>
                 <input
@@ -394,15 +394,15 @@ export default function EditUnitPage() {
                   value={formData.bedrooms}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.bedrooms ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.bedrooms ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.bedrooms && <p className="mt-1 text-sm text-red-500">{errors.bedrooms}</p>}
               </div>
 
               <div>
-                <label htmlFor="bathrooms" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="bathrooms" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1"><Bath className="w-4 h-4" /> Bathrooms *</span>
                 </label>
                 <input
@@ -412,15 +412,15 @@ export default function EditUnitPage() {
                   value={formData.bathrooms}
                   onChange={handleChange}
                   min="0"
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.bathrooms ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.bathrooms ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.bathrooms && <p className="mt-1 text-sm text-red-500">{errors.bathrooms}</p>}
               </div>
 
               <div>
-                <label htmlFor="size_sqm" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="size_sqm" className="block text-sm font-medium text-tx-secondary mb-1">
                   <span className="flex items-center gap-1"><Maximize className="w-4 h-4" /> Size (m²) *</span>
                 </label>
                 <input
@@ -431,15 +431,15 @@ export default function EditUnitPage() {
                   onChange={handleChange}
                   min="1"
                   step="0.1"
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.size_sqm ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.size_sqm ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.size_sqm && <p className="mt-1 text-sm text-red-500">{errors.size_sqm}</p>}
               </div>
 
               <div>
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="status" className="block text-sm font-medium text-tx-secondary mb-1">
                   Status
                 </label>
                 <select
@@ -447,32 +447,32 @@ export default function EditUnitPage() {
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="vacant" className="text-gray-900">Vacant</option>
-                  <option value="available" className="text-gray-900">Available</option>
-                  <option value="occupied" className="text-gray-900">Occupied</option>
-                  <option value="rented" className="text-gray-900">Rented</option>
-                  <option value="bought" className="text-gray-900">Bought</option>
-                  <option value="mortgaged" className="text-gray-900">Mortgaged</option>
-                  <option value="maintenance" className="text-gray-900">Under Maintenance</option>
+                  <option value="vacant" className="text-tx-primary">Vacant</option>
+                  <option value="available" className="text-tx-primary">Available</option>
+                  <option value="occupied" className="text-tx-primary">Occupied</option>
+                  <option value="rented" className="text-tx-primary">Rented</option>
+                  <option value="bought" className="text-tx-primary">Bought</option>
+                  <option value="mortgaged" className="text-tx-primary">Mortgaged</option>
+                  <option value="maintenance" className="text-tx-primary">Under Maintenance</option>
                 </select>
               </div>
             </div>
           </div>
 
           {/* Rent */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-green-600" />
               Pricing
             </h2>
             <div>
-              <label htmlFor="rent_amount" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="rent_amount" className="block text-sm font-medium text-tx-secondary mb-1">
                 Monthly Rent (KES) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">KES</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-tx-muted">KES</span>
                 <input
                   type="number"
                   id="rent_amount"
@@ -481,8 +481,8 @@ export default function EditUnitPage() {
                   onChange={handleChange}
                   min="0"
                   step="100"
-                  className={`w-full pl-14 pr-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors.rent_amount ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full pl-14 pr-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.rent_amount ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
               </div>
@@ -491,15 +491,15 @@ export default function EditUnitPage() {
           </div>
 
           {/* Description */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Description</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Description</h2>
             <textarea
               id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -507,7 +507,7 @@ export default function EditUnitPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href={`/owner/units/${unitId}`}
-              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

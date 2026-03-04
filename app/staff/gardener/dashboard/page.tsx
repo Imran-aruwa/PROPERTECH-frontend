@@ -83,7 +83,7 @@ export default function GardenerDashboard() {
     if (normalizedStatus === 'available') return 'text-green-600';
     if (normalizedStatus === 'in use') return 'text-blue-600';
     if (normalizedStatus === 'maintenance') return 'text-yellow-600';
-    return 'text-gray-600';
+    return 'text-tx-secondary';
   };
 
   const statsCards = stats ? [
@@ -99,7 +99,7 @@ export default function GardenerDashboard() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-green-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading dashboard...</p>
+            <p className="text-tx-secondary">Loading dashboard...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -110,8 +110,8 @@ export default function GardenerDashboard() {
     <DashboardLayout role="gardener">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Gardener Dashboard</h1>
-          <p className="text-gray-600 mt-1">Manage landscaping tasks and equipment</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Gardener Dashboard</h1>
+          <p className="text-tx-secondary mt-1">Manage landscaping tasks and equipment</p>
         </div>
 
         {error && (
@@ -127,20 +127,20 @@ export default function GardenerDashboard() {
         </div>
 
         <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <CheckSquare className="w-5 h-5 text-green-600" />
               Today's Schedule
             </h2>
             {todaysTasks.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <CheckSquare className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <div className="text-center py-8 text-tx-muted">
+                <CheckSquare className="w-12 h-12 text-tx-muted mx-auto mb-2" />
                 <p>No tasks scheduled for today</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {todaysTasks.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div key={item.id} className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg">
                     <input
                       type="checkbox"
                       checked={item.done}
@@ -148,10 +148,10 @@ export default function GardenerDashboard() {
                       readOnly
                     />
                     <div className="flex-1">
-                      <p className={item.done ? 'line-through text-gray-500' : 'text-gray-900'}>
+                      <p className={item.done ? 'line-through text-tx-muted' : 'text-tx-primary'}>
                         {item.task}
                       </p>
-                      <p className="text-sm text-gray-600">{item.time}</p>
+                      <p className="text-sm text-tx-secondary">{item.time}</p>
                     </div>
                   </div>
                 ))}
@@ -159,21 +159,21 @@ export default function GardenerDashboard() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Package className="w-5 h-5 text-blue-600" />
               Equipment Status
             </h2>
             {equipment.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <Package className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <div className="text-center py-8 text-tx-muted">
+                <Package className="w-12 h-12 text-tx-muted mx-auto mb-2" />
                 <p>No equipment registered</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {equipment.map((eq) => (
-                  <div key={eq.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="text-sm font-medium text-gray-900">{eq.name}</span>
+                  <div key={eq.id} className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg">
+                    <span className="text-sm font-medium text-tx-primary">{eq.name}</span>
                     <span className={`text-xs font-medium ${getEquipmentStatusColor(eq.status)}`}>
                       {eq.status}
                     </span>

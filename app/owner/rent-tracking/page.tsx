@@ -149,8 +149,8 @@ export default function GlobalRentTracking() {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Global Rent Tracking</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-3xl font-bold text-tx-primary">Global Rent Tracking</h1>
+        <p className="text-tx-secondary mt-1">
           Monitor rent collection across all your properties
         </p>
       </div>
@@ -197,8 +197,8 @@ export default function GlobalRentTracking() {
       )}
 
       {/* Properties Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+      <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+        <h2 className="text-xl font-semibold text-tx-primary mb-4">
           Property-by-Property Breakdown
         </h2>
         <DataTable data={properties} columns={columns} isLoading={loading} />

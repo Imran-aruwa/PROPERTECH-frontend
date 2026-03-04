@@ -70,7 +70,7 @@ export default function AdminUsersPage() {
       case 'agent': return 'bg-purple-100 text-purple-800';
       case 'caretaker': return 'bg-green-100 text-green-800';
       case 'tenant': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-bg-secondary text-tx-primary';
     }
   };
 
@@ -79,7 +79,7 @@ export default function AdminUsersPage() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading users...</p>
+          <p className="text-tx-secondary">Loading users...</p>
         </div>
       </div>
     );
@@ -90,8 +90,8 @@ export default function AdminUsersPage() {
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-            <p className="text-gray-600 mt-1">Manage all system users</p>
+            <h1 className="text-2xl font-bold text-tx-primary">User Management</h1>
+            <p className="text-tx-secondary mt-1">Manage all system users</p>
           </div>
           <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
             <Plus className="w-4 h-4" />
@@ -105,9 +105,9 @@ export default function AdminUsersPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-sm border p-4 flex flex-col md:flex-row gap-4">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-4 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-tx-muted absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
@@ -131,37 +131,37 @@ export default function AdminUsersPage() {
         </div>
 
         {filteredUsers.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No users found</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Users className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No users found</p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
+          <div className="bg-bg-card rounded-lg shadow-sm border overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b">
+                <thead className="bg-bg-secondary border-b">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">User</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Contact</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Role</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500">Joined</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">User</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Contact</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Role</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-tx-muted">Joined</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {filteredUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
+                    <tr key={user.id} className="hover:bg-bg-hover">
                       <td className="px-4 py-3">
-                        <p className="font-medium text-gray-900">{user.full_name}</p>
+                        <p className="font-medium text-tx-primary">{user.full_name}</p>
                       </td>
                       <td className="px-4 py-3">
                         <div className="space-y-1 text-sm">
-                          <div className="flex items-center gap-2 text-gray-600">
+                          <div className="flex items-center gap-2 text-tx-secondary">
                             <Mail className="w-3 h-3" />
                             {user.email}
                           </div>
                           {user.phone && (
-                            <div className="flex items-center gap-2 text-gray-600">
+                            <div className="flex items-center gap-2 text-tx-secondary">
                               <Phone className="w-3 h-3" />
                               {user.phone}
                             </div>
@@ -180,7 +180,7 @@ export default function AdminUsersPage() {
                           {user.status.toUpperCase()}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-gray-600 text-sm">{user.created_at}</td>
+                      <td className="px-4 py-3 text-tx-secondary text-sm">{user.created_at}</td>
                     </tr>
                   ))}
                 </tbody>

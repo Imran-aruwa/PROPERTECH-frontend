@@ -45,25 +45,25 @@ export function StatCard({
   const trendColors: Record<'up' | 'down' | 'neutral', string> = {
     up: 'text-green-600',
     down: 'text-red-600',
-    neutral: 'text-gray-600',
+    neutral: 'text-tx-secondary',
   };
 
   const arrow = resolved === 'up' ? '↑' : resolved === 'down' ? '↓' : '';
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border p-6">
+    <div className="bg-bg-card rounded-lg shadow-sm border p-6">
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
+          <p className="text-sm font-medium text-tx-secondary mb-1">{title}</p>
 
           {/* ✅ NEW — subtitle line (optional) */}
           {subtitle && (
-            <p className="text-xs text-gray-400 mb-1">{subtitle}</p>
+            <p className="text-xs text-tx-muted mb-1">{subtitle}</p>
           )}
 
-          {label && <p className="text-xs text-gray-500 mb-2">{label}</p>}
+          {label && <p className="text-xs text-tx-muted mb-2">{label}</p>}
 
-          <p className={`text-2xl font-bold ${valueClassName || 'text-gray-900'} mt-1`}>
+          <p className={`text-2xl font-bold ${valueClassName || 'text-tx-primary'} mt-1`}>
             {value}
           </p>
 

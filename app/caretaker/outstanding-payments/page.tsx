@@ -138,11 +138,11 @@ export default function OutstandingPaymentsPage() {
   const MobileCardView = () => (
     <div className="space-y-4 md:hidden">
       {payments.map((payment) => (
-        <div key={payment.id} className="bg-white rounded-lg border p-4 space-y-3">
+        <div key={payment.id} className="bg-bg-card rounded-lg border p-4 space-y-3">
           <div className="flex items-start justify-between">
             <div>
-              <p className="font-medium text-gray-900">{payment.tenant}</p>
-              <p className="text-sm text-gray-500">Unit {payment.unit}</p>
+              <p className="font-medium text-tx-primary">{payment.tenant}</p>
+              <p className="text-sm text-tx-muted">Unit {payment.unit}</p>
             </div>
             <span
               className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -156,11 +156,11 @@ export default function OutstandingPaymentsPage() {
           </div>
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div>
-              <p className="text-gray-500">Amount</p>
+              <p className="text-tx-muted">Amount</p>
               <p className="font-medium text-red-600">{formatCurrency(payment.amount)}</p>
             </div>
             <div>
-              <p className="text-gray-500">Due Date</p>
+              <p className="text-tx-muted">Due Date</p>
               <p className="font-medium">{payment.dueDate}</p>
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function OutstandingPaymentsPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading outstanding payments...</p>
+            <p className="text-tx-secondary">Loading outstanding payments...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -200,8 +200,8 @@ export default function OutstandingPaymentsPage() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Outstanding Payments</h1>
-            <p className="text-gray-600 mt-1">Track and follow up on overdue payments</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Outstanding Payments</h1>
+            <p className="text-tx-secondary mt-1">Track and follow up on overdue payments</p>
           </div>
 
           <button
@@ -243,14 +243,14 @@ export default function OutstandingPaymentsPage() {
         </div>
 
         {payments.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <DollarSign className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No outstanding payments</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <DollarSign className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No outstanding payments</p>
           </div>
         ) : (
           <>
             <MobileCardView />
-            <div className="hidden md:block bg-white rounded-lg shadow-sm border p-6">
+            <div className="hidden md:block bg-bg-card rounded-lg shadow-sm border p-6">
               <DataTable
                 data={payments}
                 columns={columns}

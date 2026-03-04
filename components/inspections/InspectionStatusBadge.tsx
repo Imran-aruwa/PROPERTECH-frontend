@@ -71,7 +71,7 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 export function InspectionTypeBadge({ type, size = 'md' }: InspectionTypeBadgeProps) {
-  const colors = TYPE_COLORS[type] || { bg: 'bg-gray-100', text: 'text-gray-700' };
+  const colors = TYPE_COLORS[type] || { bg: 'bg-bg-secondary', text: 'text-tx-secondary' };
   const label = TYPE_LABELS[type] || type;
 
   const sizeClasses = {

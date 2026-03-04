@@ -46,10 +46,10 @@ export default function LoginPage() {
   };
 
   const inputClasses = (fieldName: keyof LoginFormData, hasButton = false) =>
-    `w-full pl-12 ${hasButton ? 'pr-16' : 'pr-4'} py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-400 ${
+    `w-full pl-12 ${hasButton ? 'pr-16' : 'pr-4'} py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-bg-card text-tx-primary placeholder-gray-400 ${
       touched[fieldName] && errors[fieldName]
         ? 'border-red-500'
-        : 'border-gray-300'
+        : 'border-bd-strong'
     }`;
 
   return (
@@ -62,22 +62,22 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-tx-primary mb-2">
             Propertech Software
           </h1>
-          <p className="text-gray-600">Sign in to your account</p>
+          <p className="text-tx-secondary">Sign in to your account</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-bg-card rounded-2xl shadow-xl p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-tx-secondary mb-2">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                 <input
                   type="email"
                   value={values.email}
@@ -95,11 +95,11 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-tx-secondary mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={values.password}
@@ -124,7 +124,7 @@ export default function LoginPage() {
             </div>
 
             {/* Submit helpers (optional debug – remove later if you want) */}
-            {/* <pre className="text-xs text-gray-500">
+            {/* <pre className="text-xs text-tx-muted">
               password state: {JSON.stringify(values.password)}
             </pre> */}
 
@@ -133,9 +133,9 @@ export default function LoginPage() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 border-bd-strong rounded focus:ring-blue-500"
                 />
-                <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                <span className="ml-2 text-sm text-tx-secondary">Remember me</span>
               </label>
               <Link
                 href="/forgot-password"
@@ -163,7 +163,7 @@ export default function LoginPage() {
           </form>
 
           {/* Sign Up Link */}
-          <p className="mt-6 text-center text-sm text-gray-600">
+          <p className="mt-6 text-center text-sm text-tx-secondary">
             Don&apos;t have an account?{' '}
             <Link
               href="/register"
@@ -175,7 +175,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="mt-8 text-center text-sm text-gray-500">
+        <p className="mt-8 text-center text-sm text-tx-muted">
           © 2025 PROPERTECH SOFTWARE. All rights reserved.
         </p>
       </div>

@@ -151,7 +151,7 @@ export default function EditTenantPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading tenant..." />
       </div>
     );
@@ -160,24 +160,24 @@ export default function EditTenantPage() {
   const tenantUser = tenant ? (tenant as any).user : null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link
               href={`/owner/tenants/${tenantId}`}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-tx-secondary" />
             </Link>
             <div className="flex items-center gap-3">
               <Users className="w-8 h-8 text-purple-600" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Edit Tenant</h1>
-                <p className="text-gray-600 text-sm">{tenantUser?.full_name || 'Unknown'}</p>
+                <h1 className="text-2xl font-bold text-tx-primary">Edit Tenant</h1>
+                <p className="text-tx-secondary text-sm">{tenantUser?.full_name || 'Unknown'}</p>
               </div>
             </div>
           </div>
@@ -187,14 +187,14 @@ export default function EditTenantPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Personal Information */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-purple-600" />
               Personal Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="full_name" className="block text-sm font-medium text-tx-secondary mb-1">
                   Full Name *
                 </label>
                 <input
@@ -203,27 +203,27 @@ export default function EditTenantPage() {
                   name="full_name"
                   value={formData.full_name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                    errors.full_name ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                    errors.full_name ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.full_name && <p className="mt-1 text-sm text-red-500">{errors.full_name}</p>}
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="phone" className="block text-sm font-medium text-tx-secondary mb-1">
                   Phone Number *
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                   <input
                     type="tel"
                     id="phone"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                      errors.phone ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                      errors.phone ? 'border-red-500' : 'border-bd-strong'
                     }`}
                   />
                 </div>
@@ -231,23 +231,23 @@ export default function EditTenantPage() {
               </div>
 
               <div className="md:col-span-2">
-                <p className="text-sm text-gray-500">
-                  Email: <span className="font-medium text-gray-700">{tenantUser?.email || 'N/A'}</span>
-                  <span className="ml-2 text-gray-400">(Cannot be changed)</span>
+                <p className="text-sm text-tx-muted">
+                  Email: <span className="font-medium text-tx-secondary">{tenantUser?.email || 'N/A'}</span>
+                  <span className="ml-2 text-tx-muted">(Cannot be changed)</span>
                 </p>
               </div>
             </div>
           </div>
 
           {/* Lease Details */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-purple-600" />
               Lease Details
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="lease_start" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="lease_start" className="block text-sm font-medium text-tx-secondary mb-1">
                   Lease Start Date *
                 </label>
                 <input
@@ -256,15 +256,15 @@ export default function EditTenantPage() {
                   name="lease_start"
                   value={formData.lease_start}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                    errors.lease_start ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                    errors.lease_start ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.lease_start && <p className="mt-1 text-sm text-red-500">{errors.lease_start}</p>}
               </div>
 
               <div>
-                <label htmlFor="lease_end" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="lease_end" className="block text-sm font-medium text-tx-secondary mb-1">
                   Lease End Date *
                 </label>
                 <input
@@ -273,32 +273,32 @@ export default function EditTenantPage() {
                   name="lease_end"
                   value={formData.lease_end}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                    errors.lease_end ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                    errors.lease_end ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.lease_end && <p className="mt-1 text-sm text-red-500">{errors.lease_end}</p>}
               </div>
 
               <div>
-                <label htmlFor="rent_amount" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="rent_amount" className="block text-sm font-medium text-tx-secondary mb-1">
                   Monthly Rent (KES)
                 </label>
                 <div className="relative">
-                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                   <input
                     type="number"
                     id="rent_amount"
                     name="rent_amount"
                     value={formData.rent_amount}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="deposit_amount" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="deposit_amount" className="block text-sm font-medium text-tx-secondary mb-1">
                   Security Deposit (KES)
                 </label>
                 <input
@@ -307,18 +307,18 @@ export default function EditTenantPage() {
                   name="deposit_amount"
                   value={formData.deposit_amount}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
             </div>
           </div>
 
           {/* Emergency Contact */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Emergency Contact</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Emergency Contact</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="emergency_contact_name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="emergency_contact_name" className="block text-sm font-medium text-tx-secondary mb-1">
                   Contact Name
                 </label>
                 <input
@@ -327,12 +327,12 @@ export default function EditTenantPage() {
                   name="emergency_contact_name"
                   value={formData.emergency_contact_name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="emergency_contact_phone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="emergency_contact_phone" className="block text-sm font-medium text-tx-secondary mb-1">
                   Contact Phone
                 </label>
                 <input
@@ -341,22 +341,22 @@ export default function EditTenantPage() {
                   name="emergency_contact_phone"
                   value={formData.emergency_contact_phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
             </div>
           </div>
 
           {/* Notes */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Notes</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Notes</h2>
             <textarea
               id="notes"
               name="notes"
               value={formData.notes}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
 
@@ -364,7 +364,7 @@ export default function EditTenantPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href={`/owner/tenants/${tenantId}`}
-              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

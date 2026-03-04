@@ -10,16 +10,16 @@ export default function AdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -27,13 +27,13 @@ export default function AdminDashboard() {
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-                <p className="text-gray-600">Welcome, {user?.full_name || 'Administrator'}</p>
+                <h1 className="text-2xl font-bold text-tx-primary">Admin Dashboard</h1>
+                <p className="text-tx-secondary">Welcome, {user?.full_name || 'Administrator'}</p>
               </div>
             </div>
             <button
               onClick={logout}
-              className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-tx-secondary hover:text-tx-primary hover:bg-bg-hover rounded-lg transition-colors"
             >
               <LogOut className="w-5 h-5" />
               Logout
@@ -63,23 +63,23 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
             href="/owner"
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+            className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 hover:shadow-md transition-shadow"
           >
             <Building2 className="w-8 h-8 text-blue-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">View as Owner</h3>
-            <p className="text-sm text-gray-600">Access owner dashboard features</p>
+            <h3 className="font-semibold text-tx-primary mb-1">View as Owner</h3>
+            <p className="text-sm text-tx-secondary">Access owner dashboard features</p>
           </Link>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 opacity-60">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 opacity-60">
             <Users className="w-8 h-8 text-green-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">User Management</h3>
-            <p className="text-sm text-gray-600">Coming soon</p>
+            <h3 className="font-semibold text-tx-primary mb-1">User Management</h3>
+            <p className="text-sm text-tx-secondary">Coming soon</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 opacity-60">
-            <Settings className="w-8 h-8 text-gray-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">System Settings</h3>
-            <p className="text-sm text-gray-600">Coming soon</p>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6 opacity-60">
+            <Settings className="w-8 h-8 text-tx-secondary mb-3" />
+            <h3 className="font-semibold text-tx-primary mb-1">System Settings</h3>
+            <p className="text-sm text-tx-secondary">Coming soon</p>
           </div>
         </div>
       </div>

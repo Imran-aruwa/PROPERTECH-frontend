@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import { authApi } from './api-services';
 
 export interface User {
@@ -12,6 +13,7 @@ export interface User {
   role: 'owner' | 'tenant' | 'staff' | 'admin' | 'caretaker' | 'agent';
   is_active: boolean;
   created_at: string;
+  theme_preference?: 'light' | 'dark' | 'system';
 }
 
 interface AuthContextType {
@@ -42,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const { setTheme } = useTheme();
 
   // Initialize auth state from localStorage
   useEffect(() => {
@@ -69,6 +72,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setToken(savedToken);
           setUser(parsedUser);
           setRole(savedRole);
+
+          // Sync theme from stored user preference
+          if (parsedUser.theme_preference) {
+            setTheme(parsedUser.theme_preference);
+          }
 
           console.log('[AuthContext] Auth state initialized successfully');
         } else {
@@ -232,6 +240,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('auth_user', JSON.stringify(userData));
         setUser(userData);
         setRole(userData.role);
+        if (userData.theme_preference) {
+          setTheme(userData.theme_preference);
+        }
       }
     } catch (error) {
       console.error('Failed to refresh user:', error);

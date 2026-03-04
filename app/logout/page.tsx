@@ -41,7 +41,7 @@ export default function LogoutPage() {
       <div className="relative z-10 text-center space-y-8 max-w-md">
         {/* Logo Animation */}
         <div className="flex justify-center animate-bounce">
-          <div className="bg-white/20 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/30">
+          <div className="bg-bg-card/20 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/30">
             <svg
               width="64"
               height="64"
@@ -62,7 +62,7 @@ export default function LogoutPage() {
           <p className="text-xl text-blue-100">You have been successfully logged out</p>
           
           {/* Success Message Box */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 mt-6">
+          <div className="bg-bg-card/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 mt-6">
             <p className="text-green-200 font-semibold mb-2">✓ Session Ended Successfully</p>
             <p className="text-blue-100 text-sm">Your account is now secure and logged out. You will be redirected to the home page shortly.</p>
           </div>
@@ -70,14 +70,14 @@ export default function LogoutPage() {
 
         {/* Countdown */}
         <div className="flex justify-center gap-2 py-4">
-          <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-          <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-          <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+          <div className="w-3 h-3 bg-bg-card rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+          <div className="w-3 h-3 bg-bg-card rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-3 h-3 bg-bg-card rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
         </div>
 
         {/* PROPERTECH Branding */}
         <div className="pt-8 border-t border-white/20">
-          <div className="inline-block bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-4 space-y-2">
+          <div className="inline-block bg-bg-card/10 backdrop-blur-sm rounded-2xl px-8 py-4 space-y-2">
             <p className="text-3xl font-bold text-white tracking-tight">PROPERTECH SOFTWARE</p>
             <p className="text-sm text-blue-100 font-medium">Property Management Made Simple</p>
           </div>

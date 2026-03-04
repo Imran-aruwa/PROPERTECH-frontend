@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/app/lib/auth-context'
+import { ThemeProvider } from 'next-themes'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -58,26 +59,28 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.className} relative overflow-x-hidden bg-slate-950 text-white`}
       >
-        {/* 🌈 Animated Gradient Background */}
-        <div className="fixed inset-0 -z-50 animate-bg-gradient opacity-[0.35]" />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {/* 🌈 Animated Gradient Background */}
+          <div className="fixed inset-0 -z-50 animate-bg-gradient opacity-[0.35]" />
 
-        {/* ✨ Subtle Particles */}
-        <div
-          className="fixed inset-0 -z-40 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage:
-              'radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 60px 70px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 50px 50px, #ddd, rgba(0,0,0,0))',
-            backgroundRepeat: 'repeat',
-            backgroundSize: '200px 200px',
-          }}
-        />
+          {/* ✨ Subtle Particles */}
+          <div
+            className="fixed inset-0 -z-40 opacity-10 pointer-events-none"
+            style={{
+              backgroundImage:
+                'radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 60px 70px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 50px 50px, #ddd, rgba(0,0,0,0))',
+              backgroundRepeat: 'repeat',
+              backgroundSize: '200px 200px',
+            }}
+          />
 
-        {/* ✅ AUTH CONTEXT (DO NOT REMOVE) */}
-        <AuthProvider>{children}</AuthProvider>
+          {/* ✅ AUTH CONTEXT (DO NOT REMOVE) */}
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

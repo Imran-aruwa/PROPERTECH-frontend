@@ -25,7 +25,7 @@ export default function CaretakerLayout({ children }: { children: React.ReactNod
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );
@@ -36,7 +36,7 @@ export default function CaretakerLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       {/* Header with notifications */}
       <Header role="caretaker" onMenuClick={() => setSidebarOpen(true)} />
 
@@ -59,7 +59,7 @@ export default function CaretakerLayout({ children }: { children: React.ReactNod
           <div className="lg:hidden absolute top-3 right-3 z-10">
             <button
               onClick={() => setSidebarOpen(false)}
-              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+              className="p-2 text-tx-secondary hover:text-tx-primary hover:bg-bg-hover rounded-lg"
             >
               <X className="w-5 h-5" />
             </button>

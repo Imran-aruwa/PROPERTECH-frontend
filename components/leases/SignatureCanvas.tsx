@@ -96,7 +96,7 @@ export function SignatureCanvas({ onSignatureChange }: SignatureCanvasProps) {
 
   return (
     <div>
-      <div className="border-2 border-dashed border-gray-300 rounded-lg overflow-hidden bg-white">
+      <div className="border-2 border-dashed border-bd-strong rounded-lg overflow-hidden bg-bg-card">
         <canvas
           ref={canvasRef}
           className="w-full cursor-crosshair touch-none"
@@ -104,7 +104,7 @@ export function SignatureCanvas({ onSignatureChange }: SignatureCanvasProps) {
         />
       </div>
       <div className="flex items-center justify-between mt-2">
-        <p className="text-xs text-gray-500">Draw your signature above</p>
+        <p className="text-xs text-tx-muted">Draw your signature above</p>
         {hasSignature && (
           <button
             type="button"

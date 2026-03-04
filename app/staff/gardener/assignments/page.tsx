@@ -51,7 +51,7 @@ export default function GardenerAssignmentsPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="bg-bg-card rounded-xl border border-slate-200 p-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="relative w-full md:max-w-xs">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
@@ -73,7 +73,7 @@ export default function GardenerAssignmentsPage() {
                   className={`rounded-full px-3 py-1 border text-xs font-medium ${
                     statusFilter === s
                       ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                      : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                      : 'border-slate-200 bg-bg-card text-slate-600 hover:bg-slate-50'
                   }`}
                 >
                   {s}
@@ -84,7 +84,7 @@ export default function GardenerAssignmentsPage() {
         </div>
 
         {/* Table / Empty state */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-bg-card rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           {filteredAssignments.length === 0 ? (
             <div className="px-6 py-12 text-center">
               <p className="text-sm font-medium text-slate-900">

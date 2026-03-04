@@ -74,7 +74,7 @@ export default function AgentTenantsPage() {
       accessor: (row: Tenant) => (
         <div>
           <p className="font-medium">{row.name}</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-tx-muted">
             {row.property} - Unit {row.unit}
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function AgentTenantsPage() {
         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
           row.status === 'active'
             ? 'bg-green-100 text-green-800'
-            : 'bg-gray-100 text-gray-800'
+            : 'bg-bg-secondary text-tx-primary'
         }`}>
           {row.status.toUpperCase()}
         </span>
@@ -118,33 +118,33 @@ export default function AgentTenantsPage() {
   const MobileCardView = () => (
     <div className="space-y-4 md:hidden">
       {tenants.map((tenant) => (
-        <div key={tenant.id} className="bg-white rounded-lg border p-4 space-y-3">
+        <div key={tenant.id} className="bg-bg-card rounded-lg border p-4 space-y-3">
           <div className="flex items-start justify-between">
             <div>
-              <p className="font-medium text-gray-900">{tenant.name}</p>
-              <p className="text-sm text-gray-500">{tenant.property} - Unit {tenant.unit}</p>
+              <p className="font-medium text-tx-primary">{tenant.name}</p>
+              <p className="text-sm text-tx-muted">{tenant.property} - Unit {tenant.unit}</p>
             </div>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
               tenant.status === 'active'
                 ? 'bg-green-100 text-green-800'
-                : 'bg-gray-100 text-gray-800'
+                : 'bg-bg-secondary text-tx-primary'
             }`}>
               {tenant.status.toUpperCase()}
             </span>
           </div>
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-gray-400" />
+              <Phone className="w-4 h-4 text-tx-muted" />
               <span>{tenant.phone || '-'}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-gray-400" />
+              <Mail className="w-4 h-4 text-tx-muted" />
               <span className="truncate">{tenant.email || '-'}</span>
             </div>
           </div>
           <div className="pt-2 border-t">
-            <p className="text-sm text-gray-600">Monthly Rent</p>
-            <p className="font-semibold text-gray-900">KES {tenant.rentAmount.toLocaleString()}</p>
+            <p className="text-sm text-tx-secondary">Monthly Rent</p>
+            <p className="font-semibold text-tx-primary">KES {tenant.rentAmount.toLocaleString()}</p>
           </div>
         </div>
       ))}
@@ -157,7 +157,7 @@ export default function AgentTenantsPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading tenants...</p>
+            <p className="text-tx-secondary">Loading tenants...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -168,8 +168,8 @@ export default function AgentTenantsPage() {
     <DashboardLayout role="agent">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Tenants</h1>
-          <p className="text-gray-600 mt-1">Manage your tenant portfolio</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Tenants</h1>
+          <p className="text-tx-secondary mt-1">Manage your tenant portfolio</p>
         </div>
 
         {error && (
@@ -185,9 +185,9 @@ export default function AgentTenantsPage() {
         </div>
 
         {tenants.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border">
-            <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No tenants found</p>
+          <div className="text-center py-12 bg-bg-card rounded-lg border">
+            <Users className="w-12 h-12 text-tx-muted mx-auto mb-4" />
+            <p className="text-tx-muted">No tenants found</p>
           </div>
         ) : (
           <>
@@ -195,7 +195,7 @@ export default function AgentTenantsPage() {
             <MobileCardView />
 
             {/* Desktop Table View */}
-            <div className="hidden md:block bg-white rounded-lg shadow-sm border p-6">
+            <div className="hidden md:block bg-bg-card rounded-lg shadow-sm border p-6">
               <DataTable data={tenants} columns={columns} />
             </div>
           </>

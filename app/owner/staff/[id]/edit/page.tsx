@@ -177,7 +177,7 @@ export default function EditStaffPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading staff member..." />
       </div>
     );
@@ -186,24 +186,24 @@ export default function EditStaffPage() {
   const staffUser = staff ? (staff as any).user : null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link
               href={`/owner/staff/${staffId}`}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-tx-secondary" />
             </Link>
             <div className="flex items-center gap-3">
               <UserCircle className="w-8 h-8 text-indigo-600" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Edit Staff Member</h1>
-                <p className="text-gray-600 text-sm">{staffUser?.full_name || 'Unknown'}</p>
+                <h1 className="text-2xl font-bold text-tx-primary">Edit Staff Member</h1>
+                <p className="text-tx-secondary text-sm">{staffUser?.full_name || 'Unknown'}</p>
               </div>
             </div>
           </div>
@@ -213,14 +213,14 @@ export default function EditStaffPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Personal Information */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-indigo-600" />
               Personal Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="full_name" className="block text-sm font-medium text-tx-secondary mb-1">
                   Full Name *
                 </label>
                 <input
@@ -229,15 +229,15 @@ export default function EditStaffPage() {
                   name="full_name"
                   value={formData.full_name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.full_name ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.full_name ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.full_name && <p className="mt-1 text-sm text-red-500">{errors.full_name}</p>}
               </div>
 
               <div>
-                <label htmlFor="id_number" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="id_number" className="block text-sm font-medium text-tx-secondary mb-1">
                   ID Number
                 </label>
                 <input
@@ -246,24 +246,24 @@ export default function EditStaffPage() {
                   name="id_number"
                   value={formData.id_number}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="phone" className="block text-sm font-medium text-tx-secondary mb-1">
                   Phone Number *
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                   <input
                     type="tel"
                     id="phone"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
-                      errors.phone ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                      errors.phone ? 'border-red-500' : 'border-bd-strong'
                     }`}
                   />
                 </div>
@@ -271,23 +271,23 @@ export default function EditStaffPage() {
               </div>
 
               <div>
-                <p className="text-sm text-gray-500 mt-6">
-                  Email: <span className="font-medium text-gray-700">{staffUser?.email || 'N/A'}</span>
-                  <span className="ml-2 text-gray-400">(Cannot be changed)</span>
+                <p className="text-sm text-tx-muted mt-6">
+                  Email: <span className="font-medium text-tx-secondary">{staffUser?.email || 'N/A'}</span>
+                  <span className="ml-2 text-tx-muted">(Cannot be changed)</span>
                 </p>
               </div>
             </div>
           </div>
 
           {/* Employment Details */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <Briefcase className="w-5 h-5 text-indigo-600" />
               Employment Details
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="property_id" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="property_id" className="block text-sm font-medium text-tx-secondary mb-1">
                   Property *
                 </label>
                 <select
@@ -295,11 +295,11 @@ export default function EditStaffPage() {
                   name="property_id"
                   value={formData.property_id}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.property_id ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.property_id ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 >
-                  <option value="" className="text-gray-900">Select a property</option>
+                  <option value="" className="text-tx-primary">Select a property</option>
                   {properties.map(property => (
                     <option key={property.id} value={property.id}>
                       {property.name}
@@ -310,7 +310,7 @@ export default function EditStaffPage() {
               </div>
 
               <div>
-                <label htmlFor="department" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="department" className="block text-sm font-medium text-tx-secondary mb-1">
                   Department *
                 </label>
                 <select
@@ -321,16 +321,16 @@ export default function EditStaffPage() {
                     handleChange(e);
                     setFormData(prev => ({ ...prev, position: '' }));
                   }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card"
                 >
-                  <option value="maintenance" className="text-gray-900">Maintenance</option>
-                  <option value="security" className="text-gray-900">Security</option>
-                  <option value="gardening" className="text-gray-900">Gardening</option>
+                  <option value="maintenance" className="text-tx-primary">Maintenance</option>
+                  <option value="security" className="text-tx-primary">Security</option>
+                  <option value="gardening" className="text-tx-primary">Gardening</option>
                 </select>
               </div>
 
               <div>
-                <label htmlFor="position" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="position" className="block text-sm font-medium text-tx-secondary mb-1">
                   Position *
                 </label>
                 <select
@@ -338,11 +338,11 @@ export default function EditStaffPage() {
                   name="position"
                   value={formData.position}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.position ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.position ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 >
-                  <option value="" className="text-gray-900">Select a position</option>
+                  <option value="" className="text-tx-primary">Select a position</option>
                   {departmentPositions[formData.department].map(position => (
                     <option key={position} value={position}>
                       {position}
@@ -356,7 +356,7 @@ export default function EditStaffPage() {
               </div>
 
               <div>
-                <label htmlFor="start_date" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="start_date" className="block text-sm font-medium text-tx-secondary mb-1">
                   Start Date *
                 </label>
                 <input
@@ -365,8 +365,8 @@ export default function EditStaffPage() {
                   name="start_date"
                   value={formData.start_date}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.start_date ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.start_date ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.start_date && <p className="mt-1 text-sm text-red-500">{errors.start_date}</p>}
@@ -375,17 +375,17 @@ export default function EditStaffPage() {
           </div>
 
           {/* Compensation */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-green-600" />
               Compensation
             </h2>
             <div>
-              <label htmlFor="salary" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="salary" className="block text-sm font-medium text-tx-secondary mb-1">
                 Monthly Salary (KES) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">KES</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-tx-muted">KES</span>
                 <input
                   type="number"
                   id="salary"
@@ -394,8 +394,8 @@ export default function EditStaffPage() {
                   onChange={handleChange}
                   min="0"
                   step="100"
-                  className={`w-full pl-14 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.salary ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full pl-14 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.salary ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
               </div>
@@ -404,11 +404,11 @@ export default function EditStaffPage() {
           </div>
 
           {/* Emergency Contact */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Emergency Contact</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Emergency Contact</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="emergency_contact_name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="emergency_contact_name" className="block text-sm font-medium text-tx-secondary mb-1">
                   Contact Name
                 </label>
                 <input
@@ -417,12 +417,12 @@ export default function EditStaffPage() {
                   name="emergency_contact_name"
                   value={formData.emergency_contact_name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
 
               <div>
-                <label htmlFor="emergency_contact_phone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="emergency_contact_phone" className="block text-sm font-medium text-tx-secondary mb-1">
                   Contact Phone
                 </label>
                 <input
@@ -431,22 +431,22 @@ export default function EditStaffPage() {
                   name="emergency_contact_phone"
                   value={formData.emergency_contact_phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
             </div>
           </div>
 
           {/* Notes */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Notes</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Notes</h2>
             <textarea
               id="notes"
               name="notes"
               value={formData.notes}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 bg-white"
+              className="w-full px-4 py-2 border border-bd-strong rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-tx-primary bg-bg-card"
             />
           </div>
 
@@ -454,7 +454,7 @@ export default function EditStaffPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href={`/owner/staff/${staffId}`}
-              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

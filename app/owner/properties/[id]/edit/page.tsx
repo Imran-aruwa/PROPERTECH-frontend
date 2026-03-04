@@ -154,31 +154,31 @@ export default function EditPropertyPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading property..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link
               href={`/owner/properties/${propertyId}`}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-tx-secondary" />
             </Link>
             <div className="flex items-center gap-3">
               <Building2 className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Edit Property</h1>
-                <p className="text-gray-600 text-sm">Update property details</p>
+                <h1 className="text-2xl font-bold text-tx-primary">Edit Property</h1>
+                <p className="text-tx-secondary text-sm">Update property details</p>
               </div>
             </div>
           </div>
@@ -188,11 +188,11 @@ export default function EditPropertyPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Information */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Property Information</h2>
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+            <h2 className="text-lg font-semibold text-tx-primary mb-4">Property Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-tx-secondary mb-1">
                   Property Name *
                 </label>
                 <input
@@ -201,15 +201,15 @@ export default function EditPropertyPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.name ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.name ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
               </div>
 
               <div className="md:col-span-2">
-                <label htmlFor="property_type" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="property_type" className="block text-sm font-medium text-tx-secondary mb-1">
                   Property Type *
                 </label>
                 <select
@@ -217,17 +217,17 @@ export default function EditPropertyPage() {
                   name="property_type"
                   value={formData.property_type}
                   onChange={(e) => setFormData(prev => ({ ...prev, property_type: e.target.value as PropertyType }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                 >
                   {PROPERTY_TYPES.map((type) => (
                     <option key={type.value} value={type.value}>{type.label}</option>
                   ))}
                 </select>
-                <p className="mt-1 text-sm text-gray-500">Select the type of property for better categorization</p>
+                <p className="mt-1 text-sm text-tx-muted">Select the type of property for better categorization</p>
               </div>
 
               <div className="md:col-span-2">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="address" className="block text-sm font-medium text-tx-secondary mb-1">
                   Address *
                 </label>
                 <input
@@ -236,15 +236,15 @@ export default function EditPropertyPage() {
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.address ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.address ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.address && <p className="mt-1 text-sm text-red-500">{errors.address}</p>}
               </div>
 
               <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="city" className="block text-sm font-medium text-tx-secondary mb-1">
                   City *
                 </label>
                 <input
@@ -253,15 +253,15 @@ export default function EditPropertyPage() {
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.city ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.city ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
               </div>
 
               <div>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="state" className="block text-sm font-medium text-tx-secondary mb-1">
                   State/County *
                 </label>
                 <input
@@ -270,15 +270,15 @@ export default function EditPropertyPage() {
                   name="state"
                   value={formData.state}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.state ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.state ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.state && <p className="mt-1 text-sm text-red-500">{errors.state}</p>}
               </div>
 
               <div>
-                <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="postal_code" className="block text-sm font-medium text-tx-secondary mb-1">
                   Postal Code *
                 </label>
                 <input
@@ -287,15 +287,15 @@ export default function EditPropertyPage() {
                   name="postal_code"
                   value={formData.postal_code}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.postal_code ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.postal_code ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.postal_code && <p className="mt-1 text-sm text-red-500">{errors.postal_code}</p>}
               </div>
 
               <div>
-                <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="country" className="block text-sm font-medium text-tx-secondary mb-1">
                   Country *
                 </label>
                 <input
@@ -304,15 +304,15 @@ export default function EditPropertyPage() {
                   name="country"
                   value={formData.country}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                    errors.country ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card ${
+                    errors.country ? 'border-red-500' : 'border-bd-strong'
                   }`}
                 />
                 {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
               </div>
 
               <div className="md:col-span-2">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="description" className="block text-sm font-medium text-tx-secondary mb-1">
                   Description
                 </label>
                 <textarea
@@ -321,12 +321,12 @@ export default function EditPropertyPage() {
                   value={formData.description}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label htmlFor="image_url" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="image_url" className="block text-sm font-medium text-tx-secondary mb-1">
                   Image URL
                 </label>
                 <input
@@ -335,7 +335,7 @@ export default function EditPropertyPage() {
                   name="image_url"
                   value={formData.image_url}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  className="w-full px-4 py-2 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-transparent text-tx-primary bg-bg-card"
                 />
               </div>
             </div>
@@ -345,7 +345,7 @@ export default function EditPropertyPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href={`/owner/properties/${propertyId}`}
-              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
             >
               Cancel
             </Link>

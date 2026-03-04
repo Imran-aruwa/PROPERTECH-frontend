@@ -250,11 +250,11 @@ export default function CheckoutPage() {
 
   if (!isAuthenticated && !loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md text-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center p-4">
+        <div className="bg-bg-card rounded-lg shadow-xl p-8 max-w-md text-center">
           <AlertCircle className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Sign In Required</h1>
-          <p className="text-gray-600 mb-6">You need to sign in to choose a plan.</p>
+          <h1 className="text-2xl font-bold text-tx-primary mb-2">Sign In Required</h1>
+          <p className="text-tx-secondary mb-6">You need to sign in to choose a plan.</p>
           <button
             onClick={() => router.push('/login')}
             className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium mb-2"
@@ -263,7 +263,7 @@ export default function CheckoutPage() {
           </button>
           <button
             onClick={() => router.push('/register')}
-            className="w-full py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
+            className="w-full py-2 bg-bd text-tx-secondary rounded-lg hover:bg-bg-hover transition font-medium"
           >
             Sign Up
           </button>
@@ -283,14 +283,14 @@ export default function CheckoutPage() {
   if (paymentComplete) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-green-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md text-center">
+        <div className="bg-bg-card rounded-lg shadow-xl p-8 max-w-md text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Check className="w-8 h-8 text-green-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-tx-primary mb-2">
             {selectedPlan?.isFree ? 'Welcome!' : 'Payment Successful!'}
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-tx-secondary mb-6">
             {selectedPlan?.name} plan activated. Redirecting to dashboard...
           </p>
         </div>
@@ -346,17 +346,17 @@ export default function CheckoutPage() {
                 onClick={() => setSelectedPlan(plan)}
                 className={`group rounded-lg shadow-lg transition-all p-6 border-2 relative cursor-pointer hover:scale-105 ${
                   plan.isPopular
-                    ? 'border-yellow-400 bg-white'
+                    ? 'border-yellow-400 bg-bg-card'
                     : plan.isFree
-                    ? 'border-green-400 bg-white'
+                    ? 'border-green-400 bg-bg-card'
                     : plan.id === 'enterprise'
                     ? 'border-blue-500/30 bg-slate-800/50'
-                    : 'border-transparent bg-white hover:border-blue-500'
+                    : 'border-transparent bg-bg-card hover:border-blue-500'
                 }`}
               >
                 {plan.isPopular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                    <span className="bg-yellow-400 text-tx-primary text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
                       <Zap className="w-3 h-3" />
                       MOST POPULAR
                     </span>
@@ -372,19 +372,19 @@ export default function CheckoutPage() {
                 )}
 
                 <h2 className={`text-2xl font-bold mb-2 ${
-                  plan.id === 'enterprise' ? 'text-gray-400' : 'text-gray-900'
+                  plan.id === 'enterprise' ? 'text-tx-muted' : 'text-tx-primary'
                 }`}>
                   {plan.name}
                 </h2>
                 <p className={`text-sm mb-6 ${
-                  plan.id === 'enterprise' ? 'text-gray-500' : 'text-gray-600'
+                  plan.id === 'enterprise' ? 'text-tx-muted' : 'text-tx-secondary'
                 }`}>
                   {plan.description}
                 </p>
 
                 <div className="mb-6">
                   <span className={`text-4xl font-bold ${
-                    plan.id === 'enterprise' ? 'text-gray-400' : 'text-gray-900'
+                    plan.id === 'enterprise' ? 'text-tx-muted' : 'text-tx-primary'
                   }`}>
                     {formatPrice(
                       billingCycle === 'monthly'
@@ -393,14 +393,14 @@ export default function CheckoutPage() {
                     )}
                   </span>
                   {plan.monthlyPriceUSD > 0 && plan.id !== 'enterprise' && (
-                    <span className="text-gray-600 text-sm ml-2">
+                    <span className="text-tx-secondary text-sm ml-2">
                       /{billingCycle === 'monthly' ? 'month' : 'year'}
                     </span>
                   )}
                 </div>
 
                 <p className={`text-sm mb-6 font-medium ${
-                  plan.isFree ? 'text-green-600' : plan.id === 'enterprise' ? 'text-gray-500' : 'text-blue-600'
+                  plan.isFree ? 'text-green-600' : plan.id === 'enterprise' ? 'text-tx-muted' : 'text-blue-600'
                 }`}>
                   {plan.label}
                 </p>
@@ -411,12 +411,12 @@ export default function CheckoutPage() {
                       key={idx}
                       className={`flex items-start gap-2 text-sm ${
                         plan.id === 'enterprise'
-                          ? 'text-gray-500'
-                          : 'text-gray-700'
+                          ? 'text-tx-muted'
+                          : 'text-tx-secondary'
                       }`}
                     >
                       <Check className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
-                        plan.isFree ? 'text-green-600' : plan.id === 'enterprise' ? 'text-gray-400' : 'text-blue-600'
+                        plan.isFree ? 'text-green-600' : plan.id === 'enterprise' ? 'text-tx-muted' : 'text-blue-600'
                       }`} />
                       {feature}
                     </li>
@@ -428,7 +428,7 @@ export default function CheckoutPage() {
                     plan.isFree
                       ? 'bg-green-600 text-white hover:bg-green-700'
                       : plan.isPopular
-                      ? 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
+                      ? 'bg-yellow-400 text-tx-primary hover:bg-yellow-500'
                       : plan.id === 'enterprise'
                       ? 'bg-slate-700 text-blue-200 hover:bg-slate-600'
                       : 'bg-blue-600 text-white hover:bg-blue-700'

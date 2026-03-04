@@ -87,7 +87,7 @@ export default function StaffDetailPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading staff details..." />
       </div>
     );
@@ -95,11 +95,11 @@ export default function StaffDetailPage() {
 
   if (!staff) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-bg-secondary flex items-center justify-center">
         <div className="text-center">
-          <UserCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Staff Member Not Found</h2>
-          <p className="text-gray-600 mb-4">The staff member you're looking for doesn't exist.</p>
+          <UserCircle className="w-16 h-16 text-tx-muted mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-tx-primary mb-2">Staff Member Not Found</h2>
+          <p className="text-tx-secondary mb-4">The staff member you're looking for doesn't exist.</p>
           <Link
             href="/owner/staff"
             className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
@@ -115,19 +115,19 @@ export default function StaffDetailPage() {
   const staffUser = staff.user as any;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg-secondary">
       <ToastContainer toasts={toasts} onClose={removeToast} />
 
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-bg-card shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link
                 href="/owner/staff"
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-bg-hover rounded-lg transition-colors"
               >
-                <ArrowLeft className="w-5 h-5 text-gray-600" />
+                <ArrowLeft className="w-5 h-5 text-tx-secondary" />
               </Link>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center">
@@ -136,10 +136,10 @@ export default function StaffDetailPage() {
                   </span>
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">{staffUser?.full_name || 'Unknown'}</h1>
+                  <h1 className="text-2xl font-bold text-tx-primary">{staffUser?.full_name || 'Unknown'}</h1>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-gray-600">{staff.position || 'Staff'}</span>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${departmentColors[staff.department] || 'bg-gray-100 text-gray-800'}`}>
+                    <span className="text-tx-secondary">{staff.position || 'Staff'}</span>
+                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${departmentColors[staff.department] || 'bg-bg-secondary text-tx-primary'}`}>
                       {staff.department || 'Staff'}
                     </span>
                   </div>
@@ -149,7 +149,7 @@ export default function StaffDetailPage() {
             <div className="flex items-center gap-2">
               <Link
                 href={`/owner/staff/${staffId}/edit`}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-bg-secondary text-tx-secondary rounded-lg hover:bg-bd transition-colors"
               >
                 <Edit className="w-4 h-4" />
                 Edit
@@ -171,16 +171,16 @@ export default function StaffDetailPage() {
           {/* Main Info */}
           <div className="lg:col-span-2 space-y-6">
             {/* Contact Information */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
+            <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+              <h2 className="text-lg font-semibold text-tx-primary mb-4">Contact Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
                     <Mail className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Email</p>
-                    <p className="font-medium text-gray-900">{staffUser?.email || 'N/A'}</p>
+                    <p className="text-sm text-tx-secondary">Email</p>
+                    <p className="font-medium text-tx-primary">{staffUser?.email || 'N/A'}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -188,22 +188,22 @@ export default function StaffDetailPage() {
                     <Phone className="w-5 h-5 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Phone</p>
-                    <p className="font-medium text-gray-900">{staffUser?.phone || 'N/A'}</p>
+                    <p className="text-sm text-tx-secondary">Phone</p>
+                    <p className="font-medium text-tx-primary">{staffUser?.phone || 'N/A'}</p>
                   </div>
                 </div>
               </div>
 
               {(staff as any).emergency_contact_name && (
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h3 className="text-sm font-medium text-gray-700 mb-3">Emergency Contact</h3>
+                <div className="mt-6 pt-6 border-t border-bd">
+                  <h3 className="text-sm font-medium text-tx-secondary mb-3">Emergency Contact</h3>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
                       <AlertCircle className="w-5 h-5 text-red-600" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{(staff as any).emergency_contact_name}</p>
-                      <p className="text-sm text-gray-600">{(staff as any).emergency_contact_phone}</p>
+                      <p className="font-medium text-tx-primary">{(staff as any).emergency_contact_name}</p>
+                      <p className="text-sm text-tx-secondary">{(staff as any).emergency_contact_phone}</p>
                     </div>
                   </div>
                 </div>
@@ -211,36 +211,36 @@ export default function StaffDetailPage() {
             </div>
 
             {/* Employment Details */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+              <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
                 <Briefcase className="w-5 h-5 text-indigo-600" />
                 Employment Details
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <p className="text-sm text-gray-600">Department</p>
-                  <p className="font-medium text-gray-900 capitalize">{staff.department}</p>
+                  <p className="text-sm text-tx-secondary">Department</p>
+                  <p className="font-medium text-tx-primary capitalize">{staff.department}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Position</p>
-                  <p className="font-medium text-gray-900">{staff.position}</p>
+                  <p className="text-sm text-tx-secondary">Position</p>
+                  <p className="font-medium text-tx-primary">{staff.position}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Start Date</p>
-                  <p className="font-medium text-gray-900">{formatDate(staff.start_date)}</p>
+                  <p className="text-sm text-tx-secondary">Start Date</p>
+                  <p className="font-medium text-tx-primary">{formatDate(staff.start_date)}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">ID Number</p>
-                  <p className="font-medium text-gray-900">{(staff as any).id_number || 'N/A'}</p>
+                  <p className="text-sm text-tx-secondary">ID Number</p>
+                  <p className="font-medium text-tx-primary">{(staff as any).id_number || 'N/A'}</p>
                 </div>
               </div>
             </div>
 
             {/* Work History / Notes */}
             {(staff as any).notes && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Notes</h2>
-                <p className="text-gray-700">{(staff as any).notes}</p>
+              <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+                <h2 className="text-lg font-semibold text-tx-primary mb-4">Notes</h2>
+                <p className="text-tx-secondary">{(staff as any).notes}</p>
               </div>
             )}
           </div>
@@ -248,33 +248,33 @@ export default function StaffDetailPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Compensation */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+              <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
                 <DollarSign className="w-5 h-5 text-green-600" />
                 Compensation
               </h2>
               <div className="text-center py-4">
-                <p className="text-3xl font-bold text-gray-900">{formatCurrency(staff.salary ?? 0)}</p>
-                <p className="text-sm text-gray-600 mt-1">per month</p>
+                <p className="text-3xl font-bold text-tx-primary">{formatCurrency(staff.salary ?? 0)}</p>
+                <p className="text-sm text-tx-secondary mt-1">per month</p>
               </div>
-              <div className="pt-4 border-t border-gray-200 mt-4">
+              <div className="pt-4 border-t border-bd mt-4">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Annual Salary</span>
-                  <span className="font-medium text-gray-900">{formatCurrency((staff.salary ?? 0) * 12)}</span>
+                  <span className="text-tx-secondary">Annual Salary</span>
+                  <span className="font-medium text-tx-primary">{formatCurrency((staff.salary ?? 0) * 12)}</span>
                 </div>
               </div>
             </div>
 
             {/* Property Assignment */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+              <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-blue-600" />
                 Property Assignment
               </h2>
               {staff.property ? (
                 <div>
-                  <p className="font-medium text-gray-900">{staff.property.name}</p>
-                  <p className="text-sm text-gray-600 mt-1">{staff.property.address}</p>
+                  <p className="font-medium text-tx-primary">{staff.property.name}</p>
+                  <p className="text-sm text-tx-secondary mt-1">{staff.property.address}</p>
                   <Link
                     href={`/owner/properties/${staff.property_id}`}
                     className="block w-full text-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors mt-4"
@@ -283,13 +283,13 @@ export default function StaffDetailPage() {
                   </Link>
                 </div>
               ) : (
-                <p className="text-gray-600">No property assigned</p>
+                <p className="text-tx-secondary">No property assigned</p>
               )}
             </div>
 
             {/* Tenure */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+              <h2 className="text-lg font-semibold text-tx-primary mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5 text-purple-600" />
                 Tenure
               </h2>
@@ -304,27 +304,27 @@ export default function StaffDetailPage() {
                   if (years > 0) {
                     return (
                       <>
-                        <p className="text-3xl font-bold text-gray-900">{years}</p>
-                        <p className="text-sm text-gray-600">year{years > 1 ? 's' : ''} {remainingMonths > 0 ? `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''}</p>
+                        <p className="text-3xl font-bold text-tx-primary">{years}</p>
+                        <p className="text-sm text-tx-secondary">year{years > 1 ? 's' : ''} {remainingMonths > 0 ? `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''}</p>
                       </>
                     );
                   }
                   return (
                     <>
-                      <p className="text-3xl font-bold text-gray-900">{months || 1}</p>
-                      <p className="text-sm text-gray-600">month{months > 1 ? 's' : ''}</p>
+                      <p className="text-3xl font-bold text-tx-primary">{months || 1}</p>
+                      <p className="text-sm text-tx-secondary">month{months > 1 ? 's' : ''}</p>
                     </>
                   );
                 })()}
               </div>
-              <p className="text-center text-sm text-gray-500 mt-2">
+              <p className="text-center text-sm text-tx-muted mt-2">
                 Started {formatDate(staff.start_date)}
               </p>
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+            <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
+              <h2 className="text-lg font-semibold text-tx-primary mb-4">Quick Actions</h2>
               <div className="space-y-2">
                 <Link
                   href={`/owner/staff/${staffId}/edit`}

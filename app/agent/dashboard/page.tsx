@@ -123,7 +123,7 @@ export default function AgentDashboard() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading dashboard...</p>
+            <p className="text-tx-secondary">Loading dashboard...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -134,8 +134,8 @@ export default function AgentDashboard() {
     <DashboardLayout role="agent">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Agent Dashboard</h1>
-          <p className="text-gray-600 mt-1">Track your performance and commissions</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Agent Dashboard</h1>
+          <p className="text-tx-secondary mt-1">Track your performance and commissions</p>
         </div>
 
         {error && (
@@ -157,10 +157,10 @@ export default function AgentDashboard() {
           ))}
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+        <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
           <h2 className="text-lg font-semibold mb-4">Recent Activities</h2>
           {activities.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-tx-muted">
               <p>No recent activities</p>
             </div>
           ) : (
@@ -168,8 +168,8 @@ export default function AgentDashboard() {
               {activities.map((activity) => (
                 <div key={activity.id} className="flex items-center justify-between border-b pb-3 last:border-0">
                   <div className="min-w-0 flex-1 mr-4">
-                    <p className="font-medium text-gray-900 truncate">{activity.description}</p>
-                    <p className="text-sm text-gray-600">{activity.timestamp}</p>
+                    <p className="font-medium text-tx-primary truncate">{activity.description}</p>
+                    <p className="text-sm text-tx-secondary">{activity.timestamp}</p>
                   </div>
                   <span className="text-green-600 font-semibold whitespace-nowrap">
                     +{formatCurrency(activity.amount)}

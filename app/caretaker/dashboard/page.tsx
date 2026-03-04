@@ -123,7 +123,7 @@ export default function CaretakerDashboard() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading dashboard...</p>
+            <p className="text-tx-secondary">Loading dashboard...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -134,8 +134,8 @@ export default function CaretakerDashboard() {
     <DashboardLayout role="caretaker">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Staff Dashboard</h1>
-          <p className="text-gray-600 mt-1">Manage daily property operations</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Staff Dashboard</h1>
+          <p className="text-tx-secondary mt-1">Manage daily property operations</p>
         </div>
 
         {error && (
@@ -151,13 +151,13 @@ export default function CaretakerDashboard() {
         </div>
 
         <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <CheckSquare className="w-5 h-5 text-blue-600" />
               Today's Tasks
             </h2>
             {tasks.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-tx-muted">
                 <p>No tasks for today</p>
               </div>
             ) : (
@@ -170,20 +170,20 @@ export default function CaretakerDashboard() {
                       onChange={() => {}}
                       className="h-5 w-5 rounded text-blue-600"
                     />
-                    <span className={task.completed ? 'line-through text-gray-400' : ''}>{task.description}</span>
+                    <span className={task.completed ? 'line-through text-tx-muted' : ''}>{task.description}</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-4 md:p-6">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Wrench className="w-5 h-5 text-red-600" />
               Urgent Issues
             </h2>
             {issues.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-tx-muted">
                 <p>No urgent issues</p>
               </div>
             ) : (

@@ -464,8 +464,8 @@ export function InspectionForm({
       />
 
       {/* Save Status Indicator */}
-      <div className="sticky top-0 z-10 bg-white border-b px-4 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm text-gray-500">
+      <div className="sticky top-0 z-10 bg-bg-card border-b px-4 py-2 flex items-center justify-between">
+        <div className="flex items-center gap-2 text-sm text-tx-muted">
           {saveStatus === 'saving' && (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -483,7 +483,7 @@ export function InspectionForm({
           )}
         </div>
         {!isOnline && (
-          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+          <span className="text-xs text-tx-muted bg-bg-secondary px-2 py-1 rounded">
             Offline mode
           </span>
         )}
@@ -491,12 +491,12 @@ export function InspectionForm({
 
       <div className="p-4 space-y-6">
         {/* Section 1: Property/Unit Selection */}
-        <section className="bg-white rounded-lg border p-4">
+        <section className="bg-bg-card rounded-lg border p-4">
           <h2 className="text-lg font-semibold mb-4">Property & Unit</h2>
 
           {/* Property Dropdown */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-tx-secondary mb-1">
               Property
             </label>
             <div className="relative">
@@ -506,16 +506,16 @@ export function InspectionForm({
                   setPropertyDropdownOpen(!propertyDropdownOpen);
                   setUnitDropdownOpen(false);
                 }}
-                className="w-full px-4 py-3 text-left bg-white border rounded-lg flex items-center justify-between hover:bg-gray-50"
+                className="w-full px-4 py-3 text-left bg-bg-card border rounded-lg flex items-center justify-between hover:bg-bg-hover"
               >
-                <span className={selectedProperty ? 'text-gray-900' : 'text-gray-500'}>
+                <span className={selectedProperty ? 'text-tx-primary' : 'text-tx-muted'}>
                   {selectedProperty ? selectedProperty.name : 'Select property...'}
                 </span>
-                <ChevronDown className="w-5 h-5 text-gray-400" />
+                <ChevronDown className="w-5 h-5 text-tx-muted" />
               </button>
 
               {propertyDropdownOpen && (
-                <div className="absolute z-20 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-hidden">
+                <div className="absolute z-20 w-full mt-1 bg-bg-card border rounded-lg shadow-lg max-h-60 overflow-hidden">
                   <div className="p-2 border-b">
                     <input
                       type="text"
@@ -537,14 +537,14 @@ export function InspectionForm({
                           setPropertyDropdownOpen(false);
                           setPropertySearch('');
                         }}
-                        className="w-full px-4 py-3 text-left hover:bg-gray-50 flex flex-col"
+                        className="w-full px-4 py-3 text-left hover:bg-bg-hover flex flex-col"
                       >
                         <span className="font-medium">{property.name}</span>
-                        <span className="text-sm text-gray-500">{property.address}</span>
+                        <span className="text-sm text-tx-muted">{property.address}</span>
                       </button>
                     ))}
                     {filteredProperties.length === 0 && (
-                      <div className="px-4 py-3 text-sm text-gray-500">No properties found</div>
+                      <div className="px-4 py-3 text-sm text-tx-muted">No properties found</div>
                     )}
                   </div>
                 </div>
@@ -554,7 +554,7 @@ export function InspectionForm({
 
           {/* Unit Dropdown */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-tx-secondary mb-1">
               Unit
             </label>
             <div className="relative">
@@ -566,18 +566,18 @@ export function InspectionForm({
                   setPropertyDropdownOpen(false);
                 }}
                 disabled={!propertyId}
-                className={`w-full px-4 py-3 text-left bg-white border rounded-lg flex items-center justify-between ${
-                  propertyId ? 'hover:bg-gray-50' : 'opacity-50 cursor-not-allowed'
+                className={`w-full px-4 py-3 text-left bg-bg-card border rounded-lg flex items-center justify-between ${
+                  propertyId ? 'hover:bg-bg-hover' : 'opacity-50 cursor-not-allowed'
                 }`}
               >
-                <span className={selectedUnit ? 'text-gray-900' : 'text-gray-500'}>
+                <span className={selectedUnit ? 'text-tx-primary' : 'text-tx-muted'}>
                   {selectedUnit ? `Unit ${selectedUnit.unit_number}` : 'Select unit...'}
                 </span>
-                <ChevronDown className="w-5 h-5 text-gray-400" />
+                <ChevronDown className="w-5 h-5 text-tx-muted" />
               </button>
 
               {unitDropdownOpen && (
-                <div className="absolute z-20 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-hidden">
+                <div className="absolute z-20 w-full mt-1 bg-bg-card border rounded-lg shadow-lg max-h-60 overflow-hidden">
                   <div className="p-2 border-b">
                     <input
                       type="text"
@@ -598,16 +598,16 @@ export function InspectionForm({
                           setUnitDropdownOpen(false);
                           setUnitSearch('');
                         }}
-                        className="w-full px-4 py-3 text-left hover:bg-gray-50"
+                        className="w-full px-4 py-3 text-left hover:bg-bg-hover"
                       >
                         <span className="font-medium">Unit {unit.unit_number}</span>
                         {unit.floor && (
-                          <span className="text-sm text-gray-500 ml-2">Floor {unit.floor}</span>
+                          <span className="text-sm text-tx-muted ml-2">Floor {unit.floor}</span>
                         )}
                       </button>
                     ))}
                     {filteredSearchUnits.length === 0 && (
-                      <div className="px-4 py-3 text-sm text-gray-500">No units found</div>
+                      <div className="px-4 py-3 text-sm text-tx-muted">No units found</div>
                     )}
                   </div>
                 </div>
@@ -617,7 +617,7 @@ export function InspectionForm({
         </section>
 
         {/* Section 2: Inspection Type */}
-        <section className="bg-white rounded-lg border p-4">
+        <section className="bg-bg-card rounded-lg border p-4">
           <h2 className="text-lg font-semibold mb-4">Inspection Type</h2>
           <div className="grid grid-cols-2 gap-3">
             {(Object.keys(INSPECTION_TYPE_CONFIG) as InspectionType[]).map((type) => {
@@ -633,7 +633,7 @@ export function InspectionForm({
                   className={`p-4 rounded-lg border-2 flex flex-col items-center gap-2 transition-all ${
                     isSelected
                       ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-bd hover:border-bd-strong'
                   }`}
                 >
                   <Icon className="w-8 h-8" />
@@ -646,7 +646,7 @@ export function InspectionForm({
 
         {/* Section 2b: External Inspector Info */}
         {isExternal && inspectionType && (
-          <section className="bg-white rounded-lg border p-4">
+          <section className="bg-bg-card rounded-lg border p-4">
             <div className="flex items-center gap-2 mb-4">
               <User className="w-5 h-5 text-blue-600" />
               <h2 className="text-lg font-semibold">External Inspector Details</h2>
@@ -654,7 +654,7 @@ export function InspectionForm({
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-tx-secondary mb-1">
                   Inspector Name *
                 </label>
                 <input
@@ -666,7 +666,7 @@ export function InspectionForm({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-tx-secondary mb-1">
                   Credentials / License No.
                 </label>
                 <input
@@ -678,7 +678,7 @@ export function InspectionForm({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-tx-secondary mb-1">
                   Company / Organization
                 </label>
                 <input
@@ -695,7 +695,7 @@ export function InspectionForm({
 
         {/* Section 2c: Scoring Toggle */}
         {inspectionType && inspectionType !== 'meter' && (
-          <section className="bg-white rounded-lg border p-4">
+          <section className="bg-bg-card rounded-lg border p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-yellow-500" />
@@ -709,13 +709,13 @@ export function InspectionForm({
                 }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  className={`inline-block h-4 w-4 transform rounded-full bg-bg-card transition-transform ${
                     scoringEnabled ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
               </button>
             </div>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-tx-muted mt-1">
               Rate each item 1-5 and set severity levels for issues found
             </p>
           </section>
@@ -723,7 +723,7 @@ export function InspectionForm({
 
         {/* Section 3: Checklist Items */}
         {inspectionType && inspectionType !== 'meter' && (
-          <section className="bg-white rounded-lg border p-4">
+          <section className="bg-bg-card rounded-lg border p-4">
             <h2 className="text-lg font-semibold mb-4">Checklist</h2>
 
             {/* Category Tabs */}
@@ -739,7 +739,7 @@ export function InspectionForm({
                     type="button"
                     onClick={() => setActiveCategory(category)}
                     className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                      isActive ? `${config.bgColor} ${config.color}` : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      isActive ? `${config.bgColor} ${config.color}` : 'bg-bg-secondary text-tx-secondary hover:bg-bd'
                     }`}
                   >
                     {config.label} ({categoryCount})
@@ -759,13 +759,13 @@ export function InspectionForm({
                         value={item.name}
                         onChange={(e) => updateItemName(item.client_uuid, e.target.value)}
                         placeholder="Item name..."
-                        className="w-full font-medium text-gray-900 bg-transparent border-0 p-0 focus:ring-0"
+                        className="w-full font-medium text-tx-primary bg-transparent border-0 p-0 focus:ring-0"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={() => removeItem(item.client_uuid)}
-                      className="text-gray-400 hover:text-red-500"
+                      className="text-tx-muted hover:text-red-500"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -783,7 +783,7 @@ export function InspectionForm({
                           type="button"
                           onClick={() => updateItemCondition(item.client_uuid, condition)}
                           className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${
-                            isSelected ? `${config.bgColor} ${config.color}` : 'bg-gray-100 text-gray-600'
+                            isSelected ? `${config.bgColor} ${config.color}` : 'bg-bg-secondary text-tx-secondary'
                           }`}
                         >
                           {config.label}
@@ -796,7 +796,7 @@ export function InspectionForm({
                   {scoringEnabled && (
                     <div className="mt-2">
                       <div className="flex items-center gap-1">
-                        <span className="text-xs text-gray-500 mr-2">Score:</span>
+                        <span className="text-xs text-tx-muted mr-2">Score:</span>
                         {[1, 2, 3, 4, 5].map((score) => (
                           <button
                             key={score}
@@ -808,13 +808,13 @@ export function InspectionForm({
                               className={`w-5 h-5 ${
                                 (item.score || 0) >= score
                                   ? 'text-yellow-400 fill-yellow-400'
-                                  : 'text-gray-300'
+                                  : 'text-tx-muted'
                               }`}
                             />
                           </button>
                         ))}
                         {item.score && (
-                          <span className="text-xs text-gray-500 ml-1">
+                          <span className="text-xs text-tx-muted ml-1">
                             {SCORE_LABELS[item.score]}
                           </span>
                         )}
@@ -825,7 +825,7 @@ export function InspectionForm({
                   {/* Severity (when condition is poor or fair) */}
                   {scoringEnabled && (item.condition === 'poor' || item.condition === 'fair') && (
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs text-gray-500">Severity:</span>
+                      <span className="text-xs text-tx-muted">Severity:</span>
                       {(Object.keys(SEVERITY_CONFIG) as SeverityLevel[]).map((level) => {
                         const sevConfig = SEVERITY_CONFIG[level];
                         const isSelected = item.severity === level;
@@ -837,7 +837,7 @@ export function InspectionForm({
                             className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                               isSelected
                                 ? `${sevConfig.bgColor} ${sevConfig.color}`
-                                : 'bg-gray-100 text-gray-500'
+                                : 'bg-bg-secondary text-tx-muted'
                             }`}
                           >
                             {sevConfig.label}
@@ -854,9 +854,9 @@ export function InspectionForm({
                         type="checkbox"
                         checked={item.requires_followup || false}
                         onChange={() => toggleItemFollowup(item.client_uuid)}
-                        className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                        className="w-4 h-4 text-blue-600 rounded border-bd-strong"
                       />
-                      <span className="text-xs text-gray-600">Requires follow-up</span>
+                      <span className="text-xs text-tx-secondary">Requires follow-up</span>
                     </label>
                   )}
 
@@ -875,7 +875,7 @@ export function InspectionForm({
               <button
                 type="button"
                 onClick={() => addItem(activeCategory)}
-                className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600 flex items-center justify-center gap-2"
+                className="w-full py-3 border-2 border-dashed border-bd-strong rounded-lg text-tx-muted hover:border-bd-strong hover:text-tx-secondary flex items-center justify-center gap-2"
               >
                 <Plus className="w-5 h-5" />
                 Add Item
@@ -886,12 +886,12 @@ export function InspectionForm({
 
         {/* Section 4: Photos */}
         {inspectionType && (
-          <section className="bg-white rounded-lg border p-4">
+          <section className="bg-bg-card rounded-lg border p-4">
             <h2 className="text-lg font-semibold mb-4">Photos</h2>
 
             <div className="grid grid-cols-3 gap-3">
               {photos.map((photo) => (
-                <div key={photo.id} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                <div key={photo.id} className="relative aspect-square rounded-lg overflow-hidden bg-bg-secondary">
                   <img
                     src={photo.data}
                     alt="Inspection photo"
@@ -911,7 +911,7 @@ export function InspectionForm({
               <button
                 type="button"
                 onClick={capture}
-                className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center gap-2 text-gray-500 hover:border-gray-400 hover:text-gray-600"
+                className="aspect-square border-2 border-dashed border-bd-strong rounded-lg flex flex-col items-center justify-center gap-2 text-tx-muted hover:border-bd-strong hover:text-tx-secondary"
               >
                 <Camera className="w-8 h-8" />
                 <span className="text-xs">Add Photo</span>
@@ -922,18 +922,18 @@ export function InspectionForm({
 
         {/* Section 5: Meter Readings */}
         {(inspectionType === 'meter' || (inspectionType && meterReadings.length > 0)) && (
-          <section className="bg-white rounded-lg border p-4">
+          <section className="bg-bg-card rounded-lg border p-4">
             <h2 className="text-lg font-semibold mb-4">Meter Readings</h2>
 
             <div className="space-y-4">
               {meterReadings.map((reading) => (
                 <div key={reading.client_uuid} className="border rounded-lg p-4">
-                  <h3 className="font-medium text-gray-900 capitalize mb-3">
+                  <h3 className="font-medium text-tx-primary capitalize mb-3">
                     {reading.meter_type} Meter
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Previous Reading</label>
+                      <label className="block text-sm text-tx-secondary mb-1">Previous Reading</label>
                       <input
                         type="number"
                         value={reading.previous_reading || ''}
@@ -945,7 +945,7 @@ export function InspectionForm({
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Current Reading</label>
+                      <label className="block text-sm text-tx-secondary mb-1">Current Reading</label>
                       <input
                         type="number"
                         value={reading.current_reading || ''}
@@ -965,12 +965,12 @@ export function InspectionForm({
 
         {/* Section 6: Notes & GPS */}
         {inspectionType && (
-          <section className="bg-white rounded-lg border p-4">
+          <section className="bg-bg-card rounded-lg border p-4">
             <h2 className="text-lg font-semibold mb-4">Notes & Location</h2>
 
             {/* Notes */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+              <label className="block text-sm font-medium text-tx-secondary mb-1">Notes</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -981,17 +981,17 @@ export function InspectionForm({
             </div>
 
             {/* GPS Coordinates */}
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-              <MapPin className="w-5 h-5 text-gray-500" />
+            <div className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg">
+              <MapPin className="w-5 h-5 text-tx-muted" />
               <div className="flex-1">
                 {gpsLoading ? (
-                  <span className="text-sm text-gray-500">Getting location...</span>
+                  <span className="text-sm text-tx-muted">Getting location...</span>
                 ) : position ? (
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm text-tx-secondary">
                     {position.lat.toFixed(6)}, {position.lng.toFixed(6)}
                   </span>
                 ) : (
-                  <span className="text-sm text-gray-500">Location unavailable</span>
+                  <span className="text-sm text-tx-muted">Location unavailable</span>
                 )}
               </div>
               <button
@@ -1004,10 +1004,10 @@ export function InspectionForm({
             </div>
 
             {/* Device ID */}
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg mt-3">
-              <Smartphone className="w-5 h-5 text-gray-500" />
+            <div className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg mt-3">
+              <Smartphone className="w-5 h-5 text-tx-muted" />
               <div className="flex-1">
-                <span className="text-sm text-gray-700 font-mono">{deviceId || 'Generating...'}</span>
+                <span className="text-sm text-tx-secondary font-mono">{deviceId || 'Generating...'}</span>
               </div>
             </div>
           </section>
@@ -1015,12 +1015,12 @@ export function InspectionForm({
       </div>
 
       {/* Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex gap-3">
+      <div className="fixed bottom-0 left-0 right-0 bg-bg-card border-t p-4 flex gap-3">
         <button
           type="button"
           onClick={handleSaveDraft}
           disabled={!currentDraft}
-          className="flex-1 py-3 px-4 border rounded-lg font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="flex-1 py-3 px-4 border rounded-lg font-medium text-tx-secondary hover:bg-bg-hover disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           <Save className="w-5 h-5" />
           Save Draft

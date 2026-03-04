@@ -65,12 +65,12 @@ export default function EditLeasePage() {
     <DashboardLayout role="owner">
       <div className="space-y-6">
         <div className="flex items-center gap-3">
-          <Link href={`/owner/leases/${id}`} className="text-gray-500 hover:text-gray-700">
+          <Link href={`/owner/leases/${id}`} className="text-tx-muted hover:text-tx-secondary">
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Edit Lease #{id}</h1>
-            <p className="text-gray-600 text-sm mt-0.5">Modify this draft lease</p>
+            <h1 className="text-2xl font-bold text-tx-primary">Edit Lease #{id}</h1>
+            <p className="text-tx-secondary text-sm mt-0.5">Modify this draft lease</p>
           </div>
         </div>
         <LeaseForm mode="edit" initialData={lease} leaseId={Number(id)} />

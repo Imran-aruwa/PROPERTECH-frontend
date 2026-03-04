@@ -140,7 +140,7 @@ function CollectionDonut({ paid, partial, unpaid }: { paid: number; partial: num
         className="w-32 h-32 rounded-full flex items-center justify-center"
         style={{ background: gradient }}
       >
-        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
+        <div className="w-20 h-20 bg-bg-card rounded-full flex items-center justify-center">
           <span className="text-2xl font-bold text-slate-800">{Math.round(paidPct)}%</span>
         </div>
       </div>
@@ -198,7 +198,7 @@ export default function MpesaAnalyticsPage() {
         </div>
         <div className="ml-auto flex items-center gap-2">
           {/* Month navigation */}
-          <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl px-2 py-1.5">
+          <div className="flex items-center gap-1 bg-bg-card border border-slate-200 rounded-xl px-2 py-1.5">
             <button onClick={() => setCurrentMonth(prevMonth(currentMonth))} className="p-1 hover:bg-slate-50 rounded-lg">
               <ChevronLeft className="w-4 h-4 text-slate-500" />
             </button>
@@ -228,7 +228,7 @@ export default function MpesaAnalyticsPage() {
         <>
           {/* ── Collection Rate ── */}
           {collectionRate && (
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+            <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-5">
               <div className="flex items-center gap-2 mb-5">
                 <TrendingUp className="w-5 h-5 text-green-500" />
                 <h2 className="font-semibold text-slate-800">Collection Rate — {monthLabel(currentMonth)}</h2>
@@ -283,7 +283,7 @@ export default function MpesaAnalyticsPage() {
 
           {/* ── Payment Timing ── */}
           {timing && (
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+            <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm p-5">
               <div className="flex items-center gap-2 mb-1">
                 <Clock className="w-5 h-5 text-blue-500" />
                 <h2 className="font-semibold text-slate-800">Payment Timing Distribution</h2>
@@ -311,7 +311,7 @@ export default function MpesaAnalyticsPage() {
 
           {/* ── Risk Tenants ── */}
           {risk && (
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div className="bg-bg-card rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
               <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-red-500" />

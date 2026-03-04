@@ -70,7 +70,7 @@ const PLATFORM_LABELS: Record<string, string> = {
 
 const STATUS_STYLES: Record<string, { bg: string; text: string; dot: string }> = {
   active:  { bg: 'bg-green-50',  text: 'text-green-700',  dot: 'bg-green-500'  },
-  draft:   { bg: 'bg-gray-50',   text: 'text-gray-600',   dot: 'bg-gray-400'   },
+  draft:   { bg: 'bg-bg-secondary',   text: 'text-tx-secondary',   dot: 'bg-tx-muted'   },
   paused:  { bg: 'bg-yellow-50', text: 'text-yellow-700', dot: 'bg-yellow-500' },
   filled:  { bg: 'bg-blue-50',   text: 'text-blue-700',   dot: 'bg-blue-500'   },
 };
@@ -81,13 +81,13 @@ function SummaryCard({ icon, label, value, sub, colour }: {
   icon: React.ReactNode; label: string; value: string | number; sub?: string; colour: string;
 }) {
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+    <div className="bg-bg-card rounded-xl p-5 shadow-sm border border-bd">
       <div className={`w-10 h-10 ${colour} rounded-lg flex items-center justify-center mb-3`}>
         {icon}
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      <p className="text-sm font-medium text-gray-700 mt-0.5">{label}</p>
-      {sub && <p className="text-xs text-gray-500 mt-1">{sub}</p>}
+      <p className="text-2xl font-bold text-tx-primary">{value}</p>
+      <p className="text-sm font-medium text-tx-secondary mt-0.5">{label}</p>
+      {sub && <p className="text-xs text-tx-muted mt-1">{sub}</p>}
     </div>
   );
 }
@@ -103,7 +103,7 @@ function ListingCard({ listing, onAction }: {
   const activeSyndications = listing.syndications.filter(s => s.status === 'published');
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+    <div className="bg-bg-card rounded-xl p-5 shadow-sm border border-bd hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           {/* Status badge */}
@@ -112,9 +112,9 @@ function ListingCard({ listing, onAction }: {
             {listing.status.charAt(0).toUpperCase() + listing.status.slice(1)}
           </div>
 
-          <h3 className="text-sm font-semibold text-gray-900 leading-tight truncate">{listing.title}</h3>
+          <h3 className="text-sm font-semibold text-tx-primary leading-tight truncate">{listing.title}</h3>
 
-          <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+          <div className="flex items-center gap-1 text-xs text-tx-muted mt-1">
             {listing.property_name && (
               <>
                 <Building2 className="w-3 h-3" />
@@ -125,22 +125,22 @@ function ListingCard({ listing, onAction }: {
           </div>
 
           <p className="text-base font-bold text-blue-600 mt-2">
-            KES {Number(listing.monthly_rent).toLocaleString()}<span className="text-xs font-normal text-gray-500">/mo</span>
+            KES {Number(listing.monthly_rent).toLocaleString()}<span className="text-xs font-normal text-tx-muted">/mo</span>
           </p>
         </div>
 
         <div className="relative flex-shrink-0">
           <button
             onClick={() => setMenuOpen(o => !o)}
-            className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg"
+            className="p-1.5 text-tx-muted hover:text-tx-secondary hover:bg-bg-hover rounded-lg"
           >
             <MoreVertical className="w-4 h-4" />
           </button>
           {menuOpen && (
-            <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-xl shadow-lg z-10 w-40 py-1 text-sm">
+            <div className="absolute right-0 top-8 bg-bg-card border border-bd rounded-xl shadow-lg z-10 w-40 py-1 text-sm">
               <Link
                 href={`/owner/listings/${listing.id}`}
-                className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-gray-700"
+                className="flex items-center gap-2 px-3 py-2 hover:bg-bg-hover text-tx-secondary"
                 onClick={() => setMenuOpen(false)}
               >
                 <Eye className="w-3.5 h-3.5" /> View Details
@@ -148,7 +148,7 @@ function ListingCard({ listing, onAction }: {
               {listing.status === 'draft' && (
                 <button
                   onClick={() => { onAction('publish', listing.id); setMenuOpen(false); }}
-                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-gray-700"
+                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-bg-hover text-tx-secondary"
                 >
                   <Megaphone className="w-3.5 h-3.5" /> Publish
                 </button>
@@ -156,7 +156,7 @@ function ListingCard({ listing, onAction }: {
               {listing.status === 'active' && (
                 <button
                   onClick={() => { onAction('pause', listing.id); setMenuOpen(false); }}
-                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-gray-700"
+                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-bg-hover text-tx-secondary"
                 >
                   <Pause className="w-3.5 h-3.5" /> Pause
                 </button>
@@ -164,7 +164,7 @@ function ListingCard({ listing, onAction }: {
               {listing.status === 'paused' && (
                 <button
                   onClick={() => { onAction('publish', listing.id); setMenuOpen(false); }}
-                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-gray-700"
+                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-bg-hover text-tx-secondary"
                 >
                   <Play className="w-3.5 h-3.5" /> Resume
                 </button>
@@ -172,7 +172,7 @@ function ListingCard({ listing, onAction }: {
               {listing.status === 'active' && (
                 <button
                   onClick={() => { onAction('mark-filled', listing.id); setMenuOpen(false); }}
-                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-green-600"
+                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-bg-hover text-green-600"
                 >
                   <CheckCircle className="w-3.5 h-3.5" /> Mark Filled
                 </button>
@@ -182,7 +182,7 @@ function ListingCard({ listing, onAction }: {
                   href={`/listings/${listing.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-gray-700"
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-bg-hover text-tx-secondary"
                   onClick={() => setMenuOpen(false)}
                 >
                   <ExternalLink className="w-3.5 h-3.5" /> Public Page
@@ -194,7 +194,7 @@ function ListingCard({ listing, onAction }: {
       </div>
 
       {/* Stats row */}
-      <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100 text-xs text-gray-500">
+      <div className="flex items-center gap-4 mt-4 pt-4 border-t border-bd text-xs text-tx-muted">
         <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> {listing.view_count} views</span>
         <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {listing.lead_count} leads</span>
         {listing.days_on_market !== null && (
@@ -208,7 +208,7 @@ function ListingCard({ listing, onAction }: {
           {activeSyndications.map(s => (
             <span
               key={s.id}
-              className={`text-xs px-2 py-0.5 rounded-full font-medium ${PLATFORM_COLOURS[s.platform] || 'bg-gray-100 text-gray-600'}`}
+              className={`text-xs px-2 py-0.5 rounded-full font-medium ${PLATFORM_COLOURS[s.platform] || 'bg-bg-secondary text-tx-secondary'}`}
             >
               {PLATFORM_LABELS[s.platform] || s.platform}
             </span>
@@ -315,8 +315,8 @@ export default function ListingsPage() {
         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <Megaphone className="w-8 h-8 text-blue-600" />
         </div>
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Premium Feature</h2>
-        <p className="text-gray-500 mb-6">
+        <h2 className="text-xl font-bold text-tx-primary mb-2">Premium Feature</h2>
+        <p className="text-tx-muted mb-6">
           Vacancy Listing Syndication is available on Professional and Enterprise plans.
           Publish to WhatsApp, Facebook, and property portals automatically.
         </p>
@@ -342,8 +342,8 @@ export default function ListingsPage() {
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Vacancy Listings</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-tx-primary">Vacancy Listings</h1>
+          <p className="text-sm text-tx-muted mt-1">
             Publish vacant units to multiple platforms and track leads in one place
           </p>
         </div>
@@ -386,19 +386,19 @@ export default function ListingsPage() {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-5">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-tx-muted absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search listings..."
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-9 pr-4 py-2.5 border border-bd-strong rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <select
           value={statusFilter}
           onChange={e => setStatusFilter(e.target.value)}
-          className="px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          className="px-3 py-2.5 border border-bd-strong rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-bg-card"
         >
           <option value="">All Statuses</option>
           <option value="active">Active</option>
@@ -410,12 +410,12 @@ export default function ListingsPage() {
 
       {/* Listings grid */}
       {filteredListings.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-xl border border-gray-100">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Megaphone className="w-8 h-8 text-gray-400" />
+        <div className="text-center py-16 bg-bg-card rounded-xl border border-bd">
+          <div className="w-16 h-16 bg-bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+            <Megaphone className="w-8 h-8 text-tx-muted" />
           </div>
-          <h3 className="text-base font-semibold text-gray-900 mb-1">No listings yet</h3>
-          <p className="text-sm text-gray-500 mb-5">
+          <h3 className="text-base font-semibold text-tx-primary mb-1">No listings yet</h3>
+          <p className="text-sm text-tx-muted mb-5">
             {statusFilter ? `No ${statusFilter} listings found.` : 'Create your first listing to start attracting tenants.'}
           </p>
           <Link

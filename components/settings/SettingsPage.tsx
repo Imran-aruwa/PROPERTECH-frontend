@@ -208,7 +208,7 @@ export function SettingsPage({ role }: SettingsPageProps) {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Loading settings...</p>
+            <p className="text-tx-secondary">Loading settings...</p>
           </div>
         </div>
       </DashboardLayout>
@@ -219,8 +219,8 @@ export function SettingsPage({ role }: SettingsPageProps) {
     <DashboardLayout role={role}>
       <div className="space-y-6 max-w-4xl">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600 mt-1">Manage your account and preferences</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-tx-primary">Settings</h1>
+          <p className="text-tx-secondary mt-1">Manage your account and preferences</p>
         </div>
 
         {message && (
@@ -248,7 +248,7 @@ export function SettingsPage({ role }: SettingsPageProps) {
                 className={`flex items-center gap-2 px-4 py-3 font-medium transition-colors whitespace-nowrap border-b-2 -mb-[2px] ${
                   activeTab === tab.id
                     ? 'text-blue-600 border-blue-600'
-                    : 'text-gray-600 border-transparent hover:text-gray-900'
+                    : 'text-tx-secondary border-transparent hover:text-tx-primary'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -260,56 +260,56 @@ export function SettingsPage({ role }: SettingsPageProps) {
 
         {activeTab === 'profile' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
                 <div className="relative">
                   <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                     {profile.full_name?.charAt(0)?.toUpperCase() || 'U'}
                   </div>
-                  <button className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border hover:bg-gray-50">
-                    <Camera className="w-3 h-3 text-gray-600" />
+                  <button className="absolute bottom-0 right-0 p-1.5 bg-bg-card rounded-full shadow-md border hover:bg-bg-hover">
+                    <Camera className="w-3 h-3 text-tx-secondary" />
                   </button>
                 </div>
                 <div className="text-center sm:text-left">
-                  <h3 className="text-lg font-semibold text-gray-900">{profile.full_name || 'Your Name'}</h3>
-                  <p className="text-gray-600 text-sm">{profile.email}</p>
-                  <p className="text-xs text-gray-500 capitalize mt-1">{role} Account</p>
+                  <h3 className="text-lg font-semibold text-tx-primary">{profile.full_name || 'Your Name'}</h3>
+                  <p className="text-tx-secondary text-sm">{profile.email}</p>
+                  <p className="text-xs text-tx-muted capitalize mt-1">{role} Account</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Full Name</label>
                   <input
                     type="text"
                     value={profile.full_name}
                     onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your full name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Email Address</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                     <input
                       type="email"
                       value={profile.email}
                       onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="your@email.com"
                     />
                   </div>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Phone Number</label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-tx-muted" />
                     <input
                       type="tel"
                       value={profile.phone}
                       onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2.5 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="+254 700 000 000"
                     />
                   </div>
@@ -330,7 +330,7 @@ export function SettingsPage({ role }: SettingsPageProps) {
         )}
 
         {activeTab === 'notifications' && (
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="bg-bg-card rounded-lg shadow-sm border p-6">
             <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <Bell className="w-5 h-5 text-blue-600" />
               Notification Preferences
@@ -345,7 +345,7 @@ export function SettingsPage({ role }: SettingsPageProps) {
                 { key: 'payment_alerts', label: 'Payment Alerts', desc: 'Payment related notifications' },
                 { key: 'maintenance_updates', label: 'Maintenance Updates', desc: 'Maintenance request updates' },
               ].map((item) => (
-                <label key={item.key} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                <label key={item.key} className="flex items-start gap-4 p-4 bg-bg-secondary rounded-lg cursor-pointer hover:bg-bg-hover transition-colors">
                   <input
                     type="checkbox"
                     checked={notifications[item.key as keyof NotificationSettings]}
@@ -353,8 +353,8 @@ export function SettingsPage({ role }: SettingsPageProps) {
                     className="w-5 h-5 text-blue-600 rounded mt-0.5"
                   />
                   <div>
-                    <p className="font-medium text-gray-900">{item.label}</p>
-                    <p className="text-sm text-gray-600">{item.desc}</p>
+                    <p className="font-medium text-tx-primary">{item.label}</p>
+                    <p className="text-sm text-tx-secondary">{item.desc}</p>
                   </div>
                 </label>
               ))}
@@ -375,65 +375,65 @@ export function SettingsPage({ role }: SettingsPageProps) {
 
         {activeTab === 'security' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                 <Lock className="w-5 h-5 text-blue-600" />
                 Change Password
               </h2>
               <div className="space-y-4 max-w-md">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Current Password</label>
                   <div className="relative">
                     <input
                       type={showPasswords.current ? 'text' : 'password'}
                       value={passwordForm.current_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, current_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter current password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-tx-muted hover:text-tx-secondary"
                     >
                       {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">New Password</label>
                   <div className="relative">
                     <input
                       type={showPasswords.new ? 'text' : 'password'}
                       value={passwordForm.new_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, new_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter new password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-tx-muted hover:text-tx-secondary"
                     >
                       {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+                  <p className="text-xs text-tx-muted mt-1">Minimum 8 characters</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                  <label className="block text-sm font-medium text-tx-secondary mb-2">Confirm New Password</label>
                   <div className="relative">
                     <input
                       type={showPasswords.confirm ? 'text' : 'password'}
                       value={passwordForm.confirm_password}
                       onChange={(e) => setPasswordForm({ ...passwordForm, confirm_password: e.target.value })}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2.5 pr-10 border border-bd-strong rounded-lg text-tx-primary bg-bg-card focus:ring-2 focus:ring-blue-500"
                       placeholder="Confirm new password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-tx-muted hover:text-tx-secondary"
                     >
                       {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -450,23 +450,23 @@ export function SettingsPage({ role }: SettingsPageProps) {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border p-6">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 <Shield className="w-5 h-5 text-blue-600" />
                 Two-Factor Authentication
               </h2>
-              <p className="text-gray-600 mb-4">Add an extra layer of security to your account</p>
+              <p className="text-tx-secondary mb-4">Add an extra layer of security to your account</p>
               <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
                 Enable 2FA
               </button>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-red-200 p-6">
+            <div className="bg-bg-card rounded-lg shadow-sm border border-red-200 p-6">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-red-600">
                 <Trash2 className="w-5 h-5" />
                 Delete Account
               </h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-tx-secondary mb-4">
                 Permanently delete your account and all associated data.
               </p>
               {!showDeleteConfirm ? (
@@ -499,7 +499,7 @@ export function SettingsPage({ role }: SettingsPageProps) {
                         setShowDeleteConfirm(false);
                         setDeleteConfirmText('');
                       }}
-                      className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                      className="px-4 py-2 border border-bd-strong rounded-lg hover:bg-bg-hover"
                     >
                       Cancel
                     </button>
