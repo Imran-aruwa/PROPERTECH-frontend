@@ -60,9 +60,9 @@ export const automationRulesApi = {
 
   create: (body: {
     name: string;
-    description?: string;
+    description?: string | null;
     trigger_event: string;
-    trigger_conditions?: Condition[];
+    trigger_conditions?: Condition[] | null;
     action_chain: ActionStep[];
     delay_minutes?: number;
     requires_approval?: boolean;

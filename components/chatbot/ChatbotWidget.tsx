@@ -172,8 +172,8 @@ export function ChatbotWidget({
       const context = {
         page: pathname || '/',
         role,
-        user_id: user?.id || '',
-        owner_id: user?.id || '',
+        user_id: user?.id != null ? String(user.id) : '',
+        owner_id: user?.id != null ? String(user.id) : '',
       };
 
       const { reply } = await chatApi.send(history, context);

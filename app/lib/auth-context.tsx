@@ -98,7 +98,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     initAuth();
-  }, []);
+  }, [setTheme]);
 
   const login = async (email: string, password: string) => {
     try {

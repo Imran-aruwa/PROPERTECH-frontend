@@ -67,6 +67,7 @@ export interface ActionResult {
   data: Record<string, unknown> | null;
   reversible: boolean;
   log_id: string | null;
+  reversed_at?: string | null;
 }
 
 export interface AutomationExecution {

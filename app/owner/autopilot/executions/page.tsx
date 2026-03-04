@@ -6,7 +6,7 @@ import {
   RefreshCw, ChevronDown, ChevronRight, Filter, Download,
 } from 'lucide-react';
 import { automationExecutionsApi } from '@/app/lib/api/automation';
-import { AutomationExecution, ExecutionStatus } from '@/types/automation';
+import { AutomationExecution, ExecutionStatus, ActionResult } from '@/types/automation';
 
 const STATUS_OPTIONS: ExecutionStatus[] = [
   'completed', 'failed', 'running', 'pending', 'rolled_back', 'awaiting_approval',
@@ -161,7 +161,7 @@ export default function ExecutionsPage() {
                   const sc = STATUS_CONFIG[exec.status] || STATUS_CONFIG.pending;
                   const isExpanded = expandedId === exec.id;
                   const canRollback = exec.status === 'completed' &&
-                    (exec.actions_taken || []).some((a: { reversible?: boolean }) => a.reversible);
+                    (exec.actions_taken || []).some((a: ActionResult) => a.reversible);
 
                   return (
                     <>
@@ -214,7 +214,7 @@ export default function ExecutionsPage() {
                             {exec.actions_taken && exec.actions_taken.length > 0 ? (
                               <div className="space-y-2">
                                 <p className="text-xs font-semibold text-tx-muted uppercase tracking-wide mb-2">Action Log</p>
-                                {exec.actions_taken.map((action: { action_type: string; status: string; reversible?: boolean; reversed_at?: string; data?: Record<string, unknown> }, i) => (
+                                {exec.actions_taken.map((action: ActionResult, i: number) => (
                                   <div key={i} className="flex items-start gap-3 text-xs p-2 bg-bg-card rounded-lg border border-bd">
                                     {action.status === 'success'
                                       ? <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />

@@ -15,6 +15,7 @@ import {
   TemplateCategory,
   Condition,
   ActionStep,
+  DryRunResult,
 } from '@/types/automation';
 
 const TRIGGER_EVENTS = [
@@ -69,7 +70,7 @@ export default function AutopilotRulesPage() {
   const [activeCategory, setActiveCategory] = useState<TemplateCategory>('payments');
   const [dryRunModal, setDryRunModal] = useState<AutomationRule | null>(null);
   const [dryRunPayload, setDryRunPayload] = useState('{}');
-  const [dryRunResult, setDryRunResult] = useState<unknown>(null);
+  const [dryRunResult, setDryRunResult] = useState<DryRunResult | null>(null);
   const [saving, setSaving] = useState(false);
 
   const fetchData = useCallback(async () => {
@@ -144,7 +145,7 @@ export default function AutopilotRulesPage() {
     let payload: Record<string, unknown> = {};
     try { payload = JSON.parse(dryRunPayload); } catch { alert('Invalid JSON'); return; }
     const res = await automationRulesApi.dryRun(dryRunModal.id, payload);
-    if (res.success) setDryRunResult(res.data);
+    if (res.success) setDryRunResult(res.data ?? null);
   };
 
   const addCondition = () => {
