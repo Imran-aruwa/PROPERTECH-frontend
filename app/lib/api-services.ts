@@ -1397,6 +1397,68 @@ export const inspectionsApi = {
     }
     return response;
   },
+
+  /**
+   * Batch sync from PWA device (Feature #7)
+   */
+  async sync(payload: {
+    device_id: string;
+    inspections?: any[];
+    rooms?: any[];
+    items?: any[];
+    meter_readings?: any[];
+    media_refs?: any[];
+  }) {
+    const response = await apiClient.post('/inspections/sync', payload);
+    if (response.success && response.data) {
+      return { success: true, data: response.data };
+    }
+    return response;
+  },
+
+  /**
+   * Get structured inspection report
+   */
+  async getReport(id: string | number) {
+    const response = await apiClient.get(`/inspections/${id}/report`);
+    if (response.success && response.data) {
+      return { success: true, data: response.data };
+    }
+    return response;
+  },
+
+  /**
+   * Email an inspection report
+   */
+  async emailReport(id: string | number, recipients: string[], message?: string) {
+    const response = await apiClient.post(`/inspections/${id}/report/email`, { recipients, message });
+    if (response.success && response.data) {
+      return { success: true, data: response.data };
+    }
+    return response;
+  },
+
+  /**
+   * Get sync status for a device
+   */
+  async getSyncStatus(deviceId: string) {
+    const response = await apiClient.get(`/inspections/sync-status/${deviceId}`);
+    if (response.success && response.data) {
+      return { success: true, data: response.data };
+    }
+    return response;
+  },
+
+  /**
+   * Seed system templates for the current owner
+   */
+  async seedTemplates() {
+    const response = await apiClient.get('/inspections/templates/seed');
+    if (response.success && response.data) {
+      return { success: true, data: response.data };
+    }
+    return response;
+  },
 };
 
 /**

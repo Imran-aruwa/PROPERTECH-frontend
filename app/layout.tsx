@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/app/lib/auth-context'
 import { ThemeProvider } from 'next-themes'
+import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -79,7 +80,10 @@ export default function RootLayout({
           />
 
           {/* ✅ AUTH CONTEXT (DO NOT REMOVE) */}
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <ServiceWorkerRegister />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
