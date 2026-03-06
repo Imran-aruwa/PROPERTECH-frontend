@@ -597,3 +597,50 @@ html {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+/* ── Print styles for Profit Engine monthly report ──────────────────────── */
+@media print {
+  /* Hide all nav chrome */
+  aside,
+  header,
+  nav,
+  [data-print-hide],
+  .no-print {
+    display: none !important;
+  }
+
+  /* Full-width report content */
+  [data-print-report],
+  .print-only {
+    display: block !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  .page-container {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Page breaks */
+  .print-break-before {
+    page-break-before: always;
+  }
+
+  /* Recharts: keep charts visible */
+  .recharts-wrapper {
+    page-break-inside: avoid;
+  }
+
+  /* Tables: repeat header on each page */
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+}

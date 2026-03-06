@@ -28,6 +28,7 @@ import {
   Package,
   CheckSquare,
   ClipboardCheck,
+  TrendingDown,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -47,6 +48,7 @@ const navigationConfig = {
     { name: 'Vacancy Alerts', href: '/owner/vacancy-alerts', icon: AlertTriangle },
     { name: 'SLA Tracking', href: '/owner/maintenance-sla', icon: Timer },
     { name: 'Rent Chasing', href: '/owner/rent-chasing', icon: MessageSquare },
+    { name: 'Profit Engine', href: '/owner/profit', icon: TrendingDown },
     { name: 'Settings', href: '/owner/settings', icon: Settings },
   ],
   agent: [

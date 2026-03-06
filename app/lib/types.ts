@@ -475,3 +475,154 @@ export interface LeaseFilters {
   property_id?: number;
   tenant_id?: number;
 }
+// ============================================================
+// PROFIT OPTIMIZATION ENGINE TYPES
+// ============================================================
+
+export type ExpenseCategory =
+  | 'maintenance' | 'utilities' | 'insurance'
+  | 'tax' | 'management_fee' | 'loan_repayment' | 'other';
+
+export type TargetType = 'noi' | 'occupancy' | 'collection_rate' | 'yield';
+export type ScenarioType =
+  | 'rent_increase' | 'fill_vacancy'
+  | 'reduce_maintenance' | 'expense_category_shift';
+
+export interface FinancialSnapshot {
+  id: string;
+  owner_id: string;
+  property_id?: string;
+  unit_id?: string;
+  snapshot_period: string;
+  revenue_gross: number;
+  revenue_expected: number;
+  vacancy_loss: number;
+  maintenance_cost: number;
+  other_expenses: number;
+  late_fees_collected: number;
+  net_operating_income: number;
+  occupancy_rate: number;
+  collection_rate: number;
+  computed_at?: string;
+  created_at: string;
+}
+
+export interface ExpenseRecord {
+  id: string;
+  owner_id: string;
+  property_id?: string;
+  property_name?: string;
+  unit_id?: string;
+  unit_number?: string;
+  category: ExpenseCategory;
+  description: string;
+  amount: number;
+  expense_date: string;
+  vendor_job_id?: string;
+  receipt_url?: string;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProfitTarget {
+  id: string;
+  owner_id: string;
+  property_id?: string;
+  property_name?: string;
+  target_type: TargetType;
+  target_value: number;
+  period: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TargetStatus {
+  id: string;
+  target_type: TargetType;
+  target_value: number;
+  period: string;
+  property_id?: string;
+  property_name?: string;
+  actual_value: number;
+  gap: number;
+  pct_achieved: number;
+  status: 'on_track' | 'at_risk' | 'missed';
+}
+
+export interface PropertyRanking {
+  property_id: string;
+  property_name: string;
+  unit_count: number;
+  revenue_gross: number;
+  maintenance_cost: number;
+  noi: number;
+  yield_pct: number;
+  occupancy_rate: number;
+  collection_rate: number;
+  rank: number;
+  vs_last_month_noi_change_pct: number;
+}
+
+export interface UnitProfitability {
+  unit_id: string;
+  unit_number: string;
+  monthly_rent: number;
+  revenue_collected: number;
+  maintenance_cost: number;
+  noi: number;
+  occupancy_days: number;
+  is_profitable: boolean;
+  recommendation: string;
+}
+
+export interface PortfolioPnlMonth {
+  period: string;
+  revenue_gross: number;
+  total_expenses: number;
+  net_operating_income: number;
+  occupancy_rate: number;
+  collection_rate: number;
+  vacancy_loss: number;
+}
+
+export interface PortfolioPnl {
+  months: PortfolioPnlMonth[];
+  total_revenue_ytd: number;
+  total_expenses_ytd: number;
+  total_noi_ytd: number;
+  avg_occupancy_ytd: number;
+  avg_collection_rate_ytd: number;
+  best_month?: string;
+  worst_month?: string;
+}
+
+export interface ScenarioResult {
+  scenario_type: ScenarioType;
+  result: Record<string, number>;
+}
+
+export interface FinancialReportSummary {
+  id: string;
+  owner_id: string;
+  report_period: string;
+  report_type: string;
+  status: 'generating' | 'complete' | 'failed';
+  generated_at?: string;
+  pdf_url?: string;
+  created_at: string;
+}
+
+export interface FinancialReportDetail extends FinancialReportSummary {
+  data?: {
+    cover: { owner_name: string; period: string; generated_at: string };
+    executive_summary: Record<string, number | string>;
+    property_rankings: PropertyRanking[];
+    top_issues: { severity: string; message: string; link?: string }[];
+    income_breakdown: { by_property: Record<string, number>; late_fees: number; total: number };
+    expense_breakdown: { by_category: Record<string, number>; top_vendors: { vendor: string; spend: number }[]; total: number };
+    unit_profitability: Record<string, UnitProfitability[]>;
+    targets_vs_actuals: TargetStatus[];
+    recommendations: string[];
+  };
+}

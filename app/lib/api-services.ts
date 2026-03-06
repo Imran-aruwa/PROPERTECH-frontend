@@ -2033,5 +2033,66 @@ export const mpesaApi = {
   },
 };
 
+// ── Profit Optimization Engine ────────────────────────────────────────────────
+export const profitApi = {
+  getSnapshot(params?: { period?: string; property_id?: string; unit_id?: string }) {
+    const qs = params ? '?' + new URLSearchParams(Object.entries(params).filter(([, v]) => v != null) as [string, string][]).toString() : '';
+    return apiClient.get(`/profit/snapshots${qs}`);
+  },
+  getPortfolioPnl(months?: number) {
+    const qs = months ? `?months=${months}` : '';
+    return apiClient.get(`/profit/portfolio-pnl${qs}`);
+  },
+  getPropertyRankings(period?: string) {
+    const qs = period ? `?period=${encodeURIComponent(period)}` : '';
+    return apiClient.get(`/profit/property-rankings${qs}`);
+  },
+  getUnitProfitability(property_id: string, period?: string) {
+    const qs = new URLSearchParams({ property_id, ...(period ? { period } : {}) }).toString();
+    return apiClient.get(`/profit/unit-profitability?${qs}`);
+  },
+  runWhatIf(data: { scenario_type: string; params: Record<string, any> }) {
+    return apiClient.post('/profit/whatif', data);
+  },
+  generateReport(data: { period_str: string; report_type?: string }) {
+    return apiClient.post('/profit/reports/generate', data);
+  },
+  getReports(params?: { report_type?: string; year?: number }) {
+    const qs = params ? '?' + new URLSearchParams(Object.entries(params).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)])).toString() : '';
+    return apiClient.get(`/profit/reports${qs}`);
+  },
+  getReport(id: string) {
+    return apiClient.get(`/profit/reports/${id}`);
+  },
+  getExpenses(params?: { property_id?: string; category?: string; date_from?: string; date_to?: string; skip?: number; limit?: number }) {
+    const qs = params ? '?' + new URLSearchParams(Object.entries(params).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)])).toString() : '';
+    return apiClient.get(`/profit/expenses${qs}`);
+  },
+  createExpense(data: any) {
+    return apiClient.post('/profit/expenses', data);
+  },
+  updateExpense(id: string, data: any) {
+    return apiClient.put(`/profit/expenses/${id}`, data);
+  },
+  deleteExpense(id: string) {
+    return apiClient.delete(`/profit/expenses/${id}`);
+  },
+  getTargets() {
+    return apiClient.get('/profit/targets');
+  },
+  createTarget(data: any) {
+    return apiClient.post('/profit/targets', data);
+  },
+  updateTarget(id: string, data: any) {
+    return apiClient.put(`/profit/targets/${id}`, data);
+  },
+  deleteTarget(id: string) {
+    return apiClient.delete(`/profit/targets/${id}`);
+  },
+  getTargetsStatus() {
+    return apiClient.get('/profit/targets/status');
+  },
+};
+
 // Default export for backward compatibility
 export default apiClient;
