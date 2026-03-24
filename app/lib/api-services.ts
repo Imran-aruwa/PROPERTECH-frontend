@@ -47,7 +47,7 @@ export function getAuthToken(): string | null {
 
     // Only log in development for debugging
     if (process.env.NODE_ENV === 'development' && !foundToken) {
-      console.log('[getAuthToken] No token found in localStorage');
+      if (process.env.NODE_ENV === 'development') console.log('[getAuthToken] No token found in localStorage');
     }
 
     // Validate token format if found
@@ -128,7 +128,7 @@ export const apiClient = {
   async get<T = any>(endpoint: string): Promise<ApiResponse<T>> {
     try {
       const token = getAuthToken();
-      console.log(`[apiClient.get] ${endpoint} - Token:`, token ? 'Present' : 'MISSING');
+      if (process.env.NODE_ENV === 'development') console.log(`[apiClient.get] ${endpoint} - Token:`, token ? 'Present' : 'MISSING');
 
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ export const apiClient = {
         // Ensure we don't double-add Bearer prefix
         const authValue = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
         headers['Authorization'] = authValue;
-        console.log(`[apiClient.get] ${endpoint} - Auth header:`, authValue.substring(0, 40) + '...');
+        if (process.env.NODE_ENV === 'development') console.log(`[apiClient.get] ${endpoint} - Auth header:`, authValue.substring(0, 40) + '...');
       }
 
       const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -146,7 +146,7 @@ export const apiClient = {
       });
 
       const data = await response.json();
-      console.log(`[apiClient.get] ${endpoint} - Status:`, response.status, 'OK:', response.ok);
+      if (process.env.NODE_ENV === 'development') console.log(`[apiClient.get] ${endpoint} - Status:`, response.status, 'OK:', response.ok);
 
       if (!response.ok) {
         console.error(`[apiClient.get] ${endpoint} - Error:`, data);
@@ -175,7 +175,7 @@ export const apiClient = {
   async post<T = any>(endpoint: string, body?: any): Promise<ApiResponse<T>> {
     try {
       const token = getAuthToken();
-      console.log(`[apiClient.post] ${endpoint} - Token:`, token ? 'Present' : 'MISSING');
+      if (process.env.NODE_ENV === 'development') console.log(`[apiClient.post] ${endpoint} - Token:`, token ? 'Present' : 'MISSING');
 
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ export const apiClient = {
         // Ensure we don't double-add Bearer prefix
         const authValue = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
         headers['Authorization'] = authValue;
-        console.log(`[apiClient.post] ${endpoint} - Auth header:`, authValue.substring(0, 40) + '...');
+        if (process.env.NODE_ENV === 'development') console.log(`[apiClient.post] ${endpoint} - Auth header:`, authValue.substring(0, 40) + '...');
       }
 
       const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -194,7 +194,7 @@ export const apiClient = {
       });
 
       const data = await response.json();
-      console.log(`[apiClient.post] ${endpoint} - Status:`, response.status, 'OK:', response.ok);
+      if (process.env.NODE_ENV === 'development') console.log(`[apiClient.post] ${endpoint} - Status:`, response.status, 'OK:', response.ok);
 
       if (!response.ok) {
         console.error(`[apiClient.post] ${endpoint} - Error:`, data);
@@ -392,7 +392,7 @@ export const authApi = {
     console.log('[authApi.login] Raw response:', JSON.stringify(response, null, 2));
     // Handle double-wrapped response
     if (response.success && response.data?.data) {
-      console.log('[authApi.login] Unwrapping data.data');
+      if (process.env.NODE_ENV === 'development') console.log('[authApi.login] Unwrapping data.data');
       return { success: true, data: response.data.data };
     }
     return response;
@@ -419,6 +419,14 @@ export const authApi = {
     removeAuthToken();
     return { success: true } as ApiResponse;
   },
+
+  async verifyEmail(token: string) {
+    return apiClient.post('/auth/verify-email/', { token });
+  },
+
+  async resendVerification(email: string) {
+    return apiClient.post('/auth/resend-verification/', { email });
+  },
 };
 
 /**
@@ -430,12 +438,12 @@ export const propertiesApi = {
     console.log('[propertiesApi.list] Raw response:', JSON.stringify(response, null, 2));
     // Handle double-wrapped response from Next.js API route
     if (response.success && response.data?.data) {
-      console.log('[propertiesApi.list] Unwrapping data.data');
+      if (process.env.NODE_ENV === 'development') console.log('[propertiesApi.list] Unwrapping data.data');
       return { success: true, data: response.data.data };
     }
     // If data is already an array, return as-is
     if (response.success && Array.isArray(response.data)) {
-      console.log('[propertiesApi.list] Data is already array');
+      if (process.env.NODE_ENV === 'development') console.log('[propertiesApi.list] Data is already array');
       return response;
     }
     console.log('[propertiesApi.list] Returning response as-is');
@@ -446,12 +454,12 @@ export const propertiesApi = {
     console.log('[propertiesApi.getAll] Raw response:', JSON.stringify(response, null, 2));
     // Handle double-wrapped response from Next.js API route
     if (response.success && response.data?.data) {
-      console.log('[propertiesApi.getAll] Unwrapping data.data');
+      if (process.env.NODE_ENV === 'development') console.log('[propertiesApi.getAll] Unwrapping data.data');
       return { success: true, data: response.data.data };
     }
     // If data is already an array, return as-is
     if (response.success && Array.isArray(response.data)) {
-      console.log('[propertiesApi.getAll] Data is already array');
+      if (process.env.NODE_ENV === 'development') console.log('[propertiesApi.getAll] Data is already array');
       return response;
     }
     console.log('[propertiesApi.getAll] Returning response as-is');

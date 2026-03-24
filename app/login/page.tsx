@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm, useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
 import { useAuth } from '@/app/lib/auth-context';
+import { authApi } from '@/app/lib/api-services';
 import { Building2, Mail, Lock, LogIn } from 'lucide-react';
 import Link from 'next/link';
 
@@ -17,6 +18,9 @@ export default function LoginPage() {
   const { toasts, error: showError, removeToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendSent, setResendSent] = useState(false);
 
   const validateForm = (values: LoginFormData) => {
     const errors: Partial<Record<keyof LoginFormData, string>> = {};
@@ -37,11 +41,29 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setSubmitting(true);
+      setUnverifiedEmail(null);
+      setResendSent(false);
       await login(data.email, data.password);
     } catch (err: any) {
-      showError(err.message || 'Login failed. Please check your credentials.');
+      const msg: string = err.message || '';
+      if (msg.toLowerCase().includes('verify your email')) {
+        setUnverifiedEmail(data.email);
+      } else {
+        showError(msg || 'Login failed. Please check your credentials.');
+      }
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (!unverifiedEmail || resendLoading) return;
+    setResendLoading(true);
+    try {
+      await authApi.resendVerification(unverifiedEmail);
+      setResendSent(true);
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -144,6 +166,37 @@ export default function LoginPage() {
                 Forgot password?
               </Link>
             </div>
+
+            {/* Email not verified warning */}
+            {unverifiedEmail && (
+              <div className="rounded-lg bg-amber-50 border border-amber-200 p-4">
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                  </svg>
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-amber-800">Email not verified</p>
+                    <p className="text-xs text-amber-700 mt-0.5">
+                      Your email address hasn&apos;t been verified yet.
+                    </p>
+                    {resendSent ? (
+                      <p className="text-xs text-green-700 mt-2 font-medium">
+                        ✓ Verification email sent — check your inbox.
+                      </p>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleResend}
+                        disabled={resendLoading}
+                        className="mt-2 text-xs font-medium text-amber-800 underline hover:text-amber-900 disabled:opacity-50"
+                      >
+                        {resendLoading ? 'Sending...' : 'Resend verification email'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Submit Button */}
             <button

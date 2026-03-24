@@ -24,6 +24,9 @@ export default function RegisterForm() {
 
   const [submitting, setSubmitting] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string>('freemium');
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendLoading, setResendLoading] = useState(false);
   const [values, setValues] = useState<RegisterFormData>({
     email: '',
     password: '',
@@ -136,12 +139,8 @@ export default function RegisterForm() {
       const response = await authApi.register(registerData);
 
       if (response.success) {
-        setToastMessage({ type: 'success', message: 'Account created successfully! Redirecting to login...' });
-
-        // Redirect to login page after successful signup
-        setTimeout(() => {
-          router.push('/login');
-        }, 1500);
+        // Show email-verification prompt instead of redirecting to dashboard
+        setRegisteredEmail(values.email);
       } else {
         setToastMessage({ type: 'error', message: response.error || 'Registration failed. Please try again.' });
       }
@@ -149,6 +148,23 @@ export default function RegisterForm() {
       setToastMessage({ type: 'error', message: err.message || 'Registration failed. Please try again.' });
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (!registeredEmail || resendCooldown > 0 || resendLoading) return;
+    setResendLoading(true);
+    try {
+      await authApi.resendVerification(registeredEmail);
+      setResendCooldown(60);
+      const interval = setInterval(() => {
+        setResendCooldown(prev => {
+          if (prev <= 1) { clearInterval(interval); return 0; }
+          return prev - 1;
+        });
+      }, 1000);
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -168,6 +184,52 @@ export default function RegisterForm() {
       return () => clearTimeout(timer);
     }
   }, [toastMessage]);
+
+  // ── Email-sent success state ─────────────────────────────────────────────
+  if (registeredEmail) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="bg-bg-card rounded-2xl shadow-xl p-10 text-center">
+            <div className="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mx-auto mb-6">
+              <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-tx-primary mb-2">Account created!</h2>
+            <p className="text-tx-secondary mb-2">
+              We&apos;ve sent a verification email to:
+            </p>
+            <p className="font-semibold text-blue-600 mb-6 break-all">{registeredEmail}</p>
+            <p className="text-sm text-tx-secondary mb-8">
+              Please check your inbox and click the verification link to activate your account.
+              The link expires in 24 hours.
+            </p>
+            <button
+              onClick={handleResend}
+              disabled={resendCooldown > 0 || resendLoading}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            >
+              {resendLoading ? (
+                <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+              ) : resendCooldown > 0 ? (
+                `Resend available in ${resendCooldown}s`
+              ) : (
+                "Didn't receive it? Resend verification email"
+              )}
+            </button>
+            <p className="mt-6 text-sm text-tx-muted">
+              Already verified?{' '}
+              <Link href="/login" className="text-blue-600 hover:text-blue-700 font-medium">Sign in</Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">

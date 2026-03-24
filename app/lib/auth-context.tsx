@@ -54,9 +54,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const savedUser = localStorage.getItem('auth_user');
         const savedRole = localStorage.getItem('user_role');
 
-        console.log('[AuthContext] Initializing auth state...');
-        console.log('[AuthContext] Token found:', !!savedToken);
-        console.log('[AuthContext] User found:', !!savedUser);
+        if (process.env.NODE_ENV === 'development') console.log('[AuthContext] Initializing auth state...');
+        if (process.env.NODE_ENV === 'development') console.log('[AuthContext] Token found:', !!savedToken);
+        if (process.env.NODE_ENV === 'development') console.log('[AuthContext] User found:', !!savedUser);
 
         if (savedToken && savedUser) {
           const parsedUser = JSON.parse(savedUser);
@@ -78,9 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setTheme(parsedUser.theme_preference);
           }
 
-          console.log('[AuthContext] Auth state initialized successfully');
+          if (process.env.NODE_ENV === 'development') console.log('[AuthContext] Auth state initialized successfully');
         } else {
-          console.log('[AuthContext] No saved auth state found');
+          if (process.env.NODE_ENV === 'development') console.log('[AuthContext] No saved auth state found');
         }
       } catch (error) {
         console.error('[AuthContext] Failed to initialize auth:', error);
@@ -103,7 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     try {
       const response = await authApi.login({ email, password });
-      console.log('[AuthContext.login] Response:', JSON.stringify(response, null, 2));
+      if (process.env.NODE_ENV === 'development') console.log('[AuthContext.login] Response:', JSON.stringify(response, null, 2));
 
       if (!response.success || !response.data) {
         throw new Error(response.error || 'Login failed');
@@ -112,12 +112,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // authApi.login now unwraps the double-wrapped response
       // So response.data should be { access_token, user_id, ... } directly
       const backendData = response.data;
-      console.log('[AuthContext.login] Backend data:', JSON.stringify(backendData, null, 2));
+      if (process.env.NODE_ENV === 'development') console.log('[AuthContext.login] Backend data:', JSON.stringify(backendData, null, 2));
 
       let { access_token } = backendData;
       const { user_id, email: userEmail, full_name, role: userRole } = backendData;
-      console.log('[AuthContext.login] Raw token:', access_token ? `${access_token.substring(0, 40)}...` : 'MISSING');
-      console.log('[AuthContext.login] Token length:', access_token?.length || 0);
+      if (process.env.NODE_ENV === 'development') console.log('[AuthContext.login] Raw token:', access_token ? `${access_token.substring(0, 40)}...` : 'MISSING');
+      if (process.env.NODE_ENV === 'development') console.log('[AuthContext.login] Token length:', access_token?.length || 0);
 
       // Clean and validate token format
       if (access_token) {
@@ -131,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (parts.length !== 3) {
           console.warn('[AuthContext.login] Token does not appear to be valid JWT (expected 3 parts, got', parts.length, ')');
         } else {
-          console.log('[AuthContext.login] Token appears to be valid JWT format');
+          if (process.env.NODE_ENV === 'development') console.log('[AuthContext.login] Token appears to be valid JWT format');
         }
       }
 
@@ -147,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
 
       // Save cleaned token to localStorage
-      console.log('[AuthContext.login] Saving token to localStorage');
+      if (process.env.NODE_ENV === 'development') console.log('[AuthContext.login] Saving token to localStorage');
       localStorage.setItem('auth_token', access_token);
       localStorage.setItem('auth_user', JSON.stringify(userData));
       localStorage.setItem('user_role', userData.role);
