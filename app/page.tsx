@@ -135,22 +135,24 @@ export default function Page() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* HEADER */}
-      <header className="fixed top-0 left-0 right-0 z-40 header-backdrop bg-slate-900/70 border-b border-blue-500/20">
+      <header className="fixed top-0 left-0 right-0 z-40 header-backdrop bg-slate-800/90 border-b border-slate-600/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
           <div
             className="flex items-center cursor-pointer"
             onClick={() => router.push('/')}
           >
-            <Image
-              src="/logo.svg"
-              alt="ProperTech Software"
-              width={160}
-              height={40}
-              priority
-              className="h-10 w-auto object-contain"
-            />
+            <div className="bg-white rounded-lg px-3 py-1.5">
+              <Image
+                src="/logo.svg"
+                alt="ProperTech Software"
+                width={160}
+                height={40}
+                priority
+                className="h-8 w-auto object-contain"
+              />
+            </div>
           </div>
 
           {/* Desktop Navigation */}
@@ -183,7 +185,7 @@ export default function Page() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-900/95 border-t border-slate-800 px-4 py-4 space-y-3">
+          <div className="md:hidden bg-slate-800/98 border-t border-slate-700 px-4 py-4 space-y-3">
             <a
               href="#pricing"
               onClick={() => setMobileMenuOpen(false)}
@@ -278,7 +280,7 @@ export default function Page() {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuresData.map(({ key, title, description, icon: Icon }) => (
-                <div key={key} className="bg-slate-800/30 border border-slate-700/50 rounded-2xl p-8 text-center group hover:border-blue-500/50 hover:bg-slate-800/50 transition-all duration-300">
+                <div key={key} className="bg-slate-700/40 border border-slate-600/50 rounded-2xl p-8 text-center group hover:border-blue-500/50 hover:bg-slate-700/60 transition-all duration-300">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:from-blue-500/30 group-hover:to-purple-500/30 transition-all">
                     <Icon className="w-8 h-8 text-blue-400 group-hover:text-blue-300 transition" />
                   </div>
@@ -291,7 +293,7 @@ export default function Page() {
         </section>
 
         {/* PRICING */}
-        <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/50">
+        <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-800/40">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">
@@ -325,10 +327,10 @@ export default function Page() {
               {pricingPlans.map((p) => (
                 <div
                   key={p.name}
-                  className={`relative rounded-2xl p-6 lg:p-8 bg-slate-800/50 border transition-all duration-300 hover:bg-slate-800/70 ${
+                  className={`relative rounded-2xl p-6 lg:p-8 bg-slate-700/50 border transition-all duration-300 hover:bg-slate-700/70 ${
                     p.popular
                       ? 'border-blue-500 ring-1 ring-blue-500/50 shadow-lg shadow-blue-500/10'
-                      : 'border-slate-700/50 hover:border-slate-600'
+                      : 'border-slate-600/50 hover:border-slate-500'
                   }`}
                 >
                   {p.badge && (
@@ -394,7 +396,7 @@ export default function Page() {
             </div>
             <div className="grid md:grid-cols-3 gap-6">
               {testimonials.map(({ quote, author, role, avatar }, i) => (
-                <div key={i} className="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/50 hover:border-blue-500/30 transition-all duration-300">
+                <div key={i} className="bg-slate-700/40 rounded-2xl p-6 border border-slate-600/50 hover:border-blue-500/30 transition-all duration-300">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, j) => (
                       <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -417,7 +419,7 @@ export default function Page() {
         </section>
 
         {/* CTA SECTION */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900 to-slate-950">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-800 to-slate-900">
           <div className="max-w-2xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
               <Zap className="w-4 h-4 text-green-400" />
@@ -463,17 +465,19 @@ export default function Page() {
         </section>
         
         {/* FOOTER */}
-        <footer className="border-t border-slate-800 bg-slate-950">
+        <footer className="border-t border-slate-700 bg-slate-900">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
               <div className="col-span-2 md:col-span-1">
-                <Image
-                  src="/logo.svg"
-                  alt="Propertech Software"
-                  width={120}
-                  height={32}
-                  className="h-8 w-auto mb-4 opacity-80"
-                />
+                <div className="bg-white rounded-md px-2 py-1 inline-block mb-4">
+                  <Image
+                    src="/logo.svg"
+                    alt="ProperTech Software"
+                    width={120}
+                    height={32}
+                    className="h-7 w-auto object-contain"
+                  />
+                </div>
                 <p className="text-blue-300/60 text-sm">
                   Modern property management for Kenyan landlords and agents.
                 </p>
