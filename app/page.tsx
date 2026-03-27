@@ -145,11 +145,11 @@ export default function Page() {
           >
             <Image
               src="/logo.svg"
-              alt="Propertech Software"
-              width={150}
+              alt="ProperTech Software"
+              width={160}
               height={40}
               priority
-              className="h-10 sm:h-12 w-auto"
+              className="h-10 w-auto object-contain"
             />
           </div>
 

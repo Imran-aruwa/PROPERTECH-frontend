@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/app/lib/auth-context';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -184,12 +185,25 @@ export function Sidebar() {
       <div className="flex-shrink-0 p-4 border-b border-bd">
         <div className="flex items-center justify-between">
           {!collapsed && (
-            <div className="flex items-center gap-2">
-              <Building2 className="w-7 h-7 text-blue-600" />
-              <span className="text-lg font-bold text-tx-primary">Propertech</span>
-            </div>
+            <Image
+              src="/logo.svg"
+              alt="ProperTech Software"
+              width={180}
+              height={45}
+              priority
+              className="h-10 w-auto object-contain"
+            />
           )}
-          {collapsed && <Building2 className="w-7 h-7 text-blue-600 mx-auto" />}
+          {collapsed && (
+            <Image
+              src="/logo.svg"
+              alt="ProperTech Software"
+              width={40}
+              height={40}
+              priority
+              className="h-8 w-auto object-contain mx-auto"
+            />
+          )}
           <button
             onClick={() => setCollapsed(!collapsed)}
             className={`p-1.5 hover:bg-bg-hover rounded-lg transition-colors ${collapsed ? 'mx-auto mt-2' : ''}`}
