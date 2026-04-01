@@ -65,11 +65,12 @@ export async function POST(request: NextRequest) {
 
     // Log token info (first 50 chars only for security)
     if (data.access_token) {
-      console.log('[API/auth/login] Token received:', data.access_token.substring(0, 50) + '...');
-      console.log('[API/auth/login] Token length:', data.access_token.length);
+      const token = data.access_token as string;
+      console.log('[API/auth/login] Token received:', token.substring(0, 50) + '...');
+      console.log('[API/auth/login] Token length:', token.length);
 
       // Verify token is a valid JWT format
-      const parts = data.access_token.split('.');
+      const parts = token.split('.');
       console.log('[API/auth/login] Token JWT parts:', parts.length);
       if (parts.length !== 3) {
         console.log('[API/auth/login] WARNING: Token does not look like a valid JWT!');
