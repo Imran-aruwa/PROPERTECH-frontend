@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useAuth } from '@/app/lib/auth-context'
 import Image from 'next/image'
 import {
@@ -139,21 +140,16 @@ export default function Page() {
       {/* HEADER */}
       <header className="fixed top-0 left-0 right-0 z-40 header-backdrop bg-slate-800/90 border-b border-slate-600/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
-          <div
-            className="flex items-center cursor-pointer"
-            onClick={() => router.push('/')}
-          >
-            <div className="bg-white rounded-lg px-3 py-1.5">
-              <Image
-                src="/logo.svg"
-                alt="ProperTech Software"
-                width={160}
-                height={40}
-                priority
-                className="h-8 w-auto object-contain"
-              />
-            </div>
-          </div>
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="ProperTech Software"
+              width={200}
+              height={55}
+              priority
+              className="h-14 w-auto object-contain"
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
@@ -469,15 +465,15 @@ export default function Page() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
               <div className="col-span-2 md:col-span-1">
-                <div className="bg-white rounded-md px-2 py-1 inline-block mb-4">
+                <Link href="/" className="flex items-center mb-4">
                   <Image
-                    src="/logo.svg"
+                    src="/logo.png"
                     alt="ProperTech Software"
-                    width={120}
-                    height={32}
-                    className="h-7 w-auto object-contain"
+                    width={160}
+                    height={45}
+                    className="h-12 w-auto object-contain"
                   />
-                </div>
+                </Link>
                 <p className="text-blue-300/60 text-sm">
                   Modern property management for Kenyan landlords and agents.
                 </p>

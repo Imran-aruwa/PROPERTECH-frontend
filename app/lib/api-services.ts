@@ -11,6 +11,17 @@ interface ApiError {
   error?: string;
 }
 
+/** Safely parse response body as JSON; returns {} for non-JSON responses (e.g. 503 plain text). */
+async function safeJson(response: Response): Promise<any> {
+  const ct = response.headers.get('content-type') || '';
+  if (!ct.includes('application/json')) {
+    const text = await response.text();
+    if (!response.ok) console.error('[apiClient] Non-JSON error response:', response.status, text.substring(0, 200));
+    return {};
+  }
+  return response.json();
+}
+
 /** Always returns a plain string from a FastAPI error response body.
  *  Handles the case where `detail` is an object (e.g. premium_required). */
 function extractError(data: any): string {
@@ -145,7 +156,7 @@ export const apiClient = {
         headers,
       });
 
-      const data = await response.json();
+      const data = await safeJson(response);
       if (process.env.NODE_ENV === 'development') console.log(`[apiClient.get] ${endpoint} - Status:`, response.status, 'OK:', response.ok);
 
       if (!response.ok) {
@@ -193,7 +204,7 @@ export const apiClient = {
         body: body ? JSON.stringify(body) : undefined,
       });
 
-      const data = await response.json();
+      const data = await safeJson(response);
       if (process.env.NODE_ENV === 'development') console.log(`[apiClient.post] ${endpoint} - Status:`, response.status, 'OK:', response.ok);
 
       if (!response.ok) {
@@ -234,7 +245,7 @@ export const apiClient = {
         body: body ? JSON.stringify(body) : undefined,
       });
 
-      const data = await response.json();
+      const data = await safeJson(response);
 
       if (!response.ok) {
         return {
@@ -273,7 +284,7 @@ export const apiClient = {
         body: body ? JSON.stringify(body) : undefined,
       });
 
-      const data = await response.json();
+      const data = await safeJson(response);
 
       if (!response.ok) {
         return {
@@ -311,7 +322,7 @@ export const apiClient = {
         },
       });
 
-      const data = await response.json();
+      const data = await safeJson(response);
 
       if (!response.ok) {
         return {
@@ -350,7 +361,7 @@ export const apiClient = {
         body: form,
       });
 
-      const data = await response.json();
+      const data = await safeJson(response);
 
       if (!response.ok) {
         return {

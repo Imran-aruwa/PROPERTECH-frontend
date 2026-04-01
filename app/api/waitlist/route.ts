@@ -25,7 +25,14 @@ export async function POST(req: Request) {
       body: JSON.stringify({ email }),
     });
 
-    const data = await response.json();
+    const rawText = await response.text();
+    let data: any;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      console.error(`[waitlist] Backend returned non-JSON (status ${response.status}):`, rawText.slice(0, 200));
+      return NextResponse.json({ error: 'Service temporarily unavailable. Please try again in a moment.' }, { status: 503 });
+    }
 
     if (!response.ok) {
       if (response.status === 400 && data.detail === 'Email already subscribed') {

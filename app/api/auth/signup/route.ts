@@ -33,7 +33,17 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(backendData),
     });
 
-    const responseData = await backendResponse.json();
+    const rawText = await backendResponse.text();
+    let responseData: any;
+    try {
+      responseData = JSON.parse(rawText);
+    } catch {
+      console.error(`[signup] Backend returned non-JSON (status ${backendResponse.status}):`, rawText.slice(0, 200));
+      return NextResponse.json(
+        { error: 'Service temporarily unavailable. Please try again in a moment.' },
+        { status: 503 }
+      );
+    }
 
     // Forward backend response status and data
     if (!backendResponse.ok) {

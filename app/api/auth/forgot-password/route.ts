@@ -14,7 +14,17 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(body),
     });
 
-    const data = await response.json();
+    const rawText = await response.text();
+    let data: any;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      console.error(`[forgot-password] Backend returned non-JSON (status ${response.status}):`, rawText.slice(0, 200));
+      return NextResponse.json(
+        { success: false, error: 'Service temporarily unavailable. Please try again in a moment.' },
+        { status: 503 }
+      );
+    }
 
     if (!response.ok) {
       return NextResponse.json(

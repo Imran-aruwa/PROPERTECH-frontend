@@ -39,7 +39,17 @@ export async function POST(request: NextRequest) {
       console.log('[API/auth/login] Form attempt - Backend status:', response.status);
     }
 
-    const data = await response.json();
+    const rawText = await response.text();
+    let data: Record<string, unknown> = {};
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      console.error(`[login] Backend returned non-JSON (status ${response.status}):`, rawText.slice(0, 200));
+      return NextResponse.json(
+        { success: false, error: 'Service temporarily unavailable. Please try again in a moment.' },
+        { status: 503 }
+      );
+    }
     console.log('[API/auth/login] Backend response keys:', Object.keys(data));
 
     if (!response.ok) {

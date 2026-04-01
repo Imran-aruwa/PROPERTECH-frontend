@@ -10,7 +10,14 @@ export async function GET(request: NextRequest) {
 
   try {
     const result = await proxyToBackend(request, '/api/notifications/');
-    const data = await result.json();
+    const rawText = await result.text();
+    let data: any;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      console.error(`[notifications] Backend returned non-JSON (status ${result.status}):`, rawText.slice(0, 200));
+      return NextResponse.json({ success: true, data: [] }, { status: 200 });
+    }
 
     // If backend errors, return empty array (notifications shouldn't block the app)
     if (!data.success) {
