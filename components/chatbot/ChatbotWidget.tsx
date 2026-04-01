@@ -211,7 +211,7 @@ export function ChatbotWidget({
     } finally {
       setIsTyping(false);
     }
-  }, [isTyping, messages, pathname, role, user, isOpen]);
+  }, [isTyping, messages, pathname, role, user, isOpen, router]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {

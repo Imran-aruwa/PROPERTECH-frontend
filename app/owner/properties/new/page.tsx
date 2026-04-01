@@ -53,16 +53,14 @@ export default function NewPropertyPage() {
   const { toasts, success, error: showError, removeToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const autocompleteRef = useRef<any>(null);
+  const autocompleteRef = useRef<any>(null); // Google Maps Autocomplete instance
 
   // Load Google Places API and init autocomplete
   useEffect(() => {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     if (!apiKey || !searchInputRef.current) return;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const w = window as any;
+    const w = window as any; // Google Maps SDK not typed in this project
 
     const initAutocomplete = () => {
       if (!searchInputRef.current || !w.google?.maps?.places) return;
@@ -86,12 +84,12 @@ export default function NewPropertyPage() {
         }
 
         const streetAddr = [streetNumber, route].filter(Boolean).join(' ') || place.formatted_address || '';
-        if (place.name) handleChange('name', place.name);
-        if (streetAddr) handleChange('address', streetAddr);
-        if (city) handleChange('city', city);
-        if (state) handleChange('state', state);
-        if (postal) handleChange('postal_code', postal);
-        if (country) handleChange('country', country);
+        if (place.name) handleChangeRef.current('name', place.name);
+        if (streetAddr) handleChangeRef.current('address', streetAddr);
+        if (city) handleChangeRef.current('city', city);
+        if (state) handleChangeRef.current('state', state);
+        if (postal) handleChangeRef.current('postal_code', postal);
+        if (country) handleChangeRef.current('country', country);
       });
     };
 
@@ -166,6 +164,10 @@ export default function NewPropertyPage() {
     },
     validateForm
   );
+
+  // Stable ref so the Places useEffect can call handleChange without being a dependency
+  const handleChangeRef = useRef(handleChange);
+  useEffect(() => { handleChangeRef.current = handleChange; });
 
   const onSubmit = async (data: PropertyFormData) => {
     try {
