@@ -677,7 +677,7 @@ export default function OwnerSettingsPage() {
                   </p>
                 </div>
                 <button
-                  onClick={() => router.push('/checkout')}
+                  onClick={() => router.push('/owner/subscription')}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   Upgrade Plan
@@ -700,7 +700,7 @@ export default function OwnerSettingsPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => router.push('/checkout')}
+                    onClick={() => router.push('/owner/subscription')}
                     className="text-blue-600 hover:text-blue-700 font-medium"
                   >
                     Update
@@ -711,7 +711,7 @@ export default function OwnerSettingsPage() {
                   <CreditCard className="w-12 h-12 text-tx-muted mx-auto mb-4" />
                   <p className="text-tx-muted mb-4">No payment method added</p>
                   <button
-                    onClick={() => router.push('/checkout')}
+                    onClick={() => router.push('/owner/subscription')}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     Add Payment Method

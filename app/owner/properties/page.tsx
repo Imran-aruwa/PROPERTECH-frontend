@@ -8,7 +8,7 @@ import { useToast } from '@/app/lib/hooks';
 import { LoadingSpinner, TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ToastContainer } from '@/components/ui/Toast';
 import { ConfirmModal } from '@/components/ui/Modal';
-import { Building2, Plus, Edit, Trash2, Eye, MapPin, Home, Upload } from 'lucide-react';
+import { Building2, Plus, Edit, Trash2, Eye, MapPin, Home, Upload, LayoutGrid, List } from 'lucide-react';
 import Link from 'next/link';
 import { Property } from '@/app/lib/types';
 
@@ -23,6 +23,17 @@ export default function PropertiesPage() {
     propertyId: null
   });
   const [deleting, setDeleting] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('properties_view_mode') as 'grid' | 'list') || 'grid';
+    }
+    return 'grid';
+  });
+
+  const handleViewModeChange = (mode: 'grid' | 'list') => {
+    setViewMode(mode);
+    localStorage.setItem('properties_view_mode', mode);
+  };
 
   useEffect(() => {
     // Wait for auth to load first
@@ -123,6 +134,23 @@ export default function PropertiesPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {/* Grid / List toggle */}
+              <div className="flex items-center border border-bd rounded-lg overflow-hidden">
+                <button
+                  onClick={() => handleViewModeChange('grid')}
+                  className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-bg-card text-tx-secondary hover:bg-bg-hover'}`}
+                  title="Grid view"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleViewModeChange('list')}
+                  className={`p-2 transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-bg-card text-tx-secondary hover:bg-bg-hover'}`}
+                  title="List view"
+                >
+                  <List className="w-4 h-4" />
+                </button>
+              </div>
               <Link
                 href="/owner/properties/import"
                 className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -156,7 +184,7 @@ export default function PropertiesPage() {
               Add Your First Property
             </Link>
           </div>
-        ) : (
+        ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {properties.map((property) => (
               <div
@@ -179,7 +207,7 @@ export default function PropertiesPage() {
                 {/* Property Details */}
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-tx-primary mb-2">{property.name}</h3>
-                  
+
                   <div className="flex items-start gap-2 text-tx-secondary mb-4">
                     <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
                     <p className="text-sm">{property.address}, {property.city}</p>
@@ -217,7 +245,7 @@ export default function PropertiesPage() {
                     <div className="flex items-center justify-between text-sm mb-1">
                       <span className="text-tx-secondary">Occupancy Rate</span>
                       <span className="font-medium text-tx-primary">
-                        {property.total_units 
+                        {property.total_units
                           ? Math.round((property.occupied_units || 0) / property.total_units * 100)
                           : 0}%
                       </span>
@@ -226,7 +254,7 @@ export default function PropertiesPage() {
                       <div
                         className="bg-green-600 h-2 rounded-full transition-all"
                         style={{
-                          width: `${property.total_units 
+                          width: `${property.total_units
                             ? (property.occupied_units || 0) / property.total_units * 100
                             : 0}%`
                         }}
@@ -259,6 +287,82 @@ export default function PropertiesPage() {
                 </div>
               </div>
             ))}
+          </div>
+        ) : (
+          /* List View */
+          <div className="bg-bg-card rounded-lg shadow-sm border border-bd overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-bg-secondary border-b border-bd">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium text-tx-secondary">Property</th>
+                  <th className="text-left px-4 py-3 font-medium text-tx-secondary hidden md:table-cell">Type</th>
+                  <th className="text-left px-4 py-3 font-medium text-tx-secondary">Units</th>
+                  <th className="text-left px-4 py-3 font-medium text-tx-secondary hidden lg:table-cell">Occupancy</th>
+                  <th className="text-right px-4 py-3 font-medium text-tx-secondary">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-bd">
+                {properties.map((property) => {
+                  const occupancyPct = property.total_units
+                    ? Math.round((property.occupied_units || 0) / property.total_units * 100)
+                    : 0;
+                  return (
+                    <tr key={property.id} className="hover:bg-bg-hover transition-colors">
+                      <td className="px-4 py-3">
+                        <div className="font-medium text-tx-primary">{property.name}</div>
+                        <div className="flex items-center gap-1 text-xs text-tx-muted mt-0.5">
+                          <MapPin className="w-3 h-3" />
+                          {property.address}, {property.city}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 hidden md:table-cell text-tx-secondary capitalize">
+                        {(property as any).property_type || 'Residential'}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-tx-primary font-medium">{property.occupied_units || 0}</span>
+                        <span className="text-tx-muted">/{property.total_units || 0}</span>
+                      </td>
+                      <td className="px-4 py-3 hidden lg:table-cell">
+                        <div className="flex items-center gap-2">
+                          <div className="w-20 bg-bd rounded-full h-1.5">
+                            <div
+                              className="bg-green-500 h-1.5 rounded-full"
+                              style={{ width: `${occupancyPct}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-tx-secondary">{occupancyPct}%</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center justify-end gap-1">
+                          <Link
+                            href={`/owner/properties/${property.id}`}
+                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                            title="View"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Link>
+                          <Link
+                            href={`/owner/properties/${property.id}/edit`}
+                            className="p-1.5 text-tx-secondary hover:bg-bg-hover rounded transition-colors"
+                            title="Edit"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Link>
+                          <button
+                            onClick={() => setDeleteModal({ isOpen: true, propertyId: property.id })}
+                            className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

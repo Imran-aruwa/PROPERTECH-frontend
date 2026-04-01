@@ -5,7 +5,8 @@ import { useForm, useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
 import { useAuth } from '@/app/lib/auth-context';
 import { authApi } from '@/app/lib/api-services';
-import { Building2, Mail, Lock, LogIn } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Lock, LogIn } from 'lucide-react';
 import Link from 'next/link';
 
 interface LoginFormData {
@@ -80,14 +81,15 @@ export default function LoginPage() {
 
       <div className="w-full max-w-md">
         {/* Logo & Title */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-            <Building2 className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold text-tx-primary mb-2">
-            Propertech Software
-          </h1>
-          <p className="text-tx-secondary">Sign in to your account</p>
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/logo.png"
+            alt="ProperTech Software"
+            width={180}
+            height={50}
+            priority
+            className="h-14 w-auto object-contain"
+          />
         </div>
 
         {/* Login Form */}

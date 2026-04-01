@@ -1,5 +1,6 @@
 // components/layout/Footer.tsx
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -7,18 +8,15 @@ export default function Footer() {
     <footer className="bg-gray-900 text-white py-14 px-4 sm:px-6 lg:px-8 mt-12">
       <div className="max-w-7xl mx-auto grid md:grid-cols-5 gap-10">
         <div className="md:col-span-2">
-          <div className="flex items-center gap-3 mb-4">
-            <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="100" height="100" rx="20" fill="#1A89FF"/>
-              <rect x="30" y="30" width="12" height="12" rx="3" fill="white"/>
-              <rect x="48" y="30" width="12" height="12" rx="3" fill="white"/>
-              <rect x="30" y="48" width="12" height="12" rx="3" fill="white"/>
-            </svg>
-            <div>
-              <div className="text-lg font-bold">PROPERTECH</div>
-              <div className="text-xs text-tx-muted">Smarter Property Management</div>
-            </div>
-          </div>
+          <Link href="/" className="flex items-center mb-4">
+            <Image
+              src="/logo.png"
+              alt="ProperTech Software"
+              width={140}
+              height={40}
+              className="h-10 w-auto object-contain"
+            />
+          </Link>
 
           <p className="text-tx-muted mb-6">Modern property management software built for the next generation of landlords and property managers.</p>
 

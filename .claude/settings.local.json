@@ -55,7 +55,9 @@
       "Bash(alembic current:*)",
       "Bash(alembic history:*)",
       "Bash(ls:*)",
-      "Bash(alembic stamp:*)"
+      "Bash(alembic stamp:*)",
+      "Bash(C:\\\\Users\\\\Administrator\\\\Desktop\\\\PROPERTECH-Frontend:*)",
+      "Bash(grep -n \"GOOGLE\" /c/Users/Administrator/Desktop/PROPERTECH-Frontend/.env*)"
     ]
   }
 }

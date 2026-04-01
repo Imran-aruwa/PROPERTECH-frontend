@@ -5,7 +5,7 @@ import { X, Send, Sparkles } from 'lucide-react';
 import { chatApi } from '@/lib/api/chat';
 import { ChatMessage } from '@/types/chat';
 import { useAuth } from '@/lib/auth-context';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 /* ------------------------------------------------------------------ */
 /* Types & constants                                                    */
@@ -88,6 +88,7 @@ export function ChatbotWidget({
 }: ChatbotWidgetProps) {
   const { user, isAuthenticated } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
 
   const firstName = user?.full_name?.split(' ')[0] || 'there';
   const role = user?.role || 'owner';
@@ -178,10 +179,20 @@ export function ChatbotWidget({
 
       const { reply } = await chatApi.send(history, context);
 
+      // Navigation capability: backend can prefix reply with "navigate:/path\n"
+      let displayReply = reply;
+      const navMatch = reply.match(/^navigate:([^\n]+)\n?([\s\S]*)/);
+      if (navMatch) {
+        const navPath = navMatch[1].trim();
+        displayReply = navMatch[2].trim() || `I've opened that page for you.`;
+        // Small delay so message renders before navigation
+        setTimeout(() => router.push(navPath), 400);
+      }
+
       const assistantMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: reply,
+        content: displayReply,
         timestamp: new Date(),
       };
 

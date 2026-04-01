@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, ArrowLeft, Building2, CheckCircle } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ForgotPasswordPage() {
@@ -91,8 +92,15 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-            <Building2 className="w-8 h-8 text-white" />
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/logo.png"
+              alt="ProperTech Software"
+              width={180}
+              height={50}
+              priority
+              className="h-14 w-auto object-contain"
+            />
           </div>
           <h1 className="text-2xl font-bold text-tx-primary mb-2">
             Forgot Password?

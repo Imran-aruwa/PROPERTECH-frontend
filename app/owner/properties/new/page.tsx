@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRequireAuth } from '@/lib/auth-context';
 import { propertiesApi } from '@/lib/api-services';
 import { useForm, useToast } from '@/app/lib/hooks';
 import { ToastContainer } from '@/components/ui/Toast';
-import { Building2, ArrowLeft, Save } from 'lucide-react';
+import { Building2, ArrowLeft, Save, Search } from 'lucide-react';
 import Link from 'next/link';
 import { PropertyType } from '@/app/lib/types';
 
@@ -52,6 +52,65 @@ export default function NewPropertyPage() {
   const router = useRouter();
   const { toasts, success, error: showError, removeToast } = useToast();
   const [submitting, setSubmitting] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const autocompleteRef = useRef<any>(null);
+
+  // Load Google Places API and init autocomplete
+  useEffect(() => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!apiKey || !searchInputRef.current) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const w = window as any;
+
+    const initAutocomplete = () => {
+      if (!searchInputRef.current || !w.google?.maps?.places) return;
+      autocompleteRef.current = new w.google.maps.places.Autocomplete(searchInputRef.current, {
+        types: ['establishment', 'geocode'],
+        fields: ['name', 'address_components', 'formatted_address', 'geometry'],
+      });
+      autocompleteRef.current.addListener('place_changed', () => {
+        const place = autocompleteRef.current?.getPlace();
+        if (!place?.address_components) return;
+
+        let streetNumber = '', route = '', city = '', state = '', postal = '', country = 'Kenya';
+        for (const comp of place.address_components) {
+          const types: string[] = comp.types;
+          if (types.includes('street_number')) streetNumber = comp.long_name;
+          else if (types.includes('route')) route = comp.long_name;
+          else if (types.includes('locality')) city = comp.long_name;
+          else if (types.includes('administrative_area_level_1')) state = comp.long_name;
+          else if (types.includes('postal_code')) postal = comp.long_name;
+          else if (types.includes('country')) country = comp.long_name;
+        }
+
+        const streetAddr = [streetNumber, route].filter(Boolean).join(' ') || place.formatted_address || '';
+        if (place.name) handleChange('name', place.name);
+        if (streetAddr) handleChange('address', streetAddr);
+        if (city) handleChange('city', city);
+        if (state) handleChange('state', state);
+        if (postal) handleChange('postal_code', postal);
+        if (country) handleChange('country', country);
+      });
+    };
+
+    if (w.google?.maps?.places) {
+      initAutocomplete();
+    } else {
+      const scriptId = 'google-maps-places';
+      if (!document.getElementById(scriptId)) {
+        const script = document.createElement('script');
+        script.id = scriptId;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+        script.async = true;
+        script.onload = initAutocomplete;
+        document.head.appendChild(script);
+      } else {
+        document.getElementById(scriptId)!.addEventListener('load', initAutocomplete);
+      }
+    }
+  }, []);
 
   const validateForm = (values: PropertyFormData) => {
     const errors: Partial<Record<keyof PropertyFormData, string>> = {};
@@ -184,6 +243,23 @@ export default function NewPropertyPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Google Places search */}
+        {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <label className="block text-sm font-medium text-blue-900 mb-2 flex items-center gap-2">
+              <Search className="w-4 h-4" />
+              Search for a property address (auto-fill)
+            </label>
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Start typing an address or property name..."
+              className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-tx-primary"
+            />
+            <p className="text-xs text-blue-600 mt-1">Select an address to auto-fill name, address, city, and country.</p>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit(onSubmit)} className="bg-bg-card rounded-lg shadow-sm border border-bd p-8">
           {/* Property Name */}
           <div className="mb-6">

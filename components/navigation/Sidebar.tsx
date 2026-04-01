@@ -186,17 +186,17 @@ export function Sidebar() {
         <div className="flex items-center justify-between">
           {!collapsed && (
             <Image
-              src="/logo.svg"
+              src="/logo.png"
               alt="ProperTech Software"
-              width={180}
-              height={45}
+              width={160}
+              height={44}
               priority
-              className="h-10 w-auto object-contain"
+              className="h-11 w-auto object-contain"
             />
           )}
           {collapsed && (
             <Image
-              src="/logo.svg"
+              src="/logo.png"
               alt="ProperTech Software"
               width={40}
               height={40}

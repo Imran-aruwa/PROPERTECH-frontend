@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
-import { Building2, Mail, Lock, User, Phone, BadgeCheck } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Lock, User, Phone, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
 import { authApi } from '@/app/lib/api-services';
 
@@ -245,12 +246,16 @@ export default function RegisterForm() {
 
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-            <Building2 className="w-8 h-8 text-white" />
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/logo.png"
+              alt="ProperTech Software"
+              width={180}
+              height={50}
+              priority
+              className="h-14 w-auto object-contain"
+            />
           </div>
-          <h1 className="text-3xl font-bold text-tx-primary mb-2">
-            Propertech Software
-          </h1>
           <p className="text-tx-secondary">Create your account</p>
 
           <div className="mt-3 inline-flex items-center gap-2 px-4 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
