@@ -185,24 +185,28 @@ export function Sidebar() {
       <div className="flex-shrink-0 p-4 border-b border-bd">
         <div className="flex items-center justify-between">
           {!collapsed && (
-            <Image
-              src="/logo.png"
-              alt="ProperTech Software"
-              width={160}
-              height={44}
-              priority
-              className="h-11 w-auto object-contain"
-            />
+            <Link href="/owner/dashboard" className="flex items-center px-2 py-1">
+              <Image
+                src="/logo.png"
+                alt="ProperTech Software"
+                width={150}
+                height={42}
+                priority
+                className="h-11 w-auto object-contain"
+              />
+            </Link>
           )}
           {collapsed && (
-            <Image
-              src="/logo.png"
-              alt="ProperTech Software"
-              width={40}
-              height={40}
-              priority
-              className="h-8 w-auto object-contain mx-auto"
-            />
+            <Link href="/owner/dashboard" className="flex items-center justify-center mx-auto">
+              <Image
+                src="/logo.png"
+                alt="ProperTech Software"
+                width={40}
+                height={40}
+                priority
+                className="h-8 w-auto object-contain"
+              />
+            </Link>
           )}
           <button
             onClick={() => setCollapsed(!collapsed)}

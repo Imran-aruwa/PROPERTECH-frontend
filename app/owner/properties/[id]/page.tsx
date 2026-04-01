@@ -10,7 +10,7 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ConfirmModal } from '@/components/ui/Modal';
 import {
   Building2, ArrowLeft, Edit, Trash2, Home, MapPin, Users,
-  DollarSign, Plus, Bed, Bath, Eye
+  DollarSign, Plus, Bed, Bath, Eye, LayoutGrid, List
 } from 'lucide-react';
 import Link from 'next/link';
 import { Property, Unit } from '@/app/lib/types';
@@ -25,6 +25,17 @@ export default function PropertyDetailPage() {
   const [loading, setLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('units_view_mode') as 'grid' | 'list';
+    if (saved === 'grid' || saved === 'list') setViewMode(saved);
+  }, []);
+
+  const handleViewModeChange = (mode: 'grid' | 'list') => {
+    setViewMode(mode);
+    localStorage.setItem('units_view_mode', mode);
+  };
 
   const propertyId = params.id as string;
 
@@ -267,13 +278,29 @@ export default function PropertyDetailPage() {
             <div className="bg-bg-card rounded-lg shadow-sm border border-bd p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-tx-primary">Units ({units.length})</h2>
-                <Link
-                  href="/owner/units/new"
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Unit
-                </Link>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleViewModeChange('grid')}
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-bg-secondary text-tx-muted hover:text-tx-primary'}`}
+                    title="Grid view"
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleViewModeChange('list')}
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-bg-secondary text-tx-muted hover:text-tx-primary'}`}
+                    title="List view"
+                  >
+                    <List className="w-4 h-4" />
+                  </button>
+                  <Link
+                    href="/owner/units/new"
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Unit
+                  </Link>
+                </div>
               </div>
 
               {units.length === 0 ? (
@@ -288,6 +315,50 @@ export default function PropertyDetailPage() {
                     <Plus className="w-4 h-4" />
                     Add First Unit
                   </Link>
+                </div>
+              ) : viewMode === 'list' ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-bd text-tx-muted text-left">
+                        <th className="pb-3 pr-4 font-medium">Unit</th>
+                        <th className="pb-3 pr-4 font-medium">Status</th>
+                        <th className="pb-3 pr-4 font-medium">Beds / Bath</th>
+                        <th className="pb-3 pr-4 font-medium">Size</th>
+                        <th className="pb-3 pr-4 font-medium">Rent (KES)</th>
+                        <th className="pb-3">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {units.map((unit) => (
+                        <tr key={unit.id} className="border-b border-bd hover:bg-bg-hover transition-colors">
+                          <td className="py-3 pr-4 font-medium text-tx-primary">
+                            {unit.unit_number}
+                            {(unit as any).floor && <span className="ml-1 text-xs text-tx-muted">F{(unit as any).floor}</span>}
+                          </td>
+                          <td className="py-3 pr-4">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[unit.status] || 'bg-bg-secondary text-tx-primary'}`}>
+                              {unit.status}
+                            </span>
+                          </td>
+                          <td className="py-3 pr-4 text-tx-secondary">
+                            {unit.bedrooms || 0}bd / {unit.bathrooms || 0}ba
+                          </td>
+                          <td className="py-3 pr-4 text-tx-secondary">
+                            {(unit as any).square_feet ? `${(unit as any).square_feet} sq ft` : (unit as any).size_sqm ? `${(unit as any).size_sqm} m²` : '—'}
+                          </td>
+                          <td className="py-3 pr-4 font-medium text-tx-primary">
+                            {((unit as any).monthly_rent || (unit as any).rent_amount || 0).toLocaleString()}
+                          </td>
+                          <td className="py-3">
+                            <Link href={`/owner/units/${unit.id}`} className="text-blue-600 hover:text-blue-700 text-sm">
+                              View →
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
