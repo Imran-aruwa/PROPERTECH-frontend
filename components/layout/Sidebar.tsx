@@ -3,6 +3,7 @@
 // ============================================
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -16,14 +17,11 @@ import {
   LogOut,
   ChevronLeft,
   TrendingUp,
-  Home,
   CreditCard,
   Clock,
   AlertTriangle,
   Timer,
   MessageSquare,
-  Shield,
-  Leaf,
   Briefcase,
   Package,
   CheckSquare,
@@ -93,29 +91,19 @@ const navigationConfig = {
   ],
 };
 
-const roleIcons = {
-  owner: Building2,
-  agent: Users,
-  caretaker: Home,
-  tenant: Users,
-  security: Shield,
-  gardener: Leaf,
-};
-
-const roleTitles = {
-  owner: 'Owner Portal',
-  agent: 'Agent Portal',
-  caretaker: 'Staff Portal',
-  tenant: 'Tenant Portal',
-  security: 'Security Portal',
-  gardener: 'Gardener Portal',
+const roleDashboardHref = {
+  owner: '/owner/dashboard',
+  agent: '/agent/dashboard',
+  caretaker: '/caretaker/dashboard',
+  tenant: '/tenant/dashboard',
+  security: '/staff/security/dashboard',
+  gardener: '/staff/gardener/dashboard',
 };
 
 export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const navigation = navigationConfig[role];
-  const RoleIcon = roleIcons[role];
 
   const handleLogout = () => {
     // Clear all auth data from localStorage
@@ -149,13 +137,17 @@ export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
       >
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex items-center justify-between border-b px-6 py-5">
-            <div className="flex items-center gap-3">
-              <RoleIcon className="h-7 w-7 text-blue-600" />
-              <span className="text-lg font-bold text-tx-primary">
-                {roleTitles[role]}
-              </span>
-            </div>
+          <div className="flex items-center justify-between border-b px-4 py-3">
+            <Link href={roleDashboardHref[role]} className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="ProperTech Software"
+                width={160}
+                height={45}
+                priority
+                className="h-11 w-auto object-contain"
+              />
+            </Link>
             <button
               onClick={onClose}
               className="lg:hidden text-tx-muted hover:text-tx-secondary"
