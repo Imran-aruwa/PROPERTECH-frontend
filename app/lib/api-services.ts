@@ -1483,7 +1483,7 @@ export const inspectionsApi = {
 /**
  * Leases API
  */
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.com';
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.propertechsoftware.co.ke';
 
 export const leasesApi = {
   async list(params?: { status?: string; property_id?: number; tenant_id?: number }) {

@@ -1,6 +1,6 @@
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-export const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://propertechsoftware.com";
+export const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://propertechsoftware.co.ke";
 
 export const PAYMENT_TYPES = {
   RENT: "rent",
